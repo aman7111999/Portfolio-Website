@@ -1,8 +1,12 @@
 import type { ComponentType } from "react";
 import site from "../../content/site.json";
-import experience from "../../content/experience.json";
-import skills from "../../content/skills.json";
-import testimonials from "../../content/testimonials.json";
+import experienceFile from "../../content/experience.json";
+import skillsFile from "../../content/skills.json";
+import testimonialsFile from "../../content/testimonials.json";
+
+const experience = experienceFile.roles;
+const skills = skillsFile.groups;
+const testimonials = testimonialsFile.quotes;
 
 export type Metric = { label: string; value: string; hint?: string };
 export type SectionRef = { id: string; label: string };

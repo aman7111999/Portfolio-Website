@@ -1,12 +1,17 @@
+import type { ComponentType } from "react";
 import site from "../../content/site.json";
-import experience from "../../content/experience.json";
-import skills from "../../content/skills.json";
-import testimonials from "../../content/testimonials.json";
-import projectIndex from "../../content/projects/_index.json";
+import experienceFile from "../../content/experience.json";
+import skillsFile from "../../content/skills.json";
+import testimonialsFile from "../../content/testimonials.json";
 
-export type Metric = { label: string; value: string };
-export type ProjectSection = { heading: string; body: string };
-export type Project = {
+const experience = experienceFile.roles;
+const skills = skillsFile.groups;
+const testimonials = testimonialsFile.quotes;
+
+export type Metric = { label: string; value: string; hint?: string };
+export type SectionRef = { id: string; label: string };
+
+export type ProjectFrontmatter = {
   slug: string;
   title: string;
   company: string;
@@ -19,29 +24,42 @@ export type Project = {
   timeline: string;
   constraints: string[];
   metrics: Metric[];
-  sections: ProjectSection[];
-  featured: boolean;
-  order: number;
+  sections?: SectionRef[];
+  featured?: boolean;
+  order?: number;
 };
 
-// Eagerly import every project JSON at build time.
-const projectFiles = import.meta.glob<{ default: Omit<Project, "featured" | "order"> }>(
-  "../../content/projects/*.json",
+export type Project = ProjectFrontmatter & {
+  Body: ComponentType<Record<string, unknown>>;
+};
+
+type MdxModule = {
+  default: ComponentType<Record<string, unknown>>;
+  frontmatter: ProjectFrontmatter;
+};
+
+// Eagerly load every project's index.mdx at build time.
+const projectFiles = import.meta.glob<MdxModule>(
+  "../../content/projects/*/index.mdx",
   { eager: true },
 );
 
-const indexMap = new Map(
-  (projectIndex as { slug: string; featured: boolean; order: number }[]).map((p) => [p.slug, p]),
-);
-
 export const projects: Project[] = Object.entries(projectFiles)
-  .filter(([path]) => !path.endsWith("_index.json"))
-  .map(([, mod]) => {
-    const data = mod.default;
-    const meta = indexMap.get(data.slug) ?? { featured: false, order: 999 };
-    return { ...data, featured: meta.featured, order: meta.order };
+  .map(([path, mod]) => {
+    // Fallback slug from folder name
+    const folderMatch = path.match(/\/projects\/([^/]+)\/index\.mdx$/);
+    const folderSlug = folderMatch?.[1];
+    const fm = mod.frontmatter;
+    if (!fm) {
+      throw new Error(`MDX file missing frontmatter: ${path}`);
+    }
+    return {
+      ...fm,
+      slug: fm.slug ?? folderSlug ?? "",
+      Body: mod.default,
+    };
   })
-  .sort((a, b) => a.order - b.order);
+  .sort((a, b) => (a.order ?? 99) - (b.order ?? 99));
 
 export const featuredProjects = projects.filter((p) => p.featured);
 
@@ -57,6 +75,15 @@ export function getAdjacentProjects(slug: string) {
     next: i < projects.length - 1 ? projects[i + 1] : projects[0],
   };
 }
+
+// About page MDX (single file)
+const aboutModule = import.meta.glob<MdxModule>("../../content/about.mdx", {
+  eager: true,
+});
+const aboutEntry = Object.values(aboutModule)[0];
+export const About: ComponentType<Record<string, unknown>> | null =
+  aboutEntry?.default ?? null;
+export const aboutFrontmatter = aboutEntry?.frontmatter ?? {};
 
 export { site, experience, skills, testimonials };
 export type Experience = (typeof experience)[number];

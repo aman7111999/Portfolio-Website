@@ -1,113 +1,250 @@
 
-# Aman Mishra — Portfolio (Core build, GitHub Pages)
+# Premium case studies + Decap CMS
 
-## Stack decision (locked)
+Three pillars in one pass:
 
-Tear out the current TanStack Start scaffold and rebuild as a **React + Vite + React Router SPA**, deployable to GitHub Pages. All routing/rendering is client-side. SEO handled via `react-helmet-async` + prerendered `index.html` meta + a static `sitemap.xml` / `robots.txt` / `404.html` (copy of `index.html` for SPA fallback).
+1. **Content model** — move from flat JSON to **MDX + frontmatter**.
+2. **Editor** — **Decap CMS** at `/admin`, auth via a **Cloudflare Worker** you deploy once.
+3. **Reading UX** — a full premium case-study kit (sticky TOC, lightbox, before/after, timelines, quotes, callouts, page transitions).
 
-## What ships in this first pass
+---
 
-**Routes**
-- `/` — Home (Hero, Featured Projects, Experience snapshot, Philosophy, Skills, Testimonials, Contact CTA, Footer)
-- `/work` — All projects grid
-- `/projects/:slug` — Case study template (renders MDX + frontmatter-driven sections)
-- `/about` — Bio, timeline, values, tools
-- `/contact` — Large-type contact page
-- `*` — 404
+## 1. Content architecture (MDX)
 
-Deferred to follow-ups: `/process`, `/playground`, `/resume`, command palette, image lightbox, theme toggle, search, cursor follower.
-
-**Content model**
-
-MDX for case studies (rich prose + inline components), JSON for structured lists.
-
-```text
+New shape:
+```
 content/
-  site.json               # name, tagline, socials
-  navigation.json         # nav + footer links
-  experience.json         # roles, dates, blurbs
-  skills.json             # grouped skills
-  testimonials.json       # quotes
   projects/
-    _index.json           # slug order + featured flags
+    _index.json                 ← order + featured flags (CMS-managed)
     blitz-design-system/
-      index.mdx           # frontmatter (title, company, role, cover, metrics...) + case study body
-      cover.jpg
+      index.mdx                 ← frontmatter + rich body
+      images/                   ← per-project uploads
+    meera-ai/index.mdx
+    …
+  about.mdx
+  experience.json
+  skills.json
+  testimonials.json
+  site.json
+  resume.pdf
 ```
 
-Adding a project = new folder + `index.mdx` + images, plus a line in `_index.json`. No component edits. MDX is loaded via `import.meta.glob(..., { eager: true })` so it works with static Vite build.
-
-**Case study page sections** (rendered from frontmatter + MDX):
-Hero · Overview · Context/Problem/Goals · Role/Team/Timeline/Constraints · Research · IA/Flows · Wireframes · Iterations · Final Solution · Design System · Accessibility · Prototype embed slot · Impact/Metrics · Learnings · Next Project.
-Includes sticky TOC, reading progress bar, prev/next nav.
-
-**Motion**
-- Framer Motion: hero reveal, stagger, scroll-reveal wrapper, shared-layout on project cards → case study hero, animated underlines, magnetic primary buttons.
-- Lenis smooth scroll with `prefers-reduced-motion` bail-out.
-- All motion gated on `useReducedMotion()`.
-
-**Design language**
-- Typography: Fraunces (display, editorial serif) + Inter Tight (body) via `@fontsource`. Tight tracking on display, generous leading on body.
-- Palette (semantic tokens in `src/index.css`): near-black ink `#0B0B0C`, paper `#FAFAF7`, muted `#6B6B70`, hairline border `#E7E5DE`, single accent `#FF5A1F` (used sparingly for CTA + underline). Dark mode uses inverted ink/paper — theme toggle deferred but tokens ready.
-- Grid: 12-col, generous gutters, max-width 1240px, editorial asymmetry on hero and case studies.
-- No gradients, no glass, no drop-shadow decoration. Hairlines and space do the work.
-
-**Components (built in this pass)**
-Navbar (floating, transparent → solid on scroll, active state), Footer, Hero, ProjectCard, SectionHeader, Timeline, MetricCard, TestimonialCard, StickyTOC, ReadingProgress, Button (primary/ghost/magnetic), Tag, ScrollReveal wrapper, MDX component map.
-
-**Accessibility**
-Semantic landmarks, skip link, visible focus rings, ARIA on nav/toc, `prefers-reduced-motion` respected everywhere, WCAG AA contrast on both themes.
-
-**SEO**
-`react-helmet-async` per route: unique title, description, canonical, OG/Twitter tags. Home + each project ships JSON-LD (`Person` for home, `CreativeWork` for projects). Static `sitemap.xml` generated at build time from `content/projects/_index.json` via a small Vite plugin. `robots.txt` allows all.
-
-## Technical section
-
-**Cleanup (removed)**
-`src/routes/`, `src/routeTree.gen.ts`, `src/router.tsx`, `src/server.ts`, `src/start.ts`, `src/styles.css`, TanStack Start Vite plugin, TanStack Router/Start deps, server middleware, Supabase integration files (not needed).
-
-**New scaffold**
-- `index.html` (Vite entry, root meta, font preloads)
-- `src/main.tsx` — mounts `<BrowserRouter basename={import.meta.env.BASE_URL}>` + `HelmetProvider`
-- `src/App.tsx` — routes + layout
-- `src/index.css` — Tailwind v4 entry, `@theme` tokens, base resets
-- `src/lib/lenis.tsx` — smooth scroll provider with reduced-motion guard
-- `src/lib/content.ts` — loads MDX via `import.meta.glob('/content/projects/**/index.mdx', { eager: true })` and merges with `_index.json`
-- `src/lib/seo.tsx` — `<Seo>` helper wrapping Helmet
-- `src/components/*` — components listed above
-- `src/pages/{Home,Work,Project,About,Contact,NotFound}.tsx`
-- `content/**` — as above, seeded with 4 realistic case studies you can rewrite from your MDX
-
-**Vite config**
-- `@vitejs/plugin-react`, `@mdx-js/rollup` (with `remark-gfm`, `remark-frontmatter`, `remark-mdx-frontmatter`), Tailwind v4 Vite plugin.
-- `base: process.env.VITE_BASE ?? '/'` — set `VITE_BASE=/repo-name/` when deploying to a project page. Documented in README.
-- Post-build step (in `package.json` `build` script) copies `dist/index.html` → `dist/404.html` for SPA deep-link fallback on GitHub Pages.
-- Small custom plugin emits `dist/sitemap.xml` from project slugs.
-
-**Deps to add**
-`react-router-dom`, `framer-motion`, `@studio-freight/lenis`, `react-helmet-async`, `@mdx-js/rollup`, `@mdx-js/react`, `remark-gfm`, `remark-frontmatter`, `remark-mdx-frontmatter`, `@fontsource/fraunces`, `@fontsource/inter-tight`, `clsx`, `tailwind-merge`.
-
-**Deps to remove**
-`@tanstack/react-router`, `@tanstack/react-start`, `@tanstack/router-plugin`, related Start server bits, `@supabase/*`.
-
-**GitHub Pages files**
-- `README.md` — install / dev / build / deploy steps, base-path note, custom-domain note.
-- `.gitignore` — node_modules, dist, .env
-- `LICENSE` — MIT (change if you want another)
-- `public/robots.txt`, generated `sitemap.xml`, `404.html` fallback
-- Optional `.github/workflows/deploy.yml` — GH Actions to build + publish `dist` to `gh-pages` branch on push to `main`. Included so deploy is truly one-click after enabling Pages.
-
-**Content you'll paste in**
-For each project: `content/projects/<slug>/index.mdx` with frontmatter:
+Frontmatter per project:
 ```yaml
-title, company, role, duration, category, cover, summary,
-metrics: [{label, value}], team, timeline, constraints,
-featured: true|false, order: 1
+---
+slug: blitz-design-system
+title: "Blitz — Building a design system…"
+company: Razorpay
+role: Design Lead
+duration: 10 months · 2024
+timeline: Q1 – Q4 2024
+category: Design System
+cover: /content/projects/blitz-design-system/images/cover.jpg
+summary: …
+featured: true
+order: 1
+team: [Design Lead (me), 2 Product Designers, 3 Engineers, 1 PM]
+constraints: […]
+metrics:
+  - { label: Ship time, value: "-38%" }
+sections:                       # for sticky TOC
+  - { id: overview, label: Overview }
+  - { id: problem,  label: Problem }
+  - …
+---
+
+<Hero />
+## Overview
+Body prose…
+<PullQuote author="…">…</PullQuote>
+<Gallery images={[…]} />
+<BeforeAfter before="…" after="…" />
+<Timeline steps={[…]} />
+<Callout kind="insight">…</Callout>
 ```
-Body is free-form MDX with `<Gallery>`, `<Metric>`, `<Quote>` components from the MDX map.
 
-I'll seed 4 realistic placeholders (Blitz Design System, Research Home, Meera AI, Fintech Dashboard) so the site is fully populated on first build — you overwrite the MDX with your real content whenever you're ready.
+Loader (`src/lib/content.ts`): use `import.meta.glob('/content/projects/*/index.mdx', { eager, query: '?raw' })` combined with `@mdx-js/rollup` so MDX compiles to React at build time. Frontmatter parsed via `remark-frontmatter` + `remark-mdx-frontmatter`.
 
-## Out of scope for this pass (called out so nothing is silently missing)
+Existing 4 case studies are rewritten into MDX with the new components (no content lost).
 
-`/process`, `/playground`, `/resume` routes; command palette (⌘K); image lightbox; theme toggle UI (tokens ready); search; custom cursor follower; embedded live prototype iframes; Lighthouse tuning pass. All are one-turn follow-ups on top of this scaffold.
+---
+
+## 2. Rich MDX components
+
+All available inside any `.mdx` and mapped globally through `<MDXProvider>`:
+
+| Component | Purpose |
+|---|---|
+| `Hero` | Full-bleed cover with parallax |
+| `Section id` | TOC anchor + reveal animation |
+| `PullQuote` | Editorial quote with attribution |
+| `Callout kind="insight\|decision\|warning\|learning"` | Highlight boxes |
+| `MetricGrid` | Animated count-up metric row |
+| `Gallery` | Masonry grid → opens lightbox |
+| `Figure caption` | Single image with caption + zoom |
+| `BeforeAfter` | Drag-slider comparison |
+| `Timeline` | Animated vertical process timeline |
+| `Prototype src` | Responsive Figma / video embed |
+| `DesignSystemGrid` | Token / component showcase |
+| `Steps` | Numbered decision cards |
+| `TwoUp` | Side-by-side content blocks |
+| `Divider label` | Animated section divider |
+
+Lightbox: **yet-another-react-lightbox** + Zoom plugin (keyboard, swipe, Esc, pinch).
+
+---
+
+## 3. Premium case-study page
+
+`src/pages/Project.tsx` gets a full rebuild:
+
+- **Cinematic hero**: full-bleed cover image with mask reveal + slow zoom.
+- **Sticky sub-nav** under the main nav: chapter title + progress bar.
+- **Sticky TOC** on the left at ≥lg — animated active dot + smooth scroll.
+- **Reading progress** bar (already present) refined.
+- **Section reveals** with staggered fade-up per block.
+- **Metrics** already animated (CountUp) — restyled as premium metric cards with hairline dividers.
+- **Meta strip**: Role · Timeline · Team · Constraints in a refined 4-col hairline grid.
+- **Learnings & Reflection** blocks styled distinctly (serif accent, warmer tone).
+- **Next project preview**: full-bleed hover card with animated cover peek.
+- **Page transitions**: mask-reveal in / fade out (already wired via AnimatePresence).
+
+---
+
+## 4. Homepage + shared component polish
+
+Small refinements that flow from the new system:
+
+- Featured projects use new cover images (from MDX frontmatter).
+- Testimonials + Experience cards adopt the refined hairline / hover-lift treatment.
+- Footer keeps the giant "Have a problem worth solving?" line.
+- Navbar gets a subtle top hairline once scrolled + refined active-link dot.
+
+No layout rewrites — same information architecture, tighter execution.
+
+---
+
+## 5. Decap CMS at `/admin`
+
+Files:
+```
+public/admin/
+  index.html         ← loads decap-cms 3.x
+  config.yml         ← backend + collections
+```
+
+`config.yml` sketch:
+```yaml
+backend:
+  name: github
+  repo: <your-username>/<your-repo>
+  branch: main
+  base_url: https://<your-worker>.workers.dev
+media_folder: content/uploads
+public_folder: /content/uploads
+
+collections:
+  - name: projects
+    folder: content/projects
+    path: "{{slug}}/index"
+    extension: mdx
+    format: frontmatter
+    create: true
+    fields:
+      - {label: Title,   name: title,   widget: string}
+      - {label: Company, name: company, widget: string}
+      - {label: Cover,   name: cover,   widget: image}
+      - {label: Featured, name: featured, widget: boolean, default: false}
+      - {label: Order,   name: order,   widget: number, default: 99}
+      - {label: Metrics, name: metrics, widget: list, fields: [
+          {label: Label, name: label, widget: string},
+          {label: Value, name: value, widget: string}]}
+      - {label: Body,    name: body,    widget: markdown}
+  - name: site
+    files:
+      - {label: Site,        name: site,        file: content/site.json,        fields: […]}
+      - {label: About,       name: about,       file: content/about.mdx,        fields: […]}
+      - {label: Experience,  name: experience,  file: content/experience.json,  fields: […]}
+      - {label: Skills,      name: skills,      file: content/skills.json,      fields: […]}
+      - {label: Testimonials, name: testimonials, file: content/testimonials.json, fields: […]}
+```
+
+At `/admin`, Decap loads, calls the Worker for GitHub OAuth, then commits every save directly to your repo.
+
+---
+
+## 6. Cloudflare Worker (auth backend)
+
+New folder `decap-oauth/` with:
+
+- `worker.js` — implements the two Decap endpoints (`/auth` and `/callback`) that shake hands with GitHub OAuth.
+- `wrangler.toml` — one config file.
+- `README.md` — the exact 5-minute setup:
+  1. Create free Cloudflare account.
+  2. Create GitHub OAuth App (I give the exact form values, incl. callback URL).
+  3. `npm i -g wrangler && wrangler login`.
+  4. Paste `GITHUB_CLIENT_ID` + `GITHUB_CLIENT_SECRET` via `wrangler secret put`.
+  5. `wrangler deploy`. Copy the Worker URL into `public/admin/config.yml → backend.base_url`.
+
+No servers to run, no monthly cost, no framework migration.
+
+---
+
+## 7. GitHub Pages deploy
+
+`.github/workflows/deploy.yml` already exists. It's updated to:
+- Run `bun install`
+- Run `bun run build` (which includes MDX compile + sitemap gen)
+- Publish `dist/` to Pages
+
+Result: edit in `/admin` → GitHub commit → Actions rebuild → live in ~1 min.
+
+---
+
+## 8. Scalability
+
+Adding a 47th project = create a new folder in `/admin` → hit Save. Zero React changes. Same pattern later covers `content/blog/`, `content/talks/`, `content/awards/` — add a collection to `config.yml` + a route.
+
+---
+
+## Technical section (for reference)
+
+**New deps**:
+`@mdx-js/rollup`, `@mdx-js/react`, `remark-frontmatter`, `remark-mdx-frontmatter`, `remark-gfm`, `gray-matter`, `yet-another-react-lightbox`.
+
+**Vite**: add `@mdx-js/rollup` plugin with remark chain; keep `base: process.env.VITE_BASE ?? '/'`; keep post-build 404.html copy.
+
+**Types**: `content.ts` exports `Project` with `Component: React.FC` (the compiled MDX) alongside frontmatter.
+
+**Reduced motion**: every new animation gates on `useReducedMotion()`.
+
+**Accessibility**: lightbox is keyboard-first; TOC is a real `<nav>`; before/after slider has ARIA slider role + keyboard.
+
+**Files created / changed** (high level):
+- `content/projects/*/index.mdx` (4 rewrites)
+- `content/about.mdx` (new)
+- `public/admin/{index.html,config.yml}` (new)
+- `decap-oauth/{worker.js,wrangler.toml,README.md}` (new)
+- `src/components/mdx/*` (Hero, Gallery, Lightbox, PullQuote, Callout, MetricGrid, BeforeAfter, Timeline, Steps, Prototype, DesignSystemGrid, Figure, TwoUp, Divider, Section, Provider)
+- `src/lib/content.ts` (MDX loader rewrite)
+- `src/pages/Project.tsx` (premium rebuild)
+- `src/pages/About.tsx` (read from about.mdx)
+- `vite.config.ts` (MDX plugin + updated sitemap gen)
+- `.github/workflows/deploy.yml` (unchanged flow, verified)
+
+**Out of scope for this pass** (deferrable):
+- Theme toggle
+- Blog / Playground / Talks routes (structure ready, wire when needed)
+- Real content — I keep the 4 existing case studies rewritten in MDX; you replace copy + images through `/admin`.
+
+---
+
+## What you'll need to do after I ship
+
+1. Connect the project to GitHub (Plus menu → GitHub → Connect).
+2. Run the 5-step Worker setup from `decap-oauth/README.md`.
+3. Paste the Worker URL into `public/admin/config.yml`.
+4. Enable GitHub Pages (or keep publishing via Lovable — both work).
+5. Visit `/admin`, sign in with GitHub, start editing.
+
+Everything else — content, images, projects, SEO — happens through `/admin` from then on.

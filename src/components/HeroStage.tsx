@@ -34,15 +34,16 @@ export function HeroStage() {
     my.set(0);
   };
 
-  // Per-card parallax transforms
-  const layer = (depth: number) => ({
-    x: useTransform(smx, (v) => v * depth),
-    y: useTransform(smy, (v) => v * depth),
-  });
-  const l1 = layer(-14);
-  const l2 = layer(22);
-  const l3 = layer(-30);
-  const l4 = layer(10);
+  // Per-card parallax transforms (inlined to respect rules of hooks)
+  const l1x = useTransform(smx, (v) => v * -14);
+  const l1y = useTransform(smy, (v) => v * -14);
+  const l2x = useTransform(smx, (v) => v * 22);
+  const l2y = useTransform(smy, (v) => v * 22);
+  const l3x = useTransform(smx, (v) => v * -30);
+  const l3y = useTransform(smy, (v) => v * -30);
+  const l4x = useTransform(smx, (v) => v * 10);
+  const l4y = useTransform(smy, (v) => v * 10);
+
 
   return (
     <div

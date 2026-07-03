@@ -2,7 +2,7 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
 import tsconfigPaths from "vite-tsconfig-paths";
-import { writeFileSync, copyFileSync, existsSync } from "node:fs";
+import { writeFileSync, copyFileSync, existsSync, readFileSync } from "node:fs";
 import { resolve } from "node:path";
 
 // Small plugin: after build, emit sitemap.xml and copy index.html -> 404.html
@@ -21,9 +21,10 @@ function ghPagesStatic() {
       // Kept intentionally simple: home + static routes + one entry per project slug.
       const site = process.env.VITE_SITE_URL ?? "";
       const staticRoutes = ["/", "/work", "/about", "/contact"];
-      // Import lazily to avoid ESM/CJS friction
-      // eslint-disable-next-line @typescript-eslint/no-require-imports
-      const projects: { slug: string }[] = require("./content/projects/_index.json");
+      const idxPath = resolve(process.cwd(), "content/projects/_index.json");
+      const projects: { slug: string }[] = existsSync(idxPath)
+        ? JSON.parse(readFileSync(idxPath, "utf8"))
+        : [];
       const urls = [
         ...staticRoutes,
         ...projects.map((p) => `/projects/${p.slug}`),

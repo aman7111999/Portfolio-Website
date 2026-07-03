@@ -81,7 +81,7 @@ export function HeroStage() {
       {/* Floating UI cards */}
       {/* Card 1 — component card */}
       <motion.div
-        style={{ x: l1.x, y: l1.y }}
+        style={{ x: l1x, y: l1y }}
         className="absolute left-[8%] top-[10%] w-[62%] rounded-md border border-black/10 bg-white p-4 shadow-[0_20px_50px_-30px_rgba(11,11,12,0.35)]"
       >
         <div className="flex items-center gap-2">
@@ -101,7 +101,7 @@ export function HeroStage() {
 
       {/* Card 2 — metric */}
       <motion.div
-        style={{ x: l2.x, y: l2.y }}
+        style={{ x: l2x, y: l2y }}
         className="absolute right-[6%] top-[28%] w-[52%] rounded-md border border-black/10 bg-white p-4 shadow-[0_20px_50px_-30px_rgba(11,11,12,0.35)]"
       >
         <p className="text-[10px] uppercase tracking-widest text-[var(--color-muted)]">Ship time</p>
@@ -114,7 +114,7 @@ export function HeroStage() {
 
       {/* Card 3 — token swatches */}
       <motion.div
-        style={{ x: l3.x, y: l3.y }}
+        style={{ x: l3x, y: l3y }}
         className="absolute left-[12%] bottom-[14%] w-[46%] rounded-md border border-black/10 bg-white p-4 shadow-[0_20px_50px_-30px_rgba(11,11,12,0.35)]"
       >
         <p className="text-[10px] uppercase tracking-widest text-[var(--color-muted)]">Tokens / Surface</p>
@@ -127,7 +127,7 @@ export function HeroStage() {
 
       {/* Card 4 — cursor label pill */}
       <motion.div
-        style={{ x: l4.x, y: l4.y }}
+        style={{ x: l4x, y: l4y }}
         className="absolute right-[12%] bottom-[10%] flex items-center gap-2 rounded-full border border-black/10 bg-white px-3 py-1.5 shadow-[0_15px_40px_-25px_rgba(11,11,12,0.35)]"
       >
         <span className="h-1.5 w-1.5 rounded-full bg-[var(--color-accent)] animate-pulse" />

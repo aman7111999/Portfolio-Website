@@ -74,14 +74,22 @@ export default function ProjectPage() {
         {/* Cover */}
         <section className="container-page">
           <motion.div
+            ref={coverRef}
             initial={reduce ? false : { opacity: 0, scale: 0.98 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
-            className="aspect-[16/9] w-full overflow-hidden rounded-lg border border-hairline"
-            style={{ background: gradients[project.cover] ?? gradients["gradient-1"] }}
+            transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
+            className="relative aspect-[16/9] w-full overflow-hidden rounded-lg border border-hairline"
             aria-hidden
-          />
+          >
+            <motion.div
+              className="absolute -inset-10"
+              style={{
+                background: gradients[project.cover] ?? gradients["gradient-1"],
+                y: reduce ? undefined : coverY,
+              }}
+            />
+          </motion.div>
         </section>
 
         {/* Meta */}
@@ -110,14 +118,24 @@ export default function ProjectPage() {
         {/* Metrics */}
         <section className="container-page mt-24 hairline-t hairline-b">
           <div className="grid divide-y divide-[var(--color-hairline)] md:grid-cols-4 md:divide-x md:divide-y-0">
-            {project.metrics.map((m) => (
-              <div key={m.label} className="p-8">
-                <p className="font-display text-4xl md:text-5xl">{m.value}</p>
+            {project.metrics.map((m, i) => (
+              <motion.div
+                key={m.label}
+                initial={reduce ? false : { opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-40px" }}
+                transition={{ duration: 0.6, delay: i * 0.08, ease: [0.22, 1, 0.36, 1] }}
+                className="p-8"
+              >
+                <p className="font-display text-4xl md:text-5xl">
+                  <CountUp value={m.value} />
+                </p>
                 <p className="mt-2 text-xs uppercase tracking-widest text-[var(--color-muted)]">{m.label}</p>
-              </div>
+              </motion.div>
             ))}
           </div>
         </section>
+
 
         {/* Sections */}
         <section className="container-page mt-24 space-y-24">

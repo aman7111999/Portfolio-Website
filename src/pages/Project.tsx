@@ -23,6 +23,12 @@ export default function ProjectPage() {
   const { slug = "" } = useParams();
   const project = getProject(slug);
   const reduce = useReducedMotion();
+  const coverRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress: coverProgress } = useScroll({
+    target: coverRef,
+    offset: ["start end", "end start"],
+  });
+  const coverY = useTransform(coverProgress, [0, 1], ["-8%", "8%"]);
 
   if (!project) return <NotFound />;
   const { prev, next } = getAdjacentProjects(slug);
@@ -45,7 +51,6 @@ export default function ProjectPage() {
         ogType="article"
         jsonLd={jsonLd}
       />
-      <ReadingProgress />
 
       <article>
         {/* Hero */}

@@ -29,7 +29,6 @@ export default function Home() {
         <DotGrid className="-z-0 opacity-40" />
         <div className="relative grid gap-12 md:grid-cols-12">
           <div className="md:col-span-8">
-          <div className="md:col-span-9">
             <motion.p
               initial={reduce ? false : { opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}

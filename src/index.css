@@ -47,7 +47,8 @@
   h1, h2, h3, h4 {
     font-family: var(--font-display);
     font-weight: 500;
-    letter-spacing: -0.02em;
+    letter-spacing: -0.025em;
+    font-feature-settings: "ss01", "ss02", "cv11";
   }
   :focus-visible {
     outline: 2px solid var(--color-ink);
@@ -65,9 +66,10 @@
 
 @utility display-hero {
   font-family: var(--font-display);
-  font-weight: 400;
-  letter-spacing: -0.035em;
-  line-height: 0.95;
+  font-weight: 500;
+  letter-spacing: -0.045em;
+  line-height: 0.92;
+  font-feature-settings: "ss01", "ss02", "cv11";
 }
 
 @utility hairline-b {

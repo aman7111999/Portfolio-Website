@@ -1,0 +1,136 @@
+{
+  "version": 1,
+  "sdk_version": "0.20.0",
+  "path": "/mcp",
+  "auth": {
+    "type": "none"
+  },
+  "mcp": {
+    "server": {
+      "name": "aman-mishra-portfolio",
+      "version": "0.1.0",
+      "title": "Aman Mishra — Portfolio"
+    },
+    "tools": [
+      {
+        "name": "list_projects",
+        "title": "List case studies",
+        "description": "List Aman Mishra's product design case studies with title, company, role, category, summary, key metrics, and a link.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {
+            "featuredOnly": {
+              "description": "If true, return only projects marked as featured.",
+              "type": "boolean"
+            }
+          }
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "get_project",
+        "title": "Get case study",
+        "description": "Return the full case study for a given slug, including the MDX body content, metrics, team, constraints, and public URL.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {
+            "slug": {
+              "type": "string",
+              "minLength": 1,
+              "description": "The project slug, e.g. 'meera-ai'. Use list_projects to discover slugs."
+            }
+          },
+          "required": [
+            "slug"
+          ]
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "get_about",
+        "title": "About Aman Mishra",
+        "description": "Return a concise profile: name, current role, location, tagline, availability, social links, and skill groups.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {}
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "get_experience",
+        "title": "Work experience",
+        "description": "Return Aman Mishra's work experience — roles, companies, timelines, and highlights.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {}
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "contact_inquiry",
+        "title": "Submit a contact inquiry",
+        "description": "Send a message to Aman Mishra on the visitor's behalf. Use only when the visitor has explicitly asked to contact him. Include the visitor's own name, email, and message — never invented values.",
+        "annotations": {
+          "readOnlyHint": false,
+          "destructiveHint": false,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 200,
+              "description": "Visitor's full name."
+            },
+            "email": {
+              "type": "string",
+              "maxLength": 320,
+              "format": "email",
+              "pattern": "^(?!\\.)(?!.*\\.\\.)([A-Za-z0-9_'+\\-\\.]*)[A-Za-z0-9_+-]@([A-Za-z0-9][A-Za-z0-9\\-]*\\.)+[A-Za-z]{2,}$",
+              "description": "Visitor's email address."
+            },
+            "message": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 5000,
+              "description": "The message to send."
+            }
+          },
+          "required": [
+            "name",
+            "email",
+            "message"
+          ]
+        },
+        "outputSchema": null
+      }
+    ]
+  }
+}

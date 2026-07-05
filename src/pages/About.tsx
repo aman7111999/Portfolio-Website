@@ -27,7 +27,7 @@ export default function About() {
                 ? `center/cover url(${site.profile_image_url})`
                 : "linear-gradient(160deg, #E7EDE7 0%, #B6C5BE 60%, #3F5A55 100%)",
             }}
-            aria-label={site?.name}
+            aria-label={site?.name ?? undefined}
           />
         </Reveal>
         <Reveal className="md:col-span-7 md:col-start-6">

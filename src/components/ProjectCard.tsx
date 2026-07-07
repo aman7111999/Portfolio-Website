@@ -89,14 +89,12 @@ export function ProjectCard({ project, index = 0 }: { project: ProjectRow; index
                 {project.category}
               </span>
             )}
-            <motion.span
-              whileHover={{ rotate: 45 }}
-              transition={{ type: "spring", stiffness: 220, damping: 14 }}
-              className="flex h-9 w-9 items-center justify-center rounded-full bg-[var(--color-ink)] text-[var(--color-paper)] group-hover:[transform:rotate(45deg)]"
-              style={{ transition: "transform 500ms cubic-bezier(.22,1,.36,1)" }}
+            <span
+              className="flex h-9 w-9 items-center justify-center rounded-full bg-[var(--color-ink)] text-[var(--color-paper)] group-hover:rotate-45"
+              style={{ transition: "transform 500ms cubic-bezier(0.34, 1.56, 0.64, 1)" }}
             >
               <ArrowUpRight size={16} />
-            </motion.span>
+            </span>
           </div>
           <div className="text-[var(--color-ink)] overflow-hidden">
             {project.company && (

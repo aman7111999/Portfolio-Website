@@ -6,7 +6,7 @@ import { useSite } from "@/lib/cms";
 import { ThemeToggle } from "@/components/design/ThemeToggle";
 import { Button } from "@/components/design/Button";
 
-const links = [
+const baseLinks = [
   { to: "/", label: "Home" },
   { to: "/work", label: "Work" },
   { to: "/about", label: "About" },

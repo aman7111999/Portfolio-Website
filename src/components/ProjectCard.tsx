@@ -57,7 +57,7 @@ export function ProjectCard({ project, index = 0 }: { project: ProjectRow; index
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: "-60px" }}
         transition={{ duration: 0.8, delay: index * 0.08, ease: [0.22, 1, 0.36, 1] }}
-        whileHover={reduce ? undefined : { y: -6 }}
+        whileHover={reduce ? undefined : { scale: 1.03, y: -6 }}
         className="relative aspect-[4/3] w-full overflow-hidden rounded-lg border border-hairline transition-shadow duration-500 group-hover:shadow-[0_30px_60px_-30px_rgba(11,11,12,0.25)]"
         style={{
           background: bg,
@@ -69,7 +69,9 @@ export function ProjectCard({ project, index = 0 }: { project: ProjectRow; index
         <motion.div
           aria-hidden
           style={{ y: reduce ? undefined : y, background: bg }}
-          className="absolute -inset-8 transition-transform duration-[900ms] ease-out group-hover:scale-[1.04]"
+          animate={reduce ? undefined : { scale: [1, 1.015, 1] }}
+          transition={reduce ? undefined : { duration: 8, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute -inset-8"
         />
         <div
           aria-hidden
@@ -87,9 +89,14 @@ export function ProjectCard({ project, index = 0 }: { project: ProjectRow; index
                 {project.category}
               </span>
             )}
-            <span className="flex h-9 w-9 items-center justify-center rounded-full bg-[var(--color-ink)] text-[var(--color-paper)] transition-transform duration-500 group-hover:-translate-y-1 group-hover:translate-x-1">
+            <motion.span
+              whileHover={{ rotate: 45 }}
+              transition={{ type: "spring", stiffness: 220, damping: 14 }}
+              className="flex h-9 w-9 items-center justify-center rounded-full bg-[var(--color-ink)] text-[var(--color-paper)] group-hover:[transform:rotate(45deg)]"
+              style={{ transition: "transform 500ms cubic-bezier(.22,1,.36,1)" }}
+            >
               <ArrowUpRight size={16} />
-            </span>
+            </motion.span>
           </div>
           <div className="text-[var(--color-ink)] overflow-hidden">
             {project.company && (

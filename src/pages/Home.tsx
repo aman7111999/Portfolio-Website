@@ -144,13 +144,27 @@ export default function Home() {
             <p className="text-xs uppercase tracking-widest text-[var(--color-muted)]">04 / Kind words</p>
           </Reveal>
           <div className="mt-12 grid gap-12 md:grid-cols-3">
-            {(testimonials ?? []).map((t: any, i: number) => (
-              <Reveal key={t.id} delay={i * 0.06}>
-                <blockquote className="text-[17px] leading-relaxed">"{t.quote}"</blockquote>
-                <p className="mt-6 text-sm">{t.author}</p>
-                <p className="text-xs text-[var(--color-muted)]">{[t.role, t.company].filter(Boolean).join(" · ")}</p>
-              </Reveal>
-            ))}
+            {(testimonials ?? []).map((t: any, i: number) => {
+              const tilts = [-1, 0.6, -0.4, 1, -0.8, 0.3];
+              const rotate = tilts[i % tilts.length];
+              const author = (t.author ?? "").trim();
+              const meta = [t.role, t.company].filter(Boolean).join(" · ").trim();
+              const norm = (s: string) => s.toLowerCase().replace(/[\s/·|,-]+/g, " ").trim();
+              const showMeta = meta && !norm(author).includes(norm(meta));
+              return (
+                <Reveal key={t.id} delay={i * 0.06}>
+                  <motion.div
+                    style={{ rotate }}
+                    whileHover={reduce ? undefined : { rotate: 0 }}
+                    transition={{ type: "spring", stiffness: 180, damping: 18 }}
+                  >
+                    <blockquote className="text-[17px] leading-relaxed">"{t.quote}"</blockquote>
+                    {author && <p className="mt-6 text-sm">{author}</p>}
+                    {showMeta && <p className="text-xs text-[var(--color-muted)]">{meta}</p>}
+                  </motion.div>
+                </Reveal>
+              );
+            })}
           </div>
         </section>
       )}

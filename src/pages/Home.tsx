@@ -1,18 +1,15 @@
-import { motion, useReducedMotion } from "framer-motion";
-import { ArrowDown, ArrowUpRight, Sparkles } from "lucide-react";
+import { ArrowUpRight, Sparkles } from "lucide-react";
 import { Seo } from "@/lib/seo";
 import { useSite, useProjects, useExperience, useTestimonials } from "@/lib/cms";
 import { ProjectCard } from "@/components/ProjectCard";
 import { Reveal } from "@/components/Reveal";
-import { HeroAmbient } from "@/components/design/HeroAmbient";
+import { Hero } from "@/components/Hero";
 import { Button } from "@/components/design/Button";
-import { Badge, Tag } from "@/components/design/Tag";
 import { Metric } from "@/components/design/Metric";
 import { QuoteBlock } from "@/components/design/QuoteBlock";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Link } from "react-router-dom";
 
-const HERO_HEADLINE = ["Designing", "intelligent fintech", "products", "millions can trust."];
 const HERO_SUB =
   "Senior Product Designer with 4.5+ years crafting AI-powered investment experiences, scalable design systems, and 0→1 products for modern financial platforms.";
 

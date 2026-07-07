@@ -63,11 +63,30 @@ export default function Home() {
           </div>
         </div>
         <div className="mt-24 flex items-center gap-2 text-xs uppercase tracking-widest text-[var(--color-muted)]">
-          <ArrowDown size={14} /> Scroll for selected work
+          <motion.span
+            animate={reduce ? undefined : { y: [0, 4, 0] }}
+            transition={reduce ? undefined : { duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
+            className="inline-flex"
+          >
+            <ArrowDown size={14} />
+          </motion.span>
+          Scroll for selected work
         </div>
       </section>
 
       <section className="container-page">
+        <Reveal className="border-b border-hairline pb-6">
+          <p className="text-xs uppercase tracking-widest text-[var(--color-muted)]">00 / How I got here</p>
+          <h2 className="font-display text-3xl md:text-5xl mt-3">Built to fix things, not decorate them.</h2>
+        </Reveal>
+        <div className="mt-10 max-w-2xl">
+          <p className="text-lg leading-relaxed text-[var(--color-muted)]">
+            I started in mechanical engineering — taking systems apart to see why they worked. Somewhere along the way I realized the systems I cared most about weren't machines, they were products. Five years and three fintech companies later, I still approach design the same way: find what's broken, understand why, fix it properly.
+          </p>
+        </div>
+      </section>
+
+      <section className="container-page mt-40">
         <Reveal className="flex items-end justify-between border-b border-hairline pb-6">
           <div>
             <p className="text-xs uppercase tracking-widest text-[var(--color-muted)]">01 / Selected work</p>

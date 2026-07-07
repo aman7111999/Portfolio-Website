@@ -15,17 +15,17 @@ export function ImpactGrid({
   const [hero, ...rest] = items;
   const showHero = items.length >= 3;
 
+  const restList = showHero ? rest : items;
+  const cols =
+    restList.length >= 4 ? "md:grid-cols-2 lg:grid-cols-4" :
+    restList.length === 3 ? "md:grid-cols-3" :
+    restList.length === 2 ? "md:grid-cols-2" :
+    "md:grid-cols-1";
+
   return (
     <div className="flex flex-col gap-[var(--space-4)]">
       {showHero && <HeroMetric item={hero} reduce={!!reduce} />}
-      <div
-        className={
-          "grid gap-[var(--space-4)] " +
-          (showHero
-            ? "md:grid-cols-2 lg:grid-cols-" + Math.min(rest.length || 1, 4)
-            : "md:grid-cols-" + Math.min(items.length, 3))
-        }
-      >
+      <div className={"grid gap-[var(--space-4)] " + cols}>
         {(showHero ? rest : items).map((m, i) => (
           <motion.div
             key={`${m.label}-${i}`}

@@ -255,8 +255,12 @@ export function ProjectCard({
           {metrics.length > 0 && (
             <div className="grid grid-cols-1 gap-[var(--space-4)] rounded-[var(--radius-lg)] border border-hairline bg-[var(--color-surface)] p-[var(--space-4)] sm:grid-cols-3 md:p-[var(--space-5)]">
               {metrics.map((m, i) => (
-                <div
+                <motion.div
                   key={`${m.label}-${i}`}
+                  initial={reduce ? false : { opacity: 0, y: 8 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-40px" }}
+                  transition={{ duration: 0.6, delay: 0.15 + i * 0.12, ease: [0.22, 1, 0.36, 1] }}
                   className="min-w-0 border-b border-hairline pb-[var(--space-3)] last:border-none last:pb-0 sm:border-b-0 sm:border-r sm:pb-0 sm:pr-[var(--space-3)] sm:last:pr-0"
                 >
                   <p className="font-display text-[clamp(1.25rem,2vw,1.75rem)] leading-none tracking-[var(--tracking-tight)] text-[var(--color-text)]">
@@ -270,7 +274,7 @@ export function ProjectCard({
                       {m.hint}
                     </p>
                   )}
-                </div>
+                </motion.div>
               ))}
             </div>
           )}

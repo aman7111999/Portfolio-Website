@@ -31,8 +31,15 @@ export default function Home() {
         <DotGrid className="-z-0 opacity-40" />
         <div className="relative grid gap-12 md:grid-cols-12">
           <div className="md:col-span-8">
-            <motion.p initial={reduce ? false : { opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} className="text-sm uppercase tracking-[0.2em] text-[var(--color-muted)]">
-              Product Designer{site?.location ? ` · ${site.location}` : ""}
+            <motion.p initial={reduce ? false : { opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} className="flex items-center gap-2 text-sm uppercase tracking-[0.2em] text-[var(--color-muted)]">
+              <motion.span
+                aria-hidden
+                className="inline-block h-1.5 w-1.5 rounded-full"
+                style={{ background: "var(--color-accent)" }}
+                animate={reduce ? undefined : { opacity: [1, 0.35, 1], scale: [1, 1.2, 1] }}
+                transition={reduce ? undefined : { duration: 2.4, repeat: Infinity, ease: "easeInOut" }}
+              />
+              <span>Product Designer{site?.location ? ` · ${site.location}` : ""}</span>
             </motion.p>
             <h1 className="display-hero mt-8" style={{ fontSize: "clamp(3.5rem, 10.5vw, 9rem)" }}>
               {["Product", "you can", "feel."].map((word, i) => (
@@ -56,11 +63,30 @@ export default function Home() {
           </div>
         </div>
         <div className="mt-24 flex items-center gap-2 text-xs uppercase tracking-widest text-[var(--color-muted)]">
-          <ArrowDown size={14} /> Scroll for selected work
+          <motion.span
+            animate={reduce ? undefined : { y: [0, 4, 0] }}
+            transition={reduce ? undefined : { duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
+            className="inline-flex"
+          >
+            <ArrowDown size={14} />
+          </motion.span>
+          Scroll for selected work
         </div>
       </section>
 
       <section className="container-page">
+        <Reveal className="border-b border-hairline pb-6">
+          <p className="text-xs uppercase tracking-widest text-[var(--color-muted)]">00 / How I got here</p>
+          <h2 className="font-display text-3xl md:text-5xl mt-3">Built to fix things, not decorate them.</h2>
+        </Reveal>
+        <div className="mt-10 max-w-2xl">
+          <p className="text-lg leading-relaxed text-[var(--color-muted)]">
+            I started in mechanical engineering — taking systems apart to see why they worked. Somewhere along the way I realized the systems I cared most about weren't machines, they were products. Five years and three fintech companies later, I still approach design the same way: find what's broken, understand why, fix it properly.
+          </p>
+        </div>
+      </section>
+
+      <section className="container-page mt-40">
         <Reveal className="flex items-end justify-between border-b border-hairline pb-6">
           <div>
             <p className="text-xs uppercase tracking-widest text-[var(--color-muted)]">01 / Selected work</p>
@@ -118,13 +144,27 @@ export default function Home() {
             <p className="text-xs uppercase tracking-widest text-[var(--color-muted)]">04 / Kind words</p>
           </Reveal>
           <div className="mt-12 grid gap-12 md:grid-cols-3">
-            {(testimonials ?? []).map((t: any, i: number) => (
-              <Reveal key={t.id} delay={i * 0.06}>
-                <blockquote className="text-[17px] leading-relaxed">"{t.quote}"</blockquote>
-                <p className="mt-6 text-sm">{t.author}</p>
-                <p className="text-xs text-[var(--color-muted)]">{[t.role, t.company].filter(Boolean).join(" · ")}</p>
-              </Reveal>
-            ))}
+            {(testimonials ?? []).map((t: any, i: number) => {
+              const tilts = [-1, 0.6, -0.4, 1, -0.8, 0.3];
+              const rotate = tilts[i % tilts.length];
+              const author = (t.author ?? "").trim();
+              const meta = [t.role, t.company].filter(Boolean).join(" · ").trim();
+              const norm = (s: string) => s.toLowerCase().replace(/[\s/·|,-]+/g, " ").trim();
+              const showMeta = meta && !norm(author).includes(norm(meta));
+              return (
+                <Reveal key={t.id} delay={i * 0.06}>
+                  <motion.div
+                    style={{ rotate }}
+                    whileHover={reduce ? undefined : { rotate: 0 }}
+                    transition={{ type: "spring", stiffness: 180, damping: 18 }}
+                  >
+                    <blockquote className="text-[17px] leading-relaxed">"{t.quote}"</blockquote>
+                    {author && <p className="mt-6 text-sm">{author}</p>}
+                    {showMeta && <p className="text-xs text-[var(--color-muted)]">{meta}</p>}
+                  </motion.div>
+                </Reveal>
+              );
+            })}
           </div>
         </section>
       )}

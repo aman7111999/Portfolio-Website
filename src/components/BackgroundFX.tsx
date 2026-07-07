@@ -1,6 +1,7 @@
 import { clsx } from "clsx";
+import { motion, useReducedMotion, useScroll, useSpring, useTransform } from "framer-motion";
 
-// Subtle blueprint-style dot grid. Purely decorative.
+// Subtle blueprint-style dot grid with slow scroll parallax drift.
 export function DotGrid({
   className,
   size = 22,
@@ -10,11 +11,17 @@ export function DotGrid({
   size?: number;
   opacity?: number;
 }) {
+  const reduce = useReducedMotion();
+  const { scrollY } = useScroll();
+  const rawY = useTransform(scrollY, [0, 1200], [-6, 6]);
+  const y = useSpring(rawY, { stiffness: 40, damping: 20, mass: 0.6 });
+
   return (
-    <div
+    <motion.div
       aria-hidden
       className={clsx("pointer-events-none absolute inset-0", className)}
       style={{
+        y: reduce ? 0 : y,
         backgroundImage:
           "radial-gradient(circle at 1px 1px, var(--color-ink) 1px, transparent 0)",
         backgroundSize: `${size}px ${size}px`,

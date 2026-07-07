@@ -1,250 +1,60 @@
+## Ambient motion & personality pass (Home + global)
 
-# Premium case studies + Decap CMS
+All motion stays subtle and slow. No new colors, fonts, layout structure, illustrations, videos, or emoji.
 
-Three pillars in one pass:
+### 1. Custom cursor (global) — `src/components/CursorFollower.tsx`
+Replace the current outlined/mix-blend cursor with a solid accent-red dot:
+- Small solid dot (~8px) filled with `var(--color-accent)`, no border, no mix-blend.
+- Trailing delay via softer `useSpring` (lower stiffness, higher damping) so it lags behind the pointer.
+- Scale to 1.5x when hovering `a, button, [role="button"], [data-cursor], .group` (cards).
+- Keep the pointer-fine + reduced-motion guards. Drop the contextual label pill to keep it quiet.
 
-1. **Content model** — move from flat JSON to **MDX + frontmatter**.
-2. **Editor** — **Decap CMS** at `/admin`, auth via a **Cloudflare Worker** you deploy once.
-3. **Reading UX** — a full premium case-study kit (sticky TOC, lightbox, before/after, timelines, quotes, callouts, page transitions).
+### 2. Hero headline word reveal — `src/pages/Home.tsx`
+The three words ("Product", "you can", "feel.") already animate in; tune to the spec:
+- Stagger delay ~80ms between words.
+- Each word rises ~12px into place with fade, easing `[0.22, 1, 0.36, 1]`, ~0.7s.
 
----
+### 3. Hero mockup card — `src/components/HeroStage.tsx`
+- Card 2 ("−38%") SVG line: animate `strokeDasharray` / `pathLength` from 0→1 once on mount (~1.4s, ease-out), then leave static.
+- Wrap the whole Card 2 in a `motion.div` with a continuous `y: [0, -2.5, 0]` loop, ~6s, ease-in-out, infinite.
 
-## 1. Content architecture (MDX)
+### 4. Dot-grid parallax — `src/components/BackgroundFX.tsx`
+- In `DotGrid`, use `useScroll` + `useTransform` to translate the grid a few px (`-8px → 8px`) as the page scrolls. Smooth with `useSpring`. Respect reduced motion.
 
-New shape:
+### 5. Pulsing status dot in hero — `src/pages/Home.tsx`
+- Prepend a small accent-red dot before "Product Designer · Bengaluru, India" with a slow pulse (`animate={{ opacity: [1, 0.4, 1], scale: [1, 1.15, 1] }}`, ~2.4s loop).
+
+### 6. Project cards ambient + hover — `src/components/ProjectCard.tsx`
+- Add a continuous slow "breathe" on the parallax background layer: `scale: [1, 1.015, 1]` over ~8s infinite (only when gradient bg, not user image, to avoid image jitter — safe either way but keep subtle).
+- Replace linear hover with spring: on hover scale card to 1.03 and rotate the corner arrow +45°, both via `whileHover` with `transition={{ type: "spring", stiffness: 220, damping: 18 }}`.
+
+### 7. New "00 / How I got here" section — `src/pages/Home.tsx`
+Insert between hero and "01 / Selected work". Matches existing section pattern (label / heading / paragraph) used for Experience & Craft:
 ```
-content/
-  projects/
-    _index.json                 ← order + featured flags (CMS-managed)
-    blitz-design-system/
-      index.mdx                 ← frontmatter + rich body
-      images/                   ← per-project uploads
-    meera-ai/index.mdx
-    …
-  about.mdx
-  experience.json
-  skills.json
-  testimonials.json
-  site.json
-  resume.pdf
+00 / How I got here
+Built to fix things, not decorate them.
+[paragraph copy from the request]
 ```
+Uses `Reveal`, `container-page`, `font-display`, `text-xs uppercase tracking-widest text-[var(--color-muted)]`, same spacing as sibling sections.
 
-Frontmatter per project:
-```yaml
----
-slug: blitz-design-system
-title: "Blitz — Building a design system…"
-company: Razorpay
-role: Design Lead
-duration: 10 months · 2024
-timeline: Q1 – Q4 2024
-category: Design System
-cover: /content/projects/blitz-design-system/images/cover.jpg
-summary: …
-featured: true
-order: 1
-team: [Design Lead (me), 2 Product Designers, 3 Engineers, 1 PM]
-constraints: […]
-metrics:
-  - { label: Ship time, value: "-38%" }
-sections:                       # for sticky TOC
-  - { id: overview, label: Overview }
-  - { id: problem,  label: Problem }
-  - …
----
+### 8. Testimonial rotation variance — `src/pages/Home.tsx`
+- Give each testimonial card a deterministic tilt in `[-1°, 1°]` (based on index) via inline `style={{ rotate: … }}` on a wrapping `motion.div`. Slight hover reset to 0° for readability.
 
-<Hero />
-## Overview
-Body prose…
-<PullQuote author="…">…</PullQuote>
-<Gallery images={[…]} />
-<BeforeAfter before="…" after="…" />
-<Timeline steps={[…]} />
-<Callout kind="insight">…</Callout>
-```
+### 9. Nav underline hover — `src/components/Navbar.tsx`
+- Add an animated underline that grows from left on hover for Work / About / Contact (and Index), using framer-motion spring (`stiffness: 260, damping: 22`). Keep the existing active-route `layoutId` underline.
 
-Loader (`src/lib/content.ts`): use `import.meta.glob('/content/projects/*/index.mdx', { eager, query: '?raw' })` combined with `@mdx-js/rollup` so MDX compiles to React at build time. Frontmatter parsed via `remark-frontmatter` + `remark-mdx-frontmatter`.
+### 10. Scroll-arrow bounce — `src/pages/Home.tsx`
+- Wrap the `ArrowDown` icon next to "Scroll for selected work" in a `motion.span` with `y: [0, 4, 0]`, ~1.8s ease-in-out infinite.
 
-Existing 4 case studies are rewritten into MDX with the new components (no content lost).
+### 11. Duplicate testimonial byline fix — `src/pages/Home.tsx`
+- Root cause: the testimonials block renders both `t.author` and `[t.role, t.company]`; seed data appears to have the full "Priya Rao / Director of Design · Razorpay" string stored in `author` (and again reconstructed from role+company), producing two visually identical lines.
+- Fix in the presentation layer only: render `author` once and only show the `role · company` line when it isn't already contained in `author` (case-insensitive substring / normalized compare). Trim whitespace. No DB writes.
 
----
+### Technical notes
+- All new motion honors `useReducedMotion()` — falls back to static.
+- No color/font/layout token changes; only motion + one new section + one conditional render tweak.
+- Files touched: `CursorFollower.tsx`, `HeroStage.tsx`, `BackgroundFX.tsx`, `ProjectCard.tsx`, `Navbar.tsx`, `pages/Home.tsx`.
 
-## 2. Rich MDX components
-
-All available inside any `.mdx` and mapped globally through `<MDXProvider>`:
-
-| Component | Purpose |
-|---|---|
-| `Hero` | Full-bleed cover with parallax |
-| `Section id` | TOC anchor + reveal animation |
-| `PullQuote` | Editorial quote with attribution |
-| `Callout kind="insight\|decision\|warning\|learning"` | Highlight boxes |
-| `MetricGrid` | Animated count-up metric row |
-| `Gallery` | Masonry grid → opens lightbox |
-| `Figure caption` | Single image with caption + zoom |
-| `BeforeAfter` | Drag-slider comparison |
-| `Timeline` | Animated vertical process timeline |
-| `Prototype src` | Responsive Figma / video embed |
-| `DesignSystemGrid` | Token / component showcase |
-| `Steps` | Numbered decision cards |
-| `TwoUp` | Side-by-side content blocks |
-| `Divider label` | Animated section divider |
-
-Lightbox: **yet-another-react-lightbox** + Zoom plugin (keyboard, swipe, Esc, pinch).
-
----
-
-## 3. Premium case-study page
-
-`src/pages/Project.tsx` gets a full rebuild:
-
-- **Cinematic hero**: full-bleed cover image with mask reveal + slow zoom.
-- **Sticky sub-nav** under the main nav: chapter title + progress bar.
-- **Sticky TOC** on the left at ≥lg — animated active dot + smooth scroll.
-- **Reading progress** bar (already present) refined.
-- **Section reveals** with staggered fade-up per block.
-- **Metrics** already animated (CountUp) — restyled as premium metric cards with hairline dividers.
-- **Meta strip**: Role · Timeline · Team · Constraints in a refined 4-col hairline grid.
-- **Learnings & Reflection** blocks styled distinctly (serif accent, warmer tone).
-- **Next project preview**: full-bleed hover card with animated cover peek.
-- **Page transitions**: mask-reveal in / fade out (already wired via AnimatePresence).
-
----
-
-## 4. Homepage + shared component polish
-
-Small refinements that flow from the new system:
-
-- Featured projects use new cover images (from MDX frontmatter).
-- Testimonials + Experience cards adopt the refined hairline / hover-lift treatment.
-- Footer keeps the giant "Have a problem worth solving?" line.
-- Navbar gets a subtle top hairline once scrolled + refined active-link dot.
-
-No layout rewrites — same information architecture, tighter execution.
-
----
-
-## 5. Decap CMS at `/admin`
-
-Files:
-```
-public/admin/
-  index.html         ← loads decap-cms 3.x
-  config.yml         ← backend + collections
-```
-
-`config.yml` sketch:
-```yaml
-backend:
-  name: github
-  repo: <your-username>/<your-repo>
-  branch: main
-  base_url: https://<your-worker>.workers.dev
-media_folder: content/uploads
-public_folder: /content/uploads
-
-collections:
-  - name: projects
-    folder: content/projects
-    path: "{{slug}}/index"
-    extension: mdx
-    format: frontmatter
-    create: true
-    fields:
-      - {label: Title,   name: title,   widget: string}
-      - {label: Company, name: company, widget: string}
-      - {label: Cover,   name: cover,   widget: image}
-      - {label: Featured, name: featured, widget: boolean, default: false}
-      - {label: Order,   name: order,   widget: number, default: 99}
-      - {label: Metrics, name: metrics, widget: list, fields: [
-          {label: Label, name: label, widget: string},
-          {label: Value, name: value, widget: string}]}
-      - {label: Body,    name: body,    widget: markdown}
-  - name: site
-    files:
-      - {label: Site,        name: site,        file: content/site.json,        fields: […]}
-      - {label: About,       name: about,       file: content/about.mdx,        fields: […]}
-      - {label: Experience,  name: experience,  file: content/experience.json,  fields: […]}
-      - {label: Skills,      name: skills,      file: content/skills.json,      fields: […]}
-      - {label: Testimonials, name: testimonials, file: content/testimonials.json, fields: […]}
-```
-
-At `/admin`, Decap loads, calls the Worker for GitHub OAuth, then commits every save directly to your repo.
-
----
-
-## 6. Cloudflare Worker (auth backend)
-
-New folder `decap-oauth/` with:
-
-- `worker.js` — implements the two Decap endpoints (`/auth` and `/callback`) that shake hands with GitHub OAuth.
-- `wrangler.toml` — one config file.
-- `README.md` — the exact 5-minute setup:
-  1. Create free Cloudflare account.
-  2. Create GitHub OAuth App (I give the exact form values, incl. callback URL).
-  3. `npm i -g wrangler && wrangler login`.
-  4. Paste `GITHUB_CLIENT_ID` + `GITHUB_CLIENT_SECRET` via `wrangler secret put`.
-  5. `wrangler deploy`. Copy the Worker URL into `public/admin/config.yml → backend.base_url`.
-
-No servers to run, no monthly cost, no framework migration.
-
----
-
-## 7. GitHub Pages deploy
-
-`.github/workflows/deploy.yml` already exists. It's updated to:
-- Run `bun install`
-- Run `bun run build` (which includes MDX compile + sitemap gen)
-- Publish `dist/` to Pages
-
-Result: edit in `/admin` → GitHub commit → Actions rebuild → live in ~1 min.
-
----
-
-## 8. Scalability
-
-Adding a 47th project = create a new folder in `/admin` → hit Save. Zero React changes. Same pattern later covers `content/blog/`, `content/talks/`, `content/awards/` — add a collection to `config.yml` + a route.
-
----
-
-## Technical section (for reference)
-
-**New deps**:
-`@mdx-js/rollup`, `@mdx-js/react`, `remark-frontmatter`, `remark-mdx-frontmatter`, `remark-gfm`, `gray-matter`, `yet-another-react-lightbox`.
-
-**Vite**: add `@mdx-js/rollup` plugin with remark chain; keep `base: process.env.VITE_BASE ?? '/'`; keep post-build 404.html copy.
-
-**Types**: `content.ts` exports `Project` with `Component: React.FC` (the compiled MDX) alongside frontmatter.
-
-**Reduced motion**: every new animation gates on `useReducedMotion()`.
-
-**Accessibility**: lightbox is keyboard-first; TOC is a real `<nav>`; before/after slider has ARIA slider role + keyboard.
-
-**Files created / changed** (high level):
-- `content/projects/*/index.mdx` (4 rewrites)
-- `content/about.mdx` (new)
-- `public/admin/{index.html,config.yml}` (new)
-- `decap-oauth/{worker.js,wrangler.toml,README.md}` (new)
-- `src/components/mdx/*` (Hero, Gallery, Lightbox, PullQuote, Callout, MetricGrid, BeforeAfter, Timeline, Steps, Prototype, DesignSystemGrid, Figure, TwoUp, Divider, Section, Provider)
-- `src/lib/content.ts` (MDX loader rewrite)
-- `src/pages/Project.tsx` (premium rebuild)
-- `src/pages/About.tsx` (read from about.mdx)
-- `vite.config.ts` (MDX plugin + updated sitemap gen)
-- `.github/workflows/deploy.yml` (unchanged flow, verified)
-
-**Out of scope for this pass** (deferrable):
-- Theme toggle
-- Blog / Playground / Talks routes (structure ready, wire when needed)
-- Real content — I keep the 4 existing case studies rewritten in MDX; you replace copy + images through `/admin`.
-
----
-
-## What you'll need to do after I ship
-
-1. Connect the project to GitHub (Plus menu → GitHub → Connect).
-2. Run the 5-step Worker setup from `decap-oauth/README.md`.
-3. Paste the Worker URL into `public/admin/config.yml`.
-4. Enable GitHub Pages (or keep publishing via Lovable — both work).
-5. Visit `/admin`, sign in with GitHub, start editing.
-
-Everything else — content, images, projects, SEO — happens through `/admin` from then on.
+### Out of scope
+- No changes to routing, admin, data model, or CMS.
+- No new dependencies.

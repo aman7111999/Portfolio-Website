@@ -26,7 +26,7 @@ export function ImpactGrid({
     <div className="flex flex-col gap-[var(--space-4)]">
       {showHero && <HeroMetric item={hero} reduce={!!reduce} />}
       <div className={"grid gap-[var(--space-4)] " + cols}>
-        {(showHero ? rest : items).map((m, i) => (
+        {restList.map((m, i) => (
           <motion.div
             key={`${m.label}-${i}`}
             initial={reduce ? false : { opacity: 0, y: 20 }}

@@ -1,5 +1,5 @@
 import { ExternalLink, Maximize2, Minimize2 } from "lucide-react";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const EMBEDDABLE = /(figma\.com\/proto|figma\.com\/embed|framer\.com|codesandbox\.io\/embed|codepen\.io|youtube\.com\/embed|player\.vimeo\.com)/i;
 
@@ -39,11 +39,16 @@ export function PrototypeEmbed({
     }
   };
 
+  useEffect(() => {
+    const onChange = () => setFs(!!document.fullscreenElement);
+    document.addEventListener("fullscreenchange", onChange);
+    return () => document.removeEventListener("fullscreenchange", onChange);
+  }, []);
+
   return (
     <figure
       ref={ref}
       className="group/proto relative overflow-hidden rounded-[var(--radius-xl)] border border-hairline bg-[var(--color-card)] shadow-[var(--elevation-2)] transition-shadow duration-[var(--dur-slow)] hover:shadow-[var(--elevation-3)]"
-      onFullscreenChange={() => setFs(!!document.fullscreenElement)}
     >
       <div className="flex items-center justify-between border-b border-hairline bg-[var(--color-surface)] px-[var(--space-5)] py-[var(--space-3)]">
         <div className="flex items-center gap-[var(--space-3)]">

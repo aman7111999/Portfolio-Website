@@ -20,13 +20,10 @@ const HEADLINE_METRICS = [
 ];
 
 export default function Home() {
-  const reduce = useReducedMotion();
   const { data: site } = useSite();
   const { data: featured, isLoading: fLoading } = useProjects({ publishedOnly: true, featuredOnly: true });
   const { data: experience } = useExperience();
   const { data: testimonials } = useTestimonials();
-
-  const [current, previous] = (experience ?? []).slice(0, 2) as any[];
 
   const jsonLd = site
     ? {
@@ -50,117 +47,8 @@ export default function Home() {
       />
 
       {/* ==================== HERO ==================== */}
-      <section className="relative isolate min-h-[92dvh] overflow-hidden">
-        <HeroAmbient />
+      <Hero />
 
-        <div className="container-page relative flex min-h-[92dvh] flex-col justify-center pb-24 pt-32 md:pt-40">
-          <motion.div
-            initial={reduce ? false : { opacity: 0, y: 8 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="flex flex-wrap items-center gap-2"
-          >
-            <Badge tone="accent">
-              <span className="relative inline-flex h-1.5 w-1.5">
-                <span className="absolute inset-0 rounded-full bg-[var(--color-accent)] opacity-75 animate-ping" />
-                <span className="relative h-1.5 w-1.5 rounded-full bg-[var(--color-accent)]" />
-              </span>
-              Available for senior roles
-            </Badge>
-            <Tag>Senior Product Designer</Tag>
-            <Tag>{site?.location ?? "Mumbai, India"}</Tag>
-          </motion.div>
-
-          <h1
-            className="display-hero mt-8 max-w-[16ch]"
-            style={{ fontSize: "clamp(3rem, 8.5vw, 6.5rem)" }}
-          >
-            {HERO_HEADLINE.map((word, i) => (
-              <motion.span
-                key={i}
-                initial={reduce ? false : { y: "110%" }}
-                animate={{ y: "0%" }}
-                transition={{ duration: 0.9, delay: 0.15 + i * 0.08, ease: [0.22, 1, 0.36, 1] }}
-                className="block overflow-hidden pb-[0.06em]"
-              >
-                <span className="block">
-                  {i === HERO_HEADLINE.length - 1 ? (
-                    <>
-                      <span className="text-[var(--color-muted)]">that </span>
-                      {word}
-                    </>
-                  ) : (
-                    word
-                  )}
-                </span>
-              </motion.span>
-            ))}
-          </h1>
-
-          <motion.p
-            initial={reduce ? false : { opacity: 0, y: 8 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.6 }}
-            className="mt-10 max-w-[52ch] text-lg text-[var(--color-muted)] md:text-xl"
-          >
-            {site?.bio ?? HERO_SUB}
-          </motion.p>
-
-          <motion.div
-            initial={reduce ? false : { opacity: 0, y: 8 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.75 }}
-            className="mt-10 flex flex-wrap items-center gap-3"
-          >
-            <Button to="/work" variant="accent" size="lg">
-              View case studies
-              <ArrowUpRight size={16} />
-            </Button>
-            {site?.resume_url && (
-              <Button href={site.resume_url} variant="secondary" size="lg" target="_blank" rel="noreferrer">
-                Download résumé
-              </Button>
-            )}
-          </motion.div>
-
-          {(current || previous) && (
-            <motion.div
-              initial={reduce ? false : { opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.8, delay: 1.1 }}
-              className="mt-16 flex flex-wrap items-center gap-x-8 gap-y-3 text-sm text-[var(--color-muted)]"
-            >
-              <span className="eyebrow">Currently</span>
-              {current && (
-                <span className="text-[var(--color-text)]">{current.role} · {current.company}</span>
-              )}
-              {previous && (
-                <>
-                  <span className="hidden h-px w-8 bg-[var(--color-hairline-strong)] md:inline-block" />
-                  <span className="eyebrow">Previously</span>
-                  <span>{previous.company}</span>
-                </>
-              )}
-            </motion.div>
-          )}
-
-          <motion.div
-            initial={reduce ? false : { opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 1, delay: 1.4 }}
-            className="mt-16 flex items-center gap-2 text-[11px] uppercase tracking-widest text-[var(--color-muted)] md:mt-24"
-          >
-            <motion.span
-              animate={reduce ? undefined : { y: [0, 4, 0] }}
-              transition={reduce ? undefined : { duration: 2, repeat: Infinity, ease: "easeInOut" }}
-              className="inline-flex"
-            >
-              <ArrowDown size={13} />
-            </motion.span>
-            Scroll for selected work
-          </motion.div>
-        </div>
-      </section>
 
       {/* ==================== METRICS STRIP ==================== */}
       <section className="container-page py-24 md:py-32">

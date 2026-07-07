@@ -263,13 +263,11 @@ export function Hero() {
           {/* ---------- Right: visual stage ---------- */}
           <motion.div
             style={{ y: stageY }}
-            initial={reduce ? false : { opacity: 0, y: 30, filter: "blur(10px)" }}
-            animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-            transition={{ duration: 1.1, delay: 0.5, ease: EASE }}
             className="col-span-12 lg:col-span-5"
           >
             <HeroStage />
           </motion.div>
+
         </div>
 
         {/* ============ Scroll indicator ============ */}

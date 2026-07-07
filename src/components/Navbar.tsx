@@ -135,20 +135,33 @@ export function Navbar() {
           >
             <div className="mt-2 rounded-[var(--radius-lg)] card-surface p-4">
               <ul className="flex flex-col gap-1">
-                {links.map((l) => (
-                  <li key={l.to}>
-                    <NavLink
-                      to={l.to}
-                      end={l.to === "/"}
-                      className={({ isActive }) =>
-                        "block rounded-md px-3 py-2.5 font-display text-lg " +
-                        (isActive ? "bg-[var(--color-elevated)]" : "text-[var(--color-muted)]")
-                      }
-                    >
-                      {l.label}
-                    </NavLink>
-                  </li>
-                ))}
+                {links.map((l) =>
+                  (l as any).external ? (
+                    <li key={l.to}>
+                      <a
+                        href={l.to}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="block rounded-md px-3 py-2.5 font-display text-lg text-[var(--color-muted)]"
+                      >
+                        {l.label}
+                      </a>
+                    </li>
+                  ) : (
+                    <li key={l.to}>
+                      <NavLink
+                        to={l.to}
+                        end={l.to === "/"}
+                        className={({ isActive }) =>
+                          "block rounded-md px-3 py-2.5 font-display text-lg " +
+                          (isActive ? "bg-[var(--color-elevated)]" : "text-[var(--color-muted)]")
+                        }
+                      >
+                        {l.label}
+                      </NavLink>
+                    </li>
+                  ),
+                )}
               </ul>
               <div className="mt-4 flex items-center justify-between border-t border-hairline pt-4">
                 <ThemeToggle />

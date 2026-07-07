@@ -102,7 +102,7 @@ export function Hero() {
     <section
       ref={ref}
       onPointerMove={onMove}
-      className="relative isolate flex min-h-[100dvh] flex-col overflow-hidden pt-24 md:pt-28"
+      className="relative isolate flex min-h-[100dvh] flex-col overflow-hidden pt-28 md:pt-36"
     >
       {/* ============ Ambient background ============ */}
       <div aria-hidden className="absolute inset-0 -z-10">
@@ -159,7 +159,7 @@ export function Hero() {
         style={{ y: heroY, opacity: heroOpacity }}
         className="container-page relative flex flex-1 flex-col"
       >
-        <div className="grid flex-1 grid-cols-12 items-center gap-x-8 gap-y-14 pb-24 pt-12 md:gap-y-20 md:pb-28 md:pt-20">
+        <div className="grid flex-1 grid-cols-12 items-center gap-x-8 gap-y-14 pb-24 pt-14 md:gap-y-20 md:pb-28 md:pt-24">
           {/* ---------- Left: editorial column ---------- */}
           <div className="col-span-12 lg:col-span-7">
             {/* Meta row */}
@@ -185,8 +185,8 @@ export function Hero() {
 
             {/* Headline */}
             <h1
-              className="display-hero mt-8 max-w-[16ch]"
-              style={{ fontSize: "clamp(2.5rem, 7.4vw, 5.75rem)" }}
+              className="display-hero mt-10 max-w-[16ch] md:mt-12"
+              style={{ fontSize: "clamp(2.75rem, 8.4vw, 6.5rem)" }}
             >
               {HEADLINE_LINES.map((line, i) => (
                 <span key={i} className="block overflow-hidden pb-[0.05em]">
@@ -221,7 +221,7 @@ export function Hero() {
               initial={reduce ? false : { opacity: 0, y: 12, filter: "blur(6px)" }}
               animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
               transition={{ duration: 0.8, delay: 0.85, ease: EASE }}
-              className="mt-8 max-w-[56ch] text-[17px] leading-relaxed text-[var(--color-muted)] md:text-[19px]"
+              className="mt-10 max-w-[60ch] text-[17px] leading-relaxed text-[var(--color-muted)] md:mt-12 md:text-[19px]"
             >
               <span className="text-[var(--color-text)]">Senior Product Designer</span> with{" "}
               <span className="text-[var(--color-text)]">4.5+ years</span> of experience creating{" "}
@@ -239,7 +239,7 @@ export function Hero() {
                 hidden: {},
                 show: { transition: { staggerChildren: 0.045, delayChildren: 1.0 } },
               }}
-              className="mt-8 flex flex-wrap gap-2"
+              className="mt-10 flex flex-wrap gap-2"
             >
               {CHIPS.map((c) => (
                 <motion.li
@@ -268,7 +268,7 @@ export function Hero() {
                 hidden: {},
                 show: { transition: { staggerChildren: 0.08, delayChildren: 1.2 } },
               }}
-              className="mt-10 flex flex-wrap items-center gap-3"
+              className="mt-12 flex flex-wrap items-center gap-3"
             >
               {[
                 <Button key="c1" to="/work" variant="accent" size="lg">
@@ -314,7 +314,7 @@ export function Hero() {
               initial={reduce ? false : { opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 1.5, ease: EASE }}
-              className="mt-14 grid max-w-xl grid-cols-2 gap-3 sm:gap-4"
+              className="mt-16 grid max-w-xl grid-cols-2 gap-3 sm:gap-4"
             >
               <CompanyBadge label="Currently" name="Motilal Oswal" sub="Financial Services" dotClass="bg-emerald-400" />
               <CompanyBadge label="Previously" name="Trinkerr" sub="AI · Social Investing" dotClass="bg-[var(--color-subtle)]" />

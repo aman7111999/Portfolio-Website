@@ -8,7 +8,7 @@ export function Footer() {
     <footer className="hairline-t mt-24 border-t border-hairline">
       <div className="container-page grid gap-12 py-16 md:grid-cols-12 md:py-20">
         <div className="md:col-span-6">
-          <p className="eyebrow">Elsewhere</p>
+          <p className="eyebrow">Get in touch</p>
           <p className="mt-3 max-w-md text-[15px] leading-relaxed text-[var(--color-muted)]">
             Follow the work, or reach out directly. I reply within a day.
           </p>

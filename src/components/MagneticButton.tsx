@@ -16,9 +16,9 @@ type Props = {
 
 const styles: Record<Variant, string> = {
   primary:
-    "bg-[var(--color-ink)] text-[var(--color-paper)] hover:bg-[var(--color-accent)]",
+    "bg-[var(--color-text)] text-[var(--color-bg)] hover:opacity-90",
   ghost:
-    "border border-[var(--color-ink)] text-[var(--color-ink)] hover:bg-[var(--color-ink)] hover:text-[var(--color-paper)]",
+    "border border-[var(--color-hairline-strong)] text-[var(--color-text)] hover:bg-[var(--color-elevated)]",
 };
 
 export function MagneticButton({
@@ -40,8 +40,8 @@ export function MagneticButton({
   const onMove = (e: MouseEvent<HTMLDivElement>) => {
     if (reduce || !ref.current) return;
     const r = ref.current.getBoundingClientRect();
-    x.set((e.clientX - (r.left + r.width / 2)) * 0.25);
-    y.set((e.clientY - (r.top + r.height / 2)) * 0.25);
+    x.set((e.clientX - (r.left + r.width / 2)) * 0.2);
+    y.set((e.clientY - (r.top + r.height / 2)) * 0.2);
   };
   const onLeave = () => {
     x.set(0);
@@ -49,12 +49,12 @@ export function MagneticButton({
   };
 
   const cls = clsx(
-    "inline-flex items-center gap-2 rounded-full px-6 py-3 text-sm tracking-wide transition-colors duration-300",
+    "inline-flex items-center gap-2 rounded-full px-6 py-3 text-sm tracking-tight transition-colors duration-300",
     styles[variant],
     className,
   );
 
-  const inner = (
+  return (
     <motion.div
       ref={ref}
       onMouseMove={onMove}
@@ -81,6 +81,4 @@ export function MagneticButton({
       )}
     </motion.div>
   );
-
-  return inner;
 }

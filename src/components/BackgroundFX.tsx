@@ -4,8 +4,8 @@ import { motion, useReducedMotion, useScroll, useSpring, useTransform } from "fr
 // Subtle blueprint-style dot grid with slow scroll parallax drift.
 export function DotGrid({
   className,
-  size = 22,
-  opacity = 0.35,
+  size = 24,
+  opacity = 0.28,
 }: {
   className?: string;
   size?: number;
@@ -23,7 +23,7 @@ export function DotGrid({
       style={{
         y: reduce ? 0 : y,
         backgroundImage:
-          "radial-gradient(circle at 1px 1px, var(--color-ink) 1px, transparent 0)",
+          "radial-gradient(circle at 1px 1px, var(--color-text) 1px, transparent 0)",
         backgroundSize: `${size}px ${size}px`,
         opacity,
         maskImage:
@@ -35,16 +35,17 @@ export function DotGrid({
   );
 }
 
-// Fine SVG noise texture for editorial paper feel. Fixed layer.
+// Static SVG noise texture. Fixed layer, no scroll listener — keeps compositing cheap.
 export function NoiseOverlay() {
   return (
     <div
       aria-hidden
-      className="pointer-events-none fixed inset-0 z-[1] mix-blend-multiply"
+      className="pointer-events-none fixed inset-0 z-[1]"
       style={{
-        opacity: 0.04,
+        opacity: 0.035,
+        mixBlendMode: "overlay",
         backgroundImage:
-          "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.9 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>\")",
+          "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.9 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>\")",
       }}
     />
   );

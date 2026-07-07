@@ -26,26 +26,27 @@ export default function AdminLayout() {
 
   if (loading || (user && roleLoading)) {
     return (
-      <div className="min-h-screen grid place-items-center">
-        <Loader2 className="animate-spin text-[var(--color-muted)]" />
+      <div data-theme="light" className="min-h-screen grid place-items-center bg-neutral-50">
+        <Loader2 className="animate-spin text-neutral-500" />
       </div>
     );
   }
   if (!user) {
-    if (loc.pathname === "/admin") return <AdminLogin />;
+    if (loc.pathname === "/admin") return <div data-theme="light"><AdminLogin /></div>;
     return <Navigate to="/admin" state={{ from: loc }} replace />;
   }
   if (!isAdmin) {
-    if (loc.pathname === "/admin") return <AdminAccessDenied email={user.email} />;
+    if (loc.pathname === "/admin") return <div data-theme="light"><AdminAccessDenied email={user.email} /></div>;
     return <Navigate to="/admin" replace />;
   }
 
+  // Admin is always light-themed regardless of global theme
   return (
-    <div className="min-h-screen bg-neutral-50">
+    <div data-theme="light" className="min-h-screen bg-neutral-50 text-neutral-900">
       <div className="grid min-h-screen grid-cols-[260px_1fr]">
-        <aside className="border-r border-hairline bg-white">
-          <div className="flex h-16 items-center gap-2 px-6 border-b border-hairline">
-            <span className="inline-block h-1.5 w-1.5 rounded-full bg-[var(--color-accent)]" />
+        <aside className="border-r border-neutral-200 bg-white">
+          <div className="flex h-16 items-center gap-2 px-6 border-b border-neutral-200">
+            <span className="inline-block h-1.5 w-1.5 rounded-full bg-blue-500" />
             <span className="font-display text-lg">CMS</span>
           </div>
           <nav className="p-3 space-y-0.5">
@@ -56,7 +57,7 @@ export default function AdminLayout() {
                 end={item.to === "/admin/overview"}
                 className={({ isActive }) =>
                   `flex items-center gap-3 rounded-md px-3 py-2 text-sm transition-colors ${
-                    isActive ? "bg-[var(--color-ink)] text-[var(--color-paper)]" : "text-[var(--color-ink)]/80 hover:bg-neutral-100"
+                    isActive ? "bg-neutral-900 text-white" : "text-neutral-700 hover:bg-neutral-100"
                   }`
                 }
               >
@@ -65,7 +66,7 @@ export default function AdminLayout() {
               </NavLink>
             ))}
           </nav>
-          <div className="mt-auto p-3 border-t border-hairline text-xs text-[var(--color-muted)]">
+          <div className="mt-auto p-3 border-t border-neutral-200 text-xs text-neutral-500">
             <p className="px-3 pb-2 truncate">{user.email}</p>
             <Button
               variant="ghost"
@@ -89,13 +90,13 @@ export default function AdminLayout() {
 
 function AdminAccessDenied({ email }: { email?: string }) {
   return (
-    <div className="min-h-screen grid place-items-center bg-[var(--color-paper)] p-6">
+    <div className="min-h-screen grid place-items-center bg-neutral-50 p-6">
       <div className="max-w-md text-center space-y-4">
-        <h1 className="font-display text-3xl">Not an admin</h1>
-        <p className="text-[var(--color-muted)]">
+        <h1 className="font-display text-3xl text-neutral-900">Not an admin</h1>
+        <p className="text-neutral-600">
           You're signed in as <strong>{email}</strong> but this account has no admin role.
         </p>
-        <p className="text-sm text-[var(--color-muted)]">
+        <p className="text-sm text-neutral-500">
           Grant the <code>admin</code> role to this user in the <code>user_roles</code> table.
         </p>
       </div>

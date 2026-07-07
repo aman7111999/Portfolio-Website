@@ -1,25 +1,71 @@
 @import "tailwindcss" source(none);
 @source "../src";
 
-@theme {
-  --color-ink: #0b0b0c;
-  --color-paper: #fafaf7;
-  --color-muted: #6b6b70;
-  --color-hairline: #e7e5de;
-  --color-accent: #ff5a1f;
+/* ============================================================
+   Dual-theme tokens. Dark is default.
+   Legacy tokens (--color-ink, --color-paper) are aliased for
+   backwards compatibility with components not yet migrated.
+   ============================================================ */
 
-  --color-background: var(--color-paper);
-  --color-foreground: var(--color-ink);
+:root,
+[data-theme="dark"] {
+  --color-bg: #0A0A0B;
+  --color-surface: #111114;
+  --color-card: #17171A;
+  --color-elevated: #1E1E22;
+  --color-text: #F5F5F7;
+  --color-muted: #9A9AA1;
+  --color-subtle: #6B6B70;
+  --color-hairline: rgba(255, 255, 255, 0.08);
+  --color-hairline-strong: rgba(255, 255, 255, 0.14);
+  --color-accent: #3B82F6;
+  --color-accent-hover: #60A5FA;
+  --color-accent-glow: rgba(59, 130, 246, 0.35);
+  --color-accent-wash: rgba(59, 130, 246, 0.08);
+
+  /* Legacy aliases */
+  --color-ink: var(--color-text);
+  --color-paper: var(--color-bg);
+
+  color-scheme: dark;
+}
+
+[data-theme="light"] {
+  --color-bg: #FAFAF7;
+  --color-surface: #F3F1EC;
+  --color-card: #FFFFFF;
+  --color-elevated: #FFFFFF;
+  --color-text: #0A0A0B;
+  --color-muted: #52525B;
+  --color-subtle: #71717A;
+  --color-hairline: rgba(10, 10, 11, 0.08);
+  --color-hairline-strong: rgba(10, 10, 11, 0.14);
+  --color-accent: #2563EB;
+  --color-accent-hover: #1D4ED8;
+  --color-accent-glow: rgba(37, 99, 235, 0.22);
+  --color-accent-wash: rgba(37, 99, 235, 0.06);
+
+  --color-ink: var(--color-text);
+  --color-paper: var(--color-bg);
+
+  color-scheme: light;
+}
+
+@theme {
+  --color-background: var(--color-bg);
+  --color-foreground: var(--color-text);
   --color-border: var(--color-hairline);
 
   --font-display: "Geist Variable", "Geist", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
-  --font-sans: "Inter Tight", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Geist Variable", "Geist", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "Geist Mono Variable", "Geist Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
 
-  --radius-sm: 4px;
-  --radius-md: 8px;
-  --radius-lg: 14px;
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
 
-  --container-page: 1240px;
+  --container-page: 1280px;
 }
 
 @layer base {
@@ -28,14 +74,15 @@
     text-rendering: optimizeLegibility;
   }
   body {
-    background-color: var(--color-paper);
-    color: var(--color-ink);
+    background-color: var(--color-bg);
+    color: var(--color-text);
     font-family: var(--font-sans);
-    font-feature-settings: "ss01", "cv11";
+    font-feature-settings: "ss01", "ss03", "cv11";
+    transition: background-color 400ms ease, color 400ms ease;
   }
   ::selection {
-    background: var(--color-ink);
-    color: var(--color-paper);
+    background: var(--color-accent);
+    color: #ffffff;
   }
   * {
     border-color: var(--color-hairline);
@@ -48,12 +95,13 @@
     font-family: var(--font-display);
     font-weight: 500;
     letter-spacing: -0.025em;
-    font-feature-settings: "ss01", "ss02", "cv11";
+    font-feature-settings: "ss01", "ss03", "cv11";
+    color: var(--color-text);
   }
   :focus-visible {
-    outline: 2px solid var(--color-ink);
+    outline: 2px solid var(--color-accent);
     outline-offset: 3px;
-    border-radius: 2px;
+    border-radius: 4px;
   }
 }
 
@@ -64,12 +112,55 @@
   padding-inline: 1.5rem;
 }
 
+@utility section-y {
+  padding-block: 8rem;
+}
+
+@utility display-1 {
+  font-family: var(--font-display);
+  font-weight: 500;
+  letter-spacing: -0.045em;
+  line-height: 0.94;
+  font-size: clamp(3rem, 8vw, 6.5rem);
+  font-feature-settings: "ss01", "ss03", "cv11";
+}
+
 @utility display-hero {
   font-family: var(--font-display);
   font-weight: 500;
   letter-spacing: -0.045em;
   line-height: 0.92;
-  font-feature-settings: "ss01", "ss02", "cv11";
+  font-feature-settings: "ss01", "ss03", "cv11";
+}
+
+@utility display-2 {
+  font-family: var(--font-display);
+  font-weight: 500;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  font-size: clamp(2rem, 4.5vw, 3.5rem);
+}
+
+@utility display-3 {
+  font-family: var(--font-display);
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  font-size: clamp(1.5rem, 2.4vw, 2rem);
+}
+
+@utility eyebrow {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+}
+
+@utility mono {
+  font-family: var(--font-mono);
+  font-feature-settings: "ss01";
 }
 
 @utility hairline-b {
@@ -78,6 +169,22 @@
 
 @utility hairline-t {
   border-top: 1px solid var(--color-hairline);
+}
+
+@utility surface {
+  background-color: var(--color-surface);
+}
+
+@utility card-surface {
+  background-color: var(--color-card);
+  border: 1px solid var(--color-hairline);
+}
+
+@utility glass {
+  background-color: color-mix(in oklab, var(--color-surface) 72%, transparent);
+  backdrop-filter: saturate(1.4) blur(16px);
+  -webkit-backdrop-filter: saturate(1.4) blur(16px);
+  border: 1px solid var(--color-hairline);
 }
 
 @utility link-underline {
@@ -90,6 +197,18 @@
     background-size: 0% 1px;
     background-position: 100% 100%;
   }
+}
+
+@utility accent-glow {
+  box-shadow: 0 0 0 1px var(--color-hairline),
+    0 20px 60px -30px var(--color-accent-glow);
+}
+
+/* View-transition for theme swap (Chromium). */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 260ms;
+  animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 @media (prefers-reduced-motion: reduce) {

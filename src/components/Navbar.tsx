@@ -6,13 +6,6 @@ import { useSite } from "@/lib/cms";
 import { ThemeToggle } from "@/components/design/ThemeToggle";
 import { Button } from "@/components/design/Button";
 
-const baseLinks = [
-  { to: "/", label: "Home" },
-  { to: "/work", label: "Work" },
-  { to: "/about", label: "About" },
-  { to: "/writing", label: "Writing" },
-  { to: "/contact", label: "Contact" },
-];
 
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false);

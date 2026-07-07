@@ -18,8 +18,8 @@ import { useSite } from "@/lib/cms";
 const HEADLINE_LINES = [
   { plain: "Designing digital", accent: null as string | null },
   { plain: "financial experiences", accent: null },
-  { plain: "that transform", accent: null },
-  { plain: "complexity into ", accent: "confidence." },
+  { plain: "that transform complexity", accent: null },
+  { plain: "into ", accent: "confidence." },
 ];
 
 const CHIPS = [
@@ -145,6 +145,19 @@ export function Hero() {
           }
         `}</style>
 
+        {/* Breathing ambient orb */}
+        <motion.div
+          aria-hidden
+          className="pointer-events-none absolute left-1/2 top-1/2 -z-[1] h-[70vh] w-[70vh] -translate-x-1/2 -translate-y-1/2 rounded-full"
+          style={{
+            background:
+              "radial-gradient(closest-side, var(--color-accent-glow), transparent 70%)",
+            filter: "blur(40px)",
+          }}
+          animate={reduce ? undefined : { scale: [1, 1.08, 1], opacity: [0.55, 0.85, 0.55] }}
+          transition={reduce ? undefined : { duration: 9, ease: "easeInOut", repeat: Infinity }}
+        />
+
         {/* Bottom fade */}
         <div
           className="absolute inset-x-0 bottom-0 h-48"
@@ -189,7 +202,7 @@ export function Hero() {
               style={{ fontSize: "clamp(2.75rem, 8.4vw, 6.5rem)" }}
             >
               {HEADLINE_LINES.map((line, i) => (
-                <span key={i} className="block overflow-hidden pb-[0.05em]">
+                <span key={i} className="block overflow-hidden pb-[0.18em]">
                   <motion.span
                     initial={reduce ? false : { y: "108%", opacity: 0, filter: "blur(14px)" }}
                     animate={{ y: "0%", opacity: 1, filter: "blur(0px)" }}

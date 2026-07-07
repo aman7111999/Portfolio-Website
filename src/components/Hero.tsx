@@ -145,6 +145,19 @@ export function Hero() {
           }
         `}</style>
 
+        {/* Breathing ambient orb */}
+        <motion.div
+          aria-hidden
+          className="pointer-events-none absolute left-1/2 top-1/2 -z-[1] h-[70vh] w-[70vh] -translate-x-1/2 -translate-y-1/2 rounded-full"
+          style={{
+            background:
+              "radial-gradient(closest-side, var(--color-accent-glow), transparent 70%)",
+            filter: "blur(40px)",
+          }}
+          animate={reduce ? undefined : { scale: [1, 1.08, 1], opacity: [0.55, 0.85, 0.55] }}
+          transition={reduce ? undefined : { duration: 9, ease: "easeInOut", repeat: Infinity }}
+        />
+
         {/* Bottom fade */}
         <div
           className="absolute inset-x-0 bottom-0 h-48"

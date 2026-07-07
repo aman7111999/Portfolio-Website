@@ -189,7 +189,7 @@ export function Hero() {
               style={{ fontSize: "clamp(2.75rem, 8.4vw, 6.5rem)" }}
             >
               {HEADLINE_LINES.map((line, i) => (
-                <span key={i} className="block overflow-hidden pb-[0.05em]">
+                <span key={i} className="block overflow-hidden pb-[0.18em]">
                   <motion.span
                     initial={reduce ? false : { y: "108%", opacity: 0, filter: "blur(14px)" }}
                     animate={{ y: "0%", opacity: 1, filter: "blur(0px)" }}

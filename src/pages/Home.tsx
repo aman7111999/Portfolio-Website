@@ -15,7 +15,7 @@ const HERO_SUB =
 
 const HEADLINE_METRICS = [
   { value: "4.5+", label: "Years shipping", hint: "Fintech · AI · Design Systems" },
-  { value: "12", label: "0→1 launches", hint: "From research to release" },
+  { value: "12", label: "Products launched", hint: "From research to release" },
   { value: "3", label: "Design systems", hint: "Scaled across product teams" },
 ];
 

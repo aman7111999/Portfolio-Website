@@ -1,13 +1,11 @@
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
 import {
   motion,
-  useMotionValue,
-  useSpring,
   useReducedMotion,
   useTransform,
   useScroll,
 } from "framer-motion";
-import { ArrowUpRight, ArrowDown, Download, Mail, Sparkles } from "lucide-react";
+import { ArrowUpRight, ArrowDown, Download, Mail } from "lucide-react";
 import { Button } from "@/components/design/Button";
 import { useSite } from "@/lib/cms";
 

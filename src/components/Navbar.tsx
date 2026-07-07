@@ -21,6 +21,15 @@ export function Navbar() {
   const reduce = useReducedMotion();
   const { data: site } = useSite();
 
+  const links = [
+    { to: "/", label: "Home" },
+    { to: "/work", label: "Work" },
+    { to: "/about", label: "About" },
+    { to: "/writing", label: "Writing" },
+    ...(site?.resume_url ? [{ to: site.resume_url, label: "Resume", external: true }] : []),
+    { to: "/contact", label: "Contact" },
+  ];
+
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20);
     onScroll();

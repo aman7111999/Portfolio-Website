@@ -1,173 +1,293 @@
 import { motion, useReducedMotion } from "framer-motion";
-import { ArrowDown } from "lucide-react";
+import { ArrowDown, ArrowUpRight, Sparkles } from "lucide-react";
 import { Seo } from "@/lib/seo";
-import { useSite, useProjects, useExperience, useSkills, useTestimonials } from "@/lib/cms";
+import { useSite, useProjects, useExperience, useTestimonials } from "@/lib/cms";
 import { ProjectCard } from "@/components/ProjectCard";
 import { Reveal } from "@/components/Reveal";
-import { MagneticButton } from "@/components/MagneticButton";
-import { HeroStage } from "@/components/HeroStage";
-import { DotGrid } from "@/components/BackgroundFX";
+import { HeroAmbient } from "@/components/design/HeroAmbient";
+import { Button } from "@/components/design/Button";
+import { Badge, Tag } from "@/components/design/Tag";
+import { Metric } from "@/components/design/Metric";
+import { QuoteBlock } from "@/components/design/QuoteBlock";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Link } from "react-router-dom";
+
+const HERO_HEADLINE = ["Designing", "intelligent fintech", "products", "millions can trust."];
+const HERO_SUB =
+  "Senior Product Designer with 4.5+ years crafting AI-powered investment experiences, scalable design systems, and 0→1 products for modern financial platforms.";
+
+const HEADLINE_METRICS = [
+  { value: "4.5+", label: "Years shipping", hint: "Fintech · AI · Design Systems" },
+  { value: "12", label: "0→1 launches", hint: "From research to release" },
+  { value: "3", label: "Design systems", hint: "Scaled across product teams" },
+];
 
 export default function Home() {
   const reduce = useReducedMotion();
   const { data: site } = useSite();
   const { data: featured, isLoading: fLoading } = useProjects({ publishedOnly: true, featuredOnly: true });
   const { data: experience } = useExperience();
-  const { data: skills } = useSkills();
   const { data: testimonials } = useTestimonials();
 
-  const jsonLd = site ? {
-    "@context": "https://schema.org", "@type": "Person",
-    name: site.name, jobTitle: "Product Designer", url: "/",
-    sameAs: (site.socials ?? []).map((s) => s.url),
-  } : undefined;
+  const [current, previous] = (experience ?? []).slice(0, 2) as any[];
+
+  const jsonLd = site
+    ? {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        name: site.name ?? "Aman Mishra",
+        jobTitle: "Senior Product Designer",
+        url: "/",
+        sameAs: (site.socials ?? []).map((s) => s.url),
+      }
+    : undefined;
 
   return (
     <>
-      <Seo title={site?.name ? `${site.name} — Product Designer` : "Portfolio"} description={site?.tagline ?? ""} path="/" jsonLd={jsonLd} siteName={site?.name ?? "Portfolio"} />
+      <Seo
+        title={`${site?.name ?? "Aman Mishra"} — Senior Product Designer`}
+        description={site?.tagline ?? HERO_SUB}
+        path="/"
+        jsonLd={jsonLd}
+        siteName={site?.name ?? "Aman Mishra"}
+      />
 
-      <section className="relative container-page pt-24 pb-32 md:pt-40 md:pb-48">
-        <DotGrid className="-z-0 opacity-40" />
-        <div className="relative grid gap-12 md:grid-cols-12">
-          <div className="md:col-span-8">
-            <motion.p initial={reduce ? false : { opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} className="flex items-center gap-2 text-sm uppercase tracking-[0.2em] text-[var(--color-muted)]">
-              <motion.span
-                aria-hidden
-                className="inline-block h-1.5 w-1.5 rounded-full"
-                style={{ background: "var(--color-accent)" }}
-                animate={reduce ? undefined : { opacity: [1, 0.35, 1], scale: [1, 1.2, 1] }}
-                transition={reduce ? undefined : { duration: 2.4, repeat: Infinity, ease: "easeInOut" }}
-              />
-              <span>Product Designer{site?.location ? ` · ${site.location}` : ""}</span>
-            </motion.p>
-            <h1 className="display-hero mt-8" style={{ fontSize: "clamp(3.5rem, 10.5vw, 9rem)" }}>
-              {["Product", "you can", "feel."].map((word, i) => (
-                <motion.span key={word} initial={reduce ? false : { y: "110%" }} animate={{ y: "0%" }} transition={{ duration: 1, delay: 0.2 + i * 0.09, ease: [0.22, 1, 0.36, 1] }} className="block overflow-hidden pb-[0.05em]">
-                  <span className="block">{word}</span>
-                </motion.span>
-              ))}
-            </h1>
-            <motion.p initial={reduce ? false : { opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.6 }} className="mt-10 max-w-xl text-lg text-[var(--color-muted)] md:text-xl">
-              {site?.bio ?? site?.tagline ?? ""}
-            </motion.p>
-            <motion.div initial={reduce ? false : { opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.75 }} className="mt-10 flex flex-wrap items-center gap-4">
-              <MagneticButton to="/work">View projects</MagneticButton>
-              {site?.resume_url && <MagneticButton href={site.resume_url} variant="ghost">Download résumé</MagneticButton>}
-            </motion.div>
-          </div>
-          <div className="hidden md:col-span-4 md:block">
-            <motion.div initial={reduce ? false : { opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}>
-              <HeroStage />
-            </motion.div>
-          </div>
-        </div>
-        <div className="mt-24 flex items-center gap-2 text-xs uppercase tracking-widest text-[var(--color-muted)]">
-          <motion.span
-            animate={reduce ? undefined : { y: [0, 4, 0] }}
-            transition={reduce ? undefined : { duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
-            className="inline-flex"
+      {/* ==================== HERO ==================== */}
+      <section className="relative isolate min-h-[92dvh] overflow-hidden">
+        <HeroAmbient />
+
+        <div className="container-page relative flex min-h-[92dvh] flex-col justify-center pb-24 pt-32 md:pt-40">
+          <motion.div
+            initial={reduce ? false : { opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="flex flex-wrap items-center gap-2"
           >
-            <ArrowDown size={14} />
-          </motion.span>
-          Scroll for selected work
+            <Badge tone="accent">
+              <span className="relative inline-flex h-1.5 w-1.5">
+                <span className="absolute inset-0 rounded-full bg-[var(--color-accent)] opacity-75 animate-ping" />
+                <span className="relative h-1.5 w-1.5 rounded-full bg-[var(--color-accent)]" />
+              </span>
+              Available for senior roles
+            </Badge>
+            <Tag>Senior Product Designer</Tag>
+            <Tag>{site?.location ?? "Mumbai, India"}</Tag>
+          </motion.div>
+
+          <h1
+            className="display-hero mt-8 max-w-[16ch]"
+            style={{ fontSize: "clamp(3rem, 8.5vw, 6.5rem)" }}
+          >
+            {HERO_HEADLINE.map((word, i) => (
+              <motion.span
+                key={i}
+                initial={reduce ? false : { y: "110%" }}
+                animate={{ y: "0%" }}
+                transition={{ duration: 0.9, delay: 0.15 + i * 0.08, ease: [0.22, 1, 0.36, 1] }}
+                className="block overflow-hidden pb-[0.06em]"
+              >
+                <span className="block">
+                  {i === HERO_HEADLINE.length - 1 ? (
+                    <>
+                      <span className="text-[var(--color-muted)]">that </span>
+                      {word}
+                    </>
+                  ) : (
+                    word
+                  )}
+                </span>
+              </motion.span>
+            ))}
+          </h1>
+
+          <motion.p
+            initial={reduce ? false : { opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.6 }}
+            className="mt-10 max-w-[52ch] text-lg text-[var(--color-muted)] md:text-xl"
+          >
+            {site?.bio ?? HERO_SUB}
+          </motion.p>
+
+          <motion.div
+            initial={reduce ? false : { opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.75 }}
+            className="mt-10 flex flex-wrap items-center gap-3"
+          >
+            <Button to="/work" variant="accent" size="lg">
+              View case studies
+              <ArrowUpRight size={16} />
+            </Button>
+            {site?.resume_url && (
+              <Button href={site.resume_url} variant="secondary" size="lg" target="_blank" rel="noreferrer">
+                Download résumé
+              </Button>
+            )}
+          </motion.div>
+
+          {(current || previous) && (
+            <motion.div
+              initial={reduce ? false : { opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.8, delay: 1.1 }}
+              className="mt-16 flex flex-wrap items-center gap-x-8 gap-y-3 text-sm text-[var(--color-muted)]"
+            >
+              <span className="eyebrow">Currently</span>
+              {current && (
+                <span className="text-[var(--color-text)]">{current.role} · {current.company}</span>
+              )}
+              {previous && (
+                <>
+                  <span className="hidden h-px w-8 bg-[var(--color-hairline-strong)] md:inline-block" />
+                  <span className="eyebrow">Previously</span>
+                  <span>{previous.company}</span>
+                </>
+              )}
+            </motion.div>
+          )}
+
+          <motion.div
+            initial={reduce ? false : { opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 1, delay: 1.4 }}
+            className="mt-16 flex items-center gap-2 text-[11px] uppercase tracking-widest text-[var(--color-muted)] md:mt-24"
+          >
+            <motion.span
+              animate={reduce ? undefined : { y: [0, 4, 0] }}
+              transition={reduce ? undefined : { duration: 2, repeat: Infinity, ease: "easeInOut" }}
+              className="inline-flex"
+            >
+              <ArrowDown size={13} />
+            </motion.span>
+            Scroll for selected work
+          </motion.div>
         </div>
       </section>
 
-      <section className="container-page">
-        <Reveal className="border-b border-hairline pb-6">
-          <p className="text-xs uppercase tracking-widest text-[var(--color-muted)]">00 / How I got here</p>
-          <h2 className="font-display text-3xl md:text-5xl mt-3">Built to fix things, not decorate them.</h2>
-        </Reveal>
-        <div className="mt-10 max-w-2xl">
-          <p className="text-lg leading-relaxed text-[var(--color-muted)]">
-            I started in mechanical engineering — taking systems apart to see why they worked. Somewhere along the way I realized the systems I cared most about weren't machines, they were products. Five years and three fintech companies later, I still approach design the same way: find what's broken, understand why, fix it properly.
-          </p>
+      {/* ==================== METRICS STRIP ==================== */}
+      <section className="container-page py-24 md:py-32">
+        <div className="grid gap-10 border-y border-hairline py-14 md:grid-cols-3">
+          {HEADLINE_METRICS.map((m, i) => (
+            <Reveal key={m.label} delay={i * 0.08}>
+              <Metric value={m.value} label={m.label} hint={m.hint} size="md" />
+            </Reveal>
+          ))}
         </div>
       </section>
 
-      <section className="container-page mt-40">
-        <Reveal className="flex items-end justify-between border-b border-hairline pb-6">
+      {/* ==================== FEATURED WORK ==================== */}
+      <section className="container-page py-24 md:py-32">
+        <Reveal className="flex flex-wrap items-end justify-between gap-6 border-b border-hairline pb-8">
           <div>
-            <p className="text-xs uppercase tracking-widest text-[var(--color-muted)]">01 / Selected work</p>
-            <h2 className="font-display text-3xl md:text-5xl mt-3">Case studies</h2>
+            <p className="eyebrow">01 — Selected work</p>
+            <h2 className="display-2 mt-4">Case studies</h2>
+            <p className="mt-3 max-w-lg text-[var(--color-muted)]">
+              Long-form deep dives into how the product changed, and what changed because of it.
+            </p>
           </div>
-          <a href="/work" className="hidden text-sm link-underline md:inline">All projects →</a>
+          <Link to="/work" className="group inline-flex items-center gap-2 text-sm text-[var(--color-muted)] hover:text-[var(--color-text)]">
+            All projects
+            <ArrowUpRight size={14} className="transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+          </Link>
         </Reveal>
-        <div className="mt-12 grid gap-x-8 gap-y-16 md:grid-cols-2">
-          {fLoading && [1, 2].map((i) => <Skeleton key={i} className="aspect-[4/3] w-full" />)}
+
+        <div className="mt-14 grid gap-x-8 gap-y-16 md:grid-cols-2">
+          {fLoading && [1, 2].map((i) => <Skeleton key={i} className="aspect-[4/3] w-full rounded-[var(--radius-lg)]" />)}
           {featured?.map((p, i) => <ProjectCard key={p.slug} project={p} index={i} />)}
         </div>
       </section>
 
-      <section className="container-page mt-40">
-        <Reveal className="border-b border-hairline pb-6">
-          <p className="text-xs uppercase tracking-widest text-[var(--color-muted)]">02 / Experience</p>
-          <h2 className="font-display text-3xl md:text-5xl mt-3">Where I've worked</h2>
-        </Reveal>
-        <div className="mt-12 grid gap-x-8 gap-y-10 md:grid-cols-2">
-          {(experience ?? []).map((e: any, i: number) => (
-            <Reveal key={e.id} delay={i * 0.05}>
-              <div className="hairline-b pb-8">
-                <div className="flex items-baseline justify-between gap-4">
-                  <p className="font-display text-2xl">{e.company}</p>
-                  <p className="text-xs uppercase tracking-widest text-[var(--color-muted)]">{[e.start_date, e.end_date].filter(Boolean).join(" — ")}</p>
-                </div>
-                <p className="mt-2 text-sm text-[var(--color-muted)]">{e.role}</p>
-                {e.description && <p className="mt-4 max-w-md text-[15px] leading-relaxed">{e.description}</p>}
-              </div>
-            </Reveal>
-          ))}
-        </div>
-      </section>
-
-      <section className="container-page mt-40">
-        <Reveal className="border-b border-hairline pb-6">
-          <p className="text-xs uppercase tracking-widest text-[var(--color-muted)]">03 / Craft</p>
-          <h2 className="font-display text-3xl md:text-5xl mt-3">How I work</h2>
-        </Reveal>
-        <div className="mt-12 grid gap-12 md:grid-cols-3">
-          {(skills ?? []).map((g, i) => (
-            <Reveal key={g.group} delay={i * 0.06}>
-              <p className="text-xs uppercase tracking-widest text-[var(--color-muted)]">{g.group}</p>
-              <ul className="mt-4 space-y-2">
-                {g.items.map((s) => <li key={s} className="text-lg">{s}</li>)}
-              </ul>
-            </Reveal>
-          ))}
-        </div>
-      </section>
-
-      {(testimonials?.length ?? 0) > 0 && (
-        <section className="container-page mt-40">
-          <Reveal className="border-b border-hairline pb-6">
-            <p className="text-xs uppercase tracking-widest text-[var(--color-muted)]">04 / Kind words</p>
+      {/* ==================== EXPERIENCE TEASER ==================== */}
+      {(experience?.length ?? 0) > 0 && (
+        <section className="container-page py-24 md:py-32">
+          <Reveal className="flex flex-wrap items-end justify-between gap-6 border-b border-hairline pb-8">
+            <div>
+              <p className="eyebrow">02 — Experience</p>
+              <h2 className="display-2 mt-4">Where I've shipped</h2>
+            </div>
+            <Link to="/about" className="text-sm text-[var(--color-muted)] hover:text-[var(--color-text)]">
+              Full timeline →
+            </Link>
           </Reveal>
-          <div className="mt-12 grid gap-12 md:grid-cols-3">
+
+          <div className="mt-14 grid gap-x-12 gap-y-10 md:grid-cols-2">
+            {(experience ?? []).slice(0, 4).map((e: any, i: number) => (
+              <Reveal key={e.id} delay={i * 0.06}>
+                <div className="border-b border-hairline pb-8">
+                  <div className="flex items-baseline justify-between gap-4">
+                    <p className="font-display text-2xl">{e.company}</p>
+                    <p className="eyebrow">{[e.start_date, e.end_date].filter(Boolean).join(" — ")}</p>
+                  </div>
+                  <p className="mt-2 text-sm text-[var(--color-muted)]">{e.role}</p>
+                  {e.description && <p className="mt-4 max-w-md text-[15px] leading-relaxed text-[var(--color-muted)]">{e.description}</p>}
+                </div>
+              </Reveal>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {/* ==================== TESTIMONIALS ==================== */}
+      {(testimonials?.length ?? 0) > 0 && (
+        <section className="container-page py-24 md:py-32">
+          <Reveal className="border-b border-hairline pb-8">
+            <p className="eyebrow">03 — In their words</p>
+            <h2 className="display-2 mt-4">Kind things people said</h2>
+          </Reveal>
+          <div className="mt-14 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {(testimonials ?? []).map((t: any, i: number) => {
-              const tilts = [-1, 0.6, -0.4, 1, -0.8, 0.3];
-              const rotate = tilts[i % tilts.length];
               const author = (t.author ?? "").trim();
               const meta = [t.role, t.company].filter(Boolean).join(" · ").trim();
               const norm = (s: string) => s.toLowerCase().replace(/[\s/·|,-]+/g, " ").trim();
               const showMeta = meta && !norm(author).includes(norm(meta));
               return (
                 <Reveal key={t.id} delay={i * 0.06}>
-                  <motion.div
-                    style={{ rotate }}
-                    whileHover={reduce ? undefined : { rotate: 0 }}
-                    transition={{ type: "spring", stiffness: 180, damping: 18 }}
-                  >
-                    <blockquote className="text-[17px] leading-relaxed">"{t.quote}"</blockquote>
-                    {author && <p className="mt-6 text-sm">{author}</p>}
-                    {showMeta && <p className="text-xs text-[var(--color-muted)]">{meta}</p>}
-                  </motion.div>
+                  <QuoteBlock author={author || undefined} meta={showMeta ? meta : undefined}>
+                    {t.quote}
+                  </QuoteBlock>
                 </Reveal>
               );
             })}
           </div>
         </section>
       )}
+
+      {/* ==================== CTA BAND ==================== */}
+      <section className="container-page py-24 md:py-32">
+        <Reveal>
+          <div className="relative overflow-hidden rounded-[var(--radius-xl)] border border-hairline bg-[var(--color-surface)] p-10 md:p-16">
+            <div
+              aria-hidden
+              className="absolute inset-0 opacity-60"
+              style={{
+                background:
+                  "radial-gradient(600px circle at 20% 0%, var(--color-accent-wash), transparent 50%), radial-gradient(500px circle at 100% 100%, var(--color-accent-wash), transparent 40%)",
+              }}
+            />
+            <div className="relative">
+              <p className="eyebrow flex items-center gap-2">
+                <Sparkles size={12} /> Let's build something meaningful
+              </p>
+              <h2 className="display-1 mt-6 max-w-[18ch]">Have a problem worth solving?</h2>
+              <p className="mt-6 max-w-lg text-lg text-[var(--color-muted)]">
+                I'm currently open to senior product design roles and selective consulting.
+              </p>
+              <div className="mt-10 flex flex-wrap gap-3">
+                <Button to="/contact" variant="accent" size="lg">
+                  Start a conversation
+                  <ArrowUpRight size={16} />
+                </Button>
+                {site?.email && (
+                  <Button href={`mailto:${site.email}`} variant="secondary" size="lg">
+                    {site.email}
+                  </Button>
+                )}
+              </div>
+            </div>
+          </div>
+        </Reveal>
+      </section>
     </>
   );
 }

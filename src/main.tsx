@@ -1,7 +1,5 @@
 import "@fontsource-variable/geist/index.css";
-import "@fontsource/inter-tight/400.css";
-import "@fontsource/inter-tight/500.css";
-import "@fontsource/inter-tight/600.css";
+import "@fontsource-variable/geist-mono/index.css";
 import "./index.css";
 
 import { StrictMode } from "react";
@@ -12,6 +10,7 @@ import { QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "sonner";
 import { queryClient } from "./lib/queryClient";
 import { AuthProvider } from "./lib/auth";
+import { ThemeProvider } from "./lib/theme";
 import App from "./App";
 
 const basename = import.meta.env.BASE_URL.replace(/\/$/, "") || "/";
@@ -19,14 +18,16 @@ const basename = import.meta.env.BASE_URL.replace(/\/$/, "") || "/";
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <HelmetProvider>
-      <QueryClientProvider client={queryClient}>
-        <AuthProvider>
-          <BrowserRouter basename={basename}>
-            <App />
-            <Toaster position="bottom-right" richColors closeButton />
-          </BrowserRouter>
-        </AuthProvider>
-      </QueryClientProvider>
+      <ThemeProvider defaultMode="dark">
+        <QueryClientProvider client={queryClient}>
+          <AuthProvider>
+            <BrowserRouter basename={basename}>
+              <App />
+              <Toaster position="bottom-right" richColors closeButton />
+            </BrowserRouter>
+          </AuthProvider>
+        </QueryClientProvider>
+      </ThemeProvider>
     </HelmetProvider>
   </StrictMode>,
 );

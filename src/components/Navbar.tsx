@@ -6,13 +6,6 @@ import { useSite } from "@/lib/cms";
 import { ThemeToggle } from "@/components/design/ThemeToggle";
 import { Button } from "@/components/design/Button";
 
-const links = [
-  { to: "/", label: "Home" },
-  { to: "/work", label: "Work" },
-  { to: "/about", label: "About" },
-  { to: "/writing", label: "Writing" },
-  { to: "/contact", label: "Contact" },
-];
 
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
@@ -20,6 +13,15 @@ export function Navbar() {
   const location = useLocation();
   const reduce = useReducedMotion();
   const { data: site } = useSite();
+
+  const links = [
+    { to: "/", label: "Home" },
+    { to: "/work", label: "Work" },
+    { to: "/about", label: "About" },
+    { to: "/writing", label: "Writing" },
+    ...(site?.resume_url ? [{ to: site.resume_url, label: "Resume", external: true }] : []),
+    { to: "/contact", label: "Contact" },
+  ];
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20);
@@ -55,46 +57,50 @@ export function Navbar() {
           </NavLink>
 
           <ul className="hidden items-center gap-1 md:flex">
-            {links.map((l) => (
-              <li key={l.to}>
-                <NavLink
-                  to={l.to}
-                  end={l.to === "/"}
-                  className={({ isActive }) =>
-                    "group/nav relative rounded-full px-3 py-1.5 text-[13px] transition-colors " +
-                    (isActive
-                      ? "text-[var(--color-text)]"
-                      : "text-[var(--color-muted)] hover:text-[var(--color-text)]")
-                  }
-                >
-                  {({ isActive }) => (
-                    <>
-                      {isActive && (
-                        <motion.span
-                          layoutId="nav-pill"
-                          className="absolute inset-0 -z-10 rounded-full bg-[var(--color-elevated)]"
-                          transition={{ type: "spring", stiffness: 380, damping: 32 }}
-                        />
-                      )}
-                      {l.label}
-                    </>
-                  )}
-                </NavLink>
-              </li>
-            ))}
+            {links.map((l) =>
+              (l as any).external ? (
+                <li key={l.to}>
+                  <a
+                    href={l.to}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="rounded-full px-3 py-1.5 text-[13px] text-[var(--color-muted)] transition-colors hover:text-[var(--color-text)]"
+                  >
+                    {l.label}
+                  </a>
+                </li>
+              ) : (
+                <li key={l.to}>
+                  <NavLink
+                    to={l.to}
+                    end={l.to === "/"}
+                    className={({ isActive }) =>
+                      "group/nav relative rounded-full px-3 py-1.5 text-[13px] transition-colors " +
+                      (isActive
+                        ? "text-[var(--color-text)]"
+                        : "text-[var(--color-muted)] hover:text-[var(--color-text)]")
+                    }
+                  >
+                    {({ isActive }) => (
+                      <>
+                        {isActive && (
+                          <motion.span
+                            layoutId="nav-pill"
+                            className="absolute inset-0 -z-10 rounded-full bg-[var(--color-elevated)]"
+                            transition={{ type: "spring", stiffness: 380, damping: 32 }}
+                          />
+                        )}
+                        {l.label}
+                      </>
+                    )}
+                  </NavLink>
+                </li>
+              ),
+            )}
           </ul>
 
           <div className="flex items-center gap-2">
-            {site?.resume_url && (
-              <a
-                href={site.resume_url}
-                target="_blank"
-                rel="noreferrer"
-                className="hidden text-[13px] text-[var(--color-muted)] hover:text-[var(--color-text)] md:inline"
-              >
-                Resume
-              </a>
-            )}
+
             <ThemeToggle className="hidden md:inline-flex" />
             <Button to="/contact" variant="accent" size="sm" className="hidden md:inline-flex">
               Let's Talk
@@ -122,20 +128,33 @@ export function Navbar() {
           >
             <div className="mt-2 rounded-[var(--radius-lg)] card-surface p-4">
               <ul className="flex flex-col gap-1">
-                {links.map((l) => (
-                  <li key={l.to}>
-                    <NavLink
-                      to={l.to}
-                      end={l.to === "/"}
-                      className={({ isActive }) =>
-                        "block rounded-md px-3 py-2.5 font-display text-lg " +
-                        (isActive ? "bg-[var(--color-elevated)]" : "text-[var(--color-muted)]")
-                      }
-                    >
-                      {l.label}
-                    </NavLink>
-                  </li>
-                ))}
+                {links.map((l) =>
+                  (l as any).external ? (
+                    <li key={l.to}>
+                      <a
+                        href={l.to}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="block rounded-md px-3 py-2.5 font-display text-lg text-[var(--color-muted)]"
+                      >
+                        {l.label}
+                      </a>
+                    </li>
+                  ) : (
+                    <li key={l.to}>
+                      <NavLink
+                        to={l.to}
+                        end={l.to === "/"}
+                        className={({ isActive }) =>
+                          "block rounded-md px-3 py-2.5 font-display text-lg " +
+                          (isActive ? "bg-[var(--color-elevated)]" : "text-[var(--color-muted)]")
+                        }
+                      >
+                        {l.label}
+                      </NavLink>
+                    </li>
+                  ),
+                )}
               </ul>
               <div className="mt-4 flex items-center justify-between border-t border-hairline pt-4">
                 <ThemeToggle />

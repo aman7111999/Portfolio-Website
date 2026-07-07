@@ -41,43 +41,6 @@ export function Hero() {
   const reduce = useReducedMotion();
   const { data: site } = useSite();
 
-  /* --- Cursor spotlight ---------------------------------------------------- */
-  const mx = useMotionValue(60);
-  const my = useMotionValue(30);
-  const smx = useSpring(mx, { stiffness: 40, damping: 26, mass: 1 });
-  const smy = useSpring(my, { stiffness: 40, damping: 26, mass: 1 });
-
-  const spotlight = useTransform<number, string>(
-    [smx, smy] as never,
-    ([x, y]: number[]) =>
-      `radial-gradient(720px circle at ${x}% ${y}%, var(--color-accent-glow) 0%, transparent 55%)`,
-  );
-
-  /* --- Slow ambient mesh drift --------------------------------------------- */
-  const drift = useMotionValue(0);
-  useEffect(() => {
-    if (reduce) return;
-    let raf = 0;
-    const start = performance.now();
-    const tick = (t: number) => {
-      drift.set(((t - start) / 1000) % 360);
-      raf = requestAnimationFrame(tick);
-    };
-    raf = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(raf);
-  }, [drift, reduce]);
-
-  const mesh = useTransform(drift, (d) => {
-    const a = 18 + Math.sin(d * 0.02) * 10;
-    const b = 82 + Math.cos(d * 0.017) * 8;
-    const c = 88 + Math.sin(d * 0.023) * 7;
-    return (
-      `radial-gradient(1200px circle at ${a}% -8%, var(--color-accent-wash) 0%, transparent 45%),` +
-      `radial-gradient(900px circle at ${b}% 108%, var(--color-accent-wash) 0%, transparent 45%),` +
-      `radial-gradient(700px circle at ${c}% 32%, var(--color-accent-wash) 0%, transparent 55%)`
-    );
-  });
-
   /* --- Parallax on scroll -------------------------------------------------- */
   const { scrollYProgress } = useScroll({
     target: ref,
@@ -85,15 +48,8 @@ export function Hero() {
   });
   const heroY = useTransform(scrollYProgress, [0, 1], ["0%", "-8%"]);
   const heroOpacity = useTransform(scrollYProgress, [0, 0.85], [1, 0.15]);
-  const stageY = useTransform(scrollYProgress, [0, 1], ["0%", "-18%"]);
+  const stageY = useTransform(scrollYProgress, [0, 1], ["0%", "-14%"]);
 
-  /* --- Pointer handler ----------------------------------------------------- */
-  const onMove = (e: React.PointerEvent) => {
-    if (reduce || !ref.current) return;
-    const r = ref.current.getBoundingClientRect();
-    mx.set(((e.clientX - r.left) / r.width) * 100);
-    my.set(((e.clientY - r.top) / r.height) * 100);
-  };
 
   /* --- Render -------------------------------------------------------------- */
   return (

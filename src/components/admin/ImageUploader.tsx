@@ -215,7 +215,7 @@ function SortableItem({
       )}
     >
       <div className="relative aspect-video bg-neutral-100">
-        <img src={img.url} alt="" className="h-full w-full object-cover" />
+        <img src={img.url} alt="" loading="lazy" decoding="async" className="h-full w-full object-cover" />
         <span className="absolute left-2 top-2 rounded bg-black/70 px-1.5 py-0.5 font-mono text-[10px] text-white">
           {String(index + 1).padStart(2, "0")}
         </span>
@@ -297,7 +297,7 @@ export function SingleImageUpload({
           aspectClass,
         )}
       >
-        <img src={value} alt="" className="h-full w-full object-cover" />
+        <img src={value} alt="" loading="lazy" decoding="async" className="h-full w-full object-cover" />
         {busy && (
           <div className="absolute inset-0 grid place-items-center bg-black/40 text-white">
             <Loader2 className="animate-spin" />

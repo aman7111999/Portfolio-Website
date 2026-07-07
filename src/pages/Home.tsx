@@ -115,9 +115,13 @@ export default function Home() {
           <div className="mt-14 grid gap-x-12 gap-y-10 md:grid-cols-2">
             {(experience ?? []).slice(0, 4).map((e: any, i: number) => (
               <Reveal key={e.id} delay={i * 0.06}>
-                <div className="border-b border-hairline pb-8">
+                <div className="group relative border-b border-hairline pb-8 pl-4 transition-colors duration-300 hover:border-[var(--color-accent)]">
+                  <span
+                    aria-hidden
+                    className="pointer-events-none absolute left-0 top-0 h-full w-[2px] origin-top scale-y-0 bg-[var(--color-accent)] transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-y-100"
+                  />
                   <div className="flex items-baseline justify-between gap-4">
-                    <p className="font-display text-2xl">{e.company}</p>
+                    <p className="font-display text-2xl transition-colors duration-300 group-hover:text-[var(--color-accent)]">{e.company}</p>
                     <p className="eyebrow">{[e.start_date, e.end_date].filter(Boolean).join(" — ")}</p>
                   </div>
                   <p className="mt-2 text-sm text-[var(--color-muted)]">{e.role}</p>

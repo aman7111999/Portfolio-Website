@@ -7,55 +7,50 @@ export function StatsBand() {
   const avatar = site?.profile_image_url;
 
   return (
-    <section className="container-page py-20 md:py-28">
-      <div className="grid items-center gap-12 md:grid-cols-12">
-        <Reveal className="md:col-span-7">
-          <p className="eyebrow">Impact</p>
-          <h2 className="display-2 mt-4 text-[var(--color-text)]">
-            Designing websites that{" "}
-            <em className="italic text-[var(--color-accent)]">inspire &amp; convert</em>.
+    <section className="container-page py-24 md:py-32">
+      <div className="grid items-center gap-10 md:grid-cols-12">
+        <Reveal className="md:col-span-6">
+          <p className="eyebrow">About</p>
+          <h2
+            className="mt-3 font-semibold leading-[1.05] tracking-[-0.025em] text-[var(--color-text)]"
+            style={{ fontSize: "clamp(1.9rem, 3.8vw, 3rem)" }}
+          >
+            Designing Websites that
+            <br /> <span className="text-[var(--color-accent)]">Inspire &amp; Convert</span>
           </h2>
-          <p className="mt-5 max-w-lg text-[15px] leading-relaxed text-[var(--color-muted)]">
-            Numbers from the last few years of product & brand work — shipped
-            with founders, seed startups, and small teams.
-          </p>
 
-          <div className="mt-10 grid grid-cols-3 gap-4">
+          <div className="mt-8 grid grid-cols-3 gap-4">
             {[
-              { value: "6+", label: "Years shipping" },
-              { value: "40+", label: "Projects delivered" },
-              { value: "110%", label: "Avg. conversion lift" },
+              { v: "48+", l: "Projects Done" },
+              { v: "90%", l: "Client Retention" },
+              { v: "110%", l: "Avg. Conversion" },
             ].map((m) => (
-              <div key={m.label} className="card-dark p-5">
-                <div className="font-heavy text-[32px] font-black leading-none text-[var(--color-accent)]">
-                  <CountUp value={m.value} />
+              <div key={m.l}>
+                <div className="text-[42px] font-semibold leading-none tracking-[-0.02em] text-[var(--color-text)]">
+                  <CountUp value={m.v} />
                 </div>
-                <div className="mt-2 text-[11px] uppercase tracking-[0.14em] text-[var(--color-muted)]">
-                  {m.label}
-                </div>
+                <div className="mt-2 text-[12px] text-[var(--color-muted)]">{m.l}</div>
               </div>
             ))}
           </div>
+
+          <p className="mt-8 max-w-md text-[14px] leading-relaxed text-[var(--color-muted)]">
+            I'm {site?.name ?? "Aman"} — a product designer helping founders
+            and teams ship digital experiences that people remember. Six years
+            of pixel-craft, motion, and shipping.
+          </p>
         </Reveal>
 
-        <Reveal className="md:col-span-5">
-          <div className="card-dark relative overflow-hidden p-2">
+        <Reveal className="md:col-span-6">
+          <div className="card-dark relative overflow-hidden p-3">
             <div
-              className="aspect-[4/5] w-full rounded-[calc(var(--radius-lg)-4px)] bg-[var(--color-elevated)]"
+              className="aspect-[4/3] w-full rounded-[calc(var(--radius-lg)-6px)] bg-[var(--color-elevated)]"
               style={
                 avatar
                   ? { backgroundImage: `url(${avatar})`, backgroundSize: "cover", backgroundPosition: "center" }
                   : undefined
               }
             />
-            <div className="absolute inset-x-4 bottom-4 rounded-xl border border-[var(--color-hairline-strong)] bg-[var(--color-overlay)] p-4 backdrop-blur-md">
-              <p className="font-display italic text-[16px] leading-snug text-[var(--color-text)]">
-                "Design is not decoration — it's the strategy made visible."
-              </p>
-              <p className="mt-2 text-[11px] uppercase tracking-[0.14em] text-[var(--color-muted)]">
-                — {site?.name ?? "Aman Mishra"}
-              </p>
-            </div>
           </div>
         </Reveal>
       </div>

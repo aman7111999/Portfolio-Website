@@ -56,9 +56,13 @@ export default function Home() {
       {/* ==================== HERO ==================== */}
       <Hero />
 
+      {/* ==================== IMPACT METRICS ==================== */}
+      <MetricsMarquee />
+
       {/* ==================== FEATURED PROJECTS ==================== */}
       <section id="work" className="container-page py-16 md:py-24">
         <Reveal className="mx-auto max-w-2xl text-center">
+
           <h2
             className="font-display italic leading-[1.02] text-[var(--color-text)]"
             style={{ fontSize: "clamp(2rem, 4.5vw, 3.25rem)" }}

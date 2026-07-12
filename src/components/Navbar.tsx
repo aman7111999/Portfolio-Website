@@ -3,6 +3,8 @@ import { useEffect, useState } from "react";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import { Menu, X, Mail, ArrowUpRight } from "lucide-react";
 import { useSite } from "@/lib/cms";
+import { ThemeToggle } from "@/components/design/ThemeToggle";
+
 
 type Link = { to: string; label: string; external?: boolean };
 

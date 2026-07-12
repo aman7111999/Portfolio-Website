@@ -1,16 +1,14 @@
-import { motion, useReducedMotion, useMotionValue, useSpring, useTransform } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import { Mail } from "lucide-react";
-import { useEffect } from "react";
 import { useSite } from "@/lib/cms";
-import { HeroMarquee } from "@/components/HeroMarquee";
 
 /**
  * Salad-inspired hero.
- * - Kinetic wordmark marquees (top + bottom)
- * - Cursor-follow spotlight blob
- * - Floating sticker doodles
+ * - Greeting sticker with avatar
  * - HUGE punchy headline mixing bold uppercase sans + italic serif accents
  * - Coral starburst sticker over the key word
+ * - Swirly SVG orbit line encircling the composition
+ * - Small "Merchant experiences at" pill below
  */
 export function Hero() {
   const reduce = useReducedMotion();
@@ -24,41 +22,8 @@ export function Hero() {
     .slice(0, 2)
     .join("");
 
-  // Cursor-follow spotlight
-  const mx = useMotionValue(50);
-  const my = useMotionValue(30);
-  const sx = useSpring(mx, { stiffness: 60, damping: 20 });
-  const sy = useSpring(my, { stiffness: 60, damping: 20 });
-  const bg = useTransform(
-    [sx, sy] as never,
-    ([x, y]: number[]) =>
-      `radial-gradient(600px circle at ${x}% ${y}%, rgba(255,62,127,0.18), transparent 60%)`,
-  );
-
-  useEffect(() => {
-    if (reduce) return;
-    const onMove = (e: MouseEvent) => {
-      mx.set((e.clientX / window.innerWidth) * 100);
-      my.set((e.clientY / window.innerHeight) * 100);
-    };
-    window.addEventListener("mousemove", onMove);
-    return () => window.removeEventListener("mousemove", onMove);
-  }, [mx, my, reduce]);
-
   return (
-    <section className="relative isolate overflow-hidden pt-24 pb-16 md:pt-28 md:pb-20">
-      {/* Cursor spotlight */}
-      <motion.div
-        aria-hidden
-        className="pointer-events-none absolute inset-0 -z-10"
-        style={{ background: bg }}
-      />
-
-      {/* Top marquee */}
-      <div className="mb-10 md:mb-14">
-        <HeroMarquee direction={1} />
-      </div>
-
+    <section className="relative isolate overflow-hidden pt-28 pb-24 md:pt-36 md:pb-32">
       {/* Swirly orbit — pure SVG, spans behind headline */}
       <svg
         aria-hidden
@@ -232,7 +197,7 @@ export function Hero() {
             initial={reduce ? false : { opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 1.4, duration: 0.8 }}
-            className="mt-14 flex justify-center"
+            className="mt-16 flex justify-center"
           >
             <span className="flex h-10 w-6 items-start justify-center rounded-full border border-[var(--color-hairline-strong)] p-1">
               <motion.span
@@ -244,59 +209,6 @@ export function Hero() {
           </motion.div>
         </div>
       </div>
-
-      {/* Floating sticker doodles */}
-      {!reduce && (
-        <>
-          <motion.div
-            aria-hidden
-            className="pointer-events-none absolute left-[6%] top-[38%] hidden md:block"
-            animate={{ y: [0, -14, 0], rotate: [-8, 4, -8] }}
-            transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
-          >
-            <svg width="72" height="72" viewBox="0 0 72 72">
-              <path
-                d="M36 4 L44 26 L68 30 L50 46 L56 68 L36 56 L16 68 L22 46 L4 30 L28 26 Z"
-                fill="var(--color-accent)"
-                opacity="0.9"
-              />
-            </svg>
-          </motion.div>
-          <motion.div
-            aria-hidden
-            className="pointer-events-none absolute right-[8%] top-[28%] hidden md:block"
-            animate={{ y: [0, 16, 0], rotate: [6, -8, 6] }}
-            transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-          >
-            <svg width="90" height="60" viewBox="0 0 90 60" fill="none">
-              <path
-                d="M4 30 Q22 4, 45 30 T86 30"
-                stroke="var(--color-sticker)"
-                strokeWidth="3"
-                strokeLinecap="round"
-                fill="none"
-              />
-            </svg>
-          </motion.div>
-          <motion.div
-            aria-hidden
-            className="pointer-events-none absolute right-[14%] bottom-[18%] hidden md:block"
-            animate={{ y: [0, -10, 0], rotate: [-4, 8, -4] }}
-            transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-          >
-            <svg width="60" height="60" viewBox="0 0 60 60">
-              <circle cx="30" cy="30" r="20" fill="none" stroke="var(--color-accent)" strokeWidth="3" strokeDasharray="4 6" />
-              <circle cx="30" cy="30" r="4" fill="var(--color-accent)" />
-            </svg>
-          </motion.div>
-        </>
-      )}
-
-      {/* Bottom marquee */}
-      <div className="mt-16 md:mt-20">
-        <HeroMarquee direction={-1} />
-      </div>
     </section>
   );
 }
-

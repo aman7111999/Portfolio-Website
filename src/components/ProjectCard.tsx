@@ -1,9 +1,7 @@
 import { Link } from "react-router-dom";
-import { motion, useReducedMotion, useMotionValue, useSpring, useTransform } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import { ArrowUpRight, Lock } from "lucide-react";
-import { useRef } from "react";
 import type { ProjectRow } from "@/lib/cms";
-
 
 /**
  * Salad-inspired project card.
@@ -37,59 +35,31 @@ export function ProjectCard({
   const reduce = useReducedMotion();
   const palette = CARD_PALETTES[index % CARD_PALETTES.length];
   const locked = !!(project as { locked?: boolean }).locked;
-  const hoverVideo = (project as { hover_video_url?: string | null }).hover_video_url;
 
   const isLarge = size === "lg";
-
-  // 3D tilt driven by cursor
-  const ref = useRef<HTMLDivElement>(null);
-  const px = useMotionValue(0);
-  const py = useMotionValue(0);
-  const rx = useSpring(useTransform(py, [-0.5, 0.5], [8, -8]), { stiffness: 150, damping: 15 });
-  const ry = useSpring(useTransform(px, [-0.5, 0.5], [-10, 10]), { stiffness: 150, damping: 15 });
-
-  const onMouseMove = (e: React.MouseEvent) => {
-    if (reduce || !ref.current) return;
-    const r = ref.current.getBoundingClientRect();
-    px.set((e.clientX - r.left) / r.width - 0.5);
-    py.set((e.clientY - r.top) / r.height - 0.5);
-  };
-  const onMouseLeave = () => {
-    px.set(0);
-    py.set(0);
-  };
 
   return (
     <motion.article
       initial={reduce ? false : { opacity: 0, y: 30 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-80px" }}
+      whileHover={reduce ? undefined : { y: -6 }}
       transition={{
         duration: 0.7,
         delay: index * 0.05,
         ease: [0.22, 1, 0.36, 1],
       }}
       className="group relative"
-      style={{ perspective: 1200 }}
-      onMouseMove={onMouseMove}
-      onMouseLeave={onMouseLeave}
     >
       <Link
         to={`/projects/${project.slug}`}
         aria-label={`${project.title} — case study`}
         className="block h-full"
       >
-        <motion.div
-          ref={ref}
-          style={{ backgroundColor: palette.bg, color: palette.ink, minHeight: isLarge ? 420 : 320, rotateX: rx, rotateY: ry, transformStyle: "preserve-3d" }}
+        <div
           className="relative flex h-full flex-col overflow-hidden rounded-[var(--radius-lg)] p-6 shadow-[var(--elevation-2)] transition-shadow duration-500 group-hover:shadow-[var(--elevation-4)] md:p-7"
+          style={{ backgroundColor: palette.bg, color: palette.ink, minHeight: isLarge ? 420 : 320 }}
         >
-          {/* Shimmer sweep on hover */}
-          <span
-            aria-hidden
-            className="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/10 to-transparent opacity-0 transition-all duration-700 ease-out group-hover:translate-x-full group-hover:opacity-100"
-          />
-
           {/* Top: title + description + button */}
           <div className="relative z-10 flex flex-col gap-4">
             <h3
@@ -145,25 +115,10 @@ export function ProjectCard({
           >
             {project.thumbnail_url ? (
               <div
-                className="absolute inset-x-[-24px] bottom-[-24px] top-6 overflow-hidden rounded-t-[var(--radius-md)] md:inset-x-[-28px] md:bottom-[-28px]"
-              >
-                <div
-                  className="absolute inset-0 bg-cover bg-center transition-transform duration-[900ms] ease-out group-hover:scale-[1.08]"
-                  style={{ backgroundImage: `url(${project.thumbnail_url})` }}
-                />
-                {hoverVideo && (
-                  <video
-                    src={hoverVideo}
-                    autoPlay
-                    muted
-                    loop
-                    playsInline
-                    className="absolute inset-0 h-full w-full object-cover opacity-0 transition-opacity duration-500 group-hover:opacity-100"
-                  />
-                )}
-              </div>
+                className="absolute inset-x-[-24px] bottom-[-24px] top-6 rounded-t-[var(--radius-md)] bg-cover bg-center md:inset-x-[-28px] md:bottom-[-28px]"
+                style={{ backgroundImage: `url(${project.thumbnail_url})` }}
+              />
             ) : (
-
               <div
                 aria-hidden
                 className="absolute inset-x-[-24px] bottom-[-24px] top-8 overflow-hidden rounded-t-[var(--radius-md)] md:inset-x-[-28px] md:bottom-[-28px]"
@@ -198,8 +153,7 @@ export function ProjectCard({
               </div>
             )}
           </div>
-        </motion.div>
-
+        </div>
       </Link>
     </motion.article>
   );

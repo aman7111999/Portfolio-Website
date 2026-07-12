@@ -76,7 +76,7 @@ export default function Contact() {
 
           <form onSubmit={(e) => { e.preventDefault(); submit.mutate(); }} className="mt-12 max-w-lg space-y-6">
             <div className="space-y-2">
-              <Label htmlFor="contact-name" className="text-[11px] uppercase tracking-[0.2em] text-[var(--color-subtle)]">Name</Label>
+              <Label htmlFor="contact-name" className="eyebrow">Name</Label>
               <Input
                 id="contact-name"
                 name="name"

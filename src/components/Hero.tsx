@@ -74,11 +74,11 @@ export function Hero() {
               transition={{ duration: 0.7, delay: 0.45 }}
               className="mt-8 flex flex-wrap items-center gap-3"
             >
-              <a href="#services" className="btn-primary">
+              <a href="/work" className="btn-primary">
                 <span className="grid h-9 w-9 place-items-center rounded-full bg-[var(--color-accent-contrast)] text-[var(--color-accent)]">
                   <ArrowRight size={15} />
                 </span>
-                Explore Services
+                View Projects
               </a>
             </motion.div>
 

@@ -232,7 +232,7 @@ export function Hero() {
             initial={reduce ? false : { opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 1.4, duration: 0.8 }}
-            className="mt-16 flex justify-center"
+            className="mt-14 flex justify-center"
           >
             <span className="flex h-10 w-6 items-start justify-center rounded-full border border-[var(--color-hairline-strong)] p-1">
               <motion.span
@@ -244,6 +244,59 @@ export function Hero() {
           </motion.div>
         </div>
       </div>
+
+      {/* Floating sticker doodles */}
+      {!reduce && (
+        <>
+          <motion.div
+            aria-hidden
+            className="pointer-events-none absolute left-[6%] top-[38%] hidden md:block"
+            animate={{ y: [0, -14, 0], rotate: [-8, 4, -8] }}
+            transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
+          >
+            <svg width="72" height="72" viewBox="0 0 72 72">
+              <path
+                d="M36 4 L44 26 L68 30 L50 46 L56 68 L36 56 L16 68 L22 46 L4 30 L28 26 Z"
+                fill="var(--color-accent)"
+                opacity="0.9"
+              />
+            </svg>
+          </motion.div>
+          <motion.div
+            aria-hidden
+            className="pointer-events-none absolute right-[8%] top-[28%] hidden md:block"
+            animate={{ y: [0, 16, 0], rotate: [6, -8, 6] }}
+            transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+          >
+            <svg width="90" height="60" viewBox="0 0 90 60" fill="none">
+              <path
+                d="M4 30 Q22 4, 45 30 T86 30"
+                stroke="var(--color-sticker)"
+                strokeWidth="3"
+                strokeLinecap="round"
+                fill="none"
+              />
+            </svg>
+          </motion.div>
+          <motion.div
+            aria-hidden
+            className="pointer-events-none absolute right-[14%] bottom-[18%] hidden md:block"
+            animate={{ y: [0, -10, 0], rotate: [-4, 8, -4] }}
+            transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+          >
+            <svg width="60" height="60" viewBox="0 0 60 60">
+              <circle cx="30" cy="30" r="20" fill="none" stroke="var(--color-accent)" strokeWidth="3" strokeDasharray="4 6" />
+              <circle cx="30" cy="30" r="4" fill="var(--color-accent)" />
+            </svg>
+          </motion.div>
+        </>
+      )}
+
+      {/* Bottom marquee */}
+      <div className="mt-16 md:mt-20">
+        <HeroMarquee direction={-1} />
+      </div>
     </section>
   );
 }
+

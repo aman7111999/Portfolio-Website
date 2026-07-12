@@ -95,9 +95,11 @@ export function Hero() {
 
             {/* Editorial headline */}
             <h1
-              className="mt-10 max-w-[16ch] font-display leading-[0.92] tracking-[-0.015em] text-[var(--color-text)] md:mt-14"
+              className="mt-10 max-w-[16ch] leading-[0.92] tracking-[-0.015em] text-[var(--color-text)] md:mt-14"
               style={{
+                fontFamily: "'Instrument Serif', Georgia, serif",
                 fontSize: "clamp(2.75rem, 8.6vw, 7rem)",
+                fontWeight: 400,
               }}
             >
               <RevealLine delay={0.15} reduce={reduce}>

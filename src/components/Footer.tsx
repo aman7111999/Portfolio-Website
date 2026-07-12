@@ -37,7 +37,7 @@ export function Footer() {
                 href={s.url}
                 target="_blank"
                 rel="noreferrer"
-                className="inline-flex items-center gap-1.5 rounded-full border border-[var(--color-hairline-strong)] px-4 py-2 font-heavy text-[11px] font-bold uppercase tracking-[0.14em] text-[var(--color-text)] transition-colors hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
+                className="inline-flex items-center gap-1.5 rounded-full border border-[var(--color-hairline-strong)] px-4 py-2 font-heavy text-[12px] font-bold uppercase tracking-[0.14em] text-[var(--color-text)] transition-colors hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
               >
                 {s.label}
                 <ArrowUpRight size={11} />

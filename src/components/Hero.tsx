@@ -157,7 +157,7 @@ export function Hero() {
             initial={reduce ? false : { opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.7, ease: [0.22, 1, 0.36, 1] }}
-            className="mx-auto mt-12 inline-flex items-center gap-3 rounded-full border border-[var(--color-hairline-strong)] bg-[var(--color-card)] px-5 py-2 shadow-[var(--elevation-2)]"
+            className="liquid-glass mx-auto mt-12 inline-flex items-center gap-3 rounded-full px-5 py-2"
           >
             <span className="text-[11px] uppercase tracking-[0.18em] text-[var(--color-muted)]">
               Currently designing at

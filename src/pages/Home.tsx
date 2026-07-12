@@ -3,9 +3,12 @@ import { useSite, useProjects } from "@/lib/cms";
 import { ProjectCard } from "@/components/ProjectCard";
 import { Reveal } from "@/components/Reveal";
 import { Hero } from "@/components/Hero";
+import { MetricsMarquee } from "@/components/MetricsMarquee";
+import { BesidesGrid } from "@/components/BesidesGrid";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Link } from "react-router-dom";
 import { ArrowUpRight, Instagram } from "lucide-react";
+
 
 const PERSONAL_LINE_PARTS = [
   { text: "BESIDES design, I ", italic: false },

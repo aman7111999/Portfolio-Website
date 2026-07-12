@@ -68,7 +68,7 @@ export function Hero() {
           initial={reduce ? false : { opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-          className="mx-auto flex w-fit items-center gap-3 rounded-full border border-[var(--color-hairline-strong)] bg-[var(--color-card)] py-2 pl-2 pr-5 shadow-[var(--elevation-2)]"
+          className="liquid-glass mx-auto flex w-fit items-center gap-3 rounded-full py-2 pl-2 pr-5"
         >
           <span className="grid h-9 w-9 place-items-center overflow-hidden rounded-full bg-[var(--color-accent)] text-[13px] font-black text-[var(--color-accent-contrast)]">
             {avatar ? (

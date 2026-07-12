@@ -153,12 +153,24 @@ export function ProjectCard({
               }}
             />
 
+            {/* Giant serif numeral watermark — distinguishes cards without thumbs */}
+            {!project.thumbnail_url && (
+              <span
+                aria-hidden
+                className="pointer-events-none absolute -left-2 -top-6 select-none font-display italic leading-none text-white/10"
+                style={{ fontSize: "clamp(9rem, 22vw, 18rem)" }}
+              >
+                {String(index + 1).padStart(2, "0")}
+              </span>
+            )}
+
             {/* Sheen sweep on hover */}
             <div
               aria-hidden
               className="pointer-events-none absolute -inset-x-1/2 -top-1/2 h-[200%] w-[200%] -translate-x-full rotate-12 bg-gradient-to-r from-transparent via-white/8 to-transparent opacity-0 transition-all duration-[900ms] ease-[var(--ease-out-quart)] group-hover:translate-x-1/3 group-hover:opacity-100"
             />
           </motion.div>
+
 
           {/* ---------------- Overlay chrome ---------------- */}
           <div className="relative flex h-full flex-col justify-between p-[var(--space-6)] md:p-[var(--space-8)]">

@@ -54,18 +54,19 @@ export function ScrollTimeline({ items }: { items: Milestone[] }) {
               </motion.span>
 
               {/* Side A: year */}
-              <div className={`md:px-[var(--space-8)] ${flip ? "md:text-left" : "md:text-right"}`}>
+              <div className={`md:px-[var(--space-6)] ${flip ? "md:text-left" : "md:text-right"}`}>
                 <motion.p
                   initial={reduce ? false : { opacity: 0, y: 12 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, margin: "-30%" }}
                   transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-                  className="font-display text-4xl md:text-6xl leading-none tracking-tight"
+                  className="font-display text-3xl md:text-5xl leading-none tracking-tight text-[var(--color-muted)]"
                 >
                   {m.year}
                 </motion.p>
                 {m.place && <p className="eyebrow mt-[var(--space-2)]">{m.place}</p>}
               </div>
+
 
               {/* Side B: body */}
               <motion.div
@@ -73,8 +74,9 @@ export function ScrollTimeline({ items }: { items: Milestone[] }) {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-30%" }}
                 transition={{ duration: 0.7, delay: 0.05, ease: [0.22, 1, 0.36, 1] }}
-                className="md:px-[var(--space-8)]"
+                className="md:px-[var(--space-6)]"
               >
+
                 <h4 className="font-display text-xl md:text-2xl">{m.title}</h4>
                 {m.body && (
                   <p className="mt-[var(--space-3)] text-[15px] leading-relaxed text-[var(--color-muted)]">

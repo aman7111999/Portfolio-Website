@@ -98,10 +98,10 @@ export function Navbar() {
                     to={l.to}
                     end={l.to === "/"}
                     className={({ isActive }) =>
-                      "relative inline-block pb-1 text-[11px] font-medium uppercase tracking-[0.2em] transition-colors " +
+                      "relative inline-block pb-1 text-[11px] uppercase tracking-[0.2em] transition-colors " +
                       (isActive
-                        ? "text-[var(--color-text)]"
-                        : "text-[var(--color-subtle)] hover:text-[var(--color-text)]")
+                        ? "font-semibold text-[var(--color-text)]"
+                        : "font-medium text-[var(--color-subtle)] hover:text-[var(--color-text)]")
                     }
                   >
                     {({ isActive }) => (
@@ -110,13 +110,14 @@ export function Navbar() {
                         {isActive && (
                           <motion.span
                             layoutId="nav-underline"
-                            className="absolute inset-x-0 -bottom-0.5 h-px bg-[var(--color-accent)]"
+                            className="absolute inset-x-0 -bottom-1 h-[2px] rounded-full bg-[var(--color-accent)]"
                             transition={{ type: "spring", stiffness: 380, damping: 32 }}
                           />
                         )}
                       </>
                     )}
                   </NavLink>
+
                 </li>
               ),
             )}

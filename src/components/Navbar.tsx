@@ -121,7 +121,7 @@ export function Navbar() {
             </NavLink>
             <NavLink
               to="/contact"
-              className="inline-flex items-center gap-1.5 rounded-full bg-[var(--color-accent)] px-3 py-1.5 font-heavy text-[11px] font-bold uppercase tracking-[0.1em] text-[var(--color-accent-contrast)] md:hidden"
+              className="inline-flex items-center gap-1.5 rounded-full bg-[var(--color-accent)] px-3 py-1.5 font-heavy text-[12px] font-bold uppercase tracking-[0.1em] text-[var(--color-accent-contrast)] md:hidden"
             >
               Email <Mail size={11} />
             </NavLink>

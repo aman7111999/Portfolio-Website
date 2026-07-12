@@ -13,7 +13,7 @@ export default function Work() {
 
       <section className="container-page pt-24 pb-16 md:pt-40">
         <Reveal>
-          <p className="text-xs uppercase tracking-widest text-[var(--color-muted)]">All projects</p>
+          <p className="eyebrow">All projects</p>
           <h1 className="display-hero mt-4 text-6xl md:text-8xl">Work</h1>
           <p className="mt-6 max-w-xl text-lg text-[var(--color-muted)]">A cross-section of what I've shipped.</p>
         </Reveal>

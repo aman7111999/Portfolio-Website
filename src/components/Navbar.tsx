@@ -98,10 +98,10 @@ export function Navbar() {
                     to={l.to}
                     end={l.to === "/"}
                     className={({ isActive }) =>
-                      "relative inline-block pb-1 text-[11px] font-medium uppercase tracking-[0.2em] transition-colors " +
+                      "relative inline-block pb-1 text-[11px] uppercase tracking-[0.2em] transition-colors " +
                       (isActive
-                        ? "text-[var(--color-text)]"
-                        : "text-[var(--color-subtle)] hover:text-[var(--color-text)]")
+                        ? "font-semibold text-[var(--color-text)]"
+                        : "font-medium text-[var(--color-subtle)] hover:text-[var(--color-text)]")
                     }
                   >
                     {({ isActive }) => (
@@ -110,13 +110,14 @@ export function Navbar() {
                         {isActive && (
                           <motion.span
                             layoutId="nav-underline"
-                            className="absolute inset-x-0 -bottom-0.5 h-px bg-[var(--color-accent)]"
+                            className="absolute inset-x-0 -bottom-1 h-[2px] rounded-full bg-[var(--color-accent)]"
                             transition={{ type: "spring", stiffness: 380, damping: 32 }}
                           />
                         )}
                       </>
                     )}
                   </NavLink>
+
                 </li>
               ),
             )}
@@ -131,6 +132,12 @@ export function Navbar() {
             >
               Let's Talk
             </NavLink>
+            <NavLink
+              to="/contact"
+              className="inline-flex items-center rounded-full bg-[var(--color-text)] px-3 py-1.5 text-[10px] font-medium uppercase tracking-[0.18em] text-[var(--color-inverse)] transition-colors hover:bg-[var(--color-accent)] md:hidden"
+            >
+              Talk
+            </NavLink>
             <button
               type="button"
               aria-label={open ? "Close menu" : "Open menu"}
@@ -140,6 +147,7 @@ export function Navbar() {
             >
               {open ? <X size={16} /> : <Menu size={16} />}
             </button>
+
           </div>
         </nav>
       </div>

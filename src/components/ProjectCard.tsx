@@ -145,10 +145,25 @@ export function ProjectCard({
           >
             {project.thumbnail_url ? (
               <div
-                className="absolute inset-x-[-24px] bottom-[-24px] top-6 rounded-t-[var(--radius-md)] bg-cover bg-center md:inset-x-[-28px] md:bottom-[-28px]"
-                style={{ backgroundImage: `url(${project.thumbnail_url})` }}
-              />
+                className="absolute inset-x-[-24px] bottom-[-24px] top-6 overflow-hidden rounded-t-[var(--radius-md)] md:inset-x-[-28px] md:bottom-[-28px]"
+              >
+                <div
+                  className="absolute inset-0 bg-cover bg-center transition-transform duration-[900ms] ease-out group-hover:scale-[1.08]"
+                  style={{ backgroundImage: `url(${project.thumbnail_url})` }}
+                />
+                {hoverVideo && (
+                  <video
+                    src={hoverVideo}
+                    autoPlay
+                    muted
+                    loop
+                    playsInline
+                    className="absolute inset-0 h-full w-full object-cover opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+                  />
+                )}
+              </div>
             ) : (
+
               <div
                 aria-hidden
                 className="absolute inset-x-[-24px] bottom-[-24px] top-8 overflow-hidden rounded-t-[var(--radius-md)] md:inset-x-[-28px] md:bottom-[-28px]"

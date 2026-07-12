@@ -169,17 +169,17 @@ export default function ProjectPage() {
           >
             <div className="flex flex-wrap items-center gap-2">
               {project.category && (
-                <span className="mono rounded-full border border-white/20 bg-white/10 px-3 py-1 text-[10.5px] uppercase tracking-[0.18em] text-white backdrop-blur-md">
+                <span className="mono rounded-full border border-white/20 bg-white/10 px-3 py-1 text-[11px] uppercase tracking-[0.18em] text-white backdrop-blur-md">
                   {project.category}
                 </span>
               )}
               {project.company && (
-                <span className="mono rounded-full border border-white/15 bg-white/5 px-3 py-1 text-[10.5px] uppercase tracking-[0.18em] text-white/85 backdrop-blur-md">
+                <span className="mono rounded-full border border-white/15 bg-white/5 px-3 py-1 text-[11px] uppercase tracking-[0.18em] text-white/85 backdrop-blur-md">
                   {project.company}
                 </span>
               )}
               {project.timeline && (
-                <span className="mono rounded-full border border-white/15 bg-white/5 px-3 py-1 text-[10.5px] uppercase tracking-[0.18em] text-white/85 backdrop-blur-md">
+                <span className="mono rounded-full border border-white/15 bg-white/5 px-3 py-1 text-[11px] uppercase tracking-[0.18em] text-white/85 backdrop-blur-md">
                   {project.timeline}
                 </span>
               )}
@@ -214,7 +214,7 @@ export default function ProjectPage() {
             transition={{ duration: 1, delay: 1.2 }}
             className="pointer-events-none absolute inset-x-0 bottom-4 z-10 flex items-center justify-center"
           >
-            <div className="mono flex items-center gap-3 text-[10px] uppercase tracking-[0.28em] text-white/60">
+            <div className="mono flex items-center gap-3 text-[11px] uppercase tracking-[0.28em] text-white/60">
               <span className="h-px w-8 bg-white/40" />
               Scroll
               <motion.span

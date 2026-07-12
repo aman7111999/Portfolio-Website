@@ -191,9 +191,9 @@
   --color-foreground: var(--color-text);
   --color-border:     var(--color-hairline);
 
-  --font-display: "Geist Variable", "Geist", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
-  --font-sans:    "Geist Variable", "Geist", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
-  --font-mono:    "Geist Mono Variable", "Geist Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  --font-display: "Instrument Serif", "Iowan Old Style", "Palatino", Georgia, serif;
+  --font-sans:    "Work Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono:    "Work Sans", ui-monospace, SFMono-Regular, Menlo, monospace;
 
   --radius-sm: 6px;
   --radius-md: 10px;

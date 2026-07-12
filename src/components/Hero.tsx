@@ -1,10 +1,9 @@
 import { motion, useReducedMotion } from "framer-motion";
-import { ArrowUpRight, Sparkles } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { useSite } from "@/lib/cms";
-import { Link } from "react-router-dom";
 
 /**
- * "Meet the Expert" hero — dark, emerald, portrait on right, orbit ring.
+ * Boldex-style hero: portrait dominant right, clean sans headline left.
  */
 export function Hero() {
   const reduce = useReducedMotion();
@@ -12,209 +11,163 @@ export function Hero() {
 
   const name = site?.name ?? "Aman Mishra";
   const avatar = site?.profile_image_url;
-  const initials = name.split(" ").map((n) => n[0]).slice(0, 2).join("");
 
   return (
-    <section className="relative isolate overflow-hidden pt-28 pb-20 md:pt-36 md:pb-28">
-      {/* Grid + emerald glow */}
-      <div className="pointer-events-none absolute inset-0 -z-10 bg-grid opacity-40" />
+    <section className="relative isolate overflow-hidden pt-32 pb-16 md:pt-40 md:pb-24">
+      {/* Grid */}
+      <div className="pointer-events-none absolute inset-0 -z-10 bg-grid opacity-30" />
+      {/* Emerald glow behind portrait */}
       <div
         aria-hidden
-        className="pointer-events-none absolute left-1/2 top-24 -z-10 h-[560px] w-[900px] -translate-x-1/2 rounded-full"
+        className="pointer-events-none absolute right-[10%] top-1/3 -z-10 h-[500px] w-[500px] rounded-full"
         style={{
-          background:
-            "radial-gradient(closest-side, var(--color-accent-glow), transparent 70%)",
-          filter: "blur(20px)",
-          opacity: 0.5,
+          background: "radial-gradient(closest-side, var(--color-accent-glow), transparent 70%)",
+          filter: "blur(30px)",
         }}
       />
 
       <div className="container-page relative">
-        {/* Top intro pill (like reference top bar) */}
-        <motion.div
-          initial={reduce ? false : { opacity: 0, y: -8 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-          className="liquid-glass mx-auto flex w-fit items-center gap-3 rounded-full py-1.5 pl-1.5 pr-2"
-        >
-          <span className="grid h-8 w-8 place-items-center overflow-hidden rounded-full bg-[var(--color-accent)] text-[12px] font-black text-[var(--color-accent-contrast)]">
-            {avatar ? <img src={avatar} alt="" className="h-full w-full object-cover" /> : initials}
-          </span>
-          <span className="font-heavy text-[12px] font-bold uppercase tracking-[0.14em] text-[var(--color-text)]">
-            Hi, I'm {name.split(" ")[0]}
-          </span>
-          <span className="mx-1 h-4 w-px bg-[var(--color-hairline-strong)]" />
-          <span className="flex items-center gap-1.5 text-[11px] font-medium text-[var(--color-muted)]">
-            <span className="relative flex h-2 w-2">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[var(--color-accent)] opacity-70" />
-              <span className="relative inline-flex h-2 w-2 rounded-full bg-[var(--color-accent)]" />
-            </span>
-            Available
-          </span>
-          {site?.email && (
-            <a
-              href={`mailto:${site.email}`}
-              className="ml-1 inline-flex items-center gap-1 rounded-full bg-[var(--color-accent)] px-3 py-1.5 font-heavy text-[11px] font-bold uppercase tracking-[0.14em] text-[var(--color-accent-contrast)] transition-transform hover:scale-105"
-            >
-              Let's Talk <ArrowUpRight size={11} />
-            </a>
-          )}
-        </motion.div>
-
-        {/* Two-column: headline + portrait */}
-        <div className="mt-14 grid items-center gap-12 md:mt-20 md:grid-cols-12 md:gap-16">
-          {/* Left: text */}
-          <div className="md:col-span-7">
-            <motion.p
-              initial={reduce ? false : { opacity: 0, y: 10 }}
+        <div className="grid items-center gap-10 md:grid-cols-12 md:gap-6">
+          {/* Left: copy */}
+          <div className="md:col-span-6 lg:col-span-7">
+            {/* Available pill */}
+            <motion.div
+              initial={reduce ? false : { opacity: 0, y: -8 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.15 }}
-              className="eyebrow flex items-center gap-2"
+              transition={{ duration: 0.6 }}
+              className="inline-flex items-center gap-2 rounded-full border border-[var(--color-hairline-strong)] bg-[var(--color-surface)] px-3 py-1.5"
             >
-              <Sparkles size={12} className="text-[var(--color-accent)]" />
-              Meet the Expert
-            </motion.p>
+              <span className="relative flex h-2 w-2">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[var(--color-accent)] opacity-70" />
+                <span className="relative inline-flex h-2 w-2 rounded-full bg-[var(--color-accent)]" />
+              </span>
+              <span className="text-[12px] font-medium text-[var(--color-muted)]">
+                Available for Projects
+              </span>
+            </motion.div>
 
             <motion.h1
               initial={reduce ? false : { opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.9, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
-              className="mt-5 font-heavy uppercase leading-[0.94] tracking-[-0.025em] text-[var(--color-text)]"
-              style={{ fontSize: "clamp(2.4rem, 6.4vw, 5rem)", fontWeight: 900 }}
+              transition={{ duration: 0.8, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
+              className="mt-6 font-semibold leading-[1.02] tracking-[-0.03em] text-[var(--color-text)]"
+              style={{ fontSize: "clamp(2.6rem, 6.4vw, 5.5rem)" }}
             >
-              Product
+              Meet the <span className="text-[var(--color-accent)]">Expert</span>
               <br />
-              Designer{" "}
-              <span
-                className="italic text-[var(--color-accent)]"
-                style={{
-                  fontFamily: "'Instrument Serif', Georgia, serif",
-                  fontWeight: 400,
-                  textTransform: "none",
-                  letterSpacing: "-0.01em",
-                }}
-              >
-                obsessed
-              </span>{" "}
-              with the{" "}
-              <span
-                className="italic text-[var(--color-accent)]"
-                style={{
-                  fontFamily: "'Instrument Serif', Georgia, serif",
-                  fontWeight: 400,
-                  textTransform: "none",
-                }}
-              >
-                why
-              </span>
-              .
+              Product Designer
             </motion.h1>
 
             <motion.p
               initial={reduce ? false : { opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.35 }}
-              className="mt-6 max-w-lg text-[15px] leading-relaxed text-[var(--color-muted)]"
+              transition={{ duration: 0.7, delay: 0.3 }}
+              className="mt-6 max-w-md text-[15px] leading-relaxed text-[var(--color-muted)]"
             >
-              I craft next-horizon digital experiences — from 0→1 product design
-              to Framer sites — obsessed with pixel-craft, motion, and the story
-              behind every screen.
+              I focus on delivering seamless navigation, responsive layouts,
+              and pixel-perfect designs — from 0→1 product to launch.
             </motion.p>
 
             <motion.div
               initial={reduce ? false : { opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.5 }}
-              className="mt-10 flex flex-wrap items-center gap-3"
+              transition={{ duration: 0.7, delay: 0.45 }}
+              className="mt-8 flex flex-wrap items-center gap-3"
             >
-              {site?.email && (
-                <a
-                  href={`mailto:${site.email}`}
-                  className="animate-emerald-pulse inline-flex items-center gap-2 rounded-full bg-[var(--color-accent)] px-6 py-3 font-heavy text-[13px] font-bold uppercase tracking-[0.14em] text-[var(--color-accent-contrast)] transition-transform hover:scale-[1.04]"
-                >
-                  Let's Talk <ArrowUpRight size={14} />
-                </a>
-              )}
-              <Link
-                to="/work"
-                className="inline-flex items-center gap-2 rounded-full border border-[var(--color-hairline-strong)] px-6 py-3 font-heavy text-[13px] font-bold uppercase tracking-[0.14em] text-[var(--color-text)] transition-colors hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
-              >
-                See the Work
-              </Link>
+              <a href="#services" className="btn-primary">
+                <span className="grid h-9 w-9 place-items-center rounded-full bg-[var(--color-accent-contrast)] text-[var(--color-accent)]">
+                  <ArrowRight size={15} />
+                </span>
+                Explore Services
+              </a>
+            </motion.div>
+
+            {/* Logo strip */}
+            <motion.div
+              initial={reduce ? false : { opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.8, delay: 0.7 }}
+              className="mt-12 flex flex-wrap items-center gap-x-8 gap-y-3 text-[var(--color-subtle)]"
+            >
+              {["Figma", "Framer", "Webflow", "Linear", "Notion"].map((b) => (
+                <span key={b} className="text-[13px] font-semibold tracking-tight opacity-70">
+                  {b}
+                </span>
+              ))}
             </motion.div>
           </div>
 
-          {/* Right: portrait with orbit */}
-          <div className="md:col-span-5">
+          {/* Right: portrait with orbit badges */}
+          <div className="md:col-span-6 lg:col-span-5">
             <motion.div
-              initial={reduce ? false : { opacity: 0, scale: 0.9 }}
+              initial={reduce ? false : { opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 1, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
-              className="relative mx-auto aspect-square w-[280px] md:w-[380px]"
+              transition={{ duration: 0.9, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
+              className="relative mx-auto aspect-[4/5] w-full max-w-[440px]"
             >
-              {/* Dotted orbit */}
-              <div className="absolute inset-0 animate-spin-slow">
-                <svg viewBox="0 0 400 400" className="h-full w-full">
-                  <circle
-                    cx="200" cy="200" r="190"
-                    fill="none"
-                    stroke="var(--color-accent)"
-                    strokeWidth="1"
-                    strokeDasharray="2 8"
-                    opacity="0.5"
-                  />
-                </svg>
-                {/* Orbit dot */}
-                <span
-                  className="absolute h-2.5 w-2.5 rounded-full bg-[var(--color-accent)] glow-emerald"
-                  style={{ top: "0%", left: "50%", transform: "translate(-50%, -50%)" }}
-                />
-              </div>
-
-              {/* Inner glow ring */}
-              <div
-                className="absolute inset-6 rounded-full"
-                style={{
-                  background:
-                    "radial-gradient(closest-side, var(--color-accent-glow), transparent 70%)",
-                  filter: "blur(24px)",
-                }}
-              />
-
-              {/* Portrait */}
-              <div className="animate-float absolute inset-8 overflow-hidden rounded-full border border-[var(--color-hairline-strong)] bg-[var(--color-card)]">
+              {/* Portrait card */}
+              <div className="relative h-full w-full overflow-hidden rounded-[32px] border border-[var(--color-hairline-strong)] bg-[var(--color-card)]">
                 {avatar ? (
                   <img src={avatar} alt={name} className="h-full w-full object-cover" />
                 ) : (
-                  <div className="grid h-full w-full place-items-center bg-[var(--color-accent)] text-6xl font-black text-[var(--color-accent-contrast)]">
-                    {initials}
+                  <div className="grid h-full w-full place-items-center bg-gradient-to-br from-[var(--color-elevated)] to-[var(--color-surface)]">
+                    <span className="text-[80px] font-bold text-[var(--color-accent)]">
+                      {name.split(" ").map((n) => n[0]).join("")}
+                    </span>
                   </div>
                 )}
+                {/* subtle top gradient */}
+                <div
+                  aria-hidden
+                  className="pointer-events-none absolute inset-0"
+                  style={{
+                    background:
+                      "linear-gradient(180deg, transparent 40%, rgba(5,8,7,0.85) 100%)",
+                  }}
+                />
               </div>
 
               {/* Floating tool badges */}
-              <motion.div
-                animate={reduce ? {} : { y: [0, -6, 0] }}
-                transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-                className="liquid-glass absolute -left-4 top-16 rounded-full px-3 py-1.5 text-[10px] font-heavy font-bold uppercase tracking-[0.12em] text-[var(--color-text)]"
-              >
-                Figma
-              </motion.div>
-              <motion.div
-                animate={reduce ? {} : { y: [0, 6, 0] }}
-                transition={{ duration: 6, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-                className="liquid-glass absolute -right-4 bottom-20 rounded-full px-3 py-1.5 text-[10px] font-heavy font-bold uppercase tracking-[0.12em] text-[var(--color-text)]"
-              >
-                Framer
-              </motion.div>
-              <motion.div
-                animate={reduce ? {} : { y: [0, -4, 0] }}
-                transition={{ duration: 5.5, repeat: Infinity, ease: "easeInOut", delay: 2 }}
-                className="liquid-glass absolute -right-2 top-8 flex items-center gap-1.5 rounded-full px-3 py-1.5 text-[10px] font-heavy font-bold uppercase tracking-[0.12em] text-[var(--color-text)]"
-              >
-                <span className="h-1.5 w-1.5 rounded-full bg-[var(--color-accent)]" />
-                0→1
-              </motion.div>
+              {[
+                { label: "F", top: "8%", left: "-10%", delay: 0 },
+                { label: "A", top: "38%", right: "-12%", delay: 1 },
+                { label: "◆", top: "-6%", right: "10%", delay: 2 },
+              ].map((b, i) => (
+                <motion.div
+                  key={i}
+                  animate={reduce ? {} : { y: [0, -8, 0] }}
+                  transition={{ duration: 5 + i, repeat: Infinity, ease: "easeInOut", delay: b.delay }}
+                  className="absolute grid h-14 w-14 place-items-center rounded-full border border-[var(--color-hairline-strong)] bg-[var(--color-surface)]/90 text-[18px] font-bold text-[var(--color-text)] backdrop-blur-sm"
+                  style={{
+                    top: b.top as string,
+                    left: (b as any).left,
+                    right: (b as any).right,
+                  }}
+                >
+                  {b.label}
+                </motion.div>
+              ))}
+
+              {/* Circular text badge */}
+              <div className="absolute -bottom-6 -right-6 h-28 w-28">
+                <div className="animate-spin-slow relative h-full w-full">
+                  <svg viewBox="0 0 100 100" className="h-full w-full text-[var(--color-text)]">
+                    <defs>
+                      <path id="circ" d="M50,50 m-38,0 a38,38 0 1,1 76,0 a38,38 0 1,1 -76,0" />
+                    </defs>
+                    <text fontSize="9" fontWeight="600" letterSpacing="2" fill="currentColor">
+                      <textPath href="#circ">
+                        OFFICIAL FRAMER PARTNER • CREATOR •
+                      </textPath>
+                    </text>
+                  </svg>
+                </div>
+                <div className="absolute inset-0 grid place-items-center">
+                  <span className="grid h-10 w-10 place-items-center rounded-full bg-[var(--color-accent)] text-[16px] font-bold text-[var(--color-accent-contrast)]">
+                    ✦
+                  </span>
+                </div>
+              </div>
             </motion.div>
           </div>
         </div>

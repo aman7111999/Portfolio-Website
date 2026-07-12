@@ -74,23 +74,58 @@ export default function Contact() {
             </>
           )}
 
-          <form onSubmit={(e) => { e.preventDefault(); submit.mutate(); }} className="mt-12 max-w-lg space-y-4">
-            <div>
-              <Label htmlFor="contact-name">Name</Label>
-              <Input id="contact-name" name="name" autoComplete="name" required value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} />
+          <form onSubmit={(e) => { e.preventDefault(); submit.mutate(); }} className="mt-12 max-w-lg space-y-6">
+            <div className="space-y-2">
+              <Label htmlFor="contact-name" className="text-[11px] uppercase tracking-[0.2em] text-[var(--color-subtle)]">Name</Label>
+              <Input
+                id="contact-name"
+                name="name"
+                autoComplete="name"
+                required
+                value={form.name}
+                onChange={(e) => setForm({ ...form, name: e.target.value })}
+                className="h-12 rounded-lg border-hairline bg-[var(--color-surface)] px-4 text-[15px] text-[var(--color-text)] shadow-none transition-colors focus-visible:border-[var(--color-accent)] focus-visible:ring-0"
+              />
             </div>
-            <div>
-              <Label htmlFor="contact-email">Email</Label>
-              <Input id="contact-email" name="email" type="email" autoComplete="email" required value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} />
+            <div className="space-y-2">
+              <Label htmlFor="contact-email" className="text-[11px] uppercase tracking-[0.2em] text-[var(--color-subtle)]">Email</Label>
+              <Input
+                id="contact-email"
+                name="email"
+                type="email"
+                autoComplete="email"
+                required
+                value={form.email}
+                onChange={(e) => setForm({ ...form, email: e.target.value })}
+                className="h-12 rounded-lg border-hairline bg-[var(--color-surface)] px-4 text-[15px] text-[var(--color-text)] shadow-none transition-colors focus-visible:border-[var(--color-accent)] focus-visible:ring-0"
+              />
             </div>
-            <div>
-              <Label htmlFor="contact-message">Message</Label>
-              <Textarea id="contact-message" name="message" rows={5} required value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })} />
+            <div className="space-y-2">
+              <Label htmlFor="contact-message" className="text-[11px] uppercase tracking-[0.2em] text-[var(--color-subtle)]">Message</Label>
+              <Textarea
+                id="contact-message"
+                name="message"
+                rows={5}
+                required
+                value={form.message}
+                onChange={(e) => setForm({ ...form, message: e.target.value })}
+                className="rounded-lg border-hairline bg-[var(--color-surface)] px-4 py-3 text-[15px] leading-relaxed text-[var(--color-text)] shadow-none transition-colors focus-visible:border-[var(--color-accent)] focus-visible:ring-0"
+              />
             </div>
-            <Button type="submit" disabled={submit.isPending} aria-label="Send message">
-              {submit.isPending ? <Loader2 size={14} className="animate-spin" aria-hidden="true" /> : "Send message"}
-            </Button>
+            <button
+              type="submit"
+              disabled={submit.isPending}
+              aria-label="Send message"
+              className="group inline-flex items-center gap-3 rounded-full bg-[var(--color-text)] px-6 py-3 text-[12px] uppercase tracking-[0.2em] text-[var(--color-inverse)] shadow-[var(--elevation-2)] transition-all hover:bg-[var(--color-accent)] hover:shadow-[var(--elevation-3)] disabled:opacity-60"
+            >
+              {submit.isPending ? (
+                <><Loader2 size={14} className="animate-spin" aria-hidden="true" /> Sending</>
+              ) : (
+                <>Send message <ArrowUpRight size={14} className="transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" /></>
+              )}
+            </button>
           </form>
+
         </Reveal>
 
         <Reveal className="md:col-span-4 md:col-start-9">

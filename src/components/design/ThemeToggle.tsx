@@ -9,12 +9,14 @@ export function ThemeToggle({ className }: { className?: string }) {
     <button
       type="button"
       aria-label={isDark ? "Switch to light theme" : "Switch to dark theme"}
+      title={isDark ? "Switch to light theme" : "Switch to dark theme"}
       onClick={toggle}
       className={
-        "relative flex h-9 w-9 items-center justify-center rounded-full border border-hairline text-[var(--color-text)] transition-colors hover:bg-[var(--color-elevated)] " +
+        "relative flex h-9 w-9 items-center justify-center rounded-full border border-hairline text-[var(--color-text)] transition-colors hover:bg-[var(--color-elevated)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-accent)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--color-bg)] " +
         (className ?? "")
       }
     >
+
       <AnimatePresence mode="wait" initial={false}>
         <motion.span
           key={isDark ? "moon" : "sun"}

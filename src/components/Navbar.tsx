@@ -33,7 +33,7 @@ export function Navbar() {
 
   useEffect(() => setOpen(false), [location.pathname]);
 
-  const brand = (site?.name ?? "Aman Mishra").split(" ")[0].toUpperCase();
+  const fullName = site?.name ?? "Aman Mishra";
 
   return (
     <motion.header
@@ -46,17 +46,19 @@ export function Navbar() {
         <nav
           aria-label="Primary"
           className={
-            "flex items-center justify-between gap-6 rounded-full border border-[var(--color-hairline-strong)] bg-[var(--color-card)]/85 pl-5 pr-2 py-2 backdrop-blur transition-shadow duration-500 " +
-            (scrolled ? "shadow-[var(--elevation-3)]" : "shadow-[var(--elevation-1)]")
+            "liquid-glass flex items-center justify-between gap-6 rounded-full pl-5 pr-2 py-2 transition-shadow duration-500 " +
+            (scrolled ? "shadow-[var(--elevation-3)]" : "")
           }
         >
           {/* Wordmark */}
           <NavLink
             to="/"
-            className="font-heavy text-[13px] font-black uppercase tracking-[0.14em] text-[var(--color-text)]"
+            aria-label={fullName}
+            className="font-display italic text-[20px] leading-none tracking-[-0.01em] text-[var(--color-text)]"
           >
-            {brand}<span className="text-[var(--color-accent)]">.DESIGN</span>
+            {fullName}
           </NavLink>
+
 
           {/* Center links */}
           <ul className="hidden items-center gap-8 md:flex">
@@ -145,7 +147,7 @@ export function Navbar() {
             transition={{ duration: 0.24, ease: [0.22, 1, 0.36, 1] }}
             className="container-page md:hidden"
           >
-            <div className="mt-2 rounded-[var(--radius-lg)] border border-[var(--color-hairline-strong)] bg-[var(--color-card)] p-3 shadow-[var(--elevation-3)]">
+            <div className="liquid-glass mt-2 rounded-[var(--radius-lg)] p-3">
               <ul className="flex flex-col">
                 {links.map((l) => (
                   <li key={l.to}>

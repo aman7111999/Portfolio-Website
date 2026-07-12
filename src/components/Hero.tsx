@@ -78,9 +78,10 @@ export function Hero() {
             )}
           </span>
           <div className="flex flex-col leading-tight">
-            <span className="text-[10px] uppercase tracking-[0.18em] text-[var(--color-muted)]">
+            <span className="text-[11px] uppercase tracking-[0.18em] text-[var(--color-muted)]">
               Hi there! I'm
             </span>
+
             <span className="font-heavy text-[13px] font-black uppercase tracking-[0.06em] text-[var(--color-text)]">
               {name}
             </span>

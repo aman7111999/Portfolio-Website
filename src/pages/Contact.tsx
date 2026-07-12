@@ -46,7 +46,7 @@ export default function Contact() {
 
       <section className="container-page pt-24 pb-16 md:pt-40">
         <Reveal>
-          <p className="text-xs uppercase tracking-widest text-[var(--color-muted)]">Say hello</p>
+          <p className="eyebrow">Say hello</p>
           <h1 className="display-hero mt-6 max-w-[14ch] text-5xl leading-[1.02] md:text-[7.5rem] md:leading-[0.98]">
             Let's make{" "}
             <span className="italic text-[var(--color-accent)]">something</span>.
@@ -76,7 +76,7 @@ export default function Contact() {
 
           <form onSubmit={(e) => { e.preventDefault(); submit.mutate(); }} className="mt-12 max-w-lg space-y-6">
             <div className="space-y-2">
-              <Label htmlFor="contact-name" className="text-[11px] uppercase tracking-[0.2em] text-[var(--color-subtle)]">Name</Label>
+              <Label htmlFor="contact-name" className="eyebrow">Name</Label>
               <Input
                 id="contact-name"
                 name="name"
@@ -88,7 +88,7 @@ export default function Contact() {
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="contact-email" className="text-[11px] uppercase tracking-[0.2em] text-[var(--color-subtle)]">Email</Label>
+              <Label htmlFor="contact-email" className="eyebrow">Email</Label>
               <Input
                 id="contact-email"
                 name="email"
@@ -101,7 +101,7 @@ export default function Contact() {
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="contact-message" className="text-[11px] uppercase tracking-[0.2em] text-[var(--color-subtle)]">Message</Label>
+              <Label htmlFor="contact-message" className="eyebrow">Message</Label>
               <Textarea
                 id="contact-message"
                 name="message"
@@ -129,7 +129,7 @@ export default function Contact() {
         </Reveal>
 
         <Reveal className="md:col-span-4 md:col-start-9">
-          <p className="text-xs uppercase tracking-widest text-[var(--color-muted)]">Elsewhere</p>
+          <p className="eyebrow">Elsewhere</p>
           <ul className="mt-4 space-y-3">
             {(site?.socials ?? []).map((s) => (
               <li key={s.url}>
@@ -141,7 +141,7 @@ export default function Contact() {
           </ul>
           {site?.location && (
             <div className="mt-12 rounded-lg border border-hairline p-6">
-              <p className="text-xs uppercase tracking-widest text-[var(--color-muted)]">Based in</p>
+              <p className="eyebrow">Based in</p>
               <p className="mt-3 text-[15px]">{site.location}</p>
             </div>
           )}

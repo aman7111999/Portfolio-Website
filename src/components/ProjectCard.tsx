@@ -141,7 +141,7 @@ export function ProjectCard({
                 {/* Category sticker inside media */}
                 {project.category && (
                   <span
-                    className="absolute right-6 top-4 inline-flex items-center rounded-full px-3 py-1 text-[10px] font-heavy font-bold uppercase tracking-[0.12em]"
+                    className="absolute right-6 top-4 inline-flex items-center rounded-full px-3 py-1 text-[11px] font-heavy font-bold uppercase tracking-[0.12em]"
                     style={{
                       backgroundColor: palette.accent,
                       color: palette.bg,

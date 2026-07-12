@@ -54,10 +54,11 @@ export function Navbar() {
           <NavLink
             to="/"
             aria-label={fullName}
-            className="font-display italic text-[20px] leading-none tracking-[-0.01em] text-[var(--color-text)]"
+            className="font-display italic text-[22px] md:text-[24px] leading-none tracking-[-0.01em] text-[var(--color-text)]"
           >
             {fullName}
           </NavLink>
+
 
 
           {/* Center links */}
@@ -120,7 +121,7 @@ export function Navbar() {
             </NavLink>
             <NavLink
               to="/contact"
-              className="inline-flex items-center gap-1.5 rounded-full bg-[var(--color-accent)] px-3 py-1.5 font-heavy text-[11px] font-bold uppercase tracking-[0.1em] text-[var(--color-accent-contrast)] md:hidden"
+              className="inline-flex items-center gap-1.5 rounded-full bg-[var(--color-accent)] px-3 py-1.5 font-heavy text-[12px] font-bold uppercase tracking-[0.1em] text-[var(--color-accent-contrast)] md:hidden"
             >
               Email <Mail size={11} />
             </NavLink>

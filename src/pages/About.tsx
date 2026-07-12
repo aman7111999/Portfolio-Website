@@ -164,7 +164,7 @@ export default function About() {
         <section className="container-page py-[var(--space-24)]">
           <Reveal className="mx-auto max-w-3xl text-center">
             <Badge tone="accent" size="sm">02 · Timeline</Badge>
-            <h2 className="font-display text-4xl md:text-6xl mt-[var(--space-5)]">
+            <h2 className="display-2 mt-[var(--space-5)]">
               A path built one decision at a time.
             </h2>
             <p className="mt-[var(--space-5)] text-[var(--color-muted)]">
@@ -182,7 +182,7 @@ export default function About() {
         <div className="grid gap-[var(--space-8)] md:grid-cols-12">
           <Reveal className="md:col-span-4">
             <Badge tone="accent" size="sm">03 · Experience</Badge>
-            <h2 className="font-display text-4xl md:text-6xl mt-[var(--space-5)] leading-[1.05]">
+            <h2 className="display-2 mt-[var(--space-5)] leading-[1.05]">
               The rooms I've worked in.
             </h2>
             <p className="mt-[var(--space-5)] text-[var(--color-muted)]">
@@ -207,7 +207,7 @@ export default function About() {
           <div className="grid gap-[var(--space-12)] md:grid-cols-12">
             <Reveal className="md:col-span-4">
               <Badge tone="accent" size="sm">04 · Education</Badge>
-              <h2 className="font-display text-4xl md:text-6xl mt-[var(--space-5)] leading-[1.05]">
+              <h2 className="display-2 mt-[var(--space-5)] leading-[1.05]">
                 Where the fundamentals were forged.
               </h2>
             </Reveal>
@@ -242,7 +242,7 @@ export default function About() {
         <section className="container-page py-[var(--space-24)]">
           <Reveal className="border-b border-hairline pb-[var(--space-6)]">
             <Badge tone="accent" size="sm">05 · Tools</Badge>
-            <h2 className="font-display text-4xl md:text-6xl mt-[var(--space-5)]">
+            <h2 className="display-2 mt-[var(--space-5)]">
               The instruments in the studio.
             </h2>
           </Reveal>
@@ -268,7 +268,7 @@ export default function About() {
         <div className="grid gap-[var(--space-12)] md:grid-cols-12">
           <Reveal className="md:col-span-5 md:sticky md:top-32 md:self-start">
             <Badge tone="accent" size="sm">06 · Design Philosophy</Badge>
-            <h2 className="font-display text-4xl md:text-6xl mt-[var(--space-5)] leading-[1.05]">
+            <h2 className="display-2 mt-[var(--space-5)] leading-[1.05]">
               Four beliefs that outrank every trend.
             </h2>
           </Reveal>
@@ -299,7 +299,7 @@ export default function About() {
       <section className="container-page py-[var(--space-24)]">
         <Reveal>
           <Badge tone="accent" size="sm">07 · Working Style</Badge>
-          <h2 className="font-display text-4xl md:text-6xl mt-[var(--space-5)] max-w-3xl">
+          <h2 className="display-2 mt-[var(--space-5)] max-w-3xl">
             How the sausage gets made.
           </h2>
         </Reveal>
@@ -335,7 +335,7 @@ export default function About() {
         <div className="grid gap-[var(--space-8)] md:grid-cols-12">
           <Reveal className="md:col-span-4">
             <Badge tone="accent" size="sm">08 · Reading Shelf</Badge>
-            <h2 className="font-display text-4xl md:text-6xl mt-[var(--space-5)] leading-[1.05]">
+            <h2 className="display-2 mt-[var(--space-5)] leading-[1.05]">
               Books that keep coming back.
             </h2>
           </Reveal>
@@ -368,7 +368,7 @@ export default function About() {
       <section className="container-page py-[var(--space-24)]">
         <Reveal className="mx-auto max-w-3xl text-center">
           <Badge tone="accent" size="sm">09 · Values</Badge>
-          <h2 className="font-display text-4xl md:text-6xl mt-[var(--space-5)]">
+          <h2 className="display-2 mt-[var(--space-5)]">
             The compass, not the map.
           </h2>
         </Reveal>
@@ -396,7 +396,7 @@ export default function About() {
       <section className="container-page py-[var(--space-24)] mb-[var(--space-16)]">
         <Reveal>
           <Badge tone="accent" size="sm">10 · Off the Clock</Badge>
-          <h2 className="font-display text-4xl md:text-6xl mt-[var(--space-5)] max-w-3xl">
+          <h2 className="display-2 mt-[var(--space-5)] max-w-3xl">
             A few unimportant, telling things.
           </h2>
         </Reveal>

@@ -36,39 +36,46 @@ export function Navbar() {
     setOpen(false);
   }, [location.pathname]);
 
+  const initials = (site?.name ?? "Aman Mishra")
+    .split(" ")
+    .map((n) => n[0])
+    .slice(0, 2)
+    .join("");
+
   return (
     <motion.header
-      initial={reduce ? false : { y: -16, opacity: 0 }}
+      initial={reduce ? false : { y: -12, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
-      transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-      className={
-        "fixed inset-x-0 top-0 z-50 transition-[background-color,backdrop-filter,border-color] duration-500 ease-[var(--ease-out-quart)] " +
-        (scrolled
-          ? "border-b border-hairline bg-[var(--color-bg)]/85 backdrop-blur-md"
-          : "border-b border-transparent bg-transparent")
-      }
+      transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
+      className="fixed inset-x-0 top-0 z-50"
     >
-      <div className="container-page">
+      <div className="container-page pt-4 md:pt-5">
         <nav
           aria-label="Primary"
-          className="flex items-baseline justify-between gap-6 py-5 md:py-6"
+          className={
+            "liquid-glass flex items-center justify-between gap-6 rounded-full pl-3 pr-3 py-2 transition-shadow duration-500 " +
+            (scrolled ? "shadow-[var(--elevation-3)]" : "")
+          }
         >
-          {/* Wordmark */}
+          {/* Subtle monogram logo */}
           <NavLink
             to="/"
             aria-label={`${site?.name ?? "Aman Mishra"} — Home`}
-            className="group flex items-baseline gap-3"
+            className="group flex items-center gap-3 pl-1"
           >
-            <span className="font-display text-xl tracking-[-0.01em] text-[var(--color-text)]">
-              {site?.name ?? "Aman Mishra"}
+            <span
+              aria-hidden
+              className="grid h-8 w-8 place-items-center rounded-full border border-[var(--color-hairline-strong)] bg-[var(--color-bg)]/40 font-display text-[13px] italic leading-none text-[var(--color-text)] shadow-[inset_0_1px_0_0_rgba(255,255,255,0.6)] transition-transform duration-500 group-hover:rotate-[-6deg]"
+            >
+              {initials.toLowerCase()}
             </span>
-            <span className="mono hidden text-[10px] uppercase tracking-[0.22em] text-[var(--color-subtle)] lg:inline">
-              / Product Designer
+            <span className="hidden font-display text-[15px] tracking-[-0.01em] text-[var(--color-text)] sm:inline">
+              {site?.name ?? "Aman Mishra"}
             </span>
           </NavLink>
 
           {/* Center links */}
-          <ul className="hidden items-baseline gap-8 md:flex">
+          <ul className="hidden items-center gap-7 md:flex">
             {links.map((l) =>
               l.external ? (
                 <li key={l.to}>
@@ -116,11 +123,11 @@ export function Navbar() {
           </ul>
 
           {/* Right cluster */}
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2">
             <ThemeToggle className="hidden md:inline-flex" />
             <NavLink
               to="/contact"
-              className="hidden items-center gap-2 rounded-full border border-[var(--color-hairline-strong)] px-4 py-2 text-[11px] font-medium uppercase tracking-[0.2em] text-[var(--color-text)] transition-all hover:border-[var(--color-text)] hover:bg-[var(--color-text)] hover:text-[var(--color-inverse)] md:inline-flex"
+              className="hidden items-center gap-2 rounded-full bg-[var(--color-text)] px-4 py-2 text-[11px] font-medium uppercase tracking-[0.2em] text-[var(--color-inverse)] transition-all hover:bg-[var(--color-accent)] md:inline-flex"
             >
               Let's Talk
             </NavLink>

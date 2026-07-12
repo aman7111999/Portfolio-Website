@@ -163,7 +163,7 @@ export function Hero() {
               Currently designing at
             </span>
             <span className="font-heavy text-[13px] font-black uppercase tracking-[0.04em] text-[var(--color-text)]">
-              {site?.current_company ?? "Fintech"}
+              {"Fintech"}
             </span>
           </motion.div>
 

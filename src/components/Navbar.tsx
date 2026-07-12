@@ -147,7 +147,7 @@ export function Navbar() {
             transition={{ duration: 0.24, ease: [0.22, 1, 0.36, 1] }}
             className="container-page md:hidden"
           >
-            <div className="mt-2 rounded-[var(--radius-lg)] border border-[var(--color-hairline-strong)] bg-[var(--color-card)] p-3 shadow-[var(--elevation-3)]">
+            <div className="liquid-glass mt-2 rounded-[var(--radius-lg)] p-3">
               <ul className="flex flex-col">
                 {links.map((l) => (
                   <li key={l.to}>

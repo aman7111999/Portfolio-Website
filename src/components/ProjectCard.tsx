@@ -1,7 +1,9 @@
 import { Link } from "react-router-dom";
-import { motion, useReducedMotion } from "framer-motion";
+import { motion, useReducedMotion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import { ArrowUpRight, Lock } from "lucide-react";
+import { useRef } from "react";
 import type { ProjectRow } from "@/lib/cms";
+
 
 /**
  * Salad-inspired project card.

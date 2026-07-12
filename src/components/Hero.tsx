@@ -48,17 +48,11 @@ export function Hero() {
         className="container-page relative"
       >
         <div className="grid grid-cols-12 gap-6 md:gap-10">
-          {/* -------- Left vertical rail -------- */}
+          {/* -------- Left vertical rail — single quiet label -------- */}
           <aside
             aria-hidden
-            className="hidden lg:col-span-1 lg:flex lg:flex-col lg:items-center lg:gap-24 lg:pt-6 lg:border-r lg:border-hairline"
+            className="hidden lg:col-span-1 lg:flex lg:flex-col lg:items-center lg:pt-6"
           >
-            <span
-              className="rotate-180 text-[10px] font-medium uppercase tracking-[0.28em] text-[var(--color-subtle)]"
-              style={{ writingMode: "vertical-lr" }}
-            >
-              Senior Product Designer
-            </span>
             <span
               className="rotate-180 text-[10px] font-medium uppercase tracking-[0.28em] text-[var(--color-subtle)]"
               style={{ writingMode: "vertical-lr" }}
@@ -69,14 +63,13 @@ export function Hero() {
 
           {/* -------- Main editorial column -------- */}
           <div className="col-span-12 lg:col-span-11">
-            {/* Status line */}
+            {/* Status line — one signal only */}
             <motion.div
               initial={reduce ? false : { opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, ease: EASE }}
-              className="flex flex-wrap items-center gap-3 text-[11px] uppercase tracking-[0.22em] text-[var(--color-subtle)]"
+              className="inline-flex items-center gap-3 rounded-full liquid-glass px-4 py-1.5 text-[11px] uppercase tracking-[0.22em] text-[var(--color-muted)]"
             >
-              <span className="h-px w-10 bg-[var(--color-hairline-strong)]" />
               <span className="relative inline-flex h-1.5 w-1.5">
                 <span
                   className="absolute inset-0 rounded-full bg-[var(--color-accent)] opacity-70"
@@ -85,12 +78,6 @@ export function Hero() {
                 <span className="relative m-auto h-1.5 w-1.5 rounded-full bg-[var(--color-accent)]" />
               </span>
               <span>Available for senior roles · 2026</span>
-              {site?.location && (
-                <>
-                  <span className="hidden h-px w-6 bg-[var(--color-hairline-strong)] md:inline-block" />
-                  <span className="hidden md:inline">{site.location}</span>
-                </>
-              )}
             </motion.div>
 
             {/* Editorial headline */}
@@ -115,54 +102,29 @@ export function Hero() {
               </RevealLine>
             </h1>
 
-            {/* Meta grid: paragraph + inline stats */}
-            <div className="mt-14 grid grid-cols-1 gap-10 md:mt-20 md:grid-cols-12 md:gap-12">
-              <motion.p
-                initial={reduce ? false : { opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.75, ease: EASE }}
-                className="md:col-span-6 max-w-[52ch] text-[17px] leading-[1.65] text-[var(--color-muted)]"
-              >
-                <span className="text-[var(--color-text)]">Senior Product Designer</span>{" "}
-                with <span className="text-[var(--color-text)]">4.5+ years</span> simplifying
-                complex financial environments through rigorous design systems, AI-powered
-                interfaces, and human-centred product thinking.
-              </motion.p>
-
-              <motion.div
-                initial={reduce ? false : { opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.9, ease: EASE }}
-                className="md:col-span-6 md:pl-10 md:border-l md:border-hairline"
-              >
-                <dl className="grid grid-cols-3 gap-6">
-                  {STATS.map((s) => (
-                    <div key={s.label} className="flex flex-col">
-                      <dd
-                        className="font-display text-4xl leading-none italic text-[var(--color-text)]"
-                        style={{ fontSize: "clamp(1.75rem, 3vw, 2.5rem)" }}
-                      >
-                        {s.value}
-                      </dd>
-                      <dt className="mt-3 text-[10px] uppercase tracking-[0.2em] text-[var(--color-subtle)]">
-                        {s.label}
-                      </dt>
-                    </div>
-                  ))}
-                </dl>
-              </motion.div>
-            </div>
+            {/* Paragraph — single readable line-length */}
+            <motion.p
+              initial={reduce ? false : { opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.75, ease: EASE }}
+              className="mt-12 max-w-[58ch] text-[17px] leading-[1.65] text-[var(--color-muted)] md:mt-16"
+            >
+              <span className="text-[var(--color-text)]">Senior Product Designer</span>{" "}
+              with <span className="text-[var(--color-text)]">4.5+ years</span> simplifying
+              complex financial environments through rigorous design systems and
+              human-centred product thinking.
+            </motion.p>
 
             {/* CTAs — quiet editorial */}
             <motion.div
               initial={reduce ? false : { opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 1.05, ease: EASE }}
-              className="mt-14 flex flex-wrap items-center gap-x-8 gap-y-4 md:mt-16"
+              transition={{ duration: 0.8, delay: 0.95, ease: EASE }}
+              className="mt-12 flex flex-wrap items-center gap-x-8 gap-y-4"
             >
               <Link
                 to="/work"
-                className="group inline-flex items-center gap-3 rounded-full bg-[var(--color-text)] px-6 py-3 text-[13px] uppercase tracking-[0.18em] text-[var(--color-inverse)] transition-colors duration-300 hover:bg-[var(--color-accent)]"
+                className="group inline-flex items-center gap-3 rounded-full bg-[var(--color-text)] px-6 py-3 text-[13px] uppercase tracking-[0.18em] text-[var(--color-inverse)] shadow-[var(--elevation-2)] transition-all duration-300 hover:shadow-[var(--elevation-3)] hover:bg-[var(--color-accent)]"
               >
                 View Case Studies
                 <ArrowUpRight
@@ -180,7 +142,7 @@ export function Hero() {
                 >
                   <Download size={14} />
                   <span className="border-b border-[var(--color-hairline-strong)] pb-1 transition-colors group-hover:border-[var(--color-text)]">
-                    Download Resume
+                    Resume
                   </span>
                 </a>
               )}
@@ -196,15 +158,28 @@ export function Hero() {
               </Link>
             </motion.div>
 
-            {/* Currently / previously — compact */}
+            {/* Stats — liquid glass panel */}
             <motion.div
-              initial={reduce ? false : { opacity: 0, y: 10 }}
+              initial={reduce ? false : { opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 1.2, ease: EASE }}
-              className="mt-20 grid max-w-2xl grid-cols-1 gap-6 border-t border-hairline pt-8 sm:grid-cols-2"
+              transition={{ duration: 0.9, delay: 1.15, ease: EASE }}
+              className="mt-20 liquid-glass rounded-[var(--radius-xl)] p-6 md:p-8 max-w-2xl"
             >
-              <CompanyRow label="Currently" name="Motilal Oswal" sub="Financial Services" active />
-              <CompanyRow label="Previously" name="Trinkerr" sub="AI · Social Investing" />
+              <dl className="grid grid-cols-3 gap-6">
+                {STATS.map((s) => (
+                  <div key={s.label} className="flex flex-col">
+                    <dd
+                      className="font-display italic leading-none text-[var(--color-text)]"
+                      style={{ fontSize: "clamp(1.75rem, 3vw, 2.5rem)" }}
+                    >
+                      {s.value}
+                    </dd>
+                    <dt className="mt-3 text-[10px] uppercase tracking-[0.2em] text-[var(--color-subtle)]">
+                      {s.label}
+                    </dt>
+                  </div>
+                ))}
+              </dl>
             </motion.div>
           </div>
         </div>

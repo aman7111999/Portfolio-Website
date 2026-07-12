@@ -1,14 +1,16 @@
-import { motion, useReducedMotion } from "framer-motion";
+import { motion, useReducedMotion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import { Mail } from "lucide-react";
+import { useEffect } from "react";
 import { useSite } from "@/lib/cms";
+import { HeroMarquee } from "@/components/HeroMarquee";
 
 /**
  * Salad-inspired hero.
- * - Greeting sticker with avatar
+ * - Kinetic wordmark marquees (top + bottom)
+ * - Cursor-follow spotlight blob
+ * - Floating sticker doodles
  * - HUGE punchy headline mixing bold uppercase sans + italic serif accents
  * - Coral starburst sticker over the key word
- * - Swirly SVG orbit line encircling the composition
- * - Small "Merchant experiences at" pill below
  */
 export function Hero() {
   const reduce = useReducedMotion();
@@ -22,8 +24,41 @@ export function Hero() {
     .slice(0, 2)
     .join("");
 
+  // Cursor-follow spotlight
+  const mx = useMotionValue(50);
+  const my = useMotionValue(30);
+  const sx = useSpring(mx, { stiffness: 60, damping: 20 });
+  const sy = useSpring(my, { stiffness: 60, damping: 20 });
+  const bg = useTransform(
+    [sx, sy] as never,
+    ([x, y]: number[]) =>
+      `radial-gradient(600px circle at ${x}% ${y}%, rgba(255,62,127,0.18), transparent 60%)`,
+  );
+
+  useEffect(() => {
+    if (reduce) return;
+    const onMove = (e: MouseEvent) => {
+      mx.set((e.clientX / window.innerWidth) * 100);
+      my.set((e.clientY / window.innerHeight) * 100);
+    };
+    window.addEventListener("mousemove", onMove);
+    return () => window.removeEventListener("mousemove", onMove);
+  }, [mx, my, reduce]);
+
   return (
-    <section className="relative isolate overflow-hidden pt-28 pb-24 md:pt-36 md:pb-32">
+    <section className="relative isolate overflow-hidden pt-24 pb-16 md:pt-28 md:pb-20">
+      {/* Cursor spotlight */}
+      <motion.div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 -z-10"
+        style={{ background: bg }}
+      />
+
+      {/* Top marquee */}
+      <div className="mb-10 md:mb-14">
+        <HeroMarquee direction={1} />
+      </div>
+
       {/* Swirly orbit — pure SVG, spans behind headline */}
       <svg
         aria-hidden

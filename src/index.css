@@ -173,55 +173,75 @@
 @utility hairline-t { border-top:    1px solid var(--color-hairline); }
 @utility surface { background-color: var(--color-surface); }
 
-/* Boldex-style glassy dark card with subtle top-highlight border */
+/* Boldex-style glassy dark card — now aligned to liquid-glass language */
 @utility card-dark {
   position: relative;
+  isolation: isolate;
   background:
-    linear-gradient(180deg,
-      color-mix(in oklab, var(--color-card) 78%, transparent) 0%,
-      color-mix(in oklab, var(--color-surface) 70%, transparent) 100%);
-  backdrop-filter: blur(18px) saturate(1.4);
-  -webkit-backdrop-filter: blur(18px) saturate(1.4);
-  border: 1px solid var(--color-hairline);
+    radial-gradient(120% 80% at 8% 0%, color-mix(in oklab, var(--color-accent) 6%, transparent) 0%, transparent 55%),
+    linear-gradient(155deg,
+      color-mix(in oklab, var(--color-card) 82%, transparent) 0%,
+      color-mix(in oklab, var(--color-surface) 72%, transparent) 100%);
+  backdrop-filter: blur(24px) saturate(1.6);
+  -webkit-backdrop-filter: blur(24px) saturate(1.6);
+  border: 1px solid color-mix(in oklab, var(--color-hairline-strong) 80%, transparent);
   border-radius: var(--radius-lg);
   box-shadow:
-    inset 0 1px 0 0 rgba(255,255,255,0.06),
-    0 20px 60px -30px rgba(0,0,0,0.6);
+    inset 0 1px 0 0 rgba(255,255,255,0.10),
+    inset 0 -1px 0 0 rgba(0,0,0,0.4),
+    0 24px 70px -30px rgba(0,0,0,0.75);
   transition: border-color var(--dur-base) var(--ease-out-quart),
-              box-shadow var(--dur-base) var(--ease-out-quart),
-              transform var(--dur-base) var(--ease-out-quart);
+              box-shadow var(--dur-slow) var(--ease-out-quart),
+              transform var(--dur-slow) var(--ease-out-quart);
 }
 .card-dark::before {
   content: "";
   position: absolute; inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background:
+    radial-gradient(60% 40% at 20% -5%, rgba(255,255,255,0.16), transparent 60%),
+    radial-gradient(50% 40% at 100% 110%, color-mix(in oklab, var(--color-accent) 16%, transparent), transparent 65%);
+  mix-blend-mode: screen;
+  opacity: 0.9;
+}
+.card-dark::after {
+  content: "";
+  position: absolute; inset: 0;
   border-radius: inherit; padding: 1px;
-  background: linear-gradient(180deg,
-    rgba(255,255,255,0.14),
-    color-mix(in oklab, var(--color-accent) 22%, transparent) 40%,
-    transparent 70%);
+  background: linear-gradient(140deg,
+    rgba(255,255,255,0.28),
+    rgba(255,255,255,0.04) 30%,
+    color-mix(in oklab, var(--color-accent) 26%, transparent) 60%,
+    transparent 85%);
   -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
   -webkit-mask-composite: xor; mask-composite: exclude;
   pointer-events: none;
 }
 .card-dark:hover {
-  border-color: color-mix(in oklab, var(--color-accent) 40%, var(--color-hairline));
-  transform: translateY(-2px);
+  border-color: color-mix(in oklab, var(--color-accent) 50%, var(--color-hairline));
+  transform: translateY(-3px);
   box-shadow:
-    inset 0 1px 0 0 rgba(255,255,255,0.09),
-    0 30px 80px -30px var(--color-accent-glow);
+    inset 0 1px 0 0 rgba(255,255,255,0.14),
+    inset 0 -1px 0 0 rgba(0,0,0,0.4),
+    0 40px 100px -32px var(--color-accent-glow);
 }
 
 /* Nav floating glass pill */
 @utility nav-pill {
-  background: color-mix(in oklab, var(--color-surface) 55%, transparent);
-  backdrop-filter: blur(24px) saturate(1.8);
-  -webkit-backdrop-filter: blur(24px) saturate(1.8);
-  border: 1px solid var(--color-hairline-strong);
+  position: relative;
+  background:
+    linear-gradient(145deg,
+      color-mix(in oklab, var(--color-surface) 65%, transparent),
+      color-mix(in oklab, var(--color-bg) 55%, transparent));
+  backdrop-filter: blur(28px) saturate(1.9);
+  -webkit-backdrop-filter: blur(28px) saturate(1.9);
+  border: 1px solid color-mix(in oklab, var(--color-hairline-strong) 90%, transparent);
   border-radius: 9999px;
   box-shadow:
-    inset 0 1px 0 0 rgba(255,255,255,0.08),
+    inset 0 1px 0 0 rgba(255,255,255,0.14),
     inset 0 -1px 0 0 rgba(0,0,0,0.4),
-    0 20px 60px -20px rgba(0,0,0,0.6);
+    0 24px 70px -24px rgba(0,0,0,0.7);
 }
 
 /* ---------- Liquid Glass — refractive, specular, alive ---------- */

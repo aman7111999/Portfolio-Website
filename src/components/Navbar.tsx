@@ -84,6 +84,7 @@ export function Navbar() {
             </button>
           </div>
         </nav>
+        </div>
       </div>
 
 

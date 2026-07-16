@@ -96,6 +96,21 @@
 
   --container-page: 1400px;
 
+  /* Spacing scale (px) */
+  --space-1:  4px;
+  --space-2:  8px;
+  --space-3:  12px;
+  --space-4:  16px;
+  --space-5:  20px;
+  --space-6:  24px;
+  --space-8:  32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-16: 64px;
+  --space-20: 80px;
+  --space-24: 96px;
+  --space-32: 128px;
+
   --focus-ring: 0 0 0 2px var(--color-bg), 0 0 0 4px var(--color-accent-ring);
 }
 
@@ -172,6 +187,47 @@
 @utility hairline-b { border-bottom: 1px solid var(--color-hairline); }
 @utility hairline-t { border-top:    1px solid var(--color-hairline); }
 @utility surface { background-color: var(--color-surface); }
+
+@utility border-hairline { border-color: var(--color-hairline); }
+@utility divide-hairline { border-color: var(--color-hairline); }
+
+@utility display-hero {
+  font-family: var(--font-display);
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  line-height: 0.98;
+  font-size: clamp(3rem, 7vw, 6rem);
+  color: var(--color-text);
+}
+@utility display-1 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  letter-spacing: -0.028em;
+  line-height: 1.02;
+  font-size: clamp(2.5rem, 5vw, 4.5rem);
+  color: var(--color-text);
+}
+@utility display-2 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  letter-spacing: -0.025em;
+  line-height: 1.08;
+  font-size: clamp(2rem, 3.6vw, 3rem);
+  color: var(--color-text);
+}
+
+@utility story-link {
+  position: relative;
+  background-image: linear-gradient(currentColor, currentColor);
+  background-size: 0% 1px;
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+  transition: background-size var(--dur-base) var(--ease-out-quart), color var(--dur-base) var(--ease-out-quart);
+}
+.story-link:hover {
+  background-size: 100% 1px;
+  color: var(--color-accent);
+}
 
 /* Boldex-style glassy dark card — now aligned to liquid-glass language */
 @utility card-dark {

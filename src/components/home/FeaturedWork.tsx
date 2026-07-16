@@ -29,10 +29,11 @@ export function FeaturedWork() {
         </div>
       </Reveal>
 
-      <div className="mt-14 grid gap-6 md:grid-cols-2">
+      <div className="mt-14 grid grid-cols-1 gap-6 md:grid-cols-2">
         {items.map((p, i) => (
           <motion.div
             key={p.slug}
+            className="min-w-0"
             initial={reduce ? false : { opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-80px" }}

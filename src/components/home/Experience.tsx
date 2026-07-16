@@ -58,9 +58,9 @@ export function Experience() {
 
       <div className="mt-14 grid gap-5">
         {ROLES.map((r, i) => (
-          <Reveal key={r.company} delay={i * 0.05}>
+          <Reveal key={`${r.company}-${r.period}`} delay={i * 0.05}>
             <div className="liquid-glass p-6 md:p-8">
-              <div className="grid gap-6 md:grid-cols-[240px_1fr_auto] md:items-start">
+              <div className="grid gap-6 md:grid-cols-[240px_1fr] md:items-start">
                 <div>
                   <p className="text-xs uppercase tracking-[0.14em] text-[var(--color-muted)]">
                     {r.period}

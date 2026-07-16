@@ -59,8 +59,9 @@ export default function Contact() {
         <Reveal className="md:col-span-7">
           {site?.email && (
             <>
-              <a href={`mailto:${site.email}`} className="mt-4 inline-flex items-center gap-3 font-display text-3xl md:text-5xl link-underline">
-                {site.email} <ArrowUpRight size={28} />
+              <a href={`mailto:${site.email}`} className="mt-4 inline-flex max-w-full items-center gap-3 font-display text-xl sm:text-2xl md:text-5xl link-underline break-all">
+                <span className="min-w-0 break-all">{site.email}</span>
+                <ArrowUpRight size={24} className="shrink-0" />
               </a>
               <button type="button" onClick={copyEmail} className="mt-6 inline-flex items-center gap-2 rounded-full border border-hairline px-4 py-2 text-xs uppercase tracking-widest text-[var(--color-muted)] transition-colors hover:border-[var(--color-ink)] hover:text-[var(--color-ink)]" aria-live="polite">
                 <AnimatePresence mode="wait" initial={false}>

@@ -28,10 +28,10 @@ export function Navbar() {
       transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
       className="fixed inset-x-0 top-4 z-50 md:top-6"
     >
-      <div className="container-page">
+      <div className="px-5">
         <nav
           aria-label="Primary"
-          className="nav-pill mx-auto flex h-[72px] w-fit items-center gap-2 py-2 pl-2 pr-2"
+          className="nav-pill mx-auto flex h-[72px] w-full items-center justify-between gap-2 py-2 pl-2 pr-2"
         >
           {/* Avatar + name */}
           <NavLink to="/" className="flex items-center gap-3 rounded-full pl-1 pr-4 py-1">
@@ -45,8 +45,6 @@ export function Navbar() {
               <span className="block text-[11px] text-[var(--color-muted)]">Product Designer</span>
             </span>
           </NavLink>
-
-          <span className="mx-2 hidden h-9 w-px bg-[var(--color-hairline-strong)] md:block" />
 
           {/* Center links */}
           <ul className="hidden items-center gap-[28px] px-2 md:flex lg:gap-[36px]">
@@ -67,14 +65,13 @@ export function Navbar() {
             ))}
           </ul>
 
-          <div className="ml-2 flex items-center gap-2">
+          <div className="flex items-center gap-2">
             <ThemeToggle />
-            <NavLink to="/contact" className="btn-primary !py-1.5 !pr-6 !text-[14px]" style={{ minHeight: 44 }}>
+            <NavLink to="/contact" className="btn-primary !py-1.5 !pr-5 !text-[14px]" style={{ minHeight: 44 }}>
               <span className="grid h-9 w-9 place-items-center rounded-full bg-[var(--color-accent-contrast)] text-[var(--color-accent)]">
                 <ArrowRight size={15} />
               </span>
-              <span className="hidden sm:inline">Start A Project</span>
-              <span className="sm:hidden">Start</span>
+              <span>Let's Talk</span>
             </NavLink>
             <button
               type="button"
@@ -87,6 +84,8 @@ export function Navbar() {
           </div>
         </nav>
       </div>
+
+
 
       <AnimatePresence>
         {open && (

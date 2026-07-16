@@ -36,7 +36,7 @@ export function FaqSection() {
             {FAQ.map((item, i) => {
               const isOpen = open === i;
               return (
-                <li key={i} className="card-dark overflow-hidden">
+                <li key={i} className="liquid-glass overflow-hidden">
                   <button
                     onClick={() => setOpen(isOpen ? null : i)}
                     className="flex w-full items-center justify-between gap-4 px-5 py-4 text-left"

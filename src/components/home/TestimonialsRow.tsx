@@ -26,7 +26,7 @@ export function TestimonialsGrid() {
 
       <div className="mt-14 grid gap-5 md:grid-cols-3">
         {TESTIMONIALS.map((t) => (
-          <div key={t.name} className="card-dark p-6">
+          <div key={t.name} className="liquid-glass p-6">
             <div className="flex gap-0.5 text-[var(--color-accent)]">
               {Array.from({ length: 5 }).map((_, k) => (
                 <Star key={k} size={13} fill="currentColor" strokeWidth={0} />

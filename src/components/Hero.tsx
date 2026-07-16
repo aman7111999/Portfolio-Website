@@ -37,7 +37,7 @@ export function Hero() {
               initial={reduce ? false : { opacity: 0, y: -8 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
-              className="inline-flex items-center gap-2 rounded-full border border-[var(--color-hairline-strong)] bg-[var(--color-surface)] px-3 py-1.5"
+              className="glass-pill"
             >
               <span className="relative flex h-2 w-2">
                 <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[var(--color-accent)] opacity-70" />
@@ -47,6 +47,7 @@ export function Hero() {
                 Available for Projects
               </span>
             </motion.div>
+
 
             <motion.h1
               initial={reduce ? false : { opacity: 0, y: 20 }}

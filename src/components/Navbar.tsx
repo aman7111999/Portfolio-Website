@@ -97,18 +97,33 @@ export function Navbar() {
             transition={{ duration: 0.24 }}
             className="container-page md:hidden"
           >
-            <div className="nav-pill mx-auto mt-2 w-fit rounded-2xl p-2">
-              <ul className="flex flex-col">
+            <div className="nav-pill mx-auto mt-3 w-full max-w-sm rounded-3xl p-3">
+              <ul className="flex flex-col gap-1">
                 {LINKS.map((l) => (
                   <li key={l.label}>
                     <NavLink
                       to={l.to}
-                      className="block rounded-lg px-4 py-2.5 text-[14px] font-medium text-[var(--color-text)]"
+                      onClick={() => setOpen(false)}
+                      className={({ isActive }) =>
+                        "block rounded-2xl px-5 py-3.5 text-[16px] font-medium transition-colors " +
+                        (isActive
+                          ? "bg-[color-mix(in_oklab,var(--color-accent)_14%,transparent)] text-[var(--color-text)]"
+                          : "text-[var(--color-text)] hover:bg-[var(--color-hairline)]")
+                      }
                     >
                       {l.label}
                     </NavLink>
                   </li>
                 ))}
+                <li className="mt-1 border-t border-[var(--color-hairline)] pt-2">
+                  <NavLink
+                    to="/contact"
+                    onClick={() => setOpen(false)}
+                    className="block rounded-2xl px-5 py-3.5 text-[16px] font-medium text-[var(--color-accent)]"
+                  >
+                    Contact
+                  </NavLink>
+                </li>
               </ul>
             </div>
           </motion.div>

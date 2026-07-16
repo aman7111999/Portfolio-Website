@@ -13,6 +13,7 @@ import {
   Image as ImageIcon,
   Search,
   Settings,
+  Type,
   LogOut,
   ExternalLink,
   Menu,

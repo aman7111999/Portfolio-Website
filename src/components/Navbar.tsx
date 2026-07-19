@@ -16,6 +16,7 @@ const NAV_FALLBACK: NavData = {
   links: [
     { to: "/about", label: "About" },
     { to: "/work", label: "Projects" },
+    { to: "/resume", label: "Resume" },
     { to: "/blog", label: "Blog" },
   ],
   cta_label: "Let's Talk",
@@ -33,7 +34,10 @@ export function Navbar() {
 
   const name = site?.name ?? "Aman Mishra";
   const initials = name.split(" ").map((n) => n[0]).slice(0, 2).join("");
-  const links = nav?.links ?? NAV_FALLBACK.links;
+  const rawLinks = nav?.links ?? NAV_FALLBACK.links;
+  const links = rawLinks.some((l) => l.to === "/resume")
+    ? rawLinks
+    : [...rawLinks, { to: "/resume", label: "Resume" }];
 
   return (
     <motion.header

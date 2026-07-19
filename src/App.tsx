@@ -14,6 +14,7 @@ const Work = lazy(() => import("@/pages/Work"));
 const ProjectPage = lazy(() => import("@/pages/Project"));
 const About = lazy(() => import("@/pages/About"));
 const Contact = lazy(() => import("@/pages/Contact"));
+const Resume = lazy(() => import("@/pages/Resume"));
 const NotFound = lazy(() => import("@/pages/NotFound"));
 
 const AdminLayout = lazy(() => import("@/pages/admin/AdminLayout"));
@@ -110,6 +111,7 @@ export default function App() {
               <Route path="/projects/:slug" element={<ProjectPage />} />
               <Route path="/about" element={<About />} />
               <Route path="/contact" element={<Contact />} />
+              <Route path="/resume" element={<Resume />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </Suspense>

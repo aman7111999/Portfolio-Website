@@ -111,6 +111,7 @@ export default function App() {
               <Route path="/projects/:slug" element={<ProjectPage />} />
               <Route path="/about" element={<About />} />
               <Route path="/contact" element={<Contact />} />
+              <Route path="/resume" element={<Resume />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </Suspense>

@@ -52,12 +52,12 @@ export function StatsBand() {
                 <div className="text-[42px] font-semibold leading-none tracking-[-0.02em] text-[var(--color-text)]">
                   <CountUp value={m.v} />
                 </div>
-                <div className="mt-2 text-[12px] text-[var(--color-muted)]">{m.l}</div>
+                <div className="mt-2 text-[13px] text-[var(--color-muted)]">{m.l}</div>
               </div>
             ))}
           </div>
 
-          <p className="mt-8 max-w-md text-[14px] leading-relaxed text-[var(--color-muted)]">{body}</p>
+          <p className="mt-8 max-w-md text-[15px] leading-[1.65] text-[var(--color-muted)]">{body}</p>
         </Reveal>
 
         <Reveal className="md:col-span-6">
@@ -76,7 +76,7 @@ export function StatsBand() {
               />
               <div className="absolute inset-x-4 bottom-4 flex items-start gap-3 rounded-2xl border border-[var(--color-hairline-strong)] bg-[color-mix(in_oklab,var(--color-surface)_70%,transparent)] p-4 backdrop-blur-md">
                 <Quote size={16} className="mt-0.5 shrink-0 text-[var(--color-accent)]" />
-                <p className="text-[13px] leading-snug text-[var(--color-text)]">"{d.quote}"</p>
+                <p className="text-[14px] leading-[1.5] text-[var(--color-text)]">"{d.quote}"</p>
               </div>
             </div>
           </div>

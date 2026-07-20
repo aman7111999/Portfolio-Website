@@ -87,7 +87,7 @@ export function Hero() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
               className="mt-6 font-semibold leading-[1.02] tracking-[-0.03em] text-[var(--color-text)]"
-              style={{ fontSize: "clamp(2.6rem, 6.4vw, 5.5rem)" }}
+              style={{ fontSize: "clamp(2.4rem, 6vw, 5.5rem)" }}
             >
               {h.headline_before} <span className="text-[var(--color-accent)]">{h.headline_accent}</span>
               <br />

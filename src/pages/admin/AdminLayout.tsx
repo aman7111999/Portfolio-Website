@@ -65,6 +65,15 @@ export default function AdminLayout() {
   const loc = useLocation();
   const [drawer, setDrawer] = useState(false);
 
+  useEffect(() => {
+    if (!drawer) return;
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") setDrawer(false); };
+    window.addEventListener("keydown", onKey);
+    return () => { document.body.style.overflow = prev; window.removeEventListener("keydown", onKey); };
+  }, [drawer]);
+
 
   if (loading || (user && roleLoading)) {
     return (
@@ -100,6 +109,7 @@ export default function AdminLayout() {
       <div className="lg:grid lg:min-h-screen lg:grid-cols-[260px_1fr]">
         {/* Sidebar */}
         <aside
+          id="admin-sidebar"
           className={clsx(
             "fixed inset-y-0 left-0 z-40 w-[260px] border-r border-neutral-200 bg-white transition-transform lg:sticky lg:top-0 lg:h-screen lg:translate-x-0",
             drawer ? "translate-x-0 shadow-2xl" : "-translate-x-full",
@@ -111,9 +121,11 @@ export default function AdminLayout() {
               <span className="font-display text-base tracking-tight">CMS</span>
             </Link>
             <button
-              className="lg:hidden text-neutral-500 hover:text-neutral-900"
+              className="grid h-11 w-11 place-items-center rounded-md text-neutral-500 hover:bg-neutral-100 hover:text-neutral-900 lg:hidden"
               onClick={() => setDrawer(false)}
               aria-label="Close menu"
+              aria-expanded={drawer}
+              aria-controls="admin-sidebar"
             >
               <X size={18} />
             </button>
@@ -122,7 +134,7 @@ export default function AdminLayout() {
             <div className="flex-1 space-y-5 overflow-y-auto pb-4">
               {navGroups.map((group) => (
                 <div key={group.title}>
-                  <p className="px-3 pb-1.5 text-[10px] font-semibold uppercase tracking-widest text-neutral-400">
+                  <p className="px-3 pb-1.5 text-[12px] font-semibold uppercase tracking-widest text-neutral-500">
                     {group.title}
                   </p>
                   <div className="space-y-0.5">
@@ -185,9 +197,11 @@ export default function AdminLayout() {
           {/* Sticky top bar */}
           <div className="sticky top-0 z-20 flex h-16 items-center gap-3 border-b border-neutral-200 bg-white/85 px-4 backdrop-blur lg:px-8">
             <button
-              className="rounded-md p-2 text-neutral-600 hover:bg-neutral-100 lg:hidden"
+              className="grid h-11 w-11 place-items-center rounded-md text-neutral-600 hover:bg-neutral-100 lg:hidden"
               onClick={() => setDrawer(true)}
               aria-label="Open menu"
+              aria-expanded={drawer}
+              aria-controls="admin-sidebar"
             >
               <Menu size={18} />
             </button>
@@ -201,7 +215,7 @@ export default function AdminLayout() {
             </div>
           </div>
 
-          <main className="min-w-0 flex-1 px-4 py-8 lg:px-8">
+          <main className="min-w-0 flex-1 px-4 py-6 md:px-6 md:py-8 lg:px-8">
             <Outlet />
           </main>
         </div>

@@ -32,6 +32,19 @@ export function Navbar() {
 
   useEffect(() => setOpen(false), [location.pathname]);
 
+  // Lock body scroll while mobile menu open + close on Escape
+  useEffect(() => {
+    if (!open) return;
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") setOpen(false); };
+    window.addEventListener("keydown", onKey);
+    return () => {
+      document.body.style.overflow = prev;
+      window.removeEventListener("keydown", onKey);
+    };
+  }, [open]);
+
   const name = site?.name ?? "Aman Mishra";
   const initials = name.split(" ").map((n) => n[0]).slice(0, 2).join("");
   const rawLinks = nav?.links ?? NAV_FALLBACK.links;

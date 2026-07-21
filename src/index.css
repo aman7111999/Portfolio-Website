@@ -114,10 +114,35 @@
   --focus-ring: 0 0 0 2px var(--color-bg), 0 0 0 4px var(--color-accent-ring);
 }
 
-@theme {
+@theme inline {
   --color-background: var(--color-bg);
   --color-foreground: var(--color-text);
-  --color-border:     var(--color-hairline);
+  --color-border:     var(--color-hairline-strong);
+  --color-input:      var(--color-hairline-strong);
+  --color-ring:       var(--color-accent-ring);
+
+  /* shadcn semantic aliases — map to project tokens so ui/* components render */
+  --color-primary:              var(--color-accent);
+  --color-primary-foreground:   var(--color-accent-contrast);
+  --color-secondary:            var(--color-elevated);
+  --color-secondary-foreground: var(--color-text);
+  --color-muted:                var(--color-elevated);
+  --color-muted-foreground:     var(--color-muted);
+  --color-accent-foreground:    var(--color-accent-contrast);
+  --color-destructive:          #dc2626;
+  --color-destructive-foreground: #ffffff;
+  --color-card:                 var(--color-surface);
+  --color-card-foreground:      var(--color-text);
+  --color-popover:              var(--color-surface);
+  --color-popover-foreground:   var(--color-text);
+  --color-sidebar:              var(--color-surface);
+  --color-sidebar-foreground:   var(--color-text);
+  --color-sidebar-primary:      var(--color-accent);
+  --color-sidebar-primary-foreground: var(--color-accent-contrast);
+  --color-sidebar-accent:       var(--color-elevated);
+  --color-sidebar-accent-foreground: var(--color-text);
+  --color-sidebar-border:       var(--color-hairline-strong);
+  --color-sidebar-ring:         var(--color-accent-ring);
 
   --font-sans:    "Manrope", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
   --font-display: "Manrope", ui-sans-serif, system-ui, sans-serif;
@@ -125,6 +150,7 @@
   --font-serif:   "Instrument Serif", Georgia, serif;
   --font-mono:    "Manrope", ui-monospace, SFMono-Regular, Menlo, monospace;
 
+  --radius: 12px;
   --radius-sm: 8px;
   --radius-md: 12px;
   --radius-lg: 20px;

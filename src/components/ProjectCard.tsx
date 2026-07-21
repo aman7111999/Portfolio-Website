@@ -75,7 +75,7 @@ export function ProjectCard({
 
             {project.short_description && (
               <p
-                className="max-w-md text-[13px] leading-[1.55] opacity-75"
+                className="max-w-md text-[15px] leading-[1.55] opacity-80 md:text-[16px]"
                 style={{ color: palette.ink }}
               >
                 {project.short_description}
@@ -85,7 +85,7 @@ export function ProjectCard({
             <div className="mt-1 flex flex-wrap items-center gap-2">
               {locked ? (
                 <span
-                  className="inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.1em]"
+                  className="inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-[12px] font-semibold uppercase tracking-[0.1em]"
                   style={{
                     borderColor: `${palette.ink}30`,
                     color: palette.ink,
@@ -96,7 +96,7 @@ export function ProjectCard({
                 </span>
               ) : (
                 <span
-                  className="inline-flex items-center gap-1.5 rounded-full px-3.5 py-1.5 text-[11px] font-heavy font-bold uppercase tracking-[0.08em] transition-transform group-hover:scale-105"
+                  className="inline-flex items-center gap-1.5 rounded-full px-3.5 py-1.5 text-[12px] font-heavy font-bold uppercase tracking-[0.08em] transition-transform group-hover:scale-105"
                   style={{
                     backgroundColor: palette.ink,
                     color: palette.bg,
@@ -141,7 +141,7 @@ export function ProjectCard({
                 {/* Category sticker inside media */}
                 {project.category && (
                   <span
-                    className="absolute right-6 top-4 inline-flex items-center rounded-full px-3 py-1 text-[11px] font-heavy font-bold uppercase tracking-[0.12em]"
+                    className="absolute right-6 top-4 inline-flex items-center rounded-full px-3 py-1 text-[12px] font-heavy font-bold uppercase tracking-[0.12em]"
                     style={{
                       backgroundColor: palette.accent,
                       color: palette.bg,

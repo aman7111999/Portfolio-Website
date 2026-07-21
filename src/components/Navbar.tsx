@@ -32,6 +32,19 @@ export function Navbar() {
 
   useEffect(() => setOpen(false), [location.pathname]);
 
+  // Lock body scroll while mobile menu open + close on Escape
+  useEffect(() => {
+    if (!open) return;
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") setOpen(false); };
+    window.addEventListener("keydown", onKey);
+    return () => {
+      document.body.style.overflow = prev;
+      window.removeEventListener("keydown", onKey);
+    };
+  }, [open]);
+
   const name = site?.name ?? "Aman Mishra";
   const initials = name.split(" ").map((n) => n[0]).slice(0, 2).join("");
   const rawLinks = nav?.links ?? NAV_FALLBACK.links;
@@ -93,8 +106,10 @@ export function Navbar() {
             <button
               type="button"
               aria-label={open ? "Close menu" : "Open menu"}
+              aria-expanded={open}
+              aria-controls="mobile-nav-panel"
               onClick={() => setOpen((v) => !v)}
-              className="grid h-10 w-10 place-items-center rounded-full border border-[var(--color-hairline-strong)] text-[var(--color-text)] md:hidden"
+              className="grid h-11 w-11 place-items-center rounded-full border border-[var(--color-hairline-strong)] text-[var(--color-text)] md:hidden"
             >
               {open ? <X size={16} /> : <Menu size={16} />}
             </button>
@@ -106,6 +121,7 @@ export function Navbar() {
       <AnimatePresence>
         {open && (
           <motion.div
+            id="mobile-nav-panel"
             initial={{ opacity: 0, y: -8 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -8 }}

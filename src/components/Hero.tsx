@@ -53,7 +53,7 @@ export function Hero() {
   const avatar = site?.profile_image_url;
 
   return (
-    <section className="relative isolate overflow-hidden pt-32 pb-16 md:pt-40 md:pb-24">
+    <section className="relative isolate overflow-hidden pt-8 pb-16 md:pt-24 md:pb-24">
       <div className="pointer-events-none absolute inset-0 -z-10 bg-grid opacity-30" />
       <div
         aria-hidden
@@ -87,7 +87,7 @@ export function Hero() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
               className="mt-6 font-semibold leading-[1.02] tracking-[-0.03em] text-[var(--color-text)]"
-              style={{ fontSize: "clamp(2.4rem, 6vw, 5.5rem)" }}
+              style={{ fontSize: "clamp(2.4rem, 8vw, 5.5rem)" }}
             >
               {h.headline_before} <span className="text-[var(--color-accent)]">{h.headline_accent}</span>
               <br />
@@ -172,9 +172,10 @@ export function Hero() {
                 return (
                   <motion.div
                     key={i}
+                    aria-hidden
                     animate={reduce ? {} : { y: [0, -10, 0] }}
                     transition={{ duration: 5 + i * 0.6, repeat: Infinity, ease: "easeInOut", delay: i * 0.6 }}
-                    className="absolute z-10 grid h-14 w-14 place-items-center rounded-full"
+                    className="absolute z-10 hidden h-14 w-14 place-items-center rounded-full sm:grid"
                     style={{
                       ...(b.pos as React.CSSProperties),
                       background: "color-mix(in oklab, var(--color-surface) 55%, transparent)",

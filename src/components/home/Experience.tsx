@@ -39,13 +39,13 @@ export function Experience() {
       <div className="mt-14 grid gap-5">
         {roles.map((r, i) => (
           <Reveal key={r.id} delay={i * 0.05}>
-            <div className="liquid-glass p-6 md:p-8">
-              <div className="grid gap-6 md:grid-cols-[240px_1fr] md:items-start">
+            <div className="liquid-glass p-5 md:p-8">
+              <div className="grid gap-5 md:grid-cols-[220px_1fr] md:items-start md:gap-6 lg:grid-cols-[240px_1fr]">
                 <div>
-                  <p className="text-[12px] uppercase tracking-[0.16em] text-[var(--color-muted)]">
+                  <p className="text-[12px] uppercase tracking-[0.16em] text-[var(--color-muted)] md:text-[13px]">
                     {fmtPeriod(r.start_date, r.end_date)}
                   </p>
-                  <p className="mt-2 text-[22px] font-semibold tracking-[-0.015em] text-[var(--color-text)]">{r.company}</p>
+                  <p className="mt-2 text-[19px] font-semibold tracking-[-0.015em] text-[var(--color-text)] md:text-[22px]">{r.company}</p>
                   {r.location && (
                     <p className="mt-1.5 flex items-center gap-1.5 text-[13px] text-[var(--color-muted)]">
                       <MapPin size={12} /> {r.location}
@@ -53,9 +53,9 @@ export function Experience() {
                   )}
                 </div>
                 <div>
-                  <p className="text-[17px] font-medium text-[var(--color-accent)]">{r.role}</p>
+                  <p className="text-[16px] font-medium text-[var(--color-accent)] md:text-[17px]">{r.role}</p>
                   {r.description && (
-                    <p className="mt-2.5 text-[16px] leading-[1.65] text-[var(--color-muted)]">
+                    <p className="mt-2.5 text-[15px] leading-[1.65] text-[var(--color-muted)] md:text-[16px]">
                       {r.description}
                     </p>
                   )}
@@ -64,7 +64,7 @@ export function Experience() {
                       {r.highlights.map((t: string) => (
                         <span
                           key={t}
-                          className="rounded-full border border-[var(--color-hairline-strong)] px-3 py-1 text-[12px] text-[var(--color-text)]"
+                          className="rounded-full border border-[var(--color-hairline-strong)] px-3 py-1 text-[12px] text-[var(--color-text)] md:text-[13px]"
                         >
                           {t}
                         </span>

@@ -36,12 +36,15 @@ export function FinalCta() {
   const d = c ?? FALLBACK;
 
   return (
-    <section className="relative overflow-hidden py-24 md:py-40">
-      <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
+    <section className="relative overflow-hidden py-20 md:py-40">
+      <div aria-hidden className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
         {MOCKS.map((m, i) => (
           <div
             key={i}
-            className="absolute h-40 w-64 rounded-xl border border-[var(--color-hairline-strong)] opacity-40 md:h-44 md:w-72"
+            className={
+              "absolute h-40 w-64 rounded-xl border border-[var(--color-hairline-strong)] opacity-25 md:h-44 md:w-72 md:opacity-40 " +
+              (i > 3 ? "hidden md:block" : "")
+            }
             style={{
               top: m.top,
               left: m.left,
@@ -76,7 +79,7 @@ export function FinalCta() {
           </p>
 
           {site?.email && (
-            <a href={`mailto:${site.email}`} className="btn-primary mt-10">
+            <a href={`mailto:${site.email}`} className="btn-primary mt-10" style={{ minHeight: 44 }}>
               <span className="grid h-9 w-9 place-items-center rounded-full bg-[var(--color-accent-contrast)] text-[var(--color-accent)]">
                 <ArrowRight size={15} />
               </span>

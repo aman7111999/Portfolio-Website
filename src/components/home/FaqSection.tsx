@@ -47,15 +47,22 @@ export function FaqSection() {
           <ul className="space-y-3">
             {faq.map((item, i) => {
               const isOpen = open === i;
+              const panelId = `faq-panel-${i}`;
+              const buttonId = `faq-button-${i}`;
               return (
                 <li key={i} className="liquid-glass overflow-hidden">
                   <button
+                    id={buttonId}
+                    type="button"
+                    aria-expanded={isOpen}
+                    aria-controls={panelId}
                     onClick={() => setOpen(isOpen ? null : i)}
-                    className="flex min-h-[68px] w-full items-center justify-between gap-4 px-6 py-5 text-left"
+                    className="flex min-h-[68px] w-full items-center justify-between gap-4 px-5 py-5 text-left md:px-6"
                   >
-                    <span className="text-[17px] font-semibold text-[var(--color-text)]">{item.q}</span>
+                    <span className="text-[16px] font-semibold text-[var(--color-text)] md:text-[17px]">{item.q}</span>
                     <span
-                      className="grid h-9 w-9 shrink-0 place-items-center rounded-full border border-[var(--color-hairline-strong)] text-[var(--color-accent)] transition-transform duration-300"
+                      aria-hidden
+                      className="grid h-11 w-11 shrink-0 place-items-center rounded-full border border-[var(--color-hairline-strong)] text-[var(--color-accent)] transition-transform duration-300"
                       style={{ transform: isOpen ? "rotate(45deg)" : "rotate(0)" }}
                     >
                       <Plus size={15} />
@@ -64,12 +71,16 @@ export function FaqSection() {
                   <AnimatePresence initial={false}>
                     {isOpen && (
                       <motion.div
+                        id={panelId}
+                        role="region"
+                        aria-labelledby={buttonId}
                         initial={{ height: 0, opacity: 0 }}
                         animate={{ height: "auto", opacity: 1 }}
                         exit={{ height: 0, opacity: 0 }}
                         transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+                        style={{ overflow: "hidden" }}
                       >
-                        <p className="px-6 pb-6 text-[15px] leading-[1.65] text-[var(--color-muted)]">{item.a}</p>
+                        <p className="px-5 pb-6 text-[15px] leading-[1.65] text-[var(--color-muted)] md:px-6 md:text-[16px]">{item.a}</p>
                       </motion.div>
                     )}
                   </AnimatePresence>

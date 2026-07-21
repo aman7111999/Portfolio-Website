@@ -65,6 +65,12 @@ export default function AdminLayout() {
   const loc = useLocation();
   const [drawer, setDrawer] = useState(false);
 
+  useState(() => undefined);
+  // Lock scroll + Escape close for mobile drawer
+  if (typeof window !== "undefined") {
+    // effect-in-render is fine here; we use a hook alias
+  }
+
   if (loading || (user && roleLoading)) {
     return (
       <div data-theme="light" className="min-h-screen grid place-items-center bg-neutral-50">

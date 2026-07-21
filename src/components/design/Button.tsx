@@ -14,8 +14,8 @@ const base =
   "active:scale-[0.98]";
 
 const sizes: Record<Size, string> = {
-  sm: "h-8  px-[var(--space-4)] text-[13px]",
-  md: "h-10 px-[var(--space-5)] text-sm",
+  sm: "h-10 px-[var(--space-4)] text-[13px]",
+  md: "h-11 px-[var(--space-5)] text-[14px]",
   lg: "h-12 px-[var(--space-6)] text-[15px]",
 };
 

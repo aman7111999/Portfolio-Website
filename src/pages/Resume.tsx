@@ -126,13 +126,13 @@ export default function Resume() {
         <div className="mt-8 grid gap-4">
           {(experience ?? []).map((r: any, i: number) => (
             <Reveal key={r.id} delay={i * 0.04}>
-              <article className="liquid-glass p-6 md:p-7">
+              <article className="liquid-glass p-5 md:p-7">
                 <div className="grid gap-5 md:grid-cols-[220px_1fr]">
                   <div>
-                    <p className="text-[11px] uppercase tracking-[0.16em] text-[var(--color-muted)]">
+                    <p className="text-[12px] uppercase tracking-[0.16em] text-[var(--color-muted)] md:text-[13px]">
                       {fmtPeriod(r.start_date, r.end_date)}
                     </p>
-                    <p className="mt-2 text-[19px] font-semibold text-[var(--color-text)]">
+                    <p className="mt-2 text-[18px] font-semibold text-[var(--color-text)] md:text-[20px]">
                       {r.company}
                     </p>
                     {r.location && (
@@ -140,17 +140,17 @@ export default function Resume() {
                     )}
                   </div>
                   <div>
-                    <p className="text-[16px] font-medium text-[var(--color-accent)]">{r.role}</p>
+                    <p className="text-[16px] font-medium text-[var(--color-accent)] md:text-[18px]">{r.role}</p>
                     {r.description && (
-                      <p className="mt-2 text-[15px] leading-[1.65] text-[var(--color-muted)]">
+                      <p className="mt-2 text-[15px] leading-[1.65] text-[var(--color-muted)] md:text-[16px]">
                         {r.description}
                       </p>
                     )}
                     {(r.highlights?.length ?? 0) > 0 && (
-                      <ul className="mt-3 space-y-1.5 text-[14px] text-[var(--color-text)]">
+                      <ul className="mt-3 space-y-1.5 text-[14px] text-[var(--color-text)] md:text-[15px]">
                         {r.highlights.map((t: string, k: number) => (
                           <li key={k} className="flex gap-2">
-                            <span className="mt-2 h-1 w-1 shrink-0 rounded-full bg-[var(--color-accent)]" />
+                            <span aria-hidden className="mt-2 h-1 w-1 shrink-0 rounded-full bg-[var(--color-accent)]" />
                             <span>{t}</span>
                           </li>
                         ))}
@@ -176,8 +176,8 @@ export default function Resume() {
         </Reveal>
         <div className="mt-8 grid gap-4 md:grid-cols-2">
           {(education ?? []).map((e: any) => (
-            <div key={e.id} className="liquid-glass p-6">
-              <p className="text-[11px] uppercase tracking-[0.16em] text-[var(--color-muted)]">
+            <div key={e.id} className="liquid-glass p-5 md:p-6">
+              <p className="text-[12px] uppercase tracking-[0.16em] text-[var(--color-muted)] md:text-[13px]">
                 {fmtPeriod(e.start_date, e.end_date)}
               </p>
               <p className="mt-2 text-[17px] font-semibold text-[var(--color-text)]">{e.school}</p>
@@ -203,14 +203,14 @@ export default function Resume() {
         <div className="mt-8 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {(skills ?? []).map((g) => (
             <div key={g.group} className="liquid-glass p-5">
-              <p className="text-[11px] uppercase tracking-[0.16em] text-[var(--color-muted)]">
+              <p className="text-[12px] uppercase tracking-[0.16em] text-[var(--color-muted)] md:text-[13px]">
                 {g.group}
               </p>
               <div className="mt-3 flex flex-wrap gap-1.5">
                 {g.items.map((s) => (
                   <span
                     key={s}
-                    className="rounded-full border border-[var(--color-hairline-strong)] px-2.5 py-1 text-[12px] text-[var(--color-text)]"
+                    className="rounded-full border border-[var(--color-hairline-strong)] px-2.5 py-1 text-[12px] text-[var(--color-text)] md:text-[13px]"
                   >
                     {s}
                   </span>
@@ -223,12 +223,12 @@ export default function Resume() {
 
       {/* CTA */}
       <section className="container-page pb-24 pt-8">
-        <div className="liquid-glass flex flex-col items-start justify-between gap-5 p-8 md:flex-row md:items-center">
+        <div className="liquid-glass flex flex-col items-start justify-between gap-5 p-6 md:flex-row md:items-center md:p-8">
           <div>
-            <p className="text-[11px] uppercase tracking-[0.16em] text-[var(--color-muted)]">
+            <p className="text-[12px] uppercase tracking-[0.16em] text-[var(--color-muted)] md:text-[13px]">
               Want the printable version?
             </p>
-            <p className="mt-1 text-[18px] text-[var(--color-text)]">
+            <p className="mt-1 text-[17px] text-[var(--color-text)] md:text-[18px]">
               Grab the full résumé as a PDF.
             </p>
           </div>

@@ -18,8 +18,8 @@ const toneMap: Record<Tone, string> = {
 };
 
 const sizeMap: Record<Size, string> = {
-  sm: "px-[var(--space-2)] py-[2px] text-[10px]",
-  md: "px-[var(--space-3)] py-[var(--space-1)] text-[11px]",
+  sm: "px-[var(--space-2)] py-[3px] text-[11px]",
+  md: "px-[var(--space-3)] py-[var(--space-1)] text-[12px]",
 };
 
 export function Tag({

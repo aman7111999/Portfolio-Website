@@ -128,7 +128,6 @@
   --color-secondary-foreground: var(--color-text);
   --color-muted:                var(--color-elevated);
   --color-muted-foreground:     var(--color-muted);
-  --color-accent:               var(--color-accent);
   --color-accent-foreground:    var(--color-accent-contrast);
   --color-destructive:          #dc2626;
   --color-destructive-foreground: #ffffff;

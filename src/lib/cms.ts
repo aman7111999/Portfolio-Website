@@ -50,7 +50,8 @@ export type ContentKey =
   | "about_hero" | "about_timeline" | "about_experience" | "about_education"
   | "about_tools" | "about_philosophy" | "about_working_style"
   | "about_books" | "about_values" | "about_fun_facts"
-  | "contact_page" | "resume_page";
+  | "contact_page" | "resume_page"
+  | "project_access_content";
 
 
 export function useContent<T = any>(key: ContentKey, fallback?: T) {

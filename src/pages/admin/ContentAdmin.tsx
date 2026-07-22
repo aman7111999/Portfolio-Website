@@ -60,6 +60,7 @@ const GROUPS: Group[] = [
     items: [
       { key: "contact_page", label: "Contact page", preview: "/contact" },
       { key: "resume_page", label: "Résumé page", preview: "/resume" },
+      { key: "project_access_content", label: "Project access screen", preview: "/work" },
     ],
   },
 ];

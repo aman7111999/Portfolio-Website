@@ -106,6 +106,13 @@ export function ProjectCard({
                   <ArrowUpRight size={12} strokeWidth={2.5} />
                 </span>
               )}
+              <span
+                className="inline-flex items-center gap-1 rounded-full border px-2.5 py-1 text-[10.5px] font-medium uppercase tracking-[0.1em] opacity-80"
+                style={{ borderColor: `${palette.ink}25`, color: palette.ink }}
+                title="Password required to view full case study"
+              >
+                <Lock size={10} /> Password protected
+              </span>
             </div>
           </div>
 

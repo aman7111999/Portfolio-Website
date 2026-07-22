@@ -50,7 +50,8 @@ export type ContentKey =
   | "about_hero" | "about_timeline" | "about_experience" | "about_education"
   | "about_tools" | "about_philosophy" | "about_working_style"
   | "about_books" | "about_values" | "about_fun_facts"
-  | "contact_page" | "resume_page";
+  | "contact_page" | "resume_page"
+  | "project_access_content";
 
 
 export function useContent<T = any>(key: ContentKey, fallback?: T) {
@@ -96,12 +97,28 @@ export function useSite() {
   });
 }
 
-export function useProjects(opts: { publishedOnly?: boolean; featuredOnly?: boolean } = {}) {
+/**
+ * Public project list. Uses the `public_projects_index` view which only exposes
+ * preview fields (title, category, thumbnail, short description, tags). Full
+ * case-study content is served through the `get-protected-project` edge function
+ * after password verification.
+ */
+export function useProjects(opts: { publishedOnly?: boolean; featuredOnly?: boolean; admin?: boolean } = {}) {
   return useQuery({
     queryKey: ["projects", opts],
     queryFn: async () => {
-      let q = supabase.from("projects").select("*").order("sort_order", { ascending: true });
-      if (opts.publishedOnly) q = q.eq("published", true);
+      if (opts.admin) {
+        let q = supabase.from("projects").select("*").order("sort_order", { ascending: true });
+        if (opts.publishedOnly) q = q.eq("published", true);
+        if (opts.featuredOnly) q = q.eq("featured", true);
+        const { data, error } = await q;
+        if (error) throw error;
+        return (data ?? []) as unknown as ProjectRow[];
+      }
+      let q = supabase
+        .from("public_projects_index" as never)
+        .select("*")
+        .order("sort_order", { ascending: true });
       if (opts.featuredOnly) q = q.eq("featured", true);
       const { data, error } = await q;
       if (error) throw error;
@@ -110,9 +127,10 @@ export function useProjects(opts: { publishedOnly?: boolean; featuredOnly?: bool
   });
 }
 
+/** Admin-only: fetch full project row directly (requires admin auth). */
 export function useProject(slug: string) {
   return useQuery({
-    queryKey: ["project", slug],
+    queryKey: ["project-admin", slug],
     queryFn: async () => {
       const { data, error } = await supabase.from("projects").select("*").eq("slug", slug).maybeSingle();
       if (error) throw error;

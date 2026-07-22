@@ -1,9 +1,9 @@
-import { useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
 import { ArrowLeft, ArrowRight, ArrowUpRight, ExternalLink, ArrowDown } from "lucide-react";
 import { Seo } from "@/lib/seo";
-import { useProject, useProjects, useSite, projectGradient, type ProjectRow } from "@/lib/cms";
+import { useProjects, useSite, projectGradient, type ProjectRow } from "@/lib/cms";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Tag, Badge, Button } from "@/components/design";
 import { CaseSection } from "@/components/case/CaseSection";
@@ -13,20 +13,50 @@ import { ReadingProgress } from "@/components/case/ReadingProgress";
 import { ImpactGrid } from "@/components/case/ImpactGrid";
 import { PrototypeEmbed, isPrototypeLink } from "@/components/case/PrototypeEmbed";
 import { ProseHtml } from "@/components/case/ProseHtml";
+import { ProjectPasswordGate } from "@/components/projects/ProjectPasswordGate";
+import {
+  fetchProtectedProject,
+  getStoredAccessToken,
+  clearAccessToken,
+} from "@/lib/projectAccess";
 import NotFound from "./NotFound";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
-/* Editorial layout rotation across chapters so no two adjacent
-   sections share the same composition. */
 const CHAPTER_VARIANTS = ["rail", "split", "rail", "wide", "rail", "bleed", "centered"] as const;
 
 export default function ProjectPage() {
   const { slug = "" } = useParams();
-  const { data: project, isLoading } = useProject(slug);
-  const { data: siblings } = useProjects({ publishedOnly: true });
+  const { data: siblings } = useProjects({});
   const { data: site } = useSite();
   const reduce = useReducedMotion();
+
+  const [unlocked, setUnlocked] = useState<boolean>(() => !!getStoredAccessToken());
+  const [project, setProject] = useState<ProjectRow | null>(null);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [notFound, setNotFound] = useState(false);
+
+  useEffect(() => {
+    let alive = true;
+    if (!unlocked || !slug) return;
+    setLoading(true);
+    setNotFound(false);
+    fetchProtectedProject(slug).then((res) => {
+      if (!alive) return;
+      setLoading(false);
+      if (res.ok) {
+        setProject(res.project);
+      } else if (res.error === "unauthorized") {
+        clearAccessToken();
+        setUnlocked(false);
+      } else if (res.error === "not_found") {
+        setNotFound(true);
+      }
+    });
+    return () => {
+      alive = false;
+    };
+  }, [unlocked, slug]);
 
   const heroRef = useRef<HTMLElement>(null);
   const { scrollYProgress: heroProgress } = useScroll({
@@ -44,14 +74,28 @@ export default function ProjectPage() {
     [project],
   );
 
-  if (isLoading) {
+  if (!unlocked) {
+    return (
+      <>
+        <Seo
+          title="Protected case studies"
+          description="Password required to view portfolio case studies."
+          path={`/projects/${slug}`}
+          noindex
+        />
+        <ProjectPasswordGate onUnlocked={() => setUnlocked(true)} />
+      </>
+    );
+  }
+
+  if (loading || (!project && !notFound)) {
     return (
       <div className="container-page py-40">
         <Skeleton className="h-96 w-full" />
       </div>
     );
   }
-  if (!project) return <NotFound />;
+  if (notFound || !project) return <NotFound />;
 
   const list = siblings ?? [];
   const i = list.findIndex((p) => p.slug === slug);

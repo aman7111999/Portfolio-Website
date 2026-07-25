@@ -97,11 +97,11 @@ export function Navbar() {
 
           <div className="flex items-center gap-2">
             <ThemeToggle />
-            <NavLink to={nav?.cta_to ?? NAV_FALLBACK.cta_to} className="btn-primary !py-1.5 !pr-5 !text-[14px]" style={{ minHeight: 44 }}>
-              <span className="grid h-9 w-9 place-items-center rounded-full bg-[var(--color-accent-contrast)] text-[var(--color-accent)]">
-                <ArrowRight size={15} />
+            <NavLink to={nav?.cta_to ?? NAV_FALLBACK.cta_to} className="btn-primary !py-1.5 !pr-4 md:!pr-5 !text-[13px] md:!text-[14px] whitespace-nowrap" style={{ minHeight: 44 }}>
+              <span className="grid h-8 w-8 md:h-9 md:w-9 place-items-center rounded-full bg-[var(--color-accent-contrast)] text-[var(--color-accent)]">
+                <ArrowRight size={14} />
               </span>
-              <span>{nav?.cta_label ?? NAV_FALLBACK.cta_label}</span>
+              <span className="whitespace-nowrap">{nav?.cta_label ?? NAV_FALLBACK.cta_label}</span>
             </NavLink>
             <button
               type="button"

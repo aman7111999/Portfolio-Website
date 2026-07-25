@@ -80,7 +80,7 @@ export default function About() {
         <div className="grid gap-[var(--space-8)] md:grid-cols-12 md:items-end">
           <Reveal className="md:col-span-8">
             <Badge tone="accent" size="sm">{hero.badge ?? "About · Chapter 01"}</Badge>
-            <h1 className="display-hero mt-[var(--space-5)] text-5xl md:text-8xl leading-[0.95]">
+            <h1 className="display-hero mt-[var(--space-5)] text-[clamp(2.5rem,9vw,6rem)] leading-[1.02] md:leading-[0.95] break-words">
               {hero.heading_before ?? "A designer who"}{" "}
               <em className="font-serif italic text-[var(--color-accent)]">{hero.heading_accent ?? "listens"}</em>{" "}
               {hero.heading_after ?? "before he draws."}

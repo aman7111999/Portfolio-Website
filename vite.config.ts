@@ -7,9 +7,9 @@ import { writeFileSync, copyFileSync, existsSync } from "node:fs";
 import { resolve } from "node:path";
 
 // Public Supabase connection values (anon key; safe for client bundle).
-const DEFAULT_SUPABASE_URL = "https://wqaduhgfqgdcejrbzzuc.supabase.co";
+const DEFAULT_SUPABASE_URL = "https://phsbpngyfobtieyekewp.supabase.co";
 const DEFAULT_SUPABASE_PUBLISHABLE_KEY =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndxYWR1aGdmcWdkY2VqcmJ6enVjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODMyNTc3MzIsImV4cCI6MjA5ODgzMzczMn0.hyVwYDZ5si7ok5YAUi8urePfID34M3dRM2pwIjdPh0c";
+  "sb_publishable_JMQ5V0ZTb1Pme0tX-wOSDQ_9QDOcdw8";
 
 // Post-build: emit sitemap.xml, copy index.html -> 404.html for GH Pages SPA fallback.
 function ghPagesStatic() {

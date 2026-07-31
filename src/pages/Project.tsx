@@ -13,9 +13,8 @@ import { ImpactGrid } from "@/components/case/ImpactGrid";
 import { PrototypeEmbed, isPrototypeLink } from "@/components/case/PrototypeEmbed";
 import { ProseHtml } from "@/components/case/ProseHtml";
 import { ProjectPasswordGate } from "@/components/projects/ProjectPasswordGate";
-import { fetchProtectedProject, getStoredAccessToken, clearAccessToken } from "@/lib/projectAccess";
+import { fetchProtectedProject, clearAccessToken } from "@/lib/projectAccess";
 import NotFound from "./NotFound";
-import { PORTFOLIO_PROJECTS } from "@/data/portfolio";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
@@ -24,33 +23,21 @@ export default function ProjectPage() {
   const { data: siblings } = useProjects({});
   const { data: site } = useSite();
   const reduce = useReducedMotion();
-  const staticProject = useMemo(
-    () =>
-      PORTFOLIO_PROJECTS.find((item) => item.slug === slug) as unknown as ProjectRow | undefined,
-    [slug],
-  );
-
-  const [unlocked, setUnlocked] = useState<boolean>(
-    () => !!staticProject || !!getStoredAccessToken(),
-  );
-  const [project, setProject] = useState<ProjectRow | null>(() => staticProject ?? null);
-  const [loading, setLoading] = useState<boolean>(false);
+  const [project, setProject] = useState<ProjectRow | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [accessRequired, setAccessRequired] = useState(false);
   const [notFound, setNotFound] = useState(false);
+  const [loadError, setLoadError] = useState(false);
+  const [reloadKey, setReloadKey] = useState(0);
 
   useEffect(() => {
     let alive = true;
-    if (staticProject) {
-      setProject(staticProject);
-      setLoading(false);
-      setNotFound(false);
-      setUnlocked(true);
-      return () => {
-        alive = false;
-      };
-    }
-    if (!unlocked || !slug) return;
+    if (!slug) return;
     setLoading(true);
+    setProject(null);
     setNotFound(false);
+    setLoadError(false);
+    setAccessRequired(false);
     fetchProtectedProject(slug).then((res) => {
       if (!alive) return;
       setLoading(false);
@@ -58,22 +45,24 @@ export default function ProjectPage() {
         setProject(res.project);
       } else if (res.error === "unauthorized") {
         clearAccessToken();
-        setUnlocked(false);
+        setAccessRequired(true);
       } else if (res.error === "not_found") {
         setNotFound(true);
+      } else {
+        setLoadError(true);
       }
     });
     return () => {
       alive = false;
     };
-  }, [unlocked, slug, staticProject]);
+  }, [slug, reloadKey]);
 
   const prototypeLink = useMemo(
     () => (project?.links ?? []).find((l) => isPrototypeLink(l.url)),
     [project],
   );
 
-  if (!staticProject && !unlocked) {
+  if (accessRequired) {
     return (
       <>
         <Seo
@@ -82,15 +71,37 @@ export default function ProjectPage() {
           path={`/projects/${slug}`}
           noindex
         />
-        <ProjectPasswordGate onUnlocked={() => setUnlocked(true)} />
+        <ProjectPasswordGate
+          onUnlocked={() => {
+            setAccessRequired(false);
+            setReloadKey((key) => key + 1);
+          }}
+        />
       </>
     );
   }
 
-  if (loading || (!project && !notFound)) {
+  if (loading) {
     return (
       <div className="container-page py-40">
         <Skeleton className="h-96 w-full" />
+      </div>
+    );
+  }
+  if (loadError) {
+    return (
+      <div className="container-page grid min-h-[60vh] place-items-center py-28 text-center">
+        <div>
+          <p className="eyebrow">Connection issue</p>
+          <h1 className="mt-4 text-[clamp(2rem,4vw,3.5rem)]">The case study could not load.</h1>
+          <button
+            type="button"
+            onClick={() => setReloadKey((key) => key + 1)}
+            className="mt-7 inline-flex min-h-11 items-center rounded-[8px] bg-[var(--color-accent)] px-5 text-[14px] font-semibold text-[var(--color-accent-contrast)]"
+          >
+            Try again
+          </button>
+        </div>
       </div>
     );
   }

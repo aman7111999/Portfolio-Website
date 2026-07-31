@@ -89,7 +89,7 @@ export function useContent<T = unknown>(key: ContentKey, fallback?: T) {
     },
   });
   const local = (PORTFOLIO_CONTENT as Partial<Record<ContentKey, unknown>>)[key] as T | undefined;
-  return { ...q, data: (local ?? q.data ?? fallback ?? null) as T };
+  return { ...q, data: (q.data ?? local ?? fallback ?? null) as T };
 }
 
 export function useAllContent() {
@@ -100,16 +100,25 @@ export function useAllContent() {
       if (error) throw error;
       const map: Record<string, unknown> = {};
       for (const row of data ?? []) map[row.key] = row.data;
-      return { ...map, ...PORTFOLIO_CONTENT };
+      return { ...PORTFOLIO_CONTENT, ...map };
     },
   });
 }
 
 export function useSite() {
-  return useQuery({
+  const q = useQuery({
     queryKey: ["site"],
-    queryFn: async (): Promise<SiteSettings> => PORTFOLIO_SITE,
+    queryFn: async (): Promise<SiteSettings | null> => {
+      const { data, error } = await supabase
+        .from("site_settings")
+        .select("name,tagline,bio,email,location,profile_image_url,resume_url,socials")
+        .eq("id", 1)
+        .maybeSingle();
+      if (error) throw error;
+      return data as SiteSettings | null;
+    },
   });
+  return { ...q, data: q.data ?? (PORTFOLIO_SITE as SiteSettings) };
 }
 
 /**
@@ -121,7 +130,7 @@ export function useSite() {
 export function useProjects(
   opts: { publishedOnly?: boolean; featuredOnly?: boolean; admin?: boolean } = {},
 ) {
-  return useQuery({
+  const q = useQuery({
     queryKey: ["projects", opts],
     queryFn: async () => {
       if (opts.admin) {
@@ -132,12 +141,25 @@ export function useProjects(
         if (error) throw error;
         return (data ?? []) as unknown as ProjectRow[];
       }
-      let projects = [...PORTFOLIO_PROJECTS] as unknown as ProjectRow[];
-      if (opts.publishedOnly) projects = projects.filter((p) => p.published);
-      if (opts.featuredOnly) projects = projects.filter((p) => p.featured);
-      return projects.sort((a, b) => a.sort_order - b.sort_order);
+      let q = supabase
+        .from("public_projects_index")
+        .select("*")
+        .order("sort_order", { ascending: true });
+      if (opts.featuredOnly) q = q.eq("featured", true);
+      const { data, error } = await q;
+      if (error) throw error;
+      return (data ?? []) as unknown as ProjectRow[];
     },
   });
+
+  if (opts.admin) return q;
+
+  let fallbackProjects = [...PORTFOLIO_PROJECTS] as unknown as ProjectRow[];
+  if (opts.publishedOnly) fallbackProjects = fallbackProjects.filter((p) => p.published);
+  if (opts.featuredOnly) fallbackProjects = fallbackProjects.filter((p) => p.featured);
+  fallbackProjects.sort((a, b) => a.sort_order - b.sort_order);
+
+  return { ...q, data: q.data ?? fallbackProjects };
 }
 
 /** Admin-only: fetch full project row directly (requires admin auth). */
@@ -158,31 +180,73 @@ export function useProject(slug: string) {
 }
 
 export function useExperience() {
-  return useQuery({
+  const q = useQuery({
     queryKey: ["experience"],
-    queryFn: async () => PORTFOLIO_EXPERIENCE,
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("experience")
+        .select("*")
+        .eq("published", true)
+        .order("sort_order", { ascending: true });
+      if (error) throw error;
+      return data ?? [];
+    },
   });
+  return { ...q, data: q.data ?? PORTFOLIO_EXPERIENCE };
 }
 
 export function useEducation() {
-  return useQuery({
+  const q = useQuery({
     queryKey: ["education"],
-    queryFn: async () => PORTFOLIO_EDUCATION,
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("education")
+        .select("*")
+        .eq("published", true)
+        .order("sort_order", { ascending: true });
+      if (error) throw error;
+      return data ?? [];
+    },
   });
+  return { ...q, data: q.data ?? PORTFOLIO_EDUCATION };
 }
 
 export function useSkills() {
-  return useQuery({
+  const q = useQuery({
     queryKey: ["skills"],
-    queryFn: async () => PORTFOLIO_SKILLS,
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("skills")
+        .select("group_name,name,sort_order")
+        .order("sort_order", { ascending: true });
+      if (error) throw error;
+
+      const groups = new Map<string, string[]>();
+      for (const row of data ?? []) {
+        const items = groups.get(row.group_name) ?? [];
+        items.push(row.name);
+        groups.set(row.group_name, items);
+      }
+      return Array.from(groups, ([group, items]) => ({ group, items }));
+    },
   });
+  return { ...q, data: q.data ?? PORTFOLIO_SKILLS };
 }
 
 export function useTestimonials() {
-  return useQuery({
+  const q = useQuery({
     queryKey: ["testimonials"],
-    queryFn: async () => [],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("testimonials")
+        .select("*")
+        .eq("published", true)
+        .order("sort_order", { ascending: true });
+      if (error) throw error;
+      return data ?? [];
+    },
   });
+  return { ...q, data: q.data ?? [] };
 }
 
 export function useBlogs(publishedOnly = true) {

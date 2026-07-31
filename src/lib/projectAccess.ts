@@ -52,23 +52,33 @@ export async function fetchAccessStatus(): Promise<AccessStatus | null> {
   return (row as AccessStatus) ?? null;
 }
 
-export async function verifyPassword(password: string): Promise<
+export async function verifyPassword(
+  password: string,
+): Promise<
   | { ok: true; token: string; expiresAt: number; disabled?: boolean }
   | { ok: false; error: "invalid_password" | "rate_limited" | "not_configured" | "network" }
 > {
   try {
-    const { data, error } = await supabase.functions.invoke("verify-project-password", {
-      body: { password },
+    const { data, error } = await supabase.rpc("verify_project_password", {
+      _password: password,
     });
-    if (error) {
-      const status = (error as { context?: { status?: number } }).context?.status;
-      if (status === 429) return { ok: false, error: "rate_limited" };
-      if (status === 401) return { ok: false, error: "invalid_password" };
-      if (status === 503) return { ok: false, error: "not_configured" };
-      return { ok: false, error: "network" };
-    }
-    if (!data?.token) return { ok: false, error: "network" };
-    return { ok: true, token: data.token, expiresAt: data.expires_at, disabled: data.disabled };
+    if (error || !data) return { ok: false, error: "network" };
+    const result = data as {
+      token?: string;
+      expires_at?: number;
+      disabled?: boolean;
+      error?: string;
+    };
+    if (result.error === "rate_limited") return { ok: false, error: "rate_limited" };
+    if (result.error === "invalid_password") return { ok: false, error: "invalid_password" };
+    if (result.error === "not_configured") return { ok: false, error: "not_configured" };
+    if (!result.token || !result.expires_at) return { ok: false, error: "network" };
+    return {
+      ok: true,
+      token: result.token,
+      expiresAt: result.expires_at,
+      disabled: result.disabled,
+    };
   } catch {
     return { ok: false, error: "network" };
   }
@@ -77,22 +87,20 @@ export async function verifyPassword(password: string): Promise<
 export async function fetchProtectedProject(
   slug: string,
 ): Promise<
-  | { ok: true; project: ProjectRow }
-  | { ok: false; error: "unauthorized" | "not_found" | "network" }
+  { ok: true; project: ProjectRow } | { ok: false; error: "unauthorized" | "not_found" | "network" }
 > {
   const token = getStoredAccessToken();
   try {
-    const { data, error } = await supabase.functions.invoke("get-protected-project", {
-      body: { slug, token: token ?? undefined },
+    const { data, error } = await supabase.rpc("get_protected_project", {
+      _slug: slug,
+      _token: token,
     });
-    if (error) {
-      const status = (error as { context?: { status?: number } }).context?.status;
-      if (status === 401) return { ok: false, error: "unauthorized" };
-      if (status === 404) return { ok: false, error: "not_found" };
-      return { ok: false, error: "network" };
-    }
-    if (!data?.project) return { ok: false, error: "not_found" };
-    return { ok: true, project: data.project as ProjectRow };
+    if (error || !data) return { ok: false, error: "network" };
+    const result = data as { project?: ProjectRow; error?: string };
+    if (result.error === "unauthorized") return { ok: false, error: "unauthorized" };
+    if (result.error === "not_found") return { ok: false, error: "not_found" };
+    if (!result.project) return { ok: false, error: "network" };
+    return { ok: true, project: result.project };
   } catch {
     return { ok: false, error: "network" };
   }
@@ -103,7 +111,12 @@ export async function setProjectPassword(input: {
   enabled?: boolean;
   session_duration_hours?: number;
 }): Promise<{ ok: boolean; error?: string }> {
-  const { error } = await supabase.functions.invoke("set-project-password", { body: input });
-  if (error) return { ok: false, error: (error as Error).message };
-  return { ok: true };
+  const { data, error } = await supabase.rpc("set_project_password", {
+    _password: input.password ?? null,
+    _enabled: input.enabled ?? null,
+    _session_duration_hours: input.session_duration_hours ?? null,
+  });
+  if (error) return { ok: false, error: error.message };
+  const result = data as { ok?: boolean; error?: string } | null;
+  return result?.ok ? { ok: true } : { ok: false, error: result?.error ?? "Failed to update" };
 }

@@ -23,7 +23,9 @@ const FALLBACK: Data = {
 export function FeaturedWork() {
   const { data: projects } = useProjects({ publishedOnly: true });
   const { data: content } = useContent<Data>("home_featured", FALLBACK);
-  const items = (projects ?? []).slice(0, 4);
+  const allProjects = projects ?? [];
+  const items = allProjects.slice(0, 2);
+  const moreProjects = allProjects.slice(2);
   const copy = content ?? FALLBACK;
 
   return (
@@ -55,6 +57,27 @@ export function FeaturedWork() {
           ))}
           {items.length === 0 && <p className="text-[var(--color-muted)]">No projects yet.</p>}
         </div>
+
+        {moreProjects.length > 0 && (
+          <Reveal>
+            <Link
+              to={copy.view_all_to}
+              className="group mt-8 grid gap-4 border-y border-[var(--color-hairline-strong)] py-6 transition-colors hover:border-[var(--color-accent)] sm:grid-cols-[1fr_auto] sm:items-center"
+            >
+              <div>
+                <p className="system-label text-[var(--color-subtle)]">
+                  More in the project archive
+                </p>
+                <p className="mt-2 text-[17px] font-medium tracking-[-0.02em] text-[var(--color-text)]">
+                  {moreProjects.map((project) => project.title).join(" · ")}
+                </p>
+              </div>
+              <span className="inline-flex items-center gap-2 text-[13px] font-semibold text-[var(--color-accent)]">
+                View {moreProjects.length} more <ArrowUpRight size={14} />
+              </span>
+            </Link>
+          </Reveal>
+        )}
       </div>
     </section>
   );

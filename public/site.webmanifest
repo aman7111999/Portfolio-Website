@@ -1,0 +1,16 @@
+{
+  "name": "Aman Mishra — Product Designer",
+  "short_name": "Aman Mishra",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f3f2ed",
+  "theme_color": "#f3f2ed",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

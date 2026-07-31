@@ -1,6 +1,8 @@
 import { Reveal } from "@/components/Reveal";
 import { useContent, useExperience } from "@/lib/cms";
 import type { PortfolioExperience } from "@/data/portfolio";
+import { Link } from "react-router-dom";
+import { ArrowUpRight } from "lucide-react";
 
 type Data = { eyebrow: string; heading_line1: string; heading_line2: string };
 
@@ -18,6 +20,7 @@ export function Experience() {
   const { data: rows } = useExperience();
   const { data: content } = useContent<Data>("home_experience", FALLBACK);
   const copy = content ?? FALLBACK;
+  const featuredRoles = (rows ?? []).slice(0, 2);
 
   return (
     <section className="container-page py-24 md:py-32">
@@ -40,9 +43,9 @@ export function Experience() {
       </Reveal>
 
       <div className="mt-14 border-b border-[var(--color-hairline-strong)]">
-        {(rows ?? []).map((role: PortfolioExperience, index: number) => (
+        {featuredRoles.map((role: PortfolioExperience, index: number) => (
           <Reveal key={role.id} delay={index * 0.05}>
-            <article className="grid gap-6 border-t border-[var(--color-hairline-strong)] py-8 md:grid-cols-[220px_1fr] md:gap-12 md:py-10">
+            <article className="grid gap-6 border-t border-[var(--color-hairline-strong)] py-8 md:grid-cols-[190px_1fr] md:gap-10">
               <div>
                 <p className="eyebrow">{formatPeriod(role.start_date, role.end_date)}</p>
                 <p className="mt-3 text-[18px] font-semibold tracking-[-0.02em] text-[var(--color-text)]">
@@ -63,7 +66,7 @@ export function Experience() {
                 )}
                 {role.highlights.length > 0 && (
                   <ul className="mt-6 grid gap-x-8 gap-y-3 md:grid-cols-2">
-                    {role.highlights.map((highlight) => (
+                    {role.highlights.slice(0, 2).map((highlight) => (
                       <li
                         key={highlight}
                         className="flex gap-3 text-[13px] leading-[1.55] text-[var(--color-text)]"
@@ -78,6 +81,14 @@ export function Experience() {
             </article>
           </Reveal>
         ))}
+      </div>
+      <div className="mt-7 flex justify-end">
+        <Link
+          to="/resume"
+          className="story-link inline-flex min-h-11 items-center gap-2 text-[14px] font-semibold"
+        >
+          View full experience <ArrowUpRight size={15} />
+        </Link>
       </div>
     </section>
   );

@@ -4,6 +4,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { ArrowUpRight, Menu, X } from "lucide-react";
 import { useContent, useSite } from "@/lib/cms";
 import { ThemeToggle } from "@/components/design/ThemeToggle";
+import { BrandMark } from "@/components/BrandMark";
 
 type NavData = {
   links: { label: string; to: string }[];
@@ -62,10 +63,8 @@ export function Navbar() {
         aria-label="Primary"
         className="container-page flex h-[76px] items-center justify-between"
       >
-        <NavLink to="/" className="group flex items-center gap-3">
-          <span className="system-frame relative grid h-8 w-8 place-items-center overflow-hidden rounded-[8px] border border-[var(--color-hairline-strong)] text-[11px] font-semibold tracking-[-0.02em] text-[var(--color-text)] transition-colors before:!left-[3px] before:!top-[3px] before:!h-2 before:!w-2 after:!bottom-[3px] after:!right-[3px] after:!h-2 after:!w-2 group-hover:border-[var(--color-accent)] group-hover:text-[var(--color-accent)]">
-            AM
-          </span>
+        <NavLink to="/" className="group flex items-center gap-3" aria-label={`${name}, home`}>
+          <BrandMark className="h-9 w-9 transition-transform duration-500 group-hover:rotate-[-3deg] group-hover:scale-[1.04]" />
           <span className="leading-tight">
             <span className="block text-[14px] font-semibold text-[var(--color-text)] md:text-[15px]">
               {name}
@@ -98,7 +97,7 @@ export function Navbar() {
           <ThemeToggle />
           <NavLink
             to={nav?.cta_to ?? NAV_FALLBACK.cta_to}
-            className="hidden min-h-10 items-center gap-2 rounded-[8px] border border-[var(--color-hairline-strong)] px-4 text-[13px] font-semibold text-[var(--color-text)] transition-colors hover:border-[var(--color-accent)] hover:text-[var(--color-accent)] sm:inline-flex"
+            className="hidden min-h-10 items-center gap-2 rounded-[8px] bg-[var(--color-text)] px-4 text-[13px] font-semibold text-[var(--color-bg)] transition-colors hover:bg-[var(--color-accent)] hover:text-[var(--color-accent-contrast)] sm:inline-flex"
           >
             {nav?.cta_label ?? NAV_FALLBACK.cta_label}
             <ArrowUpRight size={14} />

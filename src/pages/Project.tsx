@@ -290,6 +290,26 @@ export default function ProjectPage() {
             <Meta label="Category" value={project.category} />
           </div>
 
+          <nav
+            aria-label="Case study sections"
+            className="mt-8 border-b border-[var(--color-hairline)] pb-6"
+          >
+            <p className="system-label text-[var(--color-subtle)]">Case map</p>
+            <ol className="mt-4 flex gap-x-6 gap-y-3 overflow-x-auto pb-1">
+              {activeChapters.map((chapter) => (
+                <li key={chapter.id} className="shrink-0">
+                  <a
+                    href={`#${chapter.id}`}
+                    className="story-link system-label inline-flex min-h-8 items-center gap-2 text-[var(--color-muted)] hover:text-[var(--color-accent)]"
+                  >
+                    <span className="text-[var(--color-subtle)]">{chapter.chapter}</span>
+                    {chapter.label}
+                  </a>
+                </li>
+              ))}
+            </ol>
+          </nav>
+
           {(project.tools.length > 0 || project.tags.length > 0) && (
             <div className="mt-[var(--space-8)] flex flex-wrap items-start gap-[var(--space-8)]">
               {project.tools.length > 0 && (

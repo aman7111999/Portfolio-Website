@@ -7,7 +7,7 @@ export function PortraitFrame({ src, alt }: { src?: string | null; alt?: string 
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
   const y = useTransform(scrollYProgress, [0, 1], reduce ? ["0%", "0%"] : ["-8%", "8%"]);
 
-  // No image → render a quiet typographic card, not fake camera chrome.
+  // No image → render a quiet typographic card.
   if (!src) {
     return (
       <div
@@ -21,7 +21,7 @@ export function PortraitFrame({ src, alt }: { src?: string | null; alt?: string 
               {alt ?? "Aman Mishra"}
             </p>
             <p className="mt-[var(--space-2)] text-sm text-[var(--color-muted)]">
-              Designer, Bengaluru
+              Product Designer, Mumbai
             </p>
           </div>
         </div>
@@ -41,21 +41,16 @@ export function PortraitFrame({ src, alt }: { src?: string | null; alt?: string 
         aria-label={alt}
         role="img"
       />
-      {/* Grain */}
       <span
         aria-hidden
-        className="absolute inset-0 opacity-[0.15] mix-blend-overlay"
-        style={{
-          backgroundImage:
-            "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.6 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>\")",
-        }}
+        className="tech-grid absolute inset-0 opacity-20 [mask-image:linear-gradient(to_bottom,black,transparent_42%)]"
       />
-      {/* Frame label */}
-      <div className="absolute inset-x-0 bottom-0 flex items-center justify-between border-t border-hairline bg-[var(--color-overlay)] px-[var(--space-4)] py-[var(--space-3)] backdrop-blur">
-        <p className="eyebrow">Portrait / 01</p>
-        <p className="eyebrow text-[var(--color-subtle)]">35mm · f/1.8</p>
+      <div className="absolute inset-x-4 bottom-4 flex items-center justify-between rounded-[10px] border border-white/20 bg-black/40 px-4 py-3 text-white backdrop-blur-md">
+        <p className="system-label flex items-center gap-2">
+          <span className="system-dot" /> AM / Product design
+        </p>
+        <p className="system-label opacity-60">Mumbai / IST</p>
       </div>
     </div>
   );
 }
-

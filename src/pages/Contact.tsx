@@ -93,15 +93,17 @@ export default function Contact() {
         siteName={site?.name ?? "Portfolio"}
       />
 
-      <section className="container-page pt-8 pb-12 md:pt-24 md:pb-16">
+      <section className="container-page pb-12 pt-12 md:pb-16 md:pt-20">
         <Reveal>
           <p className="eyebrow">{d.eyebrow}</p>
           <h1
             className="display-hero mt-6 max-w-[14ch] leading-[1.02]"
-            style={{ fontSize: "clamp(2.6rem, 10vw, 7.5rem)" }}
+            style={{ fontSize: "clamp(3rem, 6vw, 5.5rem)" }}
           >
             {d.heading_before}{" "}
-            <span className="italic text-[var(--color-accent)]">{d.heading_accent}</span>
+            <span className="font-serif font-normal italic text-[var(--color-accent)]">
+              {d.heading_accent}
+            </span>
             {d.heading_after}
           </h1>
           <p className="mt-6 max-w-2xl text-[16px] leading-[1.7] text-[var(--color-muted)] md:text-lg">
@@ -127,7 +129,7 @@ export default function Contact() {
               <button
                 type="button"
                 onClick={copyEmail}
-                className="mt-6 inline-flex min-h-11 items-center gap-2 rounded-full border border-[var(--color-hairline-strong)] px-4 py-2 text-[12px] uppercase tracking-widest text-[var(--color-muted)] transition-colors hover:border-[var(--color-text)] hover:text-[var(--color-text)]"
+                className="mt-6 inline-flex min-h-11 items-center gap-2 rounded-[8px] border border-[var(--color-hairline-strong)] px-4 py-2 text-[12px] uppercase tracking-widest text-[var(--color-muted)] transition-colors hover:border-[var(--color-text)] hover:text-[var(--color-text)]"
                 aria-live="polite"
               >
                 <AnimatePresence mode="wait" initial={false}>

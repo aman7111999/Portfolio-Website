@@ -2,7 +2,7 @@ import { createContext, useContext, useEffect, useState, type ReactNode } from "
 
 export type Theme = "light" | "dark";
 type Mode = Theme | "system";
-const STORAGE_KEY = "aman-theme";
+const STORAGE_KEY = "aman-theme-v2";
 
 type Ctx = {
   theme: Theme;
@@ -29,7 +29,13 @@ function applyThemeToDom(theme: Theme) {
   if (meta) meta.setAttribute("content", theme === "dark" ? "#0d0d0d" : "#faf8f5");
 }
 
-export function ThemeProvider({ children, defaultMode = "dark" }: { children: ReactNode; defaultMode?: Mode }) {
+export function ThemeProvider({
+  children,
+  defaultMode = "dark",
+}: {
+  children: ReactNode;
+  defaultMode?: Mode;
+}) {
   const [mode, setModeState] = useState<Mode>(() => {
     if (typeof window === "undefined") return defaultMode;
     return (localStorage.getItem(STORAGE_KEY) as Mode | null) ?? defaultMode;
@@ -83,5 +89,9 @@ export function useTheme() {
 
 /** Force a specific theme within a subtree (e.g. admin light-only). */
 export function ThemeScope({ theme, children }: { theme: Theme; children: ReactNode }) {
-  return <div data-theme={theme} style={{ minHeight: "100%" }}>{children}</div>;
+  return (
+    <div data-theme={theme} style={{ minHeight: "100%" }}>
+      {children}
+    </div>
+  );
 }

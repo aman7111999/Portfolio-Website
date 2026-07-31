@@ -1,79 +1,81 @@
 import { Reveal } from "@/components/Reveal";
-import { Briefcase, MapPin } from "lucide-react";
-import { useExperience, useContent } from "@/lib/cms";
+import { useContent, useExperience } from "@/lib/cms";
+import type { PortfolioExperience } from "@/data/portfolio";
 
 type Data = { eyebrow: string; heading_line1: string; heading_line2: string };
+
 const FALLBACK: Data = {
   eyebrow: "Experience",
-  heading_line1: "A decade of shipping",
-  heading_line2: "thoughtful product work.",
+  heading_line1: "Product ownership across",
+  heading_line2: "complex financial journeys.",
 };
 
-function fmtPeriod(s?: string | null, e?: string | null) {
-  const a = (s ?? "").trim();
-  const b = (e ?? "").trim() || "Present";
-  return [a, b].filter(Boolean).join(" — ");
+function formatPeriod(start?: string | null, end?: string | null) {
+  return [start?.trim(), end?.trim() || "Present"].filter(Boolean).join(" — ");
 }
 
 export function Experience() {
   const { data: rows } = useExperience();
-  const { data: c } = useContent<Data>("home_experience", FALLBACK);
-  const d = c ?? FALLBACK;
-  const roles = (rows ?? []) as any[];
+  const { data: content } = useContent<Data>("home_experience", FALLBACK);
+  const copy = content ?? FALLBACK;
 
   return (
     <section className="container-page py-24 md:py-32">
       <Reveal>
-        <div className="max-w-2xl">
-          <span className="glass-pill">
-            <Briefcase size={12} className="text-[var(--color-accent)]" />
-            {d.eyebrow}
-          </span>
-          <h2 className="mt-5 text-4xl md:text-6xl leading-[1.05]">
-            {d.heading_line1}<br />
-            <span className="font-serif italic text-[var(--color-accent)]">{d.heading_line2}</span>
-          </h2>
+        <div className="grid gap-6 lg:grid-cols-12 lg:items-end">
+          <div className="lg:col-span-8">
+            <p className="eyebrow">{copy.eyebrow}</p>
+            <h2 className="mt-4 text-[clamp(2.5rem,4.6vw,4rem)] leading-[1.04] tracking-[-0.04em]">
+              {copy.heading_line1}{" "}
+              <span className="font-serif font-normal italic text-[var(--color-accent)]">
+                {copy.heading_line2}
+              </span>
+            </h2>
+          </div>
+          <p className="max-w-sm text-[14px] leading-[1.65] text-[var(--color-muted)] lg:col-span-4 lg:justify-self-end">
+            A progression from hands-on execution to leading ambiguous, cross-functional product
+            work.
+          </p>
         </div>
       </Reveal>
 
-      <div className="mt-14 grid gap-5">
-        {roles.map((r, i) => (
-          <Reveal key={r.id} delay={i * 0.05}>
-            <div className="liquid-glass p-5 md:p-8">
-              <div className="grid gap-5 md:grid-cols-[220px_1fr] md:items-start md:gap-6 lg:grid-cols-[240px_1fr]">
-                <div>
-                  <p className="text-[12px] uppercase tracking-[0.16em] text-[var(--color-muted)] md:text-[13px]">
-                    {fmtPeriod(r.start_date, r.end_date)}
-                  </p>
-                  <p className="mt-2 text-[19px] font-semibold tracking-[-0.015em] text-[var(--color-text)] md:text-[22px]">{r.company}</p>
-                  {r.location && (
-                    <p className="mt-1.5 flex items-center gap-1.5 text-[13px] text-[var(--color-muted)]">
-                      <MapPin size={12} /> {r.location}
-                    </p>
-                  )}
-                </div>
-                <div>
-                  <p className="text-[16px] font-medium text-[var(--color-accent)] md:text-[17px]">{r.role}</p>
-                  {r.description && (
-                    <p className="mt-2.5 text-[15px] leading-[1.65] text-[var(--color-muted)] md:text-[16px]">
-                      {r.description}
-                    </p>
-                  )}
-                  {(r.highlights?.length ?? 0) > 0 && (
-                    <div className="mt-4 flex flex-wrap gap-2">
-                      {r.highlights.map((t: string) => (
-                        <span
-                          key={t}
-                          className="rounded-full border border-[var(--color-hairline-strong)] px-3 py-1 text-[12px] text-[var(--color-text)] md:text-[13px]"
-                        >
-                          {t}
-                        </span>
-                      ))}
-                    </div>
-                  )}
-                </div>
+      <div className="mt-14 border-b border-[var(--color-hairline-strong)]">
+        {(rows ?? []).map((role: PortfolioExperience, index: number) => (
+          <Reveal key={role.id} delay={index * 0.05}>
+            <article className="grid gap-6 border-t border-[var(--color-hairline-strong)] py-8 md:grid-cols-[220px_1fr] md:gap-12 md:py-10">
+              <div>
+                <p className="eyebrow">{formatPeriod(role.start_date, role.end_date)}</p>
+                <p className="mt-3 text-[18px] font-semibold tracking-[-0.02em] text-[var(--color-text)]">
+                  {role.company}
+                </p>
+                {role.location && (
+                  <p className="mt-1 text-[12px] text-[var(--color-subtle)]">{role.location}</p>
+                )}
               </div>
-            </div>
+              <div>
+                <h3 className="text-[20px] font-medium tracking-[-0.02em] text-[var(--color-accent)] md:text-[22px]">
+                  {role.role}
+                </h3>
+                {role.description && (
+                  <p className="mt-3 max-w-[68ch] text-[15px] leading-[1.7] text-[var(--color-muted)]">
+                    {role.description}
+                  </p>
+                )}
+                {role.highlights.length > 0 && (
+                  <ul className="mt-6 grid gap-x-8 gap-y-3 md:grid-cols-2">
+                    {role.highlights.map((highlight) => (
+                      <li
+                        key={highlight}
+                        className="flex gap-3 text-[13px] leading-[1.55] text-[var(--color-text)]"
+                      >
+                        <span className="mt-[0.6em] h-px w-4 shrink-0 bg-[var(--color-accent)]" />
+                        {highlight}
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+            </article>
           </Reveal>
         ))}
       </div>

@@ -1,8 +1,8 @@
 import { Link } from "react-router-dom";
 import { ArrowUpRight } from "lucide-react";
-import { motion, useReducedMotion } from "framer-motion";
-import { useProjects, useContent } from "@/lib/cms";
+import { useContent, useProjects } from "@/lib/cms";
 import { Reveal } from "@/components/Reveal";
+import { ProjectCard } from "@/components/ProjectCard";
 
 type Data = {
   eyebrow: string;
@@ -13,95 +13,48 @@ type Data = {
 };
 
 const FALLBACK: Data = {
-  eyebrow: "Selected Work",
-  heading_line1: "Projects that shipped &",
-  heading_line2: "moved the needle.",
-  view_all_label: "View all projects",
+  eyebrow: "Selected work",
+  heading_line1: "Complex product work,",
+  heading_line2: "explained with clarity.",
+  view_all_label: "View all work",
   view_all_to: "/work",
 };
 
 export function FeaturedWork() {
-  const reduce = useReducedMotion();
   const { data: projects } = useProjects({ publishedOnly: true });
-  const { data: c } = useContent<Data>("home_featured", FALLBACK);
+  const { data: content } = useContent<Data>("home_featured", FALLBACK);
   const items = (projects ?? []).slice(0, 4);
-  const d = c ?? FALLBACK;
+  const copy = content ?? FALLBACK;
 
   return (
-    <section className="container-page py-24 md:py-32">
-      <Reveal>
-        <div className="flex items-end justify-between gap-6 flex-wrap">
-          <div className="max-w-2xl">
-            <span className="glass-pill">
-              <span className="h-1.5 w-1.5 rounded-full bg-[var(--color-accent)]" />
-              {d.eyebrow}
-            </span>
-            <h2 className="mt-5 text-4xl md:text-6xl leading-[1.05]">
-              {d.heading_line1}<br />
-              <span className="font-serif italic text-[var(--color-accent)]">{d.heading_line2}</span>
-            </h2>
-          </div>
-          <Link to={d.view_all_to} className="glass-pill hover:text-[var(--color-accent)] transition-colors">
-            {d.view_all_label} <ArrowUpRight size={14} />
-          </Link>
-        </div>
-      </Reveal>
-
-      <div className="mt-14 grid grid-cols-1 gap-6 md:grid-cols-2">
-        {items.map((p, i) => (
-          <motion.div
-            key={p.slug}
-            className="min-w-0"
-            initial={reduce ? false : { opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-80px" }}
-            transition={{ duration: 0.7, delay: i * 0.06, ease: [0.22, 1, 0.36, 1] }}
-          >
+    <section className="border-t border-[var(--color-hairline)] py-24 md:py-32">
+      <div className="container-page">
+        <Reveal>
+          <div className="flex flex-wrap items-end justify-between gap-8">
+            <div className="max-w-3xl">
+              <p className="eyebrow">{copy.eyebrow}</p>
+              <h2 className="mt-4 text-[clamp(2.5rem,4.8vw,4.25rem)] leading-[1.02] tracking-[-0.045em]">
+                {copy.heading_line1}{" "}
+                <span className="font-serif font-normal italic text-[var(--color-accent)]">
+                  {copy.heading_line2}
+                </span>
+              </h2>
+            </div>
             <Link
-              to={`/projects/${p.slug}`}
-              className="liquid-glass group block overflow-hidden p-5 md:p-6"
+              to={copy.view_all_to}
+              className="story-link inline-flex min-h-11 items-center gap-2 text-[14px] font-semibold"
             >
-              <div className="relative aspect-[16/10] w-full overflow-hidden rounded-[var(--radius-md)] border border-[var(--color-hairline)]">
-                {p.thumbnail_url ? (
-                  <img
-                    src={p.thumbnail_url}
-                    alt={p.title}
-                    className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.04]"
-                    loading="lazy"
-                  />
-                ) : (
-                  <div
-                    aria-hidden
-                    className="h-full w-full"
-                    style={{
-                      background:
-                        "radial-gradient(120% 100% at 20% 10%, color-mix(in oklab, var(--color-accent) 35%, transparent) 0%, transparent 55%), linear-gradient(180deg, var(--color-elevated), var(--color-surface))",
-                    }}
-                  />
-                )}
-                <span className="glass-pill absolute left-4 top-4 !py-1 !px-3 text-[11px] uppercase tracking-[0.1em]">
-                  {p.category ?? "Case study"}
-                </span>
-              </div>
-              <div className="mt-6 flex items-start justify-between gap-4">
-                <div className="min-w-0 flex-1">
-                  <h3 className="text-[19px] md:text-[21px] font-semibold tracking-[-0.015em] leading-tight">{p.title}</h3>
-                  {p.short_description && (
-                    <p className="mt-2 text-[15px] leading-[1.6] text-[var(--color-muted)]">
-                      {p.short_description}
-                    </p>
-                  )}
-                </div>
-                <span className="mt-1 grid h-11 w-11 shrink-0 place-items-center rounded-full bg-[var(--color-accent)] text-[var(--color-accent-contrast)] transition-transform group-hover:rotate-45">
-                  <ArrowUpRight size={18} strokeWidth={2.5} />
-                </span>
-              </div>
+              {copy.view_all_label} <ArrowUpRight size={15} />
             </Link>
-          </motion.div>
-        ))}
-        {items.length === 0 && (
-          <p className="text-[var(--color-muted)]">No projects yet.</p>
-        )}
+          </div>
+        </Reveal>
+
+        <div className="mt-14 grid gap-6 md:grid-cols-2 md:gap-8">
+          {items.map((project, index) => (
+            <ProjectCard key={project.slug} project={project} index={index} size="lg" />
+          ))}
+          {items.length === 0 && <p className="text-[var(--color-muted)]">No projects yet.</p>}
+        </div>
       </div>
     </section>
   );

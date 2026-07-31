@@ -16,7 +16,6 @@ export function ThemeToggle({ className }: { className?: string }) {
         (className ?? "")
       }
     >
-
       <AnimatePresence mode="wait" initial={false}>
         <motion.span
           key={isDark ? "moon" : "sun"}
@@ -26,7 +25,7 @@ export function ThemeToggle({ className }: { className?: string }) {
           transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
           className="inline-flex"
         >
-          {isDark ? <Moon size={15} /> : <Sun size={15} />}
+          {isDark ? <Sun size={15} /> : <Moon size={15} />}
         </motion.span>
       </AnimatePresence>
     </button>

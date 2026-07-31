@@ -153,11 +153,11 @@ export const PORTFOLIO_SKILLS = [
 export const PORTFOLIO_CONTENT = {
   nav: {
     links: [
-      { label: "Projects", to: "/work" },
+      { label: "Work", to: "/work" },
       { label: "About", to: "/about" },
-      { label: "Resume", to: "/resume" },
+      { label: "Résumé", to: "/resume" },
     ],
-    cta_label: "Let’s Talk",
+    cta_label: "Contact",
     cta_to: "/contact",
     role_line: "Senior Product Designer",
   },
@@ -173,7 +173,7 @@ export const PORTFOLIO_CONTENT = {
     cta_to: "/work",
     secondary_cta_label: "View résumé",
     secondary_cta_to: "/resume",
-    brands: ["Motilal Oswal", "Trinkerr", "Fintech", "AI products", "Design systems"],
+    brands: ["Fintech", "0-to-1 products", "AI-assisted UX", "Design systems"],
     tools: [
       { icon: "Figma", tint: "accent", pos: { top: "6%", left: "-14%" } },
       { icon: "Diamond", tint: "text", pos: { top: "18%", right: "-14%" } },

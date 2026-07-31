@@ -16,11 +16,14 @@ export default function Work() {
         siteName={site?.name ?? "Portfolio"}
       />
 
-      <section className="container-page pt-8 pb-12 md:pt-24 md:pb-16">
+      <section className="container-page pb-16 pt-12 md:pb-20 md:pt-20">
         <Reveal>
           <p className="eyebrow">Selected case studies</p>
-          <h1 className="display-hero mt-4 text-5xl md:text-8xl">
-            Product decisions, not screen galleries.
+          <h1 className="mt-5 max-w-[14ch] text-[clamp(3rem,6vw,5.5rem)] font-medium leading-[0.98] tracking-[-0.05em]">
+            Product decisions,{" "}
+            <span className="font-serif font-normal italic text-[var(--color-accent)]">
+              not screen galleries.
+            </span>
           </h1>
           <p className="mt-6 max-w-2xl text-[16px] leading-[1.6] text-[var(--color-muted)] md:text-lg">
             Four stories showing how I frame complex problems, navigate constraints, align teams,
@@ -29,8 +32,8 @@ export default function Work() {
         </Reveal>
       </section>
 
-      <section className="container-page pb-20 md:pb-40">
-        <div className="grid gap-x-6 gap-y-10 md:grid-cols-2 md:gap-x-8 md:gap-y-16">
+      <section className="container-page pb-24 md:pb-32">
+        <div className="grid gap-6 md:grid-cols-2 md:gap-8">
           {isLoading &&
             [1, 2, 3, 4].map((i) => <Skeleton key={i} className="aspect-[4/3] w-full" />)}
           {projects?.map((p, i) => (

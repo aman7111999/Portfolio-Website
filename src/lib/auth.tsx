@@ -7,7 +7,11 @@ type AuthCtx = {
   user: User | null;
   session: Session | null;
   loading: boolean;
+  passwordRecovery: boolean;
   signIn: (email: string, password: string) => Promise<{ error?: string }>;
+  requestPasswordReset: (email: string) => Promise<{ error?: string }>;
+  updatePassword: (password: string) => Promise<{ error?: string }>;
+  finishPasswordRecovery: () => void;
   signOut: () => Promise<void>;
 };
 
@@ -16,12 +20,14 @@ const Ctx = createContext<AuthCtx | null>(null);
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
+  const [passwordRecovery, setPasswordRecovery] = useState(false);
 
   useEffect(() => {
     let mounted = true;
-    const { data: sub } = supabase.auth.onAuthStateChange((_e, s) => {
+    const { data: sub } = supabase.auth.onAuthStateChange((event, s) => {
       if (!mounted) return;
       setSession(s);
+      if (event === "PASSWORD_RECOVERY") setPasswordRecovery(true);
       setLoading(false);
     });
     supabase.auth.getSession().then(({ data }) => {
@@ -40,15 +46,31 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       user: session?.user ?? null,
       session,
       loading,
+      passwordRecovery,
       async signIn(email: string, password: string) {
-        const { error } = await supabase.auth.signInWithPassword({ email, password });
+        const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+        if (!error) setSession(data.session);
         return error ? { error: error.message } : {};
+      },
+      async requestPasswordReset(email: string) {
+        const { error } = await supabase.auth.resetPasswordForEmail(email, {
+          redirectTo: `${window.location.origin}/admin?recovery=1`,
+        });
+        return error ? { error: error.message } : {};
+      },
+      async updatePassword(password: string) {
+        const { error } = await supabase.auth.updateUser({ password });
+        return error ? { error: error.message } : {};
+      },
+      finishPasswordRecovery() {
+        setPasswordRecovery(false);
       },
       async signOut() {
         await supabase.auth.signOut();
+        setPasswordRecovery(false);
       },
     }),
-    [session, loading]
+    [session, loading, passwordRecovery],
   );
 
   return <Ctx.Provider value={value}>{children}</Ctx.Provider>;

@@ -31,6 +31,8 @@
   --color-accent-glow: rgba(49, 88, 70, 0.12);
   --color-accent-wash: rgba(49, 88, 70, 0.07);
   --color-accent-ring: rgba(49, 88, 70, 0.28);
+  --color-signal: #5e6fd8;
+  --color-signal-wash: rgba(94, 111, 216, 0.1);
 
   --elevation-1: 0 1px 2px rgba(23, 25, 21, 0.04);
   --elevation-2: 0 14px 34px -28px rgba(23, 25, 21, 0.28);
@@ -65,6 +67,8 @@
   --color-accent-glow: rgba(169, 202, 183, 0.12);
   --color-accent-wash: rgba(169, 202, 183, 0.06);
   --color-accent-ring: rgba(169, 202, 183, 0.34);
+  --color-signal: #96a3ff;
+  --color-signal-wash: rgba(150, 163, 255, 0.11);
 
   --elevation-1: 0 1px 2px rgba(0, 0, 0, 0.28);
   --elevation-2: 0 14px 34px -24px rgba(0, 0, 0, 0.55);
@@ -373,6 +377,109 @@
   background-size: 56px 56px;
 }
 
+/* Restrained technical language used on selected visual surfaces. */
+@utility tech-grid {
+  background-image:
+    linear-gradient(color-mix(in oklab, var(--color-text) 5%, transparent) 1px, transparent 1px),
+    linear-gradient(
+      90deg,
+      color-mix(in oklab, var(--color-text) 5%, transparent) 1px,
+      transparent 1px
+    );
+  background-size: 42px 42px;
+}
+
+@utility system-frame {
+  position: relative;
+}
+.system-frame::before,
+.system-frame::after {
+  position: absolute;
+  z-index: 2;
+  width: 30px;
+  height: 30px;
+  content: "";
+  pointer-events: none;
+}
+.system-frame::before {
+  top: 14px;
+  left: 14px;
+  border-top: 1px solid color-mix(in oklab, var(--color-text) 34%, transparent);
+  border-left: 1px solid color-mix(in oklab, var(--color-text) 34%, transparent);
+}
+.system-frame::after {
+  right: 14px;
+  bottom: 14px;
+  border-right: 1px solid color-mix(in oklab, var(--color-text) 34%, transparent);
+  border-bottom: 1px solid color-mix(in oklab, var(--color-text) 34%, transparent);
+}
+
+.system-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.system-dot {
+  position: relative;
+  width: 6px;
+  height: 6px;
+  flex: none;
+  border-radius: 9999px;
+  background: var(--color-signal);
+  box-shadow: 0 0 0 3px var(--color-signal-wash);
+}
+
+.signal-orbit {
+  position: absolute;
+  width: 96px;
+  height: 96px;
+  border: 1px solid color-mix(in oklab, var(--color-signal) 38%, transparent);
+  border-radius: 9999px;
+}
+.signal-orbit::before,
+.signal-orbit::after {
+  position: absolute;
+  content: "";
+}
+.signal-orbit::before {
+  inset: 15px;
+  border: 1px dashed color-mix(in oklab, var(--color-text) 15%, transparent);
+  border-radius: inherit;
+}
+.signal-orbit::after {
+  top: 4px;
+  left: 45px;
+  width: 6px;
+  height: 6px;
+  border-radius: 9999px;
+  background: var(--color-signal);
+  box-shadow: 0 0 0 4px var(--color-signal-wash);
+  animation: signal-breathe 2.8s ease-in-out infinite;
+}
+
+.project-visual::after {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  content: "";
+  pointer-events: none;
+  background: linear-gradient(
+    110deg,
+    transparent 22%,
+    color-mix(in oklab, var(--color-signal) 12%, transparent) 46%,
+    transparent 68%
+  );
+  transform: translateX(-115%);
+  transition: transform 900ms var(--ease-out-quart);
+}
+.group:hover .project-visual::after {
+  transform: translateX(115%);
+}
+
 /* Primary action */
 @utility btn-primary {
   display: inline-flex;
@@ -468,6 +575,17 @@
   100% {
     transform: scale(1.6);
     opacity: 0;
+  }
+}
+@keyframes signal-breathe {
+  0%,
+  100% {
+    opacity: 0.55;
+    transform: scale(0.82);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1);
   }
 }
 

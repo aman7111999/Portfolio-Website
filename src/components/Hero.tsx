@@ -39,16 +39,16 @@ export function Hero() {
   const name = site?.name ?? "Aman Mishra";
 
   return (
-    <section className="container-page pb-24 pt-14 md:pb-32 md:pt-24">
+    <section className="container-page relative pb-24 pt-14 md:pb-32 md:pt-24">
       <div className="grid items-center gap-14 lg:grid-cols-12 lg:gap-16">
         <div className="lg:col-span-7">
           <motion.div
             initial={reduce ? false : { opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.55 }}
-            className="flex items-center gap-3 text-[12px] font-medium text-[var(--color-muted)]"
+            className="system-label flex items-center gap-3 text-[var(--color-muted)]"
           >
-            <span className="h-2 w-2 rounded-full bg-[var(--color-accent)]" />
+            <span className="system-dot" />
             {content.available_label}
           </motion.div>
 
@@ -116,8 +116,9 @@ export function Hero() {
           transition={{ duration: 0.85, delay: 0.14, ease: [0.22, 1, 0.36, 1] }}
           className="lg:col-span-5"
         >
-          <figure className="mx-auto max-w-[410px] lg:ml-auto lg:mr-0">
-            <div className="relative aspect-[4/5] overflow-hidden rounded-[var(--radius-lg)] border border-[var(--color-hairline-strong)] bg-[var(--color-elevated)]">
+          <figure className="relative mx-auto max-w-[410px] lg:ml-auto lg:mr-0">
+            <div className="signal-orbit -right-7 -top-7 z-10 hidden md:block" aria-hidden />
+            <div className="system-frame relative aspect-[4/5] overflow-hidden rounded-[var(--radius-lg)] border border-[var(--color-hairline-strong)] bg-[var(--color-elevated)] shadow-[var(--elevation-3)]">
               <img
                 src={site?.profile_image_url || portraitImg}
                 alt={name}
@@ -125,16 +126,31 @@ export function Hero() {
                 width={1024}
                 height={1280}
               />
+              <div
+                aria-hidden
+                className="tech-grid absolute inset-0 opacity-20 [mask-image:linear-gradient(to_bottom,black,transparent_38%)]"
+              />
+              <div className="absolute inset-x-5 top-5 z-10 flex items-center justify-between text-[var(--color-inverse)] mix-blend-difference">
+                <span className="system-label">AM / 2026</span>
+                <span className="system-label">04.5+ YRS</span>
+              </div>
+              <div className="absolute bottom-5 left-5 right-5 z-10 flex items-center justify-between gap-4 rounded-[10px] border border-white/20 bg-black/35 px-4 py-3 text-white backdrop-blur-md">
+                <div className="flex items-center gap-2">
+                  <span className="system-dot" />
+                  <span className="system-label">Product systems online</span>
+                </div>
+                <span className="system-label hidden opacity-65 sm:block">Strategy × craft</span>
+              </div>
             </div>
             <figcaption className="grid grid-cols-2 gap-4 border-b border-[var(--color-hairline)] py-4 text-[12px]">
               <div>
-                <span className="block text-[var(--color-subtle)]">Currently</span>
+                <span className="system-label block text-[var(--color-subtle)]">Currently</span>
                 <span className="mt-1 block font-medium text-[var(--color-text)]">
                   Motilal Oswal
                 </span>
               </div>
               <div>
-                <span className="block text-[var(--color-subtle)]">Based in</span>
+                <span className="system-label block text-[var(--color-subtle)]">Based in</span>
                 <span className="mt-1 block font-medium text-[var(--color-text)]">
                   {site?.location ?? "Mumbai, India"}
                 </span>

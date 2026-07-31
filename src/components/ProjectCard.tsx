@@ -30,7 +30,7 @@ export function ProjectCard({
         className="group flex h-full flex-col overflow-hidden rounded-[var(--radius-lg)] border border-[var(--color-hairline-strong)] bg-[var(--color-surface)] transition-[transform,border-color,box-shadow] duration-500 hover:-translate-y-0.5 hover:border-[var(--color-accent)] hover:shadow-[var(--elevation-2)]"
       >
         <div
-          className={`relative overflow-hidden border-b border-[var(--color-hairline)] bg-[var(--color-elevated)] ${
+          className={`project-visual relative overflow-hidden border-b border-[var(--color-hairline)] bg-[var(--color-elevated)] ${
             size === "lg" ? "aspect-[16/10]" : "aspect-[16/9]"
           }`}
         >
@@ -44,21 +44,50 @@ export function ProjectCard({
           ) : (
             <div
               aria-hidden
-              className="absolute inset-0"
+              className="system-frame absolute inset-0"
               style={{
                 background:
                   "linear-gradient(145deg, color-mix(in oklab, var(--color-accent) 11%, var(--color-elevated)), var(--color-surface))",
               }}
             >
-              <div className="absolute inset-x-6 top-6 flex items-center justify-between text-[11px] uppercase tracking-[0.14em] text-[var(--color-muted)] md:inset-x-8 md:top-8">
+              <div aria-hidden className="tech-grid absolute inset-0 opacity-75" />
+              <div className="absolute inset-x-6 top-6 z-[2] flex items-center justify-between text-[var(--color-muted)] md:inset-x-8 md:top-8">
                 <span>{project.company ?? "Product design"}</span>
-                <span>{project.timeline ?? number}</span>
+                <span className="system-label flex items-center gap-2">
+                  <span className="system-dot" /> {project.timeline ?? number}
+                </span>
               </div>
+              <div
+                aria-hidden
+                className="signal-orbit bottom-9 left-[32%] opacity-65 transition-transform duration-700 group-hover:rotate-[28deg] group-hover:scale-110"
+              />
+              <svg
+                aria-hidden
+                viewBox="0 0 360 180"
+                className="absolute left-8 top-1/2 z-[1] h-[45%] w-[58%] -translate-y-1/2 overflow-visible text-[var(--color-accent)] opacity-55"
+                fill="none"
+              >
+                <path
+                  d="M4 126C52 126 60 54 112 54S174 112 220 112 284 36 354 36"
+                  stroke="currentColor"
+                  strokeWidth="1"
+                />
+                <path d="M4 146H178M242 16H354" stroke="currentColor" strokeOpacity=".35" />
+                <circle cx="112" cy="54" r="5" fill="var(--color-signal)" />
+                <circle
+                  cx="220"
+                  cy="112"
+                  r="4"
+                  fill="var(--color-elevated)"
+                  stroke="currentColor"
+                />
+                <circle cx="354" cy="36" r="4" fill="currentColor" />
+              </svg>
               <span className="absolute bottom-[-0.12em] right-5 font-serif text-[clamp(7rem,17vw,13rem)] leading-none text-[color-mix(in_oklab,var(--color-accent)_22%,transparent)] md:right-8">
                 {number}
               </span>
               <div className="absolute bottom-7 left-6 max-w-[14rem] md:bottom-8 md:left-8">
-                <span className="eyebrow text-[var(--color-accent)]">
+                <span className="system-label text-[var(--color-accent)]">
                   {project.category ?? "Case study"}
                 </span>
               </div>

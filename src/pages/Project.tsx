@@ -227,22 +227,52 @@ export default function ProjectPage() {
             initial={reduce ? false : { opacity: 0, y: 18 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.85, delay: 0.12, ease: EASE }}
-            className="relative mt-16 aspect-[16/7] overflow-hidden rounded-[var(--radius-lg)] border border-[var(--color-hairline-strong)] bg-[var(--color-elevated)]"
+            className="project-visual relative mt-16 aspect-[16/7] overflow-hidden rounded-[var(--radius-lg)] border border-[var(--color-hairline-strong)] bg-[var(--color-elevated)]"
           >
             {project.thumbnail_url ? (
               <img src={project.thumbnail_url} alt="" className="h-full w-full object-cover" />
             ) : (
               <div
                 aria-hidden
-                className="absolute inset-0"
+                className="system-frame absolute inset-0"
                 style={{
                   background:
                     "linear-gradient(145deg, color-mix(in oklab, var(--color-accent) 12%, var(--color-elevated)), var(--color-surface))",
                 }}
               >
-                <span className="absolute left-7 top-7 text-[11px] font-semibold uppercase tracking-[0.16em] text-[var(--color-muted)] md:left-10 md:top-10">
+                <div aria-hidden className="tech-grid absolute inset-0 opacity-75" />
+                <span className="system-label absolute left-7 top-7 z-[2] text-[var(--color-muted)] md:left-10 md:top-10">
                   {project.role?.split("·")[0]?.trim()}
                 </span>
+                <span className="system-label absolute right-7 top-7 z-[2] flex items-center gap-2 text-[var(--color-muted)] md:right-10 md:top-10">
+                  <span className="system-dot" /> Case file / active
+                </span>
+                <div
+                  aria-hidden
+                  className="signal-orbit left-[18%] top-1/2 -translate-y-1/2 scale-125 opacity-70"
+                />
+                <svg
+                  aria-hidden
+                  viewBox="0 0 660 220"
+                  className="absolute left-[12%] top-1/2 z-[1] h-[52%] w-[60%] -translate-y-1/2 overflow-visible text-[var(--color-accent)] opacity-55"
+                  fill="none"
+                >
+                  <path
+                    d="M4 166C82 166 96 60 182 60s100 88 178 88S470 34 656 34"
+                    stroke="currentColor"
+                    strokeWidth="1"
+                  />
+                  <path d="M4 194H322M424 8H656" stroke="currentColor" strokeOpacity=".35" />
+                  <circle cx="182" cy="60" r="6" fill="var(--color-signal)" />
+                  <circle
+                    cx="360"
+                    cy="148"
+                    r="5"
+                    fill="var(--color-elevated)"
+                    stroke="currentColor"
+                  />
+                  <circle cx="656" cy="34" r="5" fill="currentColor" />
+                </svg>
                 <span className="absolute bottom-[-0.15em] right-7 font-serif text-[clamp(8rem,24vw,19rem)] leading-none text-[color-mix(in_oklab,var(--color-accent)_20%,transparent)] md:right-12">
                   {String(Math.max(i, 0) + 1).padStart(2, "0")}
                 </span>

@@ -389,9 +389,6 @@
   background-size: 42px 42px;
 }
 
-@utility system-frame {
-  position: relative;
-}
 .system-frame::before,
 .system-frame::after {
   position: absolute;

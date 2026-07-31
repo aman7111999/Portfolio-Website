@@ -63,7 +63,7 @@ export function Navbar() {
         className="container-page flex h-[76px] items-center justify-between"
       >
         <NavLink to="/" className="group flex items-center gap-3">
-          <span className="system-frame grid h-8 w-8 place-items-center overflow-hidden rounded-[8px] border border-[var(--color-hairline-strong)] text-[11px] font-semibold tracking-[-0.02em] text-[var(--color-text)] transition-colors before:!left-[3px] before:!top-[3px] before:!h-2 before:!w-2 after:!bottom-[3px] after:!right-[3px] after:!h-2 after:!w-2 group-hover:border-[var(--color-accent)] group-hover:text-[var(--color-accent)]">
+          <span className="system-frame relative grid h-8 w-8 place-items-center overflow-hidden rounded-[8px] border border-[var(--color-hairline-strong)] text-[11px] font-semibold tracking-[-0.02em] text-[var(--color-text)] transition-colors before:!left-[3px] before:!top-[3px] before:!h-2 before:!w-2 after:!bottom-[3px] after:!right-[3px] after:!h-2 after:!w-2 group-hover:border-[var(--color-accent)] group-hover:text-[var(--color-accent)]">
             AM
           </span>
           <span className="leading-tight">

@@ -528,6 +528,13 @@ export type Database = {
       }
     }
     Functions: {
+      get_protected_project: {
+        Args: {
+          _slug: string
+          _token?: string | null
+        }
+        Returns: Json
+      }
       get_project_access_status: {
         Args: never
         Returns: {
@@ -544,6 +551,20 @@ export type Database = {
           _user_id: string
         }
         Returns: boolean
+      }
+      set_project_password: {
+        Args: {
+          _enabled?: boolean | null
+          _password?: string | null
+          _session_duration_hours?: number | null
+        }
+        Returns: Json
+      }
+      verify_project_password: {
+        Args: {
+          _password?: string | null
+        }
+        Returns: Json
       }
     }
     Enums: {

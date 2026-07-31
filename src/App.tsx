@@ -5,8 +5,6 @@ import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { ReadingProgress } from "@/components/ReadingProgress";
 import { PageTransition } from "@/components/PageTransition";
-import { CursorFollower } from "@/components/CursorFollower";
-import { NoiseOverlay } from "@/components/BackgroundFX";
 import { useLenis } from "@/lib/lenis";
 
 const Home = lazy(() => import("@/pages/Home"));
@@ -64,8 +62,6 @@ function PublicShell({ children }: { children: React.ReactNode }) {
       >
         Skip to content
       </a>
-      <NoiseOverlay />
-      <CursorFollower />
       <ReadingProgress />
       <Navbar />
       <main id="main" className="pt-[88px] md:pt-[104px]">

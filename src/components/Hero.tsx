@@ -1,15 +1,8 @@
 import { motion, useReducedMotion } from "framer-motion";
-import { ArrowRight } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 import { Link } from "react-router-dom";
-import { useSite, useContent } from "@/lib/cms";
-import { getIcon } from "@/lib/iconRegistry";
+import { useContent, useSite } from "@/lib/cms";
 import portraitImg from "@/assets/portrait.jpg";
-
-type HeroTool = {
-  icon: string;
-  tint?: "accent" | "text";
-  pos: React.CSSProperties;
-};
 
 type HeroData = {
   available_label: string;
@@ -19,198 +12,152 @@ type HeroData = {
   subline: string;
   cta_label: string;
   cta_to: string;
+  secondary_cta_label?: string;
+  secondary_cta_to?: string;
   brands: string[];
-  tools: HeroTool[];
-  badge_text: string;
 };
 
 const FALLBACK: HeroData = {
-  available_label: "Available for Projects",
-  headline_before: "Meet the",
-  headline_accent: "Expert",
-  headline_after: "Product Designer",
-  subline: "I focus on delivering seamless navigation, responsive layouts, and pixel-perfect designs — from 0→1 product to launch.",
-  cta_label: "View Projects",
+  available_label: "Open to Senior Product Designer opportunities",
+  headline_before: "Making complex",
+  headline_accent: "financial products",
+  headline_after: "clear and trustworthy.",
+  subline:
+    "I lead complex product work from problem framing through launch, with experience across fintech, AI-assisted products, and design systems.",
+  cta_label: "View selected work",
   cta_to: "/work",
-  brands: ["Figma", "Framer", "Webflow", "Linear", "Notion"],
-  tools: [
-    { icon: "Figma",   tint: "accent", pos: { top: "6%",   left: "-14%" } },
-    { icon: "Diamond", tint: "text",   pos: { top: "18%",  right: "-14%" } },
-    { icon: "Shield",  tint: "text",   pos: { top: "48%",  right: "-18%" } },
-    { icon: "Framer",  tint: "accent", pos: { top: "56%",  left: "-16%" } },
-    { icon: "PenTool", tint: "text",   pos: { bottom: "12%", left: "-8%" } },
-  ],
-  badge_text: "OFFICIAL FRAMER PARTNER • CREATOR •",
+  secondary_cta_label: "View résumé",
+  secondary_cta_to: "/resume",
+  brands: ["Fintech", "0-to-1 products", "AI experiences", "Design systems"],
 };
 
 export function Hero() {
   const reduce = useReducedMotion();
   const { data: site } = useSite();
   const { data: hero } = useContent<HeroData>("hero", FALLBACK);
-  const h = hero ?? FALLBACK;
-
+  const content = hero ?? FALLBACK;
   const name = site?.name ?? "Aman Mishra";
-  const avatar = site?.profile_image_url;
 
   return (
-    <section className="relative isolate overflow-hidden pt-8 pb-16 md:pt-24 md:pb-24">
-      <div className="pointer-events-none absolute inset-0 -z-10 bg-grid opacity-30" />
-      <div
-        aria-hidden
-        className="pointer-events-none absolute right-[10%] top-1/3 -z-10 h-[500px] w-[500px] rounded-full"
-        style={{
-          background: "radial-gradient(closest-side, var(--color-accent-glow), transparent 70%)",
-          filter: "blur(30px)",
-        }}
-      />
+    <section className="container-page relative pb-24 pt-14 md:pb-32 md:pt-24">
+      <div className="grid items-center gap-14 lg:grid-cols-12 lg:gap-16">
+        <div className="lg:col-span-7">
+          <motion.div
+            initial={reduce ? false : { opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.55 }}
+            className="system-label flex items-center gap-3 text-[var(--color-muted)]"
+          >
+            <span className="system-dot" />
+            {content.available_label}
+          </motion.div>
 
-      <div className="container-page relative">
-        <div className="grid items-center gap-10 md:grid-cols-12 md:gap-6">
-          <div className="md:col-span-6 lg:col-span-7">
-            <motion.div
-              initial={reduce ? false : { opacity: 0, y: -8 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-              className="glass-pill"
-            >
-              <span className="relative flex h-2 w-2">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[var(--color-accent)] opacity-70" />
-                <span className="relative inline-flex h-2 w-2 rounded-full bg-[var(--color-accent)]" />
-              </span>
-              <span className="text-[12px] font-medium text-[var(--color-muted)]">
-                {h.available_label}
-              </span>
-            </motion.div>
+          <motion.h1
+            initial={reduce ? false : { opacity: 0, y: 22 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.08, ease: [0.22, 1, 0.36, 1] }}
+            className="mt-7 max-w-[13ch] text-[clamp(3.15rem,6.4vw,5.25rem)] font-medium leading-[0.98] tracking-[-0.05em] text-[var(--color-text)]"
+          >
+            {content.headline_before}{" "}
+            <span className="font-serif font-normal italic tracking-[-0.025em] text-[var(--color-accent)]">
+              {content.headline_accent}
+            </span>{" "}
+            {content.headline_after}
+          </motion.h1>
 
-            <motion.h1
-              initial={reduce ? false : { opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
-              className="mt-6 font-semibold leading-[1.02] tracking-[-0.03em] text-[var(--color-text)]"
-              style={{ fontSize: "clamp(2.4rem, 8vw, 5.5rem)" }}
-            >
-              {h.headline_before} <span className="text-[var(--color-accent)]">{h.headline_accent}</span>
-              <br />
-              {h.headline_after}
-            </motion.h1>
+          <motion.p
+            initial={reduce ? false : { opacity: 0, y: 14 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.2 }}
+            className="mt-8 max-w-[58ch] text-[16px] leading-[1.7] text-[var(--color-muted)] md:text-[17px]"
+          >
+            {content.subline}
+          </motion.p>
 
-            <motion.p
-              initial={reduce ? false : { opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.3 }}
-              className="mt-6 max-w-md text-[15px] leading-relaxed text-[var(--color-muted)]"
-            >
-              {h.subline}
-            </motion.p>
-
-            <motion.div
-              initial={reduce ? false : { opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.45 }}
-              className="mt-8 flex flex-wrap items-center gap-3"
-            >
-              <Link to={h.cta_to} className="btn-primary">
-                <span className="grid h-9 w-9 place-items-center rounded-full bg-[var(--color-accent-contrast)] text-[var(--color-accent)]">
-                  <ArrowRight size={15} />
-                </span>
-                {h.cta_label}
+          <motion.div
+            initial={reduce ? false : { opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.3 }}
+            className="mt-9 flex flex-wrap items-center gap-6"
+          >
+            <Link to={content.cta_to} className="btn-primary">
+              {content.cta_label} <ArrowUpRight size={16} />
+            </Link>
+            {content.secondary_cta_label && content.secondary_cta_to && (
+              <Link
+                to={content.secondary_cta_to}
+                className="story-link inline-flex min-h-11 items-center gap-2 text-[14px] font-semibold text-[var(--color-text)]"
+              >
+                {content.secondary_cta_label} <ArrowUpRight size={15} />
               </Link>
-            </motion.div>
+            )}
+          </motion.div>
 
-            <motion.div
-              initial={reduce ? false : { opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.8, delay: 0.7 }}
-              className="mt-12 flex flex-wrap items-center gap-x-8 gap-y-3 text-[var(--color-subtle)]"
-            >
-              {(h.brands ?? []).map((b) => (
-                <span key={b} className="text-[13px] font-semibold tracking-tight opacity-70">
-                  {b}
+          <motion.div
+            initial={reduce ? false : { opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.7, delay: 0.42 }}
+            className="mt-14 border-t border-[var(--color-hairline)] pt-5"
+          >
+            <p className="eyebrow">Focus</p>
+            <div className="mt-3 flex flex-wrap gap-x-5 gap-y-2">
+              {(content.brands ?? []).map((item) => (
+                <span key={item} className="text-[13px] text-[var(--color-muted)]">
+                  {item}
                 </span>
               ))}
-            </motion.div>
-          </div>
+            </div>
+          </motion.div>
+        </div>
 
-          <div className="md:col-span-6 lg:col-span-5">
-            <motion.div
-              initial={reduce ? false : { opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.9, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
-              className="relative mx-auto aspect-[4/5] w-full max-w-[460px]"
-            >
+        <motion.div
+          initial={reduce ? false : { opacity: 0, y: 18 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.85, delay: 0.14, ease: [0.22, 1, 0.36, 1] }}
+          className="lg:col-span-5"
+        >
+          <figure className="relative mx-auto max-w-[410px] lg:ml-auto lg:mr-0">
+            <div className="signal-orbit -right-7 -top-7 z-10 hidden md:block" aria-hidden />
+            <div className="system-frame relative aspect-[4/5] overflow-hidden rounded-[var(--radius-lg)] border border-[var(--color-hairline-strong)] bg-[var(--color-elevated)] shadow-[var(--elevation-3)]">
+              <img
+                src={site?.profile_image_url || portraitImg}
+                alt={name}
+                className="h-full w-full object-cover"
+                width={1024}
+                height={1280}
+              />
               <div
                 aria-hidden
-                className="pointer-events-none absolute -inset-8 -z-10 rounded-[50%]"
-                style={{
-                  background:
-                    "radial-gradient(closest-side, color-mix(in oklab, var(--color-accent) 22%, transparent), transparent 70%)",
-                  filter: "blur(30px)",
-                }}
+                className="tech-grid absolute inset-0 opacity-20 [mask-image:linear-gradient(to_bottom,black,transparent_38%)]"
               />
-              <div className="liquid-glass relative h-full w-full overflow-hidden !rounded-[32px]">
-                <img
-                  src={avatar || portraitImg}
-                  alt={name}
-                  className="absolute inset-0 h-full w-full object-cover"
-                  width={1024}
-                  height={1280}
-                />
-                <div
-                  aria-hidden
-                  className="pointer-events-none absolute inset-0 z-[1]"
-                  style={{
-                    background:
-                      "linear-gradient(180deg, transparent 55%, rgba(5,8,7,0.75) 100%)",
-                  }}
-                />
+              <div className="absolute inset-x-5 top-5 z-10 flex items-center justify-between text-[var(--color-inverse)] mix-blend-difference">
+                <span className="system-label">AM / 2026</span>
+                <span className="system-label">04.5+ YRS</span>
               </div>
-
-              {(h.tools ?? []).map((b, i) => {
-                const Icon = getIcon(b.icon);
-                if (!Icon) return null;
-                const tint = b.tint === "accent" ? "var(--color-accent)" : "var(--color-text)";
-                return (
-                  <motion.div
-                    key={i}
-                    aria-hidden
-                    animate={reduce ? {} : { y: [0, -10, 0] }}
-                    transition={{ duration: 5 + i * 0.6, repeat: Infinity, ease: "easeInOut", delay: i * 0.6 }}
-                    className="absolute z-10 hidden h-14 w-14 place-items-center rounded-full sm:grid"
-                    style={{
-                      ...(b.pos as React.CSSProperties),
-                      background: "color-mix(in oklab, var(--color-surface) 55%, transparent)",
-                      backdropFilter: "blur(16px) saturate(1.6)",
-                      WebkitBackdropFilter: "blur(16px) saturate(1.6)",
-                      border: "1px solid var(--color-hairline-strong)",
-                      boxShadow: "inset 0 1px 0 0 rgba(255,255,255,0.08), 0 12px 30px -12px rgba(0,0,0,0.6)",
-                      color: tint,
-                    }}
-                  >
-                    <Icon size={22} strokeWidth={1.75} />
-                  </motion.div>
-                );
-              })}
-
-              <div className="absolute -bottom-6 -right-6 z-10 h-28 w-28">
-                <div className="animate-spin-slow relative h-full w-full">
-                  <svg viewBox="0 0 100 100" className="h-full w-full text-[var(--color-text)]">
-                    <defs>
-                      <path id="circ" d="M50,50 m-38,0 a38,38 0 1,1 76,0 a38,38 0 1,1 -76,0" />
-                    </defs>
-                    <text fontSize="9" fontWeight="600" letterSpacing="2" fill="currentColor">
-                      <textPath href="#circ">{h.badge_text}</textPath>
-                    </text>
-                  </svg>
+              <div className="absolute bottom-5 left-5 right-5 z-10 flex items-center justify-between gap-4 rounded-[10px] border border-white/20 bg-black/35 px-4 py-3 text-white backdrop-blur-md">
+                <div className="flex items-center gap-2">
+                  <span className="system-dot" />
+                  <span className="system-label">Product systems online</span>
                 </div>
-                <div className="absolute inset-0 grid place-items-center">
-                  <span className="grid h-10 w-10 place-items-center rounded-full bg-[var(--color-accent)] text-[16px] font-bold text-[var(--color-accent-contrast)] shadow-[0_0_30px_-4px_var(--color-accent-glow)]">
-                    ✦
-                  </span>
-                </div>
+                <span className="system-label hidden opacity-65 sm:block">Strategy × craft</span>
               </div>
-            </motion.div>
-          </div>
-        </div>
+            </div>
+            <figcaption className="grid grid-cols-2 gap-4 border-b border-[var(--color-hairline)] py-4 text-[12px]">
+              <div>
+                <span className="system-label block text-[var(--color-subtle)]">Currently</span>
+                <span className="mt-1 block font-medium text-[var(--color-text)]">
+                  Motilal Oswal
+                </span>
+              </div>
+              <div>
+                <span className="system-label block text-[var(--color-subtle)]">Based in</span>
+                <span className="mt-1 block font-medium text-[var(--color-text)]">
+                  {site?.location ?? "Mumbai, India"}
+                </span>
+              </div>
+            </figcaption>
+          </figure>
+        </motion.div>
       </div>
     </section>
   );

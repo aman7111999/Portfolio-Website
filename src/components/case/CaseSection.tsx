@@ -36,11 +36,12 @@ export function CaseSection({
 }) {
   const reduce = useReducedMotion();
 
-  const surfaceCls = tone === "surface"
-    ? "bg-[var(--color-surface)] border-y border-hairline"
-    : tone === "accent"
-      ? "bg-[color:var(--color-accent-wash)]"
-      : "";
+  const surfaceCls =
+    tone === "surface"
+      ? "bg-[var(--color-surface)] border-y border-hairline"
+      : tone === "accent"
+        ? "bg-[color:var(--color-accent-wash)]"
+        : "";
 
   const introEl = intro && (
     <motion.div
@@ -48,7 +49,7 @@ export function CaseSection({
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-80px" }}
       transition={{ duration: 0.8, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
-      className="mt-[var(--space-6)] max-w-[62ch] text-[18px] leading-[var(--leading-normal)] text-[var(--color-text)]"
+      className="mt-[var(--space-5)] max-w-[62ch] text-[17px] leading-[var(--leading-normal)] text-[var(--color-text)]"
     >
       {intro}
     </motion.div>
@@ -60,7 +61,7 @@ export function CaseSection({
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-80px" }}
       transition={{ duration: 0.9, delay: 0.25, ease: [0.22, 1, 0.36, 1] }}
-      className="mt-[var(--space-10)]"
+      className="mt-[var(--space-8)]"
     >
       {children}
     </motion.div>
@@ -68,11 +69,11 @@ export function CaseSection({
 
   const titleEl = (
     <motion.h2
-      initial={reduce ? false : { opacity: 0, y: 24, filter: "blur(8px)" }}
-      whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+      initial={reduce ? false : { opacity: 0, y: 18 }}
+      whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-80px" }}
       transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
-      className="display-2 max-w-[22ch]"
+      className="display-2 max-w-[18ch]"
     >
       {title}
     </motion.h2>
@@ -93,20 +94,23 @@ export function CaseSection({
       id={id}
       className={clsx(
         "scroll-mt-32 relative",
-        "py-[var(--space-20)] md:py-[var(--space-24)]",
+        "py-[var(--space-16)] md:py-[var(--space-20)]",
         surfaceCls,
         className,
       )}
     >
       <div className="container-page">
         {variant === "rail" && (
-          <div className="grid gap-[var(--space-10)] md:grid-cols-[180px_1fr] md:gap-[var(--space-16)]">
+          <div className="grid gap-[var(--space-8)] md:grid-cols-[150px_1fr] md:gap-[var(--space-16)]">
             <aside className="md:sticky md:top-32 md:self-start">
               <div className="flex items-baseline gap-[var(--space-3)] md:flex-col md:items-start md:gap-[var(--space-2)]">
                 <span className="font-mono text-[11px] uppercase tracking-[var(--tracking-widest)] text-[var(--color-accent)]">
                   {chapter}
                 </span>
-                <span aria-hidden className="h-px w-8 bg-[var(--color-hairline-strong)] md:mt-[var(--space-2)]" />
+                <span
+                  aria-hidden
+                  className="h-px w-8 bg-[var(--color-hairline-strong)] md:mt-[var(--space-2)]"
+                />
                 <span className="eyebrow">{eyebrow}</span>
               </div>
             </aside>
@@ -146,8 +150,8 @@ export function CaseSection({
           <div className="mx-auto max-w-[68ch] text-center">
             {chapterMark("mb-[var(--space-6)] justify-center")}
             <motion.h2
-              initial={reduce ? false : { opacity: 0, y: 24, filter: "blur(8px)" }}
-              whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+              initial={reduce ? false : { opacity: 0, y: 18 }}
+              whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-80px" }}
               transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
               className="display-2 mx-auto max-w-[22ch]"
@@ -164,15 +168,7 @@ export function CaseSection({
         )}
 
         {variant === "bleed" && (
-          <div className="relative overflow-hidden rounded-[var(--radius-xl)] border border-hairline bg-[var(--color-card)] p-[var(--space-10)] md:p-[var(--space-16)] shadow-[var(--elevation-2)]">
-            <div
-              aria-hidden
-              className="pointer-events-none absolute inset-0 opacity-60"
-              style={{
-                background:
-                  "radial-gradient(600px circle at 0% 0%, var(--color-accent-wash), transparent 55%)",
-              }}
-            />
+          <div className="relative overflow-hidden rounded-[var(--radius-xl)] border border-hairline bg-[var(--color-card)] p-[var(--space-10)] md:p-[var(--space-16)]">
             <div className="relative">
               {chapterMark("mb-[var(--space-6)]")}
               <div className="max-w-[62ch]">

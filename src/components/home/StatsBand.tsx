@@ -1,8 +1,6 @@
 import { Reveal } from "@/components/Reveal";
 import { CountUp } from "@/components/CountUp";
-import { useSite, useContent } from "@/lib/cms";
-import portraitImg from "@/assets/portrait.jpg";
-import { Quote } from "lucide-react";
+import { useContent, useSite } from "@/lib/cms";
 
 type Data = {
   eyebrow: string;
@@ -15,74 +13,58 @@ type Data = {
 
 const FALLBACK: Data = {
   eyebrow: "About",
-  heading_line1: "Designing Websites that",
-  heading_accent: "Inspire & Convert",
+  heading_line1: "From 0-to-1 launches",
+  heading_accent: "to systems at scale",
   items: [
-    { v: "48+", l: "Projects Done" },
-    { v: "90%", l: "Client Retention" },
-    { v: "110%", l: "Avg. Conversion" },
+    { v: "4.5+", l: "Years in product design" },
+    { v: "9×", l: "Portfolio import growth" },
+    { v: "4", l: "Focused case studies" },
   ],
-  body: "I'm {name} — a product designer helping founders and teams ship digital experiences that people remember. Six years of pixel-craft, motion, and shipping.",
-  quote: "Design is the bridge between a problem and a product people can love.",
+  body: "I’m {name}, a product designer focused on complex fintech products, AI-assisted experiences, and scalable product systems.",
+  quote: "The strongest design decisions make complexity feel inevitable, not visible.",
 };
 
 export function StatsBand() {
   const { data: site } = useSite();
-  const { data: c } = useContent<Data>("home_stats", FALLBACK);
-  const d = c ?? FALLBACK;
-  const avatar = site?.profile_image_url;
-  const body = (d.body ?? "").replace("{name}", site?.name ?? "Aman");
+  const { data: content } = useContent<Data>("home_stats", FALLBACK);
+  const copy = content ?? FALLBACK;
+  const body = copy.body.replace("{name}", site?.name ?? "Aman");
 
   return (
-    <section className="container-page py-24 md:py-32">
-      <div className="grid items-center gap-10 md:grid-cols-12">
-        <Reveal className="md:col-span-6">
-          <p className="eyebrow">{d.eyebrow}</p>
-          <h2
-            className="mt-3 font-semibold leading-[1.05] tracking-[-0.025em] text-[var(--color-text)]"
-            style={{ fontSize: "clamp(1.9rem, 3.8vw, 3rem)" }}
-          >
-            {d.heading_line1}
-            <br /> <span className="text-[var(--color-accent)]">{d.heading_accent}</span>
+    <section className="border-y border-[var(--color-hairline-strong)] bg-[var(--color-surface)] py-24 md:py-28">
+      <div className="container-page grid gap-14 lg:grid-cols-12 lg:gap-20">
+        <Reveal className="lg:col-span-5">
+          <p className="eyebrow">{copy.eyebrow}</p>
+          <h2 className="mt-4 text-[clamp(2.4rem,4.2vw,3.7rem)] leading-[1.04] tracking-[-0.04em]">
+            {copy.heading_line1}{" "}
+            <span className="font-serif font-normal italic text-[var(--color-accent)]">
+              {copy.heading_accent}
+            </span>
           </h2>
+          <p className="mt-7 max-w-[52ch] text-[15px] leading-[1.75] text-[var(--color-muted)]">
+            {body}
+          </p>
+        </Reveal>
 
-          <div className="mt-8 grid grid-cols-3 gap-3 sm:gap-4">
-            {(d.items ?? []).map((m) => (
-              <div key={m.l} className="min-w-0">
-                <div
-                  className="font-semibold leading-none tracking-[-0.02em] text-[var(--color-text)]"
-                  style={{ fontSize: "clamp(1.75rem, 6vw, 2.625rem)" }}
-                >
-                  <CountUp value={m.v} />
-                </div>
-                <div className="mt-2 text-[12px] leading-snug text-[var(--color-muted)] sm:text-[13px]">{m.l}</div>
+        <Reveal className="lg:col-span-7">
+          <div className="grid border-y border-[var(--color-hairline-strong)] sm:grid-cols-3">
+            {copy.items.map((metric) => (
+              <div
+                key={metric.l}
+                className="border-b border-[var(--color-hairline)] py-7 last:border-b-0 sm:border-b-0 sm:border-r sm:px-6 sm:first:pl-0 sm:last:border-r-0 sm:last:pr-0"
+              >
+                <p className="text-[clamp(2.2rem,5vw,3.5rem)] font-medium leading-none tracking-[-0.05em] text-[var(--color-text)]">
+                  <CountUp value={metric.v} />
+                </p>
+                <p className="mt-3 text-[12px] leading-[1.45] text-[var(--color-muted)]">
+                  {metric.l}
+                </p>
               </div>
             ))}
           </div>
-
-          <p className="mt-8 max-w-md text-[15px] leading-[1.65] text-[var(--color-muted)]">{body}</p>
-        </Reveal>
-
-        <Reveal className="md:col-span-6">
-          <div className="liquid-glass relative overflow-hidden p-3">
-            <div className="relative aspect-[4/3] w-full overflow-hidden rounded-[calc(var(--radius-lg)-6px)]">
-              <img
-                src={avatar || portraitImg}
-                alt={site?.name ?? "Portrait"}
-                className="absolute inset-0 h-full w-full object-cover"
-                loading="lazy"
-              />
-              <div
-                aria-hidden
-                className="pointer-events-none absolute inset-0"
-                style={{ background: "linear-gradient(180deg, transparent 40%, rgba(5,8,7,0.75) 100%)" }}
-              />
-              <div className="absolute inset-x-4 bottom-4 flex items-start gap-3 rounded-2xl border border-[var(--color-hairline-strong)] bg-[color-mix(in_oklab,var(--color-surface)_70%,transparent)] p-4 backdrop-blur-md">
-                <Quote size={16} className="mt-0.5 shrink-0 text-[var(--color-accent)]" />
-                <p className="text-[14px] leading-[1.5] text-[var(--color-text)]">"{d.quote}"</p>
-              </div>
-            </div>
-          </div>
+          <blockquote className="mt-10 max-w-[34ch] font-serif text-[clamp(1.75rem,3vw,2.5rem)] italic leading-[1.2] text-[var(--color-text)]">
+            “{copy.quote}”
+          </blockquote>
         </Reveal>
       </div>
     </section>

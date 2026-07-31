@@ -7,9 +7,9 @@ import { writeFileSync, copyFileSync, existsSync } from "node:fs";
 import { resolve } from "node:path";
 
 // Public Supabase connection values (anon key; safe for client bundle).
-const DEFAULT_SUPABASE_URL = "https://wqaduhgfqgdcejrbzzuc.supabase.co";
+const DEFAULT_SUPABASE_URL = "https://phsbpngyfobtieyekewp.supabase.co";
 const DEFAULT_SUPABASE_PUBLISHABLE_KEY =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndxYWR1aGdmcWdkY2VqcmJ6enVjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODMyNTc3MzIsImV4cCI6MjA5ODgzMzczMn0.hyVwYDZ5si7ok5YAUi8urePfID34M3dRM2pwIjdPh0c";
+  "sb_publishable_JMQ5V0ZTb1Pme0tX-wOSDQ_9QDOcdw8";
 
 // Post-build: emit sitemap.xml, copy index.html -> 404.html for GH Pages SPA fallback.
 function ghPagesStatic() {
@@ -22,8 +22,18 @@ function ghPagesStatic() {
       if (existsSync(indexPath)) {
         copyFileSync(indexPath, resolve(outDir, "404.html"));
       }
-      const site = process.env.VITE_SITE_URL ?? "";
-      const staticRoutes = ["/", "/work", "/about", "/contact"];
+      const site = (process.env.VITE_SITE_URL ?? "https://amanux.vercel.app").replace(/\/$/, "");
+      const staticRoutes = [
+        "/",
+        "/work",
+        "/about",
+        "/resume",
+        "/contact",
+        "/projects/riise-hyper-personalisation",
+        "/projects/screener-stock-discovery",
+        "/projects/portfolio-health-report",
+        "/projects/tiqs-design-system",
+      ];
       const urls = staticRoutes
         .map((path) => `  <url><loc>${site}${path}</loc><changefreq>monthly</changefreq></url>`)
         .join("\n");
@@ -48,10 +58,10 @@ export default defineConfig(({ mode }) => {
     define: {
       // Fallbacks so Vercel (or any build env without a .env file) still works.
       "import.meta.env.VITE_SUPABASE_URL": JSON.stringify(
-        env.VITE_SUPABASE_URL || DEFAULT_SUPABASE_URL
+        env.VITE_SUPABASE_URL || DEFAULT_SUPABASE_URL,
       ),
       "import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY": JSON.stringify(
-        env.VITE_SUPABASE_PUBLISHABLE_KEY || DEFAULT_SUPABASE_PUBLISHABLE_KEY
+        env.VITE_SUPABASE_PUBLISHABLE_KEY || DEFAULT_SUPABASE_PUBLISHABLE_KEY,
       ),
     },
     build: {

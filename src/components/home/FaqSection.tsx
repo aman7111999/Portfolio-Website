@@ -33,36 +33,40 @@ export function FaqSection() {
       <div className="grid gap-12 md:grid-cols-12">
         <Reveal className="md:col-span-5">
           <p className="eyebrow">{d.eyebrow}</p>
-          <h2
-            className="mt-3 font-semibold leading-[1.05] tracking-[-0.025em] text-[var(--color-text)]"
-            style={{ fontSize: "clamp(2rem, 4.2vw, 3.25rem)" }}
-          >
-            {d.heading_line1} <span className="text-[var(--color-accent)]">{d.heading_accent}</span>
-            <br /> {d.heading_line2}
+          <h2 className="mt-4 text-[clamp(2.4rem,4.2vw,3.7rem)] font-medium leading-[1.04] tracking-[-0.04em] text-[var(--color-text)]">
+            {d.heading_line1}{" "}
+            <span className="font-serif font-normal italic text-[var(--color-accent)]">
+              {d.heading_accent}
+            </span>{" "}
+            {d.heading_line2}
           </h2>
-          <p className="mt-5 max-w-sm text-[15px] leading-[1.65] text-[var(--color-muted)]">{d.subline}</p>
+          <p className="mt-5 max-w-sm text-[15px] leading-[1.65] text-[var(--color-muted)]">
+            {d.subline}
+          </p>
         </Reveal>
 
         <div className="md:col-span-7">
-          <ul className="space-y-3">
+          <ul className="border-b border-[var(--color-hairline-strong)]">
             {faq.map((item, i) => {
               const isOpen = open === i;
               const panelId = `faq-panel-${i}`;
               const buttonId = `faq-button-${i}`;
               return (
-                <li key={i} className="liquid-glass overflow-hidden">
+                <li key={i} className="border-t border-[var(--color-hairline-strong)]">
                   <button
                     id={buttonId}
                     type="button"
                     aria-expanded={isOpen}
                     aria-controls={panelId}
                     onClick={() => setOpen(isOpen ? null : i)}
-                    className="flex min-h-[68px] w-full items-center justify-between gap-4 px-5 py-5 text-left md:px-6"
+                    className="flex min-h-[72px] w-full items-center justify-between gap-5 py-5 text-left"
                   >
-                    <span className="text-[16px] font-semibold text-[var(--color-text)] md:text-[17px]">{item.q}</span>
+                    <span className="text-[16px] font-medium text-[var(--color-text)] md:text-[18px]">
+                      {item.q}
+                    </span>
                     <span
                       aria-hidden
-                      className="grid h-11 w-11 shrink-0 place-items-center rounded-full border border-[var(--color-hairline-strong)] text-[var(--color-accent)] transition-transform duration-300"
+                      className="grid h-9 w-9 shrink-0 place-items-center rounded-full border border-[var(--color-hairline-strong)] text-[var(--color-accent)] transition-transform duration-300"
                       style={{ transform: isOpen ? "rotate(45deg)" : "rotate(0)" }}
                     >
                       <Plus size={15} />
@@ -80,7 +84,9 @@ export function FaqSection() {
                         transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
                         style={{ overflow: "hidden" }}
                       >
-                        <p className="px-5 pb-6 text-[15px] leading-[1.65] text-[var(--color-muted)] md:px-6 md:text-[16px]">{item.a}</p>
+                        <p className="max-w-[62ch] pb-7 pr-12 text-[15px] leading-[1.7] text-[var(--color-muted)] md:text-[16px]">
+                          {item.a}
+                        </p>
                       </motion.div>
                     )}
                   </AnimatePresence>

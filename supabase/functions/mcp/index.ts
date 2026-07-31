@@ -3,10 +3,10 @@
 // supabase function: mcp
 // Bundled from src/lib/mcp/index.ts by @lovable.dev/mcp-js.
 // src/lib/mcp/index.ts
-import { defineMcp } from "npm:@lovable.dev/mcp-js@0.20.0";
+import { defineMcp } from "npm:@lovable.dev/mcp-js@0.20.1";
 
 // src/lib/mcp/tools/list-projects.ts
-import { defineTool } from "npm:@lovable.dev/mcp-js@0.20.0";
+import { defineTool } from "npm:@lovable.dev/mcp-js@0.20.1";
 import { z } from "npm:zod@^4.4.3";
 
 // src/lib/mcp/data.ts
@@ -14,12 +14,12 @@ import { createClient } from "npm:@supabase/supabase-js@^2.110.0";
 var SUPABASE_URL = (
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   typeof globalThis.Deno !== "undefined" && globalThis.Deno.env.get("SUPABASE_URL") || // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  "https://wqaduhgfqgdcejrbzzuc.supabase.co"
+  "https://phsbpngyfobtieyekewp.supabase.co"
 );
 var SUPABASE_KEY = (
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   typeof globalThis.Deno !== "undefined" && globalThis.Deno.env.get("SUPABASE_ANON_KEY") || // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndxYWR1aGdmcWdkY2VqcmJ6enVjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODMyNTc3MzIsImV4cCI6MjA5ODgzMzczMn0.hyVwYDZ5si7ok5YAUi8urePfID34M3dRM2pwIjdPh0c"
+  "sb_publishable_JMQ5V0ZTb1Pme0tX-wOSDQ_9QDOcdw8"
 );
 var sb = createClient(SUPABASE_URL, SUPABASE_KEY);
 async function fetchProjects(opts = {}) {
@@ -104,7 +104,7 @@ var list_projects_default = defineTool({
 });
 
 // src/lib/mcp/tools/get-project.ts
-import { defineTool as defineTool2 } from "npm:@lovable.dev/mcp-js@0.20.0";
+import { defineTool as defineTool2 } from "npm:@lovable.dev/mcp-js@0.20.1";
 import { z as z2 } from "npm:zod@^4.4.3";
 var get_project_default = defineTool2({
   name: "get_project",
@@ -130,7 +130,7 @@ var get_project_default = defineTool2({
 });
 
 // src/lib/mcp/tools/get-about.ts
-import { defineTool as defineTool3 } from "npm:@lovable.dev/mcp-js@0.20.0";
+import { defineTool as defineTool3 } from "npm:@lovable.dev/mcp-js@0.20.1";
 var get_about_default = defineTool3({
   name: "get_about",
   title: "About the site owner",
@@ -148,7 +148,7 @@ var get_about_default = defineTool3({
 });
 
 // src/lib/mcp/tools/get-experience.ts
-import { defineTool as defineTool4 } from "npm:@lovable.dev/mcp-js@0.20.0";
+import { defineTool as defineTool4 } from "npm:@lovable.dev/mcp-js@0.20.1";
 var get_experience_default = defineTool4({
   name: "get_experience",
   title: "Work experience",
@@ -165,7 +165,7 @@ var get_experience_default = defineTool4({
 });
 
 // src/lib/mcp/tools/contact-inquiry.ts
-import { defineTool as defineTool5 } from "npm:@lovable.dev/mcp-js@0.20.0";
+import { defineTool as defineTool5 } from "npm:@lovable.dev/mcp-js@0.20.1";
 import { z as z3 } from "npm:zod@^4.4.3";
 import { createClient as createClient2 } from "npm:@supabase/supabase-js@^2.110.0";
 function getSupabase() {
@@ -220,5 +220,5 @@ var mcp_default = defineMcp({
 });
 
 // lovable-mcp-supabase-entry.ts
-import { createSupabaseHandler } from "npm:@lovable.dev/mcp-js@0.20.0/stacks/supabase";
+import { createSupabaseHandler } from "npm:@lovable.dev/mcp-js@0.20.1/stacks/supabase";
 Deno.serve(createSupabaseHandler(mcp_default, { functionName: "mcp" }));

@@ -1,9 +1,9 @@
 import { createClient } from "@supabase/supabase-js";
 
 // Public fallback values for build environments that don't inject a .env file (e.g. Vercel).
-const DEFAULT_SUPABASE_URL = "https://wqaduhgfqgdcejrbzzuc.supabase.co";
+const DEFAULT_SUPABASE_URL = "https://phsbpngyfobtieyekewp.supabase.co";
 const DEFAULT_SUPABASE_PUBLISHABLE_KEY =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndxYWR1aGdmcWdkY2VqcmJ6enVjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODMyNTc3MzIsImV4cCI6MjA5ODgzMzczMn0.hyVwYDZ5si7ok5YAUi8urePfID34M3dRM2pwIjdPh0c";
+  "sb_publishable_JMQ5V0ZTb1Pme0tX-wOSDQ_9QDOcdw8";
 
 // Runtime Supabase client. In the MCP edge function these are available via Deno.env.
 // In the local Vite bundle, they come from import.meta.env.

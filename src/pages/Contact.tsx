@@ -38,7 +38,13 @@ const FALLBACK: ContactData = {
   heading_after: ".",
   copy_email_label: "Copy email",
   copied_label: "Copied",
-  form_labels: { name: "Name", email: "Email", message: "Message", send: "Send message", sending: "Sending" },
+  form_labels: {
+    name: "Name",
+    email: "Email",
+    message: "Message",
+    send: "Send message",
+    sending: "Sending",
+  },
   success_toast: "Message sent — I'll reply within 2 business days.",
   elsewhere_label: "Elsewhere",
   based_in_label: "Based in",
@@ -53,34 +59,58 @@ export default function Contact() {
 
   const copyEmail = async () => {
     if (!site?.email) return;
-    try { await navigator.clipboard.writeText(site.email); setCopied(true); setTimeout(() => setCopied(false), 1800); } catch {}
+    try {
+      await navigator.clipboard.writeText(site.email);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1800);
+    } catch {
+      toast.error("Could not copy the email address.");
+    }
   };
 
   const submit = useMutation({
     mutationFn: async () => {
       const parsed = schema.safeParse(form);
       if (!parsed.success) throw new Error(parsed.error.issues[0].message);
-      const { error } = await supabase.from("contact_inquiries").insert({ ...parsed.data, source: "website" });
+      const { error } = await supabase
+        .from("contact_inquiries")
+        .insert({ ...parsed.data, source: "website" });
       if (error) throw error;
     },
-    onSuccess: () => { toast.success(d.success_toast); setForm({ name: "", email: "", message: "" }); },
+    onSuccess: () => {
+      toast.success(d.success_toast);
+      setForm({ name: "", email: "", message: "" });
+    },
     onError: (e: Error) => toast.error(e.message),
   });
 
   return (
     <>
-      <Seo title="Contact" description={`Get in touch with ${site?.name ?? ""}.`} path="/contact" siteName={site?.name ?? "Portfolio"} />
+      <Seo
+        title="Contact"
+        description="Contact Aman Mishra about Senior Product Designer opportunities across fintech, AI, consumer products, and complex digital platforms."
+        path="/contact"
+        siteName={site?.name ?? "Portfolio"}
+      />
 
-      <section className="container-page pt-8 pb-12 md:pt-24 md:pb-16">
+      <section className="container-page pb-12 pt-12 md:pb-16 md:pt-20">
         <Reveal>
           <p className="eyebrow">{d.eyebrow}</p>
           <h1
             className="display-hero mt-6 max-w-[14ch] leading-[1.02]"
-            style={{ fontSize: "clamp(2.6rem, 10vw, 7.5rem)" }}
+            style={{ fontSize: "clamp(3rem, 6vw, 5.5rem)" }}
           >
             {d.heading_before}{" "}
-            <span className="italic text-[var(--color-accent)]">{d.heading_accent}</span>{d.heading_after}
+            <span className="font-serif font-normal italic text-[var(--color-accent)]">
+              {d.heading_accent}
+            </span>
+            {d.heading_after}
           </h1>
+          <p className="mt-6 max-w-2xl text-[16px] leading-[1.7] text-[var(--color-muted)] md:text-lg">
+            I’m exploring Senior Product Designer opportunities across fintech, AI, consumer
+            products, and product platforms. If you’re building something complex and meaningful,
+            I’d love to hear about it.
+          </p>
         </Reveal>
       </section>
 
@@ -99,32 +129,86 @@ export default function Contact() {
               <button
                 type="button"
                 onClick={copyEmail}
-                className="mt-6 inline-flex min-h-11 items-center gap-2 rounded-full border border-[var(--color-hairline-strong)] px-4 py-2 text-[12px] uppercase tracking-widest text-[var(--color-muted)] transition-colors hover:border-[var(--color-text)] hover:text-[var(--color-text)]"
+                className="mt-6 inline-flex min-h-11 items-center gap-2 rounded-[8px] border border-[var(--color-hairline-strong)] px-4 py-2 text-[12px] uppercase tracking-widest text-[var(--color-muted)] transition-colors hover:border-[var(--color-text)] hover:text-[var(--color-text)]"
                 aria-live="polite"
               >
                 <AnimatePresence mode="wait" initial={false}>
                   {copied ? (
-                    <motion.span key="c" initial={{ opacity: 0, y: 4 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -4 }} className="inline-flex items-center gap-2"><Check size={14} /> {d.copied_label}</motion.span>
+                    <motion.span
+                      key="c"
+                      initial={{ opacity: 0, y: 4 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -4 }}
+                      className="inline-flex items-center gap-2"
+                    >
+                      <Check size={14} /> {d.copied_label}
+                    </motion.span>
                   ) : (
-                    <motion.span key="d" initial={{ opacity: 0, y: 4 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -4 }} className="inline-flex items-center gap-2"><Copy size={14} /> {d.copy_email_label}</motion.span>
+                    <motion.span
+                      key="d"
+                      initial={{ opacity: 0, y: 4 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -4 }}
+                      className="inline-flex items-center gap-2"
+                    >
+                      <Copy size={14} /> {d.copy_email_label}
+                    </motion.span>
                   )}
                 </AnimatePresence>
               </button>
             </>
           )}
 
-          <form onSubmit={(e) => { e.preventDefault(); submit.mutate(); }} className="mt-12 max-w-lg space-y-6" noValidate>
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              submit.mutate();
+            }}
+            className="mt-12 max-w-lg space-y-6"
+            noValidate
+          >
             <div className="space-y-2">
-              <Label htmlFor="contact-name" className="eyebrow">{d.form_labels.name}</Label>
-              <Input id="contact-name" name="name" autoComplete="name" required value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} className="h-12 rounded-lg border-[var(--color-hairline-strong)] bg-[var(--color-surface)] px-4 text-[16px] text-[var(--color-text)] shadow-none transition-colors focus-visible:border-[var(--color-accent)] focus-visible:ring-0" />
+              <Label htmlFor="contact-name" className="eyebrow">
+                {d.form_labels.name}
+              </Label>
+              <Input
+                id="contact-name"
+                name="name"
+                autoComplete="name"
+                required
+                value={form.name}
+                onChange={(e) => setForm({ ...form, name: e.target.value })}
+                className="h-12 rounded-lg border-[var(--color-hairline-strong)] bg-[var(--color-surface)] px-4 text-[16px] text-[var(--color-text)] shadow-none transition-colors focus-visible:border-[var(--color-accent)] focus-visible:ring-0"
+              />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="contact-email" className="eyebrow">{d.form_labels.email}</Label>
-              <Input id="contact-email" name="email" type="email" autoComplete="email" required value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} className="h-12 rounded-lg border-[var(--color-hairline-strong)] bg-[var(--color-surface)] px-4 text-[16px] text-[var(--color-text)] shadow-none transition-colors focus-visible:border-[var(--color-accent)] focus-visible:ring-0" />
+              <Label htmlFor="contact-email" className="eyebrow">
+                {d.form_labels.email}
+              </Label>
+              <Input
+                id="contact-email"
+                name="email"
+                type="email"
+                autoComplete="email"
+                required
+                value={form.email}
+                onChange={(e) => setForm({ ...form, email: e.target.value })}
+                className="h-12 rounded-lg border-[var(--color-hairline-strong)] bg-[var(--color-surface)] px-4 text-[16px] text-[var(--color-text)] shadow-none transition-colors focus-visible:border-[var(--color-accent)] focus-visible:ring-0"
+              />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="contact-message" className="eyebrow">{d.form_labels.message}</Label>
-              <Textarea id="contact-message" name="message" rows={5} required value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })} className="rounded-lg border-[var(--color-hairline-strong)] bg-[var(--color-surface)] px-4 py-3 text-[16px] leading-relaxed text-[var(--color-text)] shadow-none transition-colors focus-visible:border-[var(--color-accent)] focus-visible:ring-0" />
+              <Label htmlFor="contact-message" className="eyebrow">
+                {d.form_labels.message}
+              </Label>
+              <Textarea
+                id="contact-message"
+                name="message"
+                rows={5}
+                required
+                value={form.message}
+                onChange={(e) => setForm({ ...form, message: e.target.value })}
+                className="rounded-lg border-[var(--color-hairline-strong)] bg-[var(--color-surface)] px-4 py-3 text-[16px] leading-relaxed text-[var(--color-text)] shadow-none transition-colors focus-visible:border-[var(--color-accent)] focus-visible:ring-0"
+              />
             </div>
             <button
               type="submit"
@@ -132,9 +216,19 @@ export default function Contact() {
               className="group inline-flex min-h-11 items-center gap-3 rounded-full bg-[var(--color-text)] px-6 py-3 text-[13px] font-medium uppercase tracking-[0.18em] text-[var(--color-inverse)] shadow-[var(--elevation-2)] transition-all hover:bg-[var(--color-accent)] hover:text-[var(--color-accent-contrast)] hover:shadow-[var(--elevation-3)] disabled:opacity-60"
             >
               {submit.isPending ? (
-                <><Loader2 size={14} className="animate-spin" aria-hidden="true" /> {d.form_labels.sending}</>
+                <>
+                  <Loader2 size={14} className="animate-spin" aria-hidden="true" />{" "}
+                  {d.form_labels.sending}
+                </>
               ) : (
-                <>{d.form_labels.send} <ArrowUpRight size={14} className="transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" aria-hidden /></>
+                <>
+                  {d.form_labels.send}{" "}
+                  <ArrowUpRight
+                    size={14}
+                    className="transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+                    aria-hidden
+                  />
+                </>
               )}
             </button>
           </form>
@@ -145,7 +239,12 @@ export default function Contact() {
           <ul className="mt-4 space-y-3">
             {(site?.socials ?? []).map((s) => (
               <li key={s.url}>
-                <a href={s.url} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 text-lg link-underline">
+                <a
+                  href={s.url}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center gap-2 text-lg link-underline"
+                >
                   {s.label} <ArrowUpRight size={16} />
                 </a>
               </li>

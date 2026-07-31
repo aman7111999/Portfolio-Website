@@ -1,13 +1,9 @@
-import { useEffect } from "react";
-import { Download, MapPin, Mail, ArrowUpRight, Briefcase, GraduationCap, Sparkles } from "lucide-react";
-import {
-  useSite,
-  useExperience,
-  useEducation,
-  useSkills,
-  useContent,
-} from "@/lib/cms";
+import { Download, MapPin, Mail, ArrowUpRight } from "lucide-react";
+import { useSite, useExperience, useEducation, useSkills, useContent } from "@/lib/cms";
+import type { PortfolioEducation, PortfolioExperience } from "@/data/portfolio";
 import { Reveal } from "@/components/Reveal";
+import { Seo } from "@/lib/seo";
+import { BrandMark } from "@/components/BrandMark";
 
 type ResumePage = {
   eyebrow: string;
@@ -44,25 +40,30 @@ export default function Resume() {
   const { data: c } = useContent<ResumePage>("resume_page", FALLBACK);
   const d = c ?? FALLBACK;
 
-  useEffect(() => {
-    document.title = `Résumé — ${site?.name ?? "Aman Mishra"}`;
-  }, [site?.name]);
-
   const resumeUrl = site?.resume_url ?? null;
 
   return (
     <>
+      <Seo
+        title="Résumé — Senior Product Designer"
+        description="Aman Mishra’s product-design experience across Motilal Oswal, Trinkerr, fintech, AI-assisted products, and design systems."
+        path="/resume"
+        siteName={site?.name ?? "Aman Mishra"}
+      />
       {/* Hero */}
       <section className="container-page pt-16 pb-14 md:pt-24 md:pb-20">
         <Reveal>
-          <span className="glass-pill">
-            <Sparkles size={12} className="text-[var(--color-accent)]" />
-            {d.eyebrow}
-          </span>
+          <div className="flex items-center gap-3">
+            <BrandMark className="h-10 w-10" />
+            <div>
+              <p className="system-label text-[var(--color-accent)]">Document / Résumé</p>
+              <p className="mt-1 text-[12px] text-[var(--color-muted)]">Updated · 2026</p>
+            </div>
+          </div>
         </Reveal>
         <div className="mt-6 grid gap-10 md:grid-cols-[1fr_auto] md:items-end">
           <Reveal delay={0.05}>
-            <h1 className="text-4xl leading-[1.05] tracking-[-0.02em] md:text-6xl">
+            <h1 className="max-w-[19ch] text-[clamp(2.8rem,5.4vw,4.8rem)] leading-[1.01] tracking-[-0.045em]">
               {d.heading}
             </h1>
             <p className="mt-5 max-w-xl text-[16px] leading-[1.6] text-[var(--color-muted)]">
@@ -114,19 +115,16 @@ export default function Resume() {
       <section className="container-page py-14 md:py-20">
         <Reveal>
           <div className="flex items-baseline justify-between border-b border-[var(--color-hairline)] pb-4">
-            <h2 className="flex items-center gap-2 text-2xl md:text-3xl">
-              <Briefcase size={18} className="text-[var(--color-accent)]" />
-              {d.experience_heading}
-            </h2>
-            <span className="text-[12px] uppercase tracking-[0.16em] text-[var(--color-muted)]">
+            <h2 className="text-2xl md:text-3xl">{d.experience_heading}</h2>
+            <span className="system-label text-[var(--color-muted)]">
               {(experience ?? []).length} roles
             </span>
           </div>
         </Reveal>
-        <div className="mt-8 grid gap-4">
-          {(experience ?? []).map((r: any, i: number) => (
+        <div className="mt-8 border-t border-[var(--color-hairline-strong)]">
+          {(experience ?? []).map((r: PortfolioExperience, i: number) => (
             <Reveal key={r.id} delay={i * 0.04}>
-              <article className="liquid-glass p-5 md:p-7">
+              <article className="border-b border-[var(--color-hairline-strong)] py-7 md:py-9">
                 <div className="grid gap-5 md:grid-cols-[220px_1fr]">
                   <div>
                     <p className="text-[12px] uppercase tracking-[0.16em] text-[var(--color-muted)] md:text-[13px]">
@@ -140,7 +138,9 @@ export default function Resume() {
                     )}
                   </div>
                   <div>
-                    <p className="text-[16px] font-medium text-[var(--color-accent)] md:text-[18px]">{r.role}</p>
+                    <p className="text-[16px] font-medium text-[var(--color-accent)] md:text-[18px]">
+                      {r.role}
+                    </p>
                     {r.description && (
                       <p className="mt-2 text-[15px] leading-[1.65] text-[var(--color-muted)] md:text-[16px]">
                         {r.description}
@@ -150,7 +150,10 @@ export default function Resume() {
                       <ul className="mt-3 space-y-1.5 text-[14px] text-[var(--color-text)] md:text-[15px]">
                         {r.highlights.map((t: string, k: number) => (
                           <li key={k} className="flex gap-2">
-                            <span aria-hidden className="mt-2 h-1 w-1 shrink-0 rounded-full bg-[var(--color-accent)]" />
+                            <span
+                              aria-hidden
+                              className="mt-2 h-1 w-1 shrink-0 rounded-full bg-[var(--color-accent)]"
+                            />
                             <span>{t}</span>
                           </li>
                         ))}
@@ -168,22 +171,25 @@ export default function Resume() {
       <section className="container-page py-14 md:py-20">
         <Reveal>
           <div className="flex items-baseline justify-between border-b border-[var(--color-hairline)] pb-4">
-            <h2 className="flex items-center gap-2 text-2xl md:text-3xl">
-              <GraduationCap size={18} className="text-[var(--color-accent)]" />
-              {d.education_heading}
-            </h2>
+            <h2 className="text-2xl md:text-3xl">{d.education_heading}</h2>
           </div>
         </Reveal>
-        <div className="mt-8 grid gap-4 md:grid-cols-2">
-          {(education ?? []).map((e: any) => (
-            <div key={e.id} className="liquid-glass p-5 md:p-6">
+        <div className="mt-8 grid border-t border-[var(--color-hairline-strong)] md:grid-cols-2">
+          {(education ?? []).map((e: PortfolioEducation) => (
+            <div
+              key={e.id}
+              className="border-b border-[var(--color-hairline-strong)] py-6 md:px-6 md:first:pl-0 md:last:border-l md:last:pr-0"
+            >
               <p className="text-[12px] uppercase tracking-[0.16em] text-[var(--color-muted)] md:text-[13px]">
                 {fmtPeriod(e.start_date, e.end_date)}
               </p>
-              <p className="mt-2 text-[17px] font-semibold text-[var(--color-text)]">{e.school}</p>
+              <p className="mt-2 text-[17px] font-semibold text-[var(--color-text)]">
+                {e.institution}
+              </p>
               <p className="mt-1 text-[14px] text-[var(--color-accent)]">{e.degree}</p>
-              {e.field_of_study && (
-                <p className="mt-0.5 text-[13px] text-[var(--color-muted)]">{e.field_of_study}</p>
+              {e.field && <p className="mt-0.5 text-[13px] text-[var(--color-muted)]">{e.field}</p>}
+              {e.description && (
+                <p className="mt-2 text-[13px] text-[var(--color-muted)]">{e.description}</p>
               )}
             </div>
           ))}
@@ -194,28 +200,16 @@ export default function Resume() {
       <section className="container-page py-14 md:py-20">
         <Reveal>
           <div className="flex items-baseline justify-between border-b border-[var(--color-hairline)] pb-4">
-            <h2 className="flex items-center gap-2 text-2xl md:text-3xl">
-              <Sparkles size={18} className="text-[var(--color-accent)]" />
-              {d.skills_heading}
-            </h2>
+            <h2 className="text-2xl md:text-3xl">{d.skills_heading}</h2>
           </div>
         </Reveal>
-        <div className="mt-8 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-8 grid gap-x-8 gap-y-7 md:grid-cols-2 lg:grid-cols-3">
           {(skills ?? []).map((g) => (
-            <div key={g.group} className="liquid-glass p-5">
-              <p className="text-[12px] uppercase tracking-[0.16em] text-[var(--color-muted)] md:text-[13px]">
-                {g.group}
+            <div key={g.group} className="border-t border-[var(--color-hairline-strong)] pt-5">
+              <p className="system-label text-[var(--color-accent)]">{g.group}</p>
+              <p className="mt-3 text-[14px] leading-[1.7] text-[var(--color-muted)]">
+                {g.items.join(" · ")}
               </p>
-              <div className="mt-3 flex flex-wrap gap-1.5">
-                {g.items.map((s) => (
-                  <span
-                    key={s}
-                    className="rounded-full border border-[var(--color-hairline-strong)] px-2.5 py-1 text-[12px] text-[var(--color-text)] md:text-[13px]"
-                  >
-                    {s}
-                  </span>
-                ))}
-              </div>
             </div>
           ))}
         </div>
@@ -223,14 +217,10 @@ export default function Resume() {
 
       {/* CTA */}
       <section className="container-page pb-24 pt-8">
-        <div className="liquid-glass flex flex-col items-start justify-between gap-5 p-6 md:flex-row md:items-center md:p-8">
+        <div className="flex flex-col items-start justify-between gap-5 rounded-[var(--radius-lg)] bg-[var(--color-text)] p-7 text-[var(--color-bg)] md:flex-row md:items-center md:p-9">
           <div>
-            <p className="text-[12px] uppercase tracking-[0.16em] text-[var(--color-muted)] md:text-[13px]">
-              Want the printable version?
-            </p>
-            <p className="mt-1 text-[17px] text-[var(--color-text)] md:text-[18px]">
-              Grab the full résumé as a PDF.
-            </p>
+            <p className="system-label opacity-55">Want the printable version?</p>
+            <p className="mt-2 text-[17px] md:text-[18px]">Grab the full résumé as a PDF.</p>
           </div>
           {resumeUrl && (
             <a

@@ -1,6 +1,6 @@
-import { ArrowRight } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 import { Reveal } from "@/components/Reveal";
-import { useSite, useContent } from "@/lib/cms";
+import { useContent, useSite } from "@/lib/cms";
 
 type Data = {
   heading_line1: string;
@@ -11,81 +11,52 @@ type Data = {
 };
 
 const FALLBACK: Data = {
-  heading_line1: "Let's",
-  heading_accent: "Build",
-  heading_line2: "Something Amazing!",
-  subline: "Ready to elevate your brand with stunning, user-friendly design? Get started today and bring your vision to life!",
-  cta_label: "Start New Project",
+  heading_line1: "Let’s make",
+  heading_accent: "complexity",
+  heading_line2: "feel simple.",
+  subline:
+    "I’m exploring Senior Product Designer roles across fintech, AI, consumer products, and product platforms.",
+  cta_label: "Start a conversation",
 };
-
-const MOCKS = [
-  { hue: 340, top: "5%",  left: "-2%",  rot: -6 },
-  { hue: 200, top: "12%", left: "18%",  rot: 3 },
-  { hue: 40,  top: "0%",  left: "38%",  rot: -2 },
-  { hue: 160, top: "8%",  left: "60%",  rot: 4 },
-  { hue: 280, top: "3%",  left: "82%",  rot: -5 },
-  { hue: 20,  top: "58%", left: "-4%",  rot: 5 },
-  { hue: 180, top: "62%", left: "22%",  rot: -3 },
-  { hue: 300, top: "55%", left: "58%",  rot: 2 },
-  { hue: 100, top: "60%", left: "80%",  rot: -4 },
-];
 
 export function FinalCta() {
   const { data: site } = useSite();
-  const { data: c } = useContent<Data>("home_cta", FALLBACK);
-  const d = c ?? FALLBACK;
+  const { data: content } = useContent<Data>("home_cta", FALLBACK);
+  const copy = content ?? FALLBACK;
 
   return (
-    <section className="relative overflow-hidden py-20 md:py-40">
-      <div aria-hidden className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
-        {MOCKS.map((m, i) => (
-          <div
-            key={i}
-            className={
-              "absolute h-40 w-64 rounded-xl border border-[var(--color-hairline-strong)] opacity-25 md:h-44 md:w-72 md:opacity-40 " +
-              (i > 3 ? "hidden md:block" : "")
-            }
-            style={{
-              top: m.top,
-              left: m.left,
-              transform: `rotate(${m.rot}deg)`,
-              background: `linear-gradient(135deg, hsl(${m.hue}, 40%, 25%), hsl(${m.hue}, 30%, 12%))`,
-            }}
-          >
-            <div className="flex gap-1 border-b border-[var(--color-hairline)] p-2">
-              <span className="h-2 w-2 rounded-full bg-[var(--color-hairline-strong)]" />
-              <span className="h-2 w-2 rounded-full bg-[var(--color-hairline-strong)]" />
-              <span className="h-2 w-2 rounded-full bg-[var(--color-hairline-strong)]" />
+    <section className="border-t border-[var(--color-ending-border)] bg-[var(--color-ending)] py-20 md:py-28">
+      <div className="container-page">
+        <Reveal>
+          <div className="premium-cta grid gap-10 rounded-[var(--radius-xl)] p-8 text-[var(--color-cta-text)] md:p-12 lg:grid-cols-12 lg:items-end lg:p-16">
+            <div className="relative z-[1] lg:col-span-8">
+              <p className="system-label flex items-center gap-2 text-[var(--color-cta-muted)]">
+                <span className="h-1.5 w-1.5 rounded-full bg-[var(--color-cta-accent)] shadow-[0_0_0_4px_var(--color-cta-glow)]" />
+                Available for the right team
+              </p>
+              <h2 className="mt-5 max-w-[15ch] text-[clamp(2.6rem,5vw,4.5rem)] font-medium leading-[1.02] tracking-[-0.045em] !text-[var(--color-cta-text)]">
+                {copy.heading_line1}{" "}
+                <span className="font-serif font-normal italic text-[var(--color-cta-accent)]">
+                  {copy.heading_accent}
+                </span>{" "}
+                {copy.heading_line2}
+              </h2>
+              <p className="mt-6 max-w-[56ch] text-[15px] leading-[1.7] text-[var(--color-cta-muted)]">
+                {copy.subline}
+              </p>
             </div>
+
+            {site?.email && (
+              <div className="relative z-[1] lg:col-span-4 lg:justify-self-end">
+                <a
+                  href={`mailto:${site.email}`}
+                  className="inline-flex min-h-12 items-center gap-2 rounded-[10px] border border-white/20 bg-[var(--color-cta-button)] px-5 text-[14px] font-semibold text-[var(--color-cta-button-text)] shadow-[0_14px_34px_-20px_rgba(0,0,0,0.55)] transition-[transform,box-shadow] duration-300 hover:-translate-y-0.5 hover:shadow-[0_18px_40px_-20px_rgba(0,0,0,0.7)]"
+                >
+                  {copy.cta_label} <ArrowUpRight size={16} />
+                </a>
+              </div>
+            )}
           </div>
-        ))}
-        <div
-          className="absolute inset-0"
-          style={{ background: "radial-gradient(ellipse at center, transparent 20%, var(--color-bg) 70%)" }}
-        />
-      </div>
-
-      <div className="container-page relative">
-        <Reveal className="mx-auto max-w-2xl text-center">
-          <h2
-            className="font-semibold leading-[1.02] tracking-[-0.03em] text-[var(--color-text)]"
-            style={{ fontSize: "clamp(2.4rem, 5.4vw, 4.5rem)" }}
-          >
-            {d.heading_line1} <span className="text-[var(--color-accent)]">{d.heading_accent}</span>
-            <br /> {d.heading_line2}
-          </h2>
-          <p className="mx-auto mt-5 max-w-md text-[15px] leading-relaxed text-[var(--color-muted)]">
-            {d.subline}
-          </p>
-
-          {site?.email && (
-            <a href={`mailto:${site.email}`} className="btn-primary mt-10" style={{ minHeight: 44 }}>
-              <span className="grid h-9 w-9 place-items-center rounded-full bg-[var(--color-accent-contrast)] text-[var(--color-accent)]">
-                <ArrowRight size={15} />
-              </span>
-              {d.cta_label}
-            </a>
-          )}
         </Reveal>
       </div>
     </section>

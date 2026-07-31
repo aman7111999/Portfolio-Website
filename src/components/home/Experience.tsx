@@ -20,7 +20,7 @@ export function Experience() {
   const { data: rows } = useExperience();
   const { data: content } = useContent<Data>("home_experience", FALLBACK);
   const copy = content ?? FALLBACK;
-  const featuredRoles = (rows ?? []).slice(0, 2);
+  const allRoles = rows ?? [];
 
   return (
     <section className="container-page py-24 md:py-32">
@@ -43,7 +43,7 @@ export function Experience() {
       </Reveal>
 
       <div className="mt-14 border-b border-[var(--color-hairline-strong)]">
-        {featuredRoles.map((role: PortfolioExperience, index: number) => (
+        {allRoles.map((role: PortfolioExperience, index: number) => (
           <Reveal key={role.id} delay={index * 0.05}>
             <article className="grid gap-6 border-t border-[var(--color-hairline-strong)] py-8 md:grid-cols-[190px_1fr] md:gap-10">
               <div>

@@ -18,6 +18,7 @@ import {
   ExternalLink,
   Menu,
   X,
+  type LucideIcon,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
@@ -25,7 +26,7 @@ import AdminLogin from "./AdminLogin";
 import { useEffect, useState } from "react";
 import { clsx } from "clsx";
 
-type NavItem = { to: string; label: string; icon: any };
+type NavItem = { to: string; label: string; icon: LucideIcon };
 const navGroups: { title: string; items: NavItem[] }[] = [
   {
     title: "Workspace",
@@ -60,7 +61,7 @@ const navGroups: { title: string; items: NavItem[] }[] = [
 ];
 
 export default function AdminLayout() {
-  const { user, loading, signOut } = useAuth();
+  const { user, loading, passwordRecovery, signOut } = useAuth();
   const { data: isAdmin, isLoading: roleLoading } = useIsAdmin();
   const loc = useLocation();
   const [drawer, setDrawer] = useState(false);
@@ -69,16 +70,27 @@ export default function AdminLayout() {
     if (!drawer) return;
     const prev = document.body.style.overflow;
     document.body.style.overflow = "hidden";
-    const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") setDrawer(false); };
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setDrawer(false);
+    };
     window.addEventListener("keydown", onKey);
-    return () => { document.body.style.overflow = prev; window.removeEventListener("keydown", onKey); };
+    return () => {
+      document.body.style.overflow = prev;
+      window.removeEventListener("keydown", onKey);
+    };
   }, [drawer]);
 
-
-  if (loading || (user && roleLoading)) {
+  if (loading || (user && !passwordRecovery && roleLoading)) {
     return (
       <div data-theme="light" className="min-h-screen grid place-items-center bg-neutral-50">
         <Loader2 className="animate-spin text-neutral-500" />
+      </div>
+    );
+  }
+  if (passwordRecovery) {
+    return (
+      <div data-theme="light">
+        <AdminLogin />
       </div>
     );
   }

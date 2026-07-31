@@ -14,12 +14,9 @@ import { ImpactGrid } from "@/components/case/ImpactGrid";
 import { PrototypeEmbed, isPrototypeLink } from "@/components/case/PrototypeEmbed";
 import { ProseHtml } from "@/components/case/ProseHtml";
 import { ProjectPasswordGate } from "@/components/projects/ProjectPasswordGate";
-import {
-  fetchProtectedProject,
-  getStoredAccessToken,
-  clearAccessToken,
-} from "@/lib/projectAccess";
+import { fetchProtectedProject, getStoredAccessToken, clearAccessToken } from "@/lib/projectAccess";
 import NotFound from "./NotFound";
+import { PORTFOLIO_PROJECTS } from "@/data/portfolio";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
@@ -30,14 +27,30 @@ export default function ProjectPage() {
   const { data: siblings } = useProjects({});
   const { data: site } = useSite();
   const reduce = useReducedMotion();
+  const staticProject = useMemo(
+    () =>
+      PORTFOLIO_PROJECTS.find((item) => item.slug === slug) as unknown as ProjectRow | undefined,
+    [slug],
+  );
 
-  const [unlocked, setUnlocked] = useState<boolean>(() => !!getStoredAccessToken());
-  const [project, setProject] = useState<ProjectRow | null>(null);
+  const [unlocked, setUnlocked] = useState<boolean>(
+    () => !!staticProject || !!getStoredAccessToken(),
+  );
+  const [project, setProject] = useState<ProjectRow | null>(() => staticProject ?? null);
   const [loading, setLoading] = useState<boolean>(false);
   const [notFound, setNotFound] = useState(false);
 
   useEffect(() => {
     let alive = true;
+    if (staticProject) {
+      setProject(staticProject);
+      setLoading(false);
+      setNotFound(false);
+      setUnlocked(true);
+      return () => {
+        alive = false;
+      };
+    }
     if (!unlocked || !slug) return;
     setLoading(true);
     setNotFound(false);
@@ -56,7 +69,7 @@ export default function ProjectPage() {
     return () => {
       alive = false;
     };
-  }, [unlocked, slug]);
+  }, [unlocked, slug, staticProject]);
 
   const heroRef = useRef<HTMLElement>(null);
   const { scrollYProgress: heroProgress } = useScroll({
@@ -74,7 +87,7 @@ export default function ProjectPage() {
     [project],
   );
 
-  if (!unlocked) {
+  if (!staticProject && !unlocked) {
     return (
       <>
         <Seo
@@ -107,13 +120,62 @@ export default function ProjectPage() {
     : projectGradient(project.slug);
 
   const chapters = [
-    { id: "overview",   chapter: "01", label: "Overview",   eyebrow: "The context",     title: "Overview",                html: project.overview },
-    { id: "problem",    chapter: "02", label: "Problem",    eyebrow: "What we faced",   title: "Problem & business goal", html: project.problem_statement },
-    { id: "research",   chapter: "03", label: "Research",   eyebrow: "What we learned", title: "Research & insights",     html: project.research },
-    { id: "process",    chapter: "04", label: "Process",    eyebrow: "How we built it", title: "Design process",          html: project.design_process },
-    { id: "solution",   chapter: "05", label: "Solution",   eyebrow: "High fidelity",   title: "The solution",            html: project.solution },
-    { id: "impact",     chapter: "06", label: "Impact",     eyebrow: "The outcome",     title: "Impact",                  html: project.outcome },
-    { id: "reflection", chapter: "07", label: "Reflection", eyebrow: "In hindsight",    title: "Reflection & learnings",  html: project.learnings },
+    {
+      id: "overview",
+      chapter: "01",
+      label: "Overview",
+      eyebrow: "The context",
+      title: "Overview",
+      html: project.overview,
+    },
+    {
+      id: "problem",
+      chapter: "02",
+      label: "Problem",
+      eyebrow: "What we faced",
+      title: "Problem & business goal",
+      html: project.problem_statement,
+    },
+    {
+      id: "research",
+      chapter: "03",
+      label: "Research",
+      eyebrow: "What we learned",
+      title: "Research & insights",
+      html: project.research,
+    },
+    {
+      id: "process",
+      chapter: "04",
+      label: "Process",
+      eyebrow: "How we built it",
+      title: "Design process",
+      html: project.design_process,
+    },
+    {
+      id: "solution",
+      chapter: "05",
+      label: "Solution",
+      eyebrow: "High fidelity",
+      title: "The solution",
+      html: project.solution,
+    },
+    {
+      id: "impact",
+      chapter: "06",
+      label: "Impact",
+      eyebrow: "The outcome",
+      title: "Impact",
+      html: project.outcome,
+    },
+    {
+      id: "reflection",
+      chapter: "07",
+      label: "Reflection",
+      eyebrow: "In hindsight",
+      title: "Reflection & learnings",
+      html: project.learnings,
+    },
   ] as const;
 
   const activeChapters = chapters.filter((c) => c.html && c.html.trim().length > 0);
@@ -121,8 +183,24 @@ export default function ProjectPage() {
   const tocEntries: { id: string; label: string; chapter: string }[] = [
     { id: "hero", label: "Intro", chapter: "00" },
     ...activeChapters.map((c) => ({ id: c.id, label: c.label, chapter: c.chapter })),
-    ...(prototypeLink ? [{ id: "prototype", label: "Prototype", chapter: String(activeChapters.length + 1).padStart(2, "0") }] : []),
-    ...(project.gallery.length > 0 ? [{ id: "gallery", label: "Gallery", chapter: String(activeChapters.length + (prototypeLink ? 2 : 1)).padStart(2, "0") }] : []),
+    ...(prototypeLink
+      ? [
+          {
+            id: "prototype",
+            label: "Prototype",
+            chapter: String(activeChapters.length + 1).padStart(2, "0"),
+          },
+        ]
+      : []),
+    ...(project.gallery.length > 0
+      ? [
+          {
+            id: "gallery",
+            label: "Gallery",
+            chapter: String(activeChapters.length + (prototypeLink ? 2 : 1)).padStart(2, "0"),
+          },
+        ]
+      : []),
   ];
 
   const jsonLd = {
@@ -264,7 +342,9 @@ export default function ProjectPage() {
               <motion.span
                 aria-hidden
                 animate={reduce ? undefined : { y: [0, 4, 0] }}
-                transition={reduce ? undefined : { duration: 2.2, repeat: Infinity, ease: "easeInOut" }}
+                transition={
+                  reduce ? undefined : { duration: 2.2, repeat: Infinity, ease: "easeInOut" }
+                }
                 className="grid h-6 w-6 place-items-center rounded-full border border-white/30 text-white/80"
               >
                 <ArrowDown size={11} />
@@ -289,7 +369,9 @@ export default function ProjectPage() {
                   <p className="eyebrow mb-[var(--space-3)]">Technology</p>
                   <div className="flex flex-wrap gap-[var(--space-2)]">
                     {project.tools.map((t) => (
-                      <Badge key={t} tone="accent" size="sm">{t}</Badge>
+                      <Badge key={t} tone="accent" size="sm">
+                        {t}
+                      </Badge>
                     ))}
                   </div>
                 </div>
@@ -298,7 +380,9 @@ export default function ProjectPage() {
                 <div>
                   <p className="eyebrow mb-[var(--space-3)]">Tags</p>
                   <div className="flex flex-wrap gap-[var(--space-2)]">
-                    {project.tags.map((t) => <Tag key={t}>{t}</Tag>)}
+                    {project.tags.map((t) => (
+                      <Tag key={t}>{t}</Tag>
+                    ))}
                   </div>
                 </div>
               )}
@@ -325,7 +409,9 @@ export default function ProjectPage() {
                     </p>
                     <div>
                       <p className="eyebrow">{m.label}</p>
-                      {m.hint && <p className="mt-1 text-[12px] text-[var(--color-muted)]">{m.hint}</p>}
+                      {m.hint && (
+                        <p className="mt-1 text-[12px] text-[var(--color-muted)]">{m.hint}</p>
+                      )}
                     </div>
                   </motion.div>
                 ))}
@@ -367,8 +453,8 @@ export default function ProjectPage() {
             variant="wide"
             intro={
               <>
-                A working prototype of the flow — click through the way a user would.
-                Best experienced on desktop. Tap the expand icon for fullscreen.
+                A working prototype of the flow — click through the way a user would. Best
+                experienced on desktop. Tap the expand icon for fullscreen.
               </>
             }
           >
@@ -500,9 +586,13 @@ function NavCase({
         }`}
       >
         {side === "prev" ? (
-          <><ArrowLeft size={12} /> {label}</>
+          <>
+            <ArrowLeft size={12} /> {label}
+          </>
         ) : (
-          <>{label} <ArrowRight size={12} /></>
+          <>
+            {label} <ArrowRight size={12} />
+          </>
         )}
       </p>
       <div className="relative mt-[var(--space-4)] aspect-[21/9] overflow-hidden rounded-[var(--radius-lg)] border border-hairline shadow-[var(--elevation-1)] transition-shadow duration-[var(--dur-slow)] group-hover:shadow-[var(--elevation-3)]">

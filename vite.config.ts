@@ -22,8 +22,18 @@ function ghPagesStatic() {
       if (existsSync(indexPath)) {
         copyFileSync(indexPath, resolve(outDir, "404.html"));
       }
-      const site = process.env.VITE_SITE_URL ?? "";
-      const staticRoutes = ["/", "/work", "/about", "/contact"];
+      const site = (process.env.VITE_SITE_URL ?? "https://amanux.vercel.app").replace(/\/$/, "");
+      const staticRoutes = [
+        "/",
+        "/work",
+        "/about",
+        "/resume",
+        "/contact",
+        "/projects/riise-hyper-personalisation",
+        "/projects/screener-stock-discovery",
+        "/projects/portfolio-health-report",
+        "/projects/tiqs-design-system",
+      ];
       const urls = staticRoutes
         .map((path) => `  <url><loc>${site}${path}</loc><changefreq>monthly</changefreq></url>`)
         .join("\n");
@@ -48,10 +58,10 @@ export default defineConfig(({ mode }) => {
     define: {
       // Fallbacks so Vercel (or any build env without a .env file) still works.
       "import.meta.env.VITE_SUPABASE_URL": JSON.stringify(
-        env.VITE_SUPABASE_URL || DEFAULT_SUPABASE_URL
+        env.VITE_SUPABASE_URL || DEFAULT_SUPABASE_URL,
       ),
       "import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY": JSON.stringify(
-        env.VITE_SUPABASE_PUBLISHABLE_KEY || DEFAULT_SUPABASE_PUBLISHABLE_KEY
+        env.VITE_SUPABASE_PUBLISHABLE_KEY || DEFAULT_SUPABASE_PUBLISHABLE_KEY,
       ),
     },
     build: {

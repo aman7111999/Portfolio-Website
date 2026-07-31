@@ -1,5 +1,13 @@
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import {
+  PORTFOLIO_CONTENT,
+  PORTFOLIO_EDUCATION,
+  PORTFOLIO_EXPERIENCE,
+  PORTFOLIO_PROJECTS,
+  PORTFOLIO_SITE,
+  PORTFOLIO_SKILLS,
+} from "@/data/portfolio";
 
 export type ProjectRow = {
   id: string;
@@ -44,41 +52,55 @@ export type SiteSettings = {
 
 // ─────────────────────── Editable content blocks ───────────────────────
 export type ContentKey =
-  | "nav" | "footer" | "hero"
-  | "home_featured" | "home_experience" | "home_stats"
-  | "home_testimonials" | "home_faq" | "home_cta"
-  | "about_hero" | "about_timeline" | "about_experience" | "about_education"
-  | "about_tools" | "about_philosophy" | "about_working_style"
-  | "about_books" | "about_values" | "about_fun_facts"
-  | "contact_page" | "resume_page"
+  | "nav"
+  | "footer"
+  | "hero"
+  | "home_featured"
+  | "home_experience"
+  | "home_stats"
+  | "home_testimonials"
+  | "home_faq"
+  | "home_cta"
+  | "about_hero"
+  | "about_timeline"
+  | "about_experience"
+  | "about_education"
+  | "about_tools"
+  | "about_philosophy"
+  | "about_working_style"
+  | "about_books"
+  | "about_values"
+  | "about_fun_facts"
+  | "contact_page"
+  | "resume_page"
   | "project_access_content";
 
-
-export function useContent<T = any>(key: ContentKey, fallback?: T) {
+export function useContent<T = unknown>(key: ContentKey, fallback?: T) {
   const q = useQuery({
     queryKey: ["content_block", key],
     queryFn: async () => {
       const { data, error } = await supabase
-        .from("content_blocks" as any)
+        .from("content_blocks")
         .select("data")
         .eq("key", key)
         .maybeSingle();
       if (error) throw error;
-      return ((data as any)?.data ?? null) as T | null;
+      return (data?.data ?? null) as T | null;
     },
   });
-  return { ...q, data: (q.data ?? fallback ?? null) as T };
+  const local = (PORTFOLIO_CONTENT as Partial<Record<ContentKey, unknown>>)[key] as T | undefined;
+  return { ...q, data: (local ?? q.data ?? fallback ?? null) as T };
 }
 
 export function useAllContent() {
   return useQuery({
     queryKey: ["content_blocks_all"],
     queryFn: async () => {
-      const { data, error } = await supabase.from("content_blocks" as any).select("*");
+      const { data, error } = await supabase.from("content_blocks").select("*");
       if (error) throw error;
-      const map: Record<string, any> = {};
-      for (const row of (data ?? []) as any[]) map[row.key] = row.data;
-      return map;
+      const map: Record<string, unknown> = {};
+      for (const row of data ?? []) map[row.key] = row.data;
+      return { ...map, ...PORTFOLIO_CONTENT };
     },
   });
 }
@@ -86,14 +108,7 @@ export function useAllContent() {
 export function useSite() {
   return useQuery({
     queryKey: ["site"],
-    queryFn: async (): Promise<SiteSettings> => {
-      const { data, error } = await supabase.from("site_settings").select("*").eq("id", 1).maybeSingle();
-      if (error) throw error;
-      return (data as any) ?? {
-        name: "", tagline: "", bio: "", email: "", location: "",
-        profile_image_url: null, resume_url: null, socials: [],
-      };
-    },
+    queryFn: async (): Promise<SiteSettings> => PORTFOLIO_SITE,
   });
 }
 
@@ -103,7 +118,9 @@ export function useSite() {
  * case-study content is served through the `get-protected-project` edge function
  * after password verification.
  */
-export function useProjects(opts: { publishedOnly?: boolean; featuredOnly?: boolean; admin?: boolean } = {}) {
+export function useProjects(
+  opts: { publishedOnly?: boolean; featuredOnly?: boolean; admin?: boolean } = {},
+) {
   return useQuery({
     queryKey: ["projects", opts],
     queryFn: async () => {
@@ -115,14 +132,10 @@ export function useProjects(opts: { publishedOnly?: boolean; featuredOnly?: bool
         if (error) throw error;
         return (data ?? []) as unknown as ProjectRow[];
       }
-      let q = supabase
-        .from("public_projects_index" as never)
-        .select("*")
-        .order("sort_order", { ascending: true });
-      if (opts.featuredOnly) q = q.eq("featured", true);
-      const { data, error } = await q;
-      if (error) throw error;
-      return (data ?? []) as unknown as ProjectRow[];
+      let projects = [...PORTFOLIO_PROJECTS] as unknown as ProjectRow[];
+      if (opts.publishedOnly) projects = projects.filter((p) => p.published);
+      if (opts.featuredOnly) projects = projects.filter((p) => p.featured);
+      return projects.sort((a, b) => a.sort_order - b.sort_order);
     },
   });
 }
@@ -132,7 +145,11 @@ export function useProject(slug: string) {
   return useQuery({
     queryKey: ["project-admin", slug],
     queryFn: async () => {
-      const { data, error } = await supabase.from("projects").select("*").eq("slug", slug).maybeSingle();
+      const { data, error } = await supabase
+        .from("projects")
+        .select("*")
+        .eq("slug", slug)
+        .maybeSingle();
       if (error) throw error;
       return data as unknown as ProjectRow | null;
     },
@@ -143,50 +160,28 @@ export function useProject(slug: string) {
 export function useExperience() {
   return useQuery({
     queryKey: ["experience"],
-    queryFn: async () => {
-      const { data, error } = await supabase.from("experience").select("*").eq("published", true).order("sort_order");
-      if (error) throw error;
-      return data ?? [];
-    },
+    queryFn: async () => PORTFOLIO_EXPERIENCE,
   });
 }
 
 export function useEducation() {
   return useQuery({
     queryKey: ["education"],
-    queryFn: async () => {
-      const { data, error } = await supabase.from("education").select("*").eq("published", true).order("sort_order");
-      if (error) throw error;
-      return data ?? [];
-    },
+    queryFn: async () => PORTFOLIO_EDUCATION,
   });
 }
 
 export function useSkills() {
   return useQuery({
     queryKey: ["skills"],
-    queryFn: async () => {
-      const { data, error } = await supabase.from("skills").select("*").order("sort_order");
-      if (error) throw error;
-      // Group
-      const groups: Record<string, string[]> = {};
-      for (const row of data ?? []) {
-        groups[row.group_name] ??= [];
-        groups[row.group_name].push(row.name);
-      }
-      return Object.entries(groups).map(([group, items]) => ({ group, items }));
-    },
+    queryFn: async () => PORTFOLIO_SKILLS,
   });
 }
 
 export function useTestimonials() {
   return useQuery({
     queryKey: ["testimonials"],
-    queryFn: async () => {
-      const { data, error } = await supabase.from("testimonials").select("*").eq("published", true).order("sort_order");
-      if (error) throw error;
-      return data ?? [];
-    },
+    queryFn: async () => [],
   });
 }
 
@@ -194,7 +189,10 @@ export function useBlogs(publishedOnly = true) {
   return useQuery({
     queryKey: ["blogs", publishedOnly],
     queryFn: async () => {
-      let q = supabase.from("blogs").select("*").order("published_at", { ascending: false, nullsFirst: false });
+      let q = supabase
+        .from("blogs")
+        .select("*")
+        .order("published_at", { ascending: false, nullsFirst: false });
       if (publishedOnly) q = q.eq("published", true);
       const { data, error } = await q;
       if (error) throw error;
@@ -245,4 +243,3 @@ export const projectGradient = (seed: string) => {
   for (let i = 0; i < seed.length; i++) h = (h * 31 + seed.charCodeAt(i)) >>> 0;
   return gradients[h % gradients.length];
 };
-

@@ -1,13 +1,16 @@
-import { useEffect } from "react";
-import { Download, MapPin, Mail, ArrowUpRight, Briefcase, GraduationCap, Sparkles } from "lucide-react";
 import {
-  useSite,
-  useExperience,
-  useEducation,
-  useSkills,
-  useContent,
-} from "@/lib/cms";
+  Download,
+  MapPin,
+  Mail,
+  ArrowUpRight,
+  Briefcase,
+  GraduationCap,
+  Sparkles,
+} from "lucide-react";
+import { useSite, useExperience, useEducation, useSkills, useContent } from "@/lib/cms";
+import type { PortfolioEducation, PortfolioExperience } from "@/data/portfolio";
 import { Reveal } from "@/components/Reveal";
+import { Seo } from "@/lib/seo";
 
 type ResumePage = {
   eyebrow: string;
@@ -44,14 +47,16 @@ export default function Resume() {
   const { data: c } = useContent<ResumePage>("resume_page", FALLBACK);
   const d = c ?? FALLBACK;
 
-  useEffect(() => {
-    document.title = `Résumé — ${site?.name ?? "Aman Mishra"}`;
-  }, [site?.name]);
-
   const resumeUrl = site?.resume_url ?? null;
 
   return (
     <>
+      <Seo
+        title="Résumé — Senior Product Designer"
+        description="Aman Mishra’s product-design experience across Motilal Oswal, Trinkerr, fintech, AI-assisted products, and design systems."
+        path="/resume"
+        siteName={site?.name ?? "Aman Mishra"}
+      />
       {/* Hero */}
       <section className="container-page pt-16 pb-14 md:pt-24 md:pb-20">
         <Reveal>
@@ -62,9 +67,7 @@ export default function Resume() {
         </Reveal>
         <div className="mt-6 grid gap-10 md:grid-cols-[1fr_auto] md:items-end">
           <Reveal delay={0.05}>
-            <h1 className="text-4xl leading-[1.05] tracking-[-0.02em] md:text-6xl">
-              {d.heading}
-            </h1>
+            <h1 className="text-4xl leading-[1.05] tracking-[-0.02em] md:text-6xl">{d.heading}</h1>
             <p className="mt-5 max-w-xl text-[16px] leading-[1.6] text-[var(--color-muted)]">
               {d.subline}
             </p>
@@ -124,7 +127,7 @@ export default function Resume() {
           </div>
         </Reveal>
         <div className="mt-8 grid gap-4">
-          {(experience ?? []).map((r: any, i: number) => (
+          {(experience ?? []).map((r: PortfolioExperience, i: number) => (
             <Reveal key={r.id} delay={i * 0.04}>
               <article className="liquid-glass p-5 md:p-7">
                 <div className="grid gap-5 md:grid-cols-[220px_1fr]">
@@ -140,7 +143,9 @@ export default function Resume() {
                     )}
                   </div>
                   <div>
-                    <p className="text-[16px] font-medium text-[var(--color-accent)] md:text-[18px]">{r.role}</p>
+                    <p className="text-[16px] font-medium text-[var(--color-accent)] md:text-[18px]">
+                      {r.role}
+                    </p>
                     {r.description && (
                       <p className="mt-2 text-[15px] leading-[1.65] text-[var(--color-muted)] md:text-[16px]">
                         {r.description}
@@ -150,7 +155,10 @@ export default function Resume() {
                       <ul className="mt-3 space-y-1.5 text-[14px] text-[var(--color-text)] md:text-[15px]">
                         {r.highlights.map((t: string, k: number) => (
                           <li key={k} className="flex gap-2">
-                            <span aria-hidden className="mt-2 h-1 w-1 shrink-0 rounded-full bg-[var(--color-accent)]" />
+                            <span
+                              aria-hidden
+                              className="mt-2 h-1 w-1 shrink-0 rounded-full bg-[var(--color-accent)]"
+                            />
                             <span>{t}</span>
                           </li>
                         ))}
@@ -175,15 +183,18 @@ export default function Resume() {
           </div>
         </Reveal>
         <div className="mt-8 grid gap-4 md:grid-cols-2">
-          {(education ?? []).map((e: any) => (
+          {(education ?? []).map((e: PortfolioEducation) => (
             <div key={e.id} className="liquid-glass p-5 md:p-6">
               <p className="text-[12px] uppercase tracking-[0.16em] text-[var(--color-muted)] md:text-[13px]">
                 {fmtPeriod(e.start_date, e.end_date)}
               </p>
-              <p className="mt-2 text-[17px] font-semibold text-[var(--color-text)]">{e.school}</p>
+              <p className="mt-2 text-[17px] font-semibold text-[var(--color-text)]">
+                {e.institution}
+              </p>
               <p className="mt-1 text-[14px] text-[var(--color-accent)]">{e.degree}</p>
-              {e.field_of_study && (
-                <p className="mt-0.5 text-[13px] text-[var(--color-muted)]">{e.field_of_study}</p>
+              {e.field && <p className="mt-0.5 text-[13px] text-[var(--color-muted)]">{e.field}</p>}
+              {e.description && (
+                <p className="mt-2 text-[13px] text-[var(--color-muted)]">{e.description}</p>
               )}
             </div>
           ))}

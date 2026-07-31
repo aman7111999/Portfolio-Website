@@ -1,2 +1,4 @@
 User-agent: *
 Allow: /
+
+Sitemap: https://amanux.vercel.app/sitemap.xml

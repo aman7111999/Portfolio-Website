@@ -19,6 +19,8 @@ type HeroData = {
   subline: string;
   cta_label: string;
   cta_to: string;
+  secondary_cta_label?: string;
+  secondary_cta_to?: string;
   brands: string[];
   tools: HeroTool[];
   badge_text: string;
@@ -29,16 +31,19 @@ const FALLBACK: HeroData = {
   headline_before: "Meet the",
   headline_accent: "Expert",
   headline_after: "Product Designer",
-  subline: "I focus on delivering seamless navigation, responsive layouts, and pixel-perfect designs — from 0→1 product to launch.",
+  subline:
+    "I focus on delivering seamless navigation, responsive layouts, and pixel-perfect designs — from 0→1 product to launch.",
   cta_label: "View Projects",
   cta_to: "/work",
+  secondary_cta_label: "View résumé",
+  secondary_cta_to: "/resume",
   brands: ["Figma", "Framer", "Webflow", "Linear", "Notion"],
   tools: [
-    { icon: "Figma",   tint: "accent", pos: { top: "6%",   left: "-14%" } },
-    { icon: "Diamond", tint: "text",   pos: { top: "18%",  right: "-14%" } },
-    { icon: "Shield",  tint: "text",   pos: { top: "48%",  right: "-18%" } },
-    { icon: "Framer",  tint: "accent", pos: { top: "56%",  left: "-16%" } },
-    { icon: "PenTool", tint: "text",   pos: { bottom: "12%", left: "-8%" } },
+    { icon: "Figma", tint: "accent", pos: { top: "6%", left: "-14%" } },
+    { icon: "Diamond", tint: "text", pos: { top: "18%", right: "-14%" } },
+    { icon: "Shield", tint: "text", pos: { top: "48%", right: "-18%" } },
+    { icon: "Framer", tint: "accent", pos: { top: "56%", left: "-16%" } },
+    { icon: "PenTool", tint: "text", pos: { bottom: "12%", left: "-8%" } },
   ],
   badge_text: "OFFICIAL FRAMER PARTNER • CREATOR •",
 };
@@ -89,7 +94,8 @@ export function Hero() {
               className="mt-6 font-semibold leading-[1.02] tracking-[-0.03em] text-[var(--color-text)]"
               style={{ fontSize: "clamp(2.4rem, 8vw, 5.5rem)" }}
             >
-              {h.headline_before} <span className="text-[var(--color-accent)]">{h.headline_accent}</span>
+              {h.headline_before}{" "}
+              <span className="text-[var(--color-accent)]">{h.headline_accent}</span>
               <br />
               {h.headline_after}
             </motion.h1>
@@ -115,6 +121,14 @@ export function Hero() {
                 </span>
                 {h.cta_label}
               </Link>
+              {h.secondary_cta_label && h.secondary_cta_to && (
+                <Link
+                  to={h.secondary_cta_to}
+                  className="glass-pill min-h-11 !px-5 text-[13px] font-medium text-[var(--color-text)] transition-colors hover:text-[var(--color-accent)] md:text-[14px]"
+                >
+                  {h.secondary_cta_label}
+                </Link>
+              )}
             </motion.div>
 
             <motion.div
@@ -159,8 +173,7 @@ export function Hero() {
                   aria-hidden
                   className="pointer-events-none absolute inset-0 z-[1]"
                   style={{
-                    background:
-                      "linear-gradient(180deg, transparent 55%, rgba(5,8,7,0.75) 100%)",
+                    background: "linear-gradient(180deg, transparent 55%, rgba(5,8,7,0.75) 100%)",
                   }}
                 />
               </div>
@@ -174,7 +187,12 @@ export function Hero() {
                     key={i}
                     aria-hidden
                     animate={reduce ? {} : { y: [0, -10, 0] }}
-                    transition={{ duration: 5 + i * 0.6, repeat: Infinity, ease: "easeInOut", delay: i * 0.6 }}
+                    transition={{
+                      duration: 5 + i * 0.6,
+                      repeat: Infinity,
+                      ease: "easeInOut",
+                      delay: i * 0.6,
+                    }}
                     className="absolute z-10 hidden h-14 w-14 place-items-center rounded-full sm:grid"
                     style={{
                       ...(b.pos as React.CSSProperties),
@@ -182,7 +200,8 @@ export function Hero() {
                       backdropFilter: "blur(16px) saturate(1.6)",
                       WebkitBackdropFilter: "blur(16px) saturate(1.6)",
                       border: "1px solid var(--color-hairline-strong)",
-                      boxShadow: "inset 0 1px 0 0 rgba(255,255,255,0.08), 0 12px 30px -12px rgba(0,0,0,0.6)",
+                      boxShadow:
+                        "inset 0 1px 0 0 rgba(255,255,255,0.08), 0 12px 30px -12px rgba(0,0,0,0.6)",
                       color: tint,
                     }}
                   >

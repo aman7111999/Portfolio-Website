@@ -11,8 +11,8 @@ export function Footer() {
   const scrollTop = () => window.scrollTo({ top: 0, behavior: "smooth" });
 
   return (
-    <footer className="border-t border-[var(--color-hairline-strong)]">
-      <div className="container-page flex flex-col items-center justify-between gap-6 py-8 text-[12px] text-[var(--color-muted)] md:flex-row md:text-[13px]">
+    <footer className="border-t border-[var(--color-ending-border)] bg-[var(--color-ending)]">
+      <div className="container-page flex flex-col items-center justify-between gap-6 py-9 text-[12px] text-[var(--color-ending-muted)] md:flex-row md:text-[13px]">
         <div className="flex items-center gap-3">
           <BrandMark className="h-8 w-8" />
           <p className="text-center md:text-left">

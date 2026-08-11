@@ -13,6 +13,7 @@ export default function AdminLogin() {
     loading,
     passwordRecovery,
     signIn,
+    sendSignInLink,
     requestPasswordReset,
     updatePassword,
     finishPasswordRecovery,
@@ -25,6 +26,7 @@ export default function AdminLogin() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
   const [resetSent, setResetSent] = useState(false);
+  const [signInLinkSent, setSignInLinkSent] = useState(false);
   const [busy, setBusy] = useState(false);
 
   if (loading) return <FullscreenSpinner />;
@@ -75,6 +77,23 @@ export default function AdminLogin() {
       return;
     }
     setResetSent(true);
+  };
+
+  const onSendSignInLink = async () => {
+    const cleanEmail = email.trim();
+    setError("");
+    if (!cleanEmail) {
+      setError("Enter your admin email first.");
+      return;
+    }
+    setBusy(true);
+    const result = await sendSignInLink(cleanEmail);
+    setBusy(false);
+    if (result.error) {
+      setError(result.error);
+      return;
+    }
+    setSignInLinkSent(true);
   };
 
   const onUpdatePassword = async (e: React.FormEvent) => {
@@ -193,47 +212,80 @@ export default function AdminLogin() {
 
   return (
     <AdminAuthShell title="Sign in" description="Access the portfolio CMS.">
-      <form onSubmit={onSubmit} className="space-y-4">
+      {signInLinkSent ? (
         <div className="space-y-4">
-          <div>
-            <Label htmlFor="email">Email</Label>
-            <Input
-              id="email"
-              type="email"
-              required
-              autoComplete="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-          </div>
-          <div>
-            <Label htmlFor="password">Password</Label>
-            <Input
-              id="password"
-              type="password"
-              required
-              autoComplete="current-password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-          </div>
-          <InlineError message={error} />
-          <Button type="submit" disabled={busy} className="w-full">
-            {busy ? <Loader2 className="animate-spin" /> : "Sign in"}
-          </Button>
+          <p
+            className="rounded-lg border border-emerald-200 bg-emerald-50 p-3 text-sm leading-relaxed text-emerald-800"
+            role="status"
+          >
+            Sign-in link sent to <strong>{email.trim()}</strong>. Open it in this browser to access
+            the CMS.
+          </p>
           <Button
             type="button"
-            variant="ghost"
+            variant="outline"
             className="w-full"
-            onClick={() => {
-              setError("");
-              setMode("forgot");
-            }}
+            onClick={() => setSignInLinkSent(false)}
           >
-            Forgot password?
+            Back to password sign in
           </Button>
         </div>
-      </form>
+      ) : (
+        <form onSubmit={onSubmit} className="space-y-4">
+          <div className="space-y-4">
+            <div>
+              <Label htmlFor="email">Email</Label>
+              <Input
+                id="email"
+                type="email"
+                required
+                autoComplete="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+            </div>
+            <div>
+              <Label htmlFor="password">Password</Label>
+              <Input
+                id="password"
+                type="password"
+                required
+                autoComplete="current-password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+            </div>
+            <InlineError message={error} />
+            <Button type="submit" disabled={busy} className="w-full">
+              {busy ? <Loader2 className="animate-spin" /> : "Sign in"}
+            </Button>
+            <div className="flex items-center gap-3 text-[11px] uppercase tracking-wider text-[var(--color-muted)]">
+              <span className="h-px flex-1 bg-hairline" /> or{" "}
+              <span className="h-px flex-1 bg-hairline" />
+            </div>
+            <Button
+              type="button"
+              variant="outline"
+              disabled={busy}
+              className="w-full"
+              onClick={onSendSignInLink}
+            >
+              Email me a secure sign-in link
+            </Button>
+            <Button
+              type="button"
+              variant="ghost"
+              className="w-full"
+              onClick={() => {
+                setError("");
+                setMode("forgot");
+              }}
+            >
+              Forgot password?
+            </Button>
+          </div>
+        </form>
+      )}
     </AdminAuthShell>
   );
 }

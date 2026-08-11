@@ -62,7 +62,12 @@ const navGroups: { title: string; items: NavItem[] }[] = [
 
 export default function AdminLayout() {
   const { user, loading, passwordRecovery, signOut } = useAuth();
-  const { data: isAdmin, isLoading: roleLoading } = useIsAdmin();
+  const {
+    data: isAdmin,
+    isLoading: roleLoading,
+    error: roleError,
+    refetch: refetchRole,
+  } = useIsAdmin();
   const loc = useLocation();
   const [drawer, setDrawer] = useState(false);
 
@@ -91,6 +96,13 @@ export default function AdminLayout() {
     return (
       <div data-theme="light">
         <AdminLogin />
+      </div>
+    );
+  }
+  if (user && roleError) {
+    return (
+      <div data-theme="light">
+        <AdminConnectionError onRetry={() => refetchRole()} onSignOut={signOut} />
       </div>
     );
   }
@@ -247,6 +259,31 @@ function AdminAccessDenied({ email }: { email?: string }) {
         <p className="text-sm text-neutral-500">
           Grant the <code>admin</code> role to this user in the <code>user_roles</code> table.
         </p>
+      </div>
+    </div>
+  );
+}
+
+function AdminConnectionError({
+  onRetry,
+  onSignOut,
+}: {
+  onRetry: () => void;
+  onSignOut: () => Promise<void>;
+}) {
+  return (
+    <div className="min-h-screen grid place-items-center bg-neutral-50 p-6">
+      <div className="max-w-md space-y-4 text-center">
+        <h1 className="font-display text-3xl text-neutral-900">CMS connection interrupted</h1>
+        <p className="text-neutral-600">
+          Your sign-in is valid, but the admin permission check could not finish.
+        </p>
+        <div className="flex justify-center gap-2">
+          <Button onClick={onRetry}>Try again</Button>
+          <Button variant="outline" onClick={() => onSignOut()}>
+            Sign out
+          </Button>
+        </div>
       </div>
     </div>
   );

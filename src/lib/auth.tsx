@@ -9,6 +9,7 @@ type AuthCtx = {
   loading: boolean;
   passwordRecovery: boolean;
   signIn: (email: string, password: string) => Promise<{ error?: string }>;
+  sendSignInLink: (email: string) => Promise<{ error?: string }>;
   requestPasswordReset: (email: string) => Promise<{ error?: string }>;
   updatePassword: (password: string) => Promise<{ error?: string }>;
   finishPasswordRecovery: () => void;
@@ -50,6 +51,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       async signIn(email: string, password: string) {
         const { data, error } = await supabase.auth.signInWithPassword({ email, password });
         if (!error) setSession(data.session);
+        return error ? { error: error.message } : {};
+      },
+      async sendSignInLink(email: string) {
+        const { error } = await supabase.auth.signInWithOtp({
+          email,
+          options: {
+            emailRedirectTo: `${window.location.origin}/admin`,
+            shouldCreateUser: false,
+          },
+        });
         return error ? { error: error.message } : {};
       },
       async requestPasswordReset(email: string) {
@@ -95,8 +106,9 @@ export function useIsAdmin() {
         .eq("user_id", user.id)
         .eq("role", "admin")
         .maybeSingle();
-      if (error) return false;
+      if (error) throw error;
       return !!data;
     },
+    retry: 2,
   });
 }

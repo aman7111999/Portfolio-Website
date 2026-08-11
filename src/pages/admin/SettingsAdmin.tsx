@@ -260,11 +260,17 @@ function ProjectAccessSection() {
                 onChange={(e) => setDuration(Number(e.target.value))}
                 className="w-full rounded-md border border-neutral-200 bg-white px-3 py-2 text-sm"
               >
+                <option value={0}>Until password changes</option>
                 <option value={1}>1 hour</option>
                 <option value={8}>8 hours</option>
                 <option value={24}>24 hours</option>
                 <option value={72}>72 hours</option>
               </select>
+              {duration === 0 && (
+                <p className="text-[11px] leading-relaxed text-neutral-500">
+                  Visitors stay signed in until you set a new password or disable protection.
+                </p>
+              )}
             </div>
 
             <Button size="sm" onClick={saveSettings} disabled={busy} className="w-full">

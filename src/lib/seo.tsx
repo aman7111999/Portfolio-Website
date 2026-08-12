@@ -8,6 +8,7 @@ type Props = {
   jsonLd?: Record<string, unknown>;
   siteName?: string;
   noindex?: boolean;
+  image?: string | null;
 };
 
 export function Seo({
@@ -18,12 +19,13 @@ export function Seo({
   jsonLd,
   siteName = "Portfolio",
   noindex,
+  image,
 }: Props) {
   const fullTitle = title.includes(siteName) ? title : `${title} — ${siteName}`;
   const desc = description ?? "";
   const siteUrl = (import.meta.env.VITE_SITE_URL || "https://amanux.vercel.app").replace(/\/$/, "");
   const absoluteUrl = new URL(path, `${siteUrl}/`).toString();
-  const ogImage = `${siteUrl}/og-preview.png`;
+  const ogImage = image ? new URL(image, `${siteUrl}/`).toString() : `${siteUrl}/og-preview.png`;
   return (
     <Helmet>
       <title>{fullTitle}</title>

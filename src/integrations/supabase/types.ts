@@ -254,6 +254,7 @@ export type Database = {
           metrics: Json
           outcome: string | null
           overview: string | null
+          presentation: Json
           problem_statement: string | null
           published: boolean
           research: string | null
@@ -283,6 +284,7 @@ export type Database = {
           metrics?: Json
           outcome?: string | null
           overview?: string | null
+          presentation?: Json
           problem_statement?: string | null
           published?: boolean
           research?: string | null
@@ -312,6 +314,7 @@ export type Database = {
           metrics?: Json
           outcome?: string | null
           overview?: string | null
+          presentation?: Json
           problem_statement?: string | null
           published?: boolean
           research?: string | null
@@ -490,38 +493,53 @@ export type Database = {
       public_projects_index: {
         Row: {
           category: string | null
+          company: string | null
           featured: boolean | null
           id: string | null
+          locked: boolean | null
+          presentation: Json | null
           published: boolean | null
+          role: string | null
           short_description: string | null
           slug: string | null
           sort_order: number | null
           tags: string[] | null
           thumbnail_url: string | null
+          timeline: string | null
           title: string | null
         }
         Insert: {
           category?: string | null
+          company?: string | null
           featured?: boolean | null
           id?: string | null
+          locked?: never
+          presentation?: Json | null
           published?: boolean | null
+          role?: string | null
           short_description?: string | null
           slug?: string | null
           sort_order?: number | null
           tags?: string[] | null
           thumbnail_url?: string | null
+          timeline?: string | null
           title?: string | null
         }
         Update: {
           category?: string | null
+          company?: string | null
           featured?: boolean | null
           id?: string | null
+          locked?: never
+          presentation?: Json | null
           published?: boolean | null
+          role?: string | null
           short_description?: string | null
           slug?: string | null
           sort_order?: number | null
           tags?: string[] | null
           thumbnail_url?: string | null
+          timeline?: string | null
           title?: string | null
         }
         Relationships: []

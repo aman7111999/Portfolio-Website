@@ -1,4 +1,5 @@
 import { motion, useReducedMotion } from "framer-motion";
+import { Fragment } from "react";
 import {
   ArrowDown,
   BarChart3,
@@ -13,6 +14,7 @@ import {
   TrendingUp,
   WalletCards,
 } from "lucide-react";
+import type { ProjectPresentation } from "@/lib/projectPresentation";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
@@ -127,58 +129,42 @@ export function PortfolioAnalysisVisual({ mode = "card" }: { mode?: VisualMode }
   );
 }
 
-const journey = [
+const journeyVisuals = [
   {
-    number: "01",
-    title: "Find the value",
-    copy: "A clear Portfolio Analysis entry point explains the outcome before asking for effort.",
     icon: Sparkles,
     accent: "#8b82ff",
     screen: <EntryScreen />,
   },
   {
-    number: "02",
-    title: "Choose the scope",
-    copy: "Overall, Motilal Oswal, and External views keep source context visible without splitting the experience.",
     icon: Layers3,
     accent: "#55e6c1",
     screen: <ScopeScreen />,
   },
   {
-    number: "03",
-    title: "Connect external wealth",
-    copy: "Broker import, consent, and syncing states make a high-trust transition feel predictable.",
     icon: Link2,
     accent: "#f2b86b",
     screen: <SyncScreen />,
   },
   {
-    number: "04",
-    title: "Read stock health",
-    copy: "Allocation, concentration, and red flags translate raw holdings into a prioritised diagnosis.",
     icon: BarChart3,
     accent: "#8b82ff",
     screen: <StockScreen />,
   },
   {
-    number: "05",
-    title: "Evaluate mutual funds",
-    copy: "Risk and diversification are explained in context, not presented as isolated financial scores.",
     icon: ShieldCheck,
     accent: "#55e6c1",
     screen: <FundScreen />,
   },
   {
-    number: "06",
-    title: "Move from insight to action",
-    copy: "IAP portfolios, an RM conversation, and report download support different levels of confidence.",
     icon: MessageCircle,
     accent: "#f2b86b",
     screen: <ActionScreen />,
   },
 ] as const;
 
-export function PortfolioAnalysisCaseVisuals() {
+const architectureIcons = [WalletCards, Link2, Sparkles, TrendingUp] as const;
+
+export function PortfolioAnalysisCaseVisuals({ story }: { story: ProjectPresentation["story"] }) {
   const reduce = useReducedMotion();
 
   return (
@@ -186,15 +172,13 @@ export function PortfolioAnalysisCaseVisuals() {
       <section className="container-page py-[var(--space-20)] md:py-[var(--space-32)]">
         <div className="grid gap-10 lg:grid-cols-12 lg:items-end">
           <div className="lg:col-span-7">
-            <p className="eyebrow text-[var(--color-accent)]">Experience architecture</p>
+            <p className="eyebrow text-[var(--color-accent)]">{story.eyebrow}</p>
             <h2 className="mt-5 max-w-[13ch] text-[clamp(2.5rem,5vw,4.6rem)] leading-[.98] tracking-[-.05em]">
-              One analysis model for every portfolio.
+              {story.title}
             </h2>
           </div>
           <p className="max-w-[48ch] text-[16px] leading-7 text-[var(--color-muted)] lg:col-span-4 lg:col-start-9">
-            The interface keeps portfolio source visible, then applies the same diagnostic logic
-            across internal and externally imported investments. Users learn one system instead of
-            relearning the product for every broker or asset type.
+            {story.description}
           </p>
         </div>
 
@@ -206,34 +190,18 @@ export function PortfolioAnalysisCaseVisuals() {
           className="mt-12 overflow-hidden rounded-[var(--radius-xl)] border border-[var(--color-hairline-strong)] bg-[var(--color-surface)] p-5 shadow-[var(--elevation-2)] md:p-8 lg:p-10"
         >
           <div className="grid gap-3 lg:grid-cols-[1fr_auto_1fr_auto_1.25fr_auto_1fr] lg:items-stretch">
-            <ArchitectureNode
-              eyebrow="Source 01"
-              title="Motilal Oswal"
-              copy="Existing stocks and mutual funds"
-              icon={WalletCards}
-            />
-            <FlowArrow />
-            <ArchitectureNode
-              eyebrow="Source 02"
-              title="External"
-              copy="Linked brokers and portfolios"
-              icon={Link2}
-            />
-            <FlowArrow />
-            <ArchitectureNode
-              eyebrow="Intelligence layer"
-              title="Unified diagnosis"
-              copy="Risk · allocation · quality · diversification"
-              icon={Sparkles}
-              featured
-            />
-            <FlowArrow />
-            <ArchitectureNode
-              eyebrow="Action"
-              title="Decision support"
-              copy="IAP · RM support · report"
-              icon={TrendingUp}
-            />
+            {story.architecture_nodes.slice(0, 4).map((node, index) => (
+              <Fragment key={node.id}>
+                {index > 0 && <FlowArrow />}
+                <ArchitectureNode
+                  eyebrow={node.eyebrow}
+                  title={node.title}
+                  copy={node.description}
+                  icon={architectureIcons[index] ?? Sparkles}
+                  featured={index === 2}
+                />
+              </Fragment>
+            ))}
           </div>
         </motion.div>
       </section>
@@ -242,23 +210,24 @@ export function PortfolioAnalysisCaseVisuals() {
         <div className="container-page">
           <div className="flex flex-wrap items-end justify-between gap-7">
             <div>
-              <p className="eyebrow text-[var(--color-accent)]">Screen journey</p>
+              <p className="eyebrow text-[var(--color-accent)]">{story.journey_eyebrow}</p>
               <h2 className="mt-5 max-w-[15ch] text-[clamp(2.4rem,4.6vw,4.2rem)] leading-[1] tracking-[-.045em]">
-                Six moments. One continuous decision flow.
+                {story.journey_title}
               </h2>
             </div>
             <p className="max-w-[39ch] text-[14px] leading-6 text-[var(--color-muted)] md:text-[15px]">
-              Each screen answers the next investor question while preserving context from the
-              previous step.
+              {story.journey_description}
             </p>
           </div>
 
           <div className="mt-12 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-            {journey.map((item, index) => {
-              const Icon = item.icon;
+            {story.journey.map((item, index) => {
+              const visual = journeyVisuals[index % journeyVisuals.length];
+              const Icon = visual.icon;
+              const number = String(index + 1).padStart(2, "0");
               return (
                 <motion.article
-                  key={item.number}
+                  key={item.id}
                   initial={reduce ? false : { opacity: 0, y: 24 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, margin: "-70px" }}
@@ -269,23 +238,32 @@ export function PortfolioAnalysisCaseVisuals() {
                     <div className="absolute inset-0 opacity-35 [background-image:linear-gradient(rgba(255,255,255,.045)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,.045)_1px,transparent_1px)] [background-size:28px_28px]" />
                     <div className="relative z-[1] flex items-center justify-between">
                       <span className="font-mono text-[10px] tracking-[.14em] text-white/35">
-                        {item.number} / 06
+                        {number} / {String(story.journey.length).padStart(2, "0")}
                       </span>
                       <span
                         className="grid h-8 w-8 place-items-center rounded-full border border-white/10 bg-white/[.06]"
-                        style={{ color: item.accent }}
+                        style={{ color: visual.accent }}
                       >
                         <Icon size={14} />
                       </span>
                     </div>
-                    <div className="relative z-[1] mx-auto mt-5 w-[72%] min-w-[190px] max-w-[230px] transition-transform duration-700 group-hover:-translate-y-1 group-hover:rotate-[1deg]">
-                      {item.screen}
-                    </div>
+                    {item.image_url ? (
+                      <img
+                        src={item.image_url}
+                        alt={item.title}
+                        className="relative z-[1] mt-5 h-[238px] w-full rounded-[18px] object-contain transition-transform duration-700 group-hover:-translate-y-1"
+                        loading="lazy"
+                      />
+                    ) : (
+                      <div className="relative z-[1] mx-auto mt-5 w-[72%] min-w-[190px] max-w-[230px] transition-transform duration-700 group-hover:-translate-y-1 group-hover:rotate-[1deg]">
+                        {visual.screen}
+                      </div>
+                    )}
                   </div>
                   <div className="p-6">
                     <p className="text-[18px] font-semibold tracking-[-.025em]">{item.title}</p>
                     <p className="mt-3 text-[14px] leading-6 text-[var(--color-muted)]">
-                      {item.copy}
+                      {item.description}
                     </p>
                   </div>
                 </motion.article>

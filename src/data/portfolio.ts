@@ -202,7 +202,7 @@ export const PORTFOLIO_CONTENT = {
     items: [
       { v: "4.5+", l: "Years in product design" },
       { v: "9×", l: "Portfolio import growth" },
-      { v: "4", l: "Focused case studies" },
+      { v: "5", l: "Focused case studies" },
     ],
     body: "I’m {name}, a product designer focused on fintech, AI-assisted experiences, and scalable product systems. I turn dense workflows and ambiguous requirements into clear journeys that users can understand and teams can ship.",
     quote: "The strongest design decisions make complexity feel inevitable, not visible.",
@@ -359,6 +359,64 @@ export const PORTFOLIO_CONTENT = {
 
 export const PORTFOLIO_PROJECTS = [
   {
+    id: "portfolio-analysis",
+    title: "Portfolio Analysis",
+    slug: "portfolio-analysis",
+    short_description:
+      "Unifying internal and externally linked portfolios into one insight-to-action experience for clearer investment decisions.",
+    overview:
+      "<p>Investors rarely hold their complete wealth in one place. Their Motilal Oswal investments may be only one part of a portfolio spread across brokers, stocks, and mutual funds. The product opportunity was not another holdings view; it was a decision layer that could interpret the whole picture.</p><p>I designed Portfolio Analysis for Riise as a unified experience across <strong>internal Motilal Oswal holdings and externally imported portfolios</strong>. It brings portfolio health, risk, diversification, recommendations, and human advisory support into one continuous journey.</p><p>My role covered product framing, experience architecture, information hierarchy, interaction design, high-fidelity UI, edge states, and design-system-aligned handoff.</p>",
+    problem_statement:
+      "<p>Portfolio data was fragmented by source and difficult to translate into a confident next step. A user could see what they owned, but not necessarily what the combined portfolio meant.</p><ul><li>Internal and external investments created separate mental models.</li><li>Dense financial metrics could feel diagnostic without being understandable.</li><li>Stocks and mutual funds required different analysis while still belonging to one portfolio story.</li><li>Insights risked becoming dead ends if the product did not offer an appropriate action.</li><li>Import and syncing required clear consent, trust, progress, failure, and empty states.</li></ul><p>The product goal was to turn fragmented holdings into a coherent analysis that helps investors understand risk, identify gaps, and choose an informed next step.</p>",
+    research:
+      "<p>I audited the existing portfolio, import, stock-research, mutual-fund, and advisory journeys, then mapped the questions users need answered as they move from visibility to action.</p><p>The synthesis revealed four recurring needs: <strong>completeness</strong> across brokers, <strong>interpretation</strong> of complex metrics, <strong>prioritisation</strong> of what deserves attention, and <strong>support</strong> at the moment a decision becomes consequential.</p><p>These inputs shaped a product principle: keep the data source visible, but never make the user learn a different analysis model for each source.</p>",
+    design_process:
+      "<p>I structured the experience around investor questions instead of backend data categories.</p><ol><li><strong>What is being analysed?</strong> Overall, Motilal Oswal, and External views preserve source context.</li><li><strong>Is my portfolio healthy?</strong> A concise overview surfaces allocation, risk, diversification, and attention areas.</li><li><strong>Why does it matter?</strong> Every metric is paired with interpretation and portfolio-specific context.</li><li><strong>Where is the issue?</strong> Progressive disclosure connects a diagnosis to the affected stocks or funds.</li><li><strong>What can I do next?</strong> IAP portfolios, RM support, and downloadable reports support different confidence levels.</li></ol><p>I also designed the non-ideal journey: no external portfolio, first-time connection, consent, syncing, partial data, errors, empty analysis, and light/dark states. This made the system buildable beyond the ideal happy path.</p>",
+    solution:
+      "<p>The final experience works as a connected six-part journey.</p><ul><li><strong>Entry and value framing:</strong> Portfolio Analysis communicates the benefit before asking users to connect more data.</li><li><strong>Unified portfolio scope:</strong> Overall, Motilal Oswal, and External tabs offer control without fragmenting the product.</li><li><strong>External portfolio connection:</strong> Consent-led broker import and visible syncing states reduce uncertainty.</li><li><strong>Stock diagnostics:</strong> Allocation, sector and stock concentration, portfolio risk, and red flags are organised by priority.</li><li><strong>Mutual-fund analysis:</strong> Risk alignment, diversification, and overlap are explained in an asset-appropriate format.</li><li><strong>Decision support:</strong> Relevant IAP mutual-fund portfolios, a relationship-manager conversation, and report download turn insight into an actionable choice.</li></ul><p>The interface uses progressive disclosure and plain-language interpretation to retain analytical depth without becoming a data dump.</p>",
+    outcome:
+      "<p>The work established one scalable portfolio-intelligence model across internal and external investments, designed for <strong>2M+ portfolio-analysis use cases</strong>. It aligned the product around a continuous path from holdings to diagnosis to an appropriate next step.</p><p>The design system covers stocks, mutual funds, multiple portfolio sources, import states, light/dark themes, and advisory actions while keeping a consistent core interaction model.</p><p>No unverified conversion or post-launch uplift is presented. The defensible outcome is the product architecture, build-ready journey, and scale of use cases covered.</p>",
+    learnings:
+      "<p>A portfolio score alone creates attention, not confidence. The valuable design work is the layer between the number and the action: explaining why a signal matters, showing where it comes from, and offering help without pretending the interface can replace investor judgement.</p><p>The project also reinforced that source unification is an experience problem before it is a data problem. Users can accept multiple sources as long as the product gives them one stable mental model.</p>",
+    role: "Lead product design · Product strategy · Data storytelling",
+    duration: "Discovery to build-ready handoff",
+    company: "Motilal Oswal Financial Services",
+    tools: ["Figma", "Prototyping", "Design system"],
+    tags: ["Fintech", "Portfolio intelligence", "Data visualisation", "Advisory UX"],
+    category: "Portfolio intelligence",
+    timeline: "2025–2026",
+    thumbnail_url: null,
+    gallery: [],
+    links: [
+      {
+        label: "Figma source",
+        url: "https://www.figma.com/design/xL2pjlUJRgR8NVAirSDS01/Important-Projects?node-id=1-3",
+      },
+    ],
+    metrics: [
+      {
+        value: "2M+",
+        label: "Portfolio-analysis use cases",
+        hint: "Across internal and linked external investments",
+      },
+      {
+        value: "2 sources",
+        label: "One analysis model",
+        hint: "Motilal Oswal and externally imported portfolios",
+      },
+      {
+        value: "3 paths",
+        label: "From insight to action",
+        hint: "IAP portfolios, RM support, and report download",
+      },
+    ],
+    featured: true,
+    published: true,
+    sort_order: 1,
+    created_at: stamp,
+    updated_at: stamp,
+  },
+  {
     id: "riise-personalisation",
     title: "Riise Hyper-personalisation",
     slug: "riise-hyper-personalisation",
@@ -403,7 +461,7 @@ export const PORTFOLIO_PROJECTS = [
     ],
     featured: true,
     published: true,
-    sort_order: 1,
+    sort_order: 2,
     created_at: stamp,
     updated_at: stamp,
   },
@@ -452,7 +510,7 @@ export const PORTFOLIO_PROJECTS = [
     ],
     featured: true,
     published: true,
-    sort_order: 2,
+    sort_order: 3,
     created_at: stamp,
     updated_at: stamp,
   },
@@ -501,7 +559,7 @@ export const PORTFOLIO_PROJECTS = [
     ],
     featured: true,
     published: true,
-    sort_order: 3,
+    sort_order: 4,
     created_at: stamp,
     updated_at: stamp,
   },
@@ -550,7 +608,7 @@ export const PORTFOLIO_PROJECTS = [
     ],
     featured: true,
     published: true,
-    sort_order: 4,
+    sort_order: 5,
     created_at: stamp,
     updated_at: stamp,
   },

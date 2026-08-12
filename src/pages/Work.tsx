@@ -26,7 +26,7 @@ export default function Work() {
             </span>
           </h1>
           <p className="mt-6 max-w-2xl text-[16px] leading-[1.6] text-[var(--color-muted)] md:text-lg">
-            Four stories showing how I frame complex problems, navigate constraints, align teams,
+            Five stories showing how I frame complex problems, navigate constraints, align teams,
             and move from concept to shipped or build-ready outcomes.
           </p>
         </Reveal>

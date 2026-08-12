@@ -12,6 +12,10 @@ import { ReadingProgress } from "@/components/case/ReadingProgress";
 import { ImpactGrid } from "@/components/case/ImpactGrid";
 import { PrototypeEmbed, isPrototypeLink } from "@/components/case/PrototypeEmbed";
 import { ProseHtml } from "@/components/case/ProseHtml";
+import {
+  PortfolioAnalysisCaseVisuals,
+  PortfolioAnalysisVisual,
+} from "@/components/case/PortfolioAnalysisStory";
 import { ProjectPasswordGate } from "@/components/projects/ProjectPasswordGate";
 import { fetchProtectedProject, clearAccessToken } from "@/lib/projectAccess";
 import NotFound from "./NotFound";
@@ -111,6 +115,7 @@ export default function ProjectPage() {
   const i = list.findIndex((p) => p.slug === slug);
   const prev = i > 0 ? list[i - 1] : list[list.length - 1];
   const next = i < list.length - 1 ? list[i + 1] : list[0];
+  const isPortfolioAnalysis = project.slug === "portfolio-analysis";
 
   const chapters = [
     {
@@ -240,7 +245,9 @@ export default function ProjectPage() {
             transition={{ duration: 0.85, delay: 0.12, ease: EASE }}
             className="project-visual relative mt-16 aspect-[16/7] overflow-hidden rounded-[var(--radius-lg)] border border-[var(--color-hairline-strong)] bg-[var(--color-elevated)]"
           >
-            {project.thumbnail_url ? (
+            {isPortfolioAnalysis ? (
+              <PortfolioAnalysisVisual mode="hero" />
+            ) : project.thumbnail_url ? (
               <img src={project.thumbnail_url} alt="" className="h-full w-full object-cover" />
             ) : (
               <div
@@ -378,6 +385,8 @@ export default function ProjectPage() {
             </div>
           </section>
         )}
+
+        {isPortfolioAnalysis && <PortfolioAnalysisCaseVisuals />}
 
         {/* ==================== CHAPTER SECTIONS ==================== */}
         {activeChapters.map((c) => {

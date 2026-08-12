@@ -18,6 +18,7 @@ import {
 } from "@/components/case/PortfolioAnalysisStory";
 import { ProjectPasswordGate } from "@/components/projects/ProjectPasswordGate";
 import { fetchProtectedProject, clearAccessToken } from "@/lib/projectAccess";
+import { getProjectPresentation, resolveHeroVisual } from "@/lib/projectPresentation";
 import NotFound from "./NotFound";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
@@ -115,68 +116,55 @@ export default function ProjectPage() {
   const i = list.findIndex((p) => p.slug === slug);
   const prev = i > 0 ? list[i - 1] : list[list.length - 1];
   const next = i < list.length - 1 ? list[i + 1] : list[0];
-  const isPortfolioAnalysis = project.slug === "portfolio-analysis";
+  const presentation = getProjectPresentation(project);
+  const heroVisual = resolveHeroVisual(project);
 
   const chapters = [
     {
       id: "overview",
       chapter: "01",
-      label: "Overview",
-      eyebrow: "The context",
-      title: "Overview",
+      ...presentation.sections.overview,
       html: project.overview,
     },
     {
       id: "problem",
       chapter: "02",
-      label: "Problem",
-      eyebrow: "What we faced",
-      title: "Problem & business goal",
+      ...presentation.sections.problem,
       html: project.problem_statement,
     },
     {
       id: "research",
       chapter: "03",
-      label: "Research",
-      eyebrow: "What we learned",
-      title: "Research & insights",
+      ...presentation.sections.research,
       html: project.research,
     },
     {
       id: "process",
       chapter: "04",
-      label: "Process",
-      eyebrow: "How we built it",
-      title: "Design process",
+      ...presentation.sections.process,
       html: project.design_process,
     },
     {
       id: "solution",
       chapter: "05",
-      label: "Solution",
-      eyebrow: "High fidelity",
-      title: "The solution",
+      ...presentation.sections.solution,
       html: project.solution,
     },
     {
       id: "impact",
       chapter: "06",
-      label: "Impact",
-      eyebrow: "The outcome",
-      title: "Impact",
+      ...presentation.sections.impact,
       html: project.outcome,
     },
     {
       id: "reflection",
       chapter: "07",
-      label: "Reflection",
-      eyebrow: "In hindsight",
-      title: "Reflection & learnings",
+      ...presentation.sections.reflection,
       html: project.learnings,
     },
   ] as const;
 
-  const activeChapters = chapters.filter((c) => c.html && c.html.trim().length > 0);
+  const activeChapters = chapters.filter((c) => c.visible && c.html && c.html.trim().length > 0);
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -190,12 +178,13 @@ export default function ProjectPage() {
   return (
     <>
       <Seo
-        title={project.title}
-        description={project.short_description ?? ""}
+        title={presentation.seo.title}
+        description={presentation.seo.description}
         path={`/projects/${project.slug}`}
         ogType="article"
         jsonLd={jsonLd}
         siteName={site?.name ?? "Portfolio"}
+        image={heroVisual.imageUrl ?? project.thumbnail_url}
       />
 
       <ReadingProgress />
@@ -208,7 +197,7 @@ export default function ProjectPage() {
               to="/work"
               className="inline-flex items-center gap-2 text-[12px] font-medium text-[var(--color-muted)] transition-colors hover:text-[var(--color-text)]"
             >
-              <ArrowLeft size={12} /> Back to work
+              <ArrowLeft size={12} /> {presentation.labels.back_to_work}
             </Link>
           </div>
 
@@ -232,9 +221,9 @@ export default function ProjectPage() {
               )}
             </motion.div>
             <div className="border-t border-[var(--color-hairline-strong)] pt-5 lg:col-span-3 lg:col-start-10">
-              <Meta label="Company" value={project.company} />
+              <Meta label={presentation.labels.company} value={project.company} />
               <div className="mt-5">
-                <Meta label="Timeline" value={project.timeline} />
+                <Meta label={presentation.labels.timeline} value={project.timeline} />
               </div>
             </div>
           </div>
@@ -245,10 +234,14 @@ export default function ProjectPage() {
             transition={{ duration: 0.85, delay: 0.12, ease: EASE }}
             className="project-visual relative mt-16 aspect-[16/7] overflow-hidden rounded-[var(--radius-lg)] border border-[var(--color-hairline-strong)] bg-[var(--color-elevated)]"
           >
-            {isPortfolioAnalysis ? (
+            {heroVisual.kind === "image" && heroVisual.imageUrl ? (
+              <img
+                src={heroVisual.imageUrl}
+                alt={presentation.hero.image_alt}
+                className="h-full w-full object-cover"
+              />
+            ) : heroVisual.kind === "signature" ? (
               <PortfolioAnalysisVisual mode="hero" />
-            ) : project.thumbnail_url ? (
-              <img src={project.thumbnail_url} alt="" className="h-full w-full object-cover" />
             ) : (
               <div
                 aria-hidden
@@ -302,17 +295,19 @@ export default function ProjectPage() {
         {/* ==================== META STRIP ==================== */}
         <section className="container-page pt-[var(--space-16)] md:pt-[var(--space-20)]">
           <div className="grid gap-[var(--space-8)] border-y border-hairline py-[var(--space-8)] md:grid-cols-4">
-            <Meta label="Role" value={project.role} />
-            <Meta label="Timeline" value={project.timeline} />
-            <Meta label="Duration" value={project.duration} />
-            <Meta label="Category" value={project.category} />
+            <Meta label={presentation.labels.role} value={project.role} />
+            <Meta label={presentation.labels.timeline} value={project.timeline} />
+            <Meta label={presentation.labels.duration} value={project.duration} />
+            <Meta label={presentation.labels.category} value={project.category} />
           </div>
 
           <nav
             aria-label="Case study sections"
             className="mt-8 border-b border-[var(--color-hairline)] pb-6"
           >
-            <p className="system-label text-[var(--color-subtle)]">Case map</p>
+            <p className="system-label text-[var(--color-subtle)]">
+              {presentation.labels.case_map}
+            </p>
             <ol className="mt-4 flex gap-x-6 gap-y-3 overflow-x-auto pb-1">
               {activeChapters.map((chapter) => (
                 <li key={chapter.id} className="shrink-0">
@@ -332,7 +327,7 @@ export default function ProjectPage() {
             <div className="mt-[var(--space-8)] flex flex-wrap items-start gap-[var(--space-8)]">
               {project.tools.length > 0 && (
                 <div>
-                  <p className="eyebrow mb-[var(--space-3)]">Technology</p>
+                  <p className="eyebrow mb-[var(--space-3)]">{presentation.labels.technology}</p>
                   <div className="flex flex-wrap gap-[var(--space-2)]">
                     {project.tools.map((t) => (
                       <Badge key={t} tone="accent" size="sm">
@@ -344,7 +339,7 @@ export default function ProjectPage() {
               )}
               {project.tags.length > 0 && (
                 <div>
-                  <p className="eyebrow mb-[var(--space-3)]">Tags</p>
+                  <p className="eyebrow mb-[var(--space-3)]">{presentation.labels.tags}</p>
                   <div className="flex flex-wrap gap-[var(--space-2)]">
                     {project.tags.map((t) => (
                       <Tag key={t}>{t}</Tag>
@@ -386,7 +381,7 @@ export default function ProjectPage() {
           </section>
         )}
 
-        {isPortfolioAnalysis && <PortfolioAnalysisCaseVisuals />}
+        {presentation.story.enabled && <PortfolioAnalysisCaseVisuals story={presentation.story} />}
 
         {/* ==================== CHAPTER SECTIONS ==================== */}
         {activeChapters.map((c) => {
@@ -415,15 +410,10 @@ export default function ProjectPage() {
           <CaseSection
             id="prototype"
             chapter={String(activeChapters.length + 1).padStart(2, "0")}
-            eyebrow="Try it live"
-            title="Interactive prototype"
+            eyebrow={presentation.prototype.eyebrow}
+            title={presentation.prototype.title}
             variant="wide"
-            intro={
-              <>
-                A working prototype of the flow — click through the way a user would. Best
-                experienced on desktop. Tap the expand icon for fullscreen.
-              </>
-            }
+            intro={<>{presentation.prototype.description}</>}
           >
             <PrototypeEmbed url={prototypeLink.url} label={prototypeLink.label} />
           </CaseSection>
@@ -434,11 +424,11 @@ export default function ProjectPage() {
           <CaseSection
             id="gallery"
             chapter={String(activeChapters.length + (prototypeLink ? 2 : 1)).padStart(2, "0")}
-            eyebrow="Visual archive"
-            title="Selected artifacts"
+            eyebrow={presentation.gallery.eyebrow}
+            title={presentation.gallery.title}
             variant="wide"
             tone="surface"
-            intro="Screens, flows, and moments from the design process — tap any image to expand."
+            intro={presentation.gallery.description}
           >
             <CaseGallery images={project.gallery} />
           </CaseSection>
@@ -460,7 +450,7 @@ export default function ProjectPage() {
         {/* ==================== LINKS ==================== */}
         {project.links.filter((l) => !isPrototypeLink(l.url)).length > 0 && (
           <section className="container-page py-[var(--space-16)]">
-            <p className="eyebrow">External links</p>
+            <p className="eyebrow">{presentation.labels.external_links}</p>
             <ul className="mt-[var(--space-4)] flex flex-wrap gap-[var(--space-3)]">
               {project.links
                 .filter((l) => !isPrototypeLink(l.url))
@@ -484,8 +474,12 @@ export default function ProjectPage() {
         {(prev || next) && (
           <section className="container-page mt-[var(--space-24)] border-t border-hairline pt-[var(--space-16)]">
             <div className="grid gap-[var(--space-10)] md:grid-cols-2">
-              {prev && <NavCase project={prev} label="Previous" side="prev" />}
-              {next && <NavCase project={next} label="Next" side="next" />}
+              {prev && (
+                <NavCase project={prev} label={presentation.labels.previous_project} side="prev" />
+              )}
+              {next && (
+                <NavCase project={next} label={presentation.labels.next_project} side="next" />
+              )}
             </div>
           </section>
         )}
@@ -494,13 +488,13 @@ export default function ProjectPage() {
         <section className="container-page mt-[var(--space-24)] pb-[var(--space-20)]">
           <div className="flex flex-wrap items-end justify-between gap-8 border-t border-[var(--color-hairline-strong)] pt-10 md:pt-14">
             <div>
-              <p className="eyebrow">Let's build together</p>
+              <p className="eyebrow">{presentation.cta.eyebrow}</p>
               <h2 className="mt-4 max-w-[18ch] text-[clamp(2.25rem,4vw,3.6rem)] font-medium leading-[1.04] tracking-[-0.04em]">
-                Have a problem worth solving?
+                {presentation.cta.title}
               </h2>
             </div>
-            <Link to="/contact" className="btn-primary">
-              Start a conversation <ArrowUpRight size={16} />
+            <Link to={presentation.cta.url} className="btn-primary">
+              {presentation.cta.label} <ArrowUpRight size={16} />
             </Link>
           </div>
         </section>

@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams, Link } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import type { Database, Json } from "@/integrations/supabase/types";
 import type { ProjectRow } from "@/lib/cms";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -11,14 +12,13 @@ import { Switch } from "@/components/ui/switch";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { toast } from "sonner";
-import { ArrowLeft, Loader2, Save, ExternalLink, X, Plus, CheckCircle2 } from "lucide-react";
+import { ArrowLeft, Loader2, Save, Eye, X, Plus, CheckCircle2, Trash2 } from "lucide-react";
 import { RichEditor } from "@/components/admin/RichEditor";
-import {
-  ImageGallery,
-  SingleImageUpload,
-  type GalleryImage,
-} from "@/components/admin/ImageUploader";
+import { ImageGallery, type GalleryImage } from "@/components/admin/ImageUploader";
 import { AdminPage } from "@/components/admin/AdminPage";
+import { ProjectPresentationEditor } from "@/components/admin/ProjectPresentationEditor";
+import { ProjectPreviewDialog } from "@/components/admin/ProjectPreviewDialog";
+import { getProjectPresentation, type ProjectPresentation } from "@/lib/projectPresentation";
 
 const slugify = (s: string) =>
   s
@@ -28,6 +28,7 @@ const slugify = (s: string) =>
     .replace(/(^-|-$)/g, "");
 
 type Draft = Partial<ProjectRow> & { title: string; slug: string };
+type ProjectInsert = Database["public"]["Tables"]["projects"]["Insert"];
 
 const emptyDraft: Draft = {
   title: "",
@@ -48,6 +49,7 @@ const emptyDraft: Draft = {
   category: "",
   timeline: "",
   thumbnail_url: null,
+  presentation: getProjectPresentation({ slug: "", title: "" }),
   gallery: [],
   links: [],
   metrics: [],
@@ -64,6 +66,7 @@ export default function ProjectEditor() {
   const [draft, setDraft] = useState<Draft>(emptyDraft);
   const [slugTouched, setSlugTouched] = useState(!isNew);
   const [dirty, setDirty] = useState(false);
+  const [previewOpen, setPreviewOpen] = useState(false);
 
   const { isLoading } = useQuery({
     queryKey: ["project-edit", id],
@@ -76,7 +79,11 @@ export default function ProjectEditor() {
         .maybeSingle();
       if (error) throw error;
       if (data) {
-        setDraft(data as unknown as Draft);
+        const loaded = data as unknown as Draft;
+        setDraft({
+          ...loaded,
+          presentation: getProjectPresentation(loaded),
+        });
         setDirty(false);
       }
       return data;
@@ -91,28 +98,43 @@ export default function ProjectEditor() {
 
   const save = useMutation({
     mutationFn: async (publish?: boolean) => {
-      const payload = {
-        ...draft,
+      const payload: ProjectInsert = {
+        title: draft.title,
+        slug: draft.slug,
+        short_description: draft.short_description,
+        overview: draft.overview,
+        problem_statement: draft.problem_statement,
+        research: draft.research,
+        design_process: draft.design_process,
+        solution: draft.solution,
+        outcome: draft.outcome,
+        learnings: draft.learnings,
+        role: draft.role,
+        duration: draft.duration,
+        company: draft.company,
+        category: draft.category,
+        timeline: draft.timeline,
+        thumbnail_url: draft.thumbnail_url,
+        featured: draft.featured ?? false,
+        sort_order: draft.sort_order ?? 0,
         published: publish ?? draft.published ?? false,
-        gallery: draft.gallery ?? [],
-        links: draft.links ?? [],
-        metrics: draft.metrics ?? [],
+        gallery: (draft.gallery ?? []) as Json,
+        links: (draft.links ?? []) as Json,
+        metrics: (draft.metrics ?? []) as Json,
         tools: draft.tools ?? [],
         tags: draft.tags ?? [],
+        presentation: getProjectPresentation(draft) as unknown as Json,
       };
-      delete (payload as any).created_at;
-      delete (payload as any).updated_at;
       if (isNew) {
-        delete (payload as any).id;
         const { data, error } = await supabase
           .from("projects")
-          .insert(payload as any)
+          .insert(payload)
           .select("id")
           .single();
         if (error) throw error;
         return data.id as string;
       } else {
-        const { error } = await supabase.from("projects").update(payload as any).eq("id", id!);
+        const { error } = await supabase.from("projects").update(payload).eq("id", id!);
         if (error) throw error;
         return id!;
       }
@@ -139,280 +161,273 @@ export default function ProjectEditor() {
     setDirty(true);
   };
 
+  const previewProject = {
+    ...emptyDraft,
+    ...draft,
+    id: draft.id ?? "cms-preview",
+    created_at: draft.created_at ?? new Date().toISOString(),
+    updated_at: draft.updated_at ?? new Date().toISOString(),
+    presentation: getProjectPresentation(draft),
+  } as ProjectRow;
+
   return (
-    <AdminPage
-      wide
-      crumbs={[
-        { label: "Projects", to: "/admin/projects" },
-        { label: draft.title || "New project" },
-      ]}
-      eyebrow={isNew ? "New project" : "Editing case study"}
-      title={draft.title || "Untitled"}
-      description={dirty ? "Unsaved changes" : "All changes saved"}
-      actions={
-        <>
-          <Button variant="ghost" size="sm" asChild>
-            <Link to="/admin/projects">
-              <ArrowLeft size={14} /> Back
-            </Link>
-          </Button>
-          {draft.published && !isNew && (
-            <Button variant="outline" size="sm" asChild>
-              <Link to={`/projects/${draft.slug}`} target="_blank">
-                <ExternalLink size={13} /> Preview
+    <>
+      <AdminPage
+        wide
+        crumbs={[
+          { label: "Projects", to: "/admin/projects" },
+          { label: draft.title || "New project" },
+        ]}
+        eyebrow={isNew ? "New project" : "Editing case study"}
+        title={draft.title || "Untitled"}
+        description={dirty ? "Unsaved changes" : "All changes saved"}
+        actions={
+          <>
+            <Button variant="ghost" size="sm" asChild>
+              <Link to="/admin/projects">
+                <ArrowLeft size={14} /> Back
               </Link>
             </Button>
-          )}
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => save.mutate(false)}
-            disabled={save.isPending}
-          >
-            {save.isPending ? (
-              <Loader2 size={14} className="animate-spin" />
-            ) : dirty ? (
-              <Save size={14} />
-            ) : (
-              <CheckCircle2 size={14} />
-            )}{" "}
-            Save draft
-          </Button>
-          <Button size="sm" onClick={() => save.mutate(true)} disabled={save.isPending}>
-            {draft.published ? "Update" : "Publish"}
-          </Button>
-        </>
-      }
-    >
-      <div className="grid grid-cols-1 gap-6 lg:grid-cols-[1fr_340px]">
-        <div className="space-y-4">
-          {/* Essentials */}
-          <Section title="Essentials" description="Core identifiers shown across the site.">
-            <div className="grid gap-4">
-              <Field label="Title" required>
-                <Input
-                  value={draft.title}
-                  onChange={(e) => set("title", e.target.value)}
-                  placeholder="Project title"
-                  className="h-11 text-lg"
-                />
-              </Field>
-              <Field label="Slug">
-                <div className="flex items-center gap-1 rounded-md border border-neutral-200 bg-neutral-50 px-3">
-                  <span className="text-xs text-neutral-400">/projects/</span>
+            <Button variant="outline" size="sm" onClick={() => setPreviewOpen(true)}>
+              <Eye size={13} /> Preview
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => save.mutate(false)}
+              disabled={save.isPending}
+            >
+              {save.isPending ? (
+                <Loader2 size={14} className="animate-spin" />
+              ) : dirty ? (
+                <Save size={14} />
+              ) : (
+                <CheckCircle2 size={14} />
+              )}{" "}
+              Save draft
+            </Button>
+            <Button size="sm" onClick={() => save.mutate(true)} disabled={save.isPending}>
+              {draft.published ? "Update" : "Publish"}
+            </Button>
+          </>
+        }
+      >
+        <div className="grid grid-cols-1 gap-6 lg:grid-cols-[1fr_340px]">
+          <div className="space-y-4">
+            {/* Essentials */}
+            <Section title="Essentials" description="Core identifiers shown across the site.">
+              <div className="grid gap-4">
+                <Field label="Title" required>
                   <Input
-                    value={draft.slug}
-                    onChange={(e) => {
-                      set("slug", slugify(e.target.value));
-                      setSlugTouched(true);
-                    }}
-                    className="h-9 border-0 bg-transparent px-0 focus-visible:ring-0"
+                    value={draft.title}
+                    onChange={(e) => set("title", e.target.value)}
+                    placeholder="Project title"
+                    className="h-11 text-lg"
                   />
-                </div>
-              </Field>
-              <Field label="Short description" hint="Shown on cards and index pages.">
-                <Textarea
-                  rows={2}
-                  value={draft.short_description ?? ""}
-                  onChange={(e) => set("short_description", e.target.value)}
-                />
-              </Field>
-            </div>
-          </Section>
-
-          {/* Story */}
-          <Section title="Case study" description="Long-form narrative sections.">
-            <Tabs defaultValue="overview">
-              <TabsList className="h-auto flex-wrap gap-1 bg-neutral-100">
-                <TabsTrigger value="overview">Overview</TabsTrigger>
-                <TabsTrigger value="problem">Problem</TabsTrigger>
-                <TabsTrigger value="research">Research</TabsTrigger>
-                <TabsTrigger value="design">Design process</TabsTrigger>
-                <TabsTrigger value="solution">Solution</TabsTrigger>
-                <TabsTrigger value="outcome">Outcome</TabsTrigger>
-                <TabsTrigger value="learnings">Learnings</TabsTrigger>
-              </TabsList>
-              <div className="mt-4">
-                <TabsContent value="overview">
-                  <RichEditor
-                    value={draft.overview ?? ""}
-                    onChange={(v) => set("overview", v)}
-                    placeholder="Overview…"
+                </Field>
+                <Field label="Slug">
+                  <div className="flex items-center gap-1 rounded-md border border-neutral-200 bg-neutral-50 px-3">
+                    <span className="text-xs text-neutral-400">/projects/</span>
+                    <Input
+                      value={draft.slug}
+                      onChange={(e) => {
+                        set("slug", slugify(e.target.value));
+                        setSlugTouched(true);
+                      }}
+                      className="h-9 border-0 bg-transparent px-0 focus-visible:ring-0"
+                    />
+                  </div>
+                </Field>
+                <Field label="Short description" hint="Shown on cards and index pages.">
+                  <Textarea
+                    rows={2}
+                    value={draft.short_description ?? ""}
+                    onChange={(e) => set("short_description", e.target.value)}
                   />
-                </TabsContent>
-                <TabsContent value="problem">
-                  <RichEditor
-                    value={draft.problem_statement ?? ""}
-                    onChange={(v) => set("problem_statement", v)}
-                    placeholder="The problem…"
-                  />
-                </TabsContent>
-                <TabsContent value="research">
-                  <RichEditor
-                    value={draft.research ?? ""}
-                    onChange={(v) => set("research", v)}
-                    placeholder="Research…"
-                  />
-                </TabsContent>
-                <TabsContent value="design">
-                  <RichEditor
-                    value={draft.design_process ?? ""}
-                    onChange={(v) => set("design_process", v)}
-                    placeholder="Design process…"
-                  />
-                </TabsContent>
-                <TabsContent value="solution">
-                  <RichEditor
-                    value={draft.solution ?? ""}
-                    onChange={(v) => set("solution", v)}
-                    placeholder="Solution…"
-                  />
-                </TabsContent>
-                <TabsContent value="outcome">
-                  <RichEditor
-                    value={draft.outcome ?? ""}
-                    onChange={(v) => set("outcome", v)}
-                    placeholder="Outcome & impact…"
-                  />
-                </TabsContent>
-                <TabsContent value="learnings">
-                  <RichEditor
-                    value={draft.learnings ?? ""}
-                    onChange={(v) => set("learnings", v)}
-                    placeholder="Reflections…"
-                  />
-                </TabsContent>
+                </Field>
               </div>
-            </Tabs>
-          </Section>
+            </Section>
 
-          <Section title="Gallery" description="Drop images or drag to reorder.">
-            <ImageGallery
-              value={(draft.gallery as GalleryImage[]) ?? []}
-              onChange={(v) => set("gallery", v as any)}
+            <ProjectPresentationEditor
+              slug={draft.slug}
+              thumbnailUrl={draft.thumbnail_url ?? null}
+              presentation={getProjectPresentation(draft)}
+              onThumbnailChange={(value) => set("thumbnail_url", value)}
+              onChange={(value: ProjectPresentation) => set("presentation", value)}
             />
-          </Section>
 
-          <Section title="Metrics" description="Impact numbers surfaced on the case study.">
-            <ChipListEditor
-              items={(draft.metrics ?? []).map((m) => `${m.label}=${m.value}`)}
-              onChange={(items) =>
-                set(
-                  "metrics",
-                  items.map((x) => {
-                    const [label, value] = x.split("=");
-                    return { label: label ?? "", value: value ?? "" };
-                  }) as any,
-                )
-              }
-              placeholder="Retention=+38%"
-            />
-          </Section>
+            {/* Story */}
+            <Section title="Case study" description="Long-form narrative sections.">
+              <Tabs defaultValue="overview">
+                <TabsList className="h-auto flex-wrap gap-1 bg-neutral-100">
+                  <TabsTrigger value="overview">Overview</TabsTrigger>
+                  <TabsTrigger value="problem">Problem</TabsTrigger>
+                  <TabsTrigger value="research">Research</TabsTrigger>
+                  <TabsTrigger value="design">Design process</TabsTrigger>
+                  <TabsTrigger value="solution">Solution</TabsTrigger>
+                  <TabsTrigger value="outcome">Outcome</TabsTrigger>
+                  <TabsTrigger value="learnings">Learnings</TabsTrigger>
+                </TabsList>
+                <div className="mt-4">
+                  <TabsContent value="overview">
+                    <RichEditor
+                      value={draft.overview ?? ""}
+                      onChange={(v) => set("overview", v)}
+                      placeholder="Overview…"
+                    />
+                  </TabsContent>
+                  <TabsContent value="problem">
+                    <RichEditor
+                      value={draft.problem_statement ?? ""}
+                      onChange={(v) => set("problem_statement", v)}
+                      placeholder="The problem…"
+                    />
+                  </TabsContent>
+                  <TabsContent value="research">
+                    <RichEditor
+                      value={draft.research ?? ""}
+                      onChange={(v) => set("research", v)}
+                      placeholder="Research…"
+                    />
+                  </TabsContent>
+                  <TabsContent value="design">
+                    <RichEditor
+                      value={draft.design_process ?? ""}
+                      onChange={(v) => set("design_process", v)}
+                      placeholder="Design process…"
+                    />
+                  </TabsContent>
+                  <TabsContent value="solution">
+                    <RichEditor
+                      value={draft.solution ?? ""}
+                      onChange={(v) => set("solution", v)}
+                      placeholder="Solution…"
+                    />
+                  </TabsContent>
+                  <TabsContent value="outcome">
+                    <RichEditor
+                      value={draft.outcome ?? ""}
+                      onChange={(v) => set("outcome", v)}
+                      placeholder="Outcome & impact…"
+                    />
+                  </TabsContent>
+                  <TabsContent value="learnings">
+                    <RichEditor
+                      value={draft.learnings ?? ""}
+                      onChange={(v) => set("learnings", v)}
+                      placeholder="Reflections…"
+                    />
+                  </TabsContent>
+                </div>
+              </Tabs>
+            </Section>
 
-          <Section title="External links">
-            <ChipListEditor
-              items={(draft.links ?? []).map((l) => `${l.label}=${l.url}`)}
-              onChange={(items) =>
-                set(
-                  "links",
-                  items.map((x) => {
-                    const [label, url] = x.split("=");
-                    return { label: label ?? "", url: url ?? "" };
-                  }) as any,
-                )
-              }
-              placeholder="Live=https://…"
-            />
-          </Section>
+            <Section title="Gallery" description="Drop images or drag to reorder.">
+              <ImageGallery
+                value={(draft.gallery as GalleryImage[]) ?? []}
+                onChange={(v) => set("gallery", v)}
+              />
+            </Section>
+
+            <Section title="Metrics" description="Impact numbers surfaced on the case study.">
+              <MetricListEditor
+                items={draft.metrics ?? []}
+                onChange={(items) => set("metrics", items)}
+              />
+            </Section>
+
+            <Section title="External links">
+              <LinkListEditor items={draft.links ?? []} onChange={(items) => set("links", items)} />
+            </Section>
+          </div>
+
+          <aside className="space-y-4">
+            <Section title="Visibility">
+              <div className="space-y-3">
+                <Row>
+                  <div>
+                    <p className="text-sm font-medium text-neutral-900">Published</p>
+                    <p className="text-xs text-neutral-500">Visible on the public site</p>
+                  </div>
+                  <Switch
+                    checked={!!draft.published}
+                    onCheckedChange={(v) => set("published", v)}
+                  />
+                </Row>
+                <Row>
+                  <div>
+                    <p className="text-sm font-medium text-neutral-900">Featured</p>
+                    <p className="text-xs text-neutral-500">Shown on the homepage</p>
+                  </div>
+                  <Switch checked={!!draft.featured} onCheckedChange={(v) => set("featured", v)} />
+                </Row>
+                <Field label="Sort order">
+                  <Input
+                    type="number"
+                    value={draft.sort_order ?? 0}
+                    onChange={(e) => set("sort_order", Number(e.target.value))}
+                  />
+                </Field>
+              </div>
+            </Section>
+
+            <Section title="Details">
+              <div className="space-y-3">
+                <Field label="Role">
+                  <Input value={draft.role ?? ""} onChange={(e) => set("role", e.target.value)} />
+                </Field>
+                <Field label="Company">
+                  <Input
+                    value={draft.company ?? ""}
+                    onChange={(e) => set("company", e.target.value)}
+                  />
+                </Field>
+                <Field label="Category">
+                  <Input
+                    value={draft.category ?? ""}
+                    onChange={(e) => set("category", e.target.value)}
+                  />
+                </Field>
+                <Field label="Duration">
+                  <Input
+                    value={draft.duration ?? ""}
+                    onChange={(e) => set("duration", e.target.value)}
+                    placeholder="6 months · 2024"
+                  />
+                </Field>
+                <Field label="Timeline">
+                  <Input
+                    value={draft.timeline ?? ""}
+                    onChange={(e) => set("timeline", e.target.value)}
+                  />
+                </Field>
+              </div>
+            </Section>
+
+            <Section title="Tools">
+              <ChipListEditor
+                items={draft.tools ?? []}
+                onChange={(v) => set("tools", v)}
+                placeholder="Figma"
+              />
+            </Section>
+
+            <Section title="Tags">
+              <ChipListEditor
+                items={draft.tags ?? []}
+                onChange={(v) => set("tags", v)}
+                placeholder="research"
+              />
+            </Section>
+          </aside>
         </div>
-
-        <aside className="space-y-4">
-          <Section title="Visibility">
-            <div className="space-y-3">
-              <Row>
-                <div>
-                  <p className="text-sm font-medium text-neutral-900">Published</p>
-                  <p className="text-xs text-neutral-500">Visible on the public site</p>
-                </div>
-                <Switch checked={!!draft.published} onCheckedChange={(v) => set("published", v)} />
-              </Row>
-              <Row>
-                <div>
-                  <p className="text-sm font-medium text-neutral-900">Featured</p>
-                  <p className="text-xs text-neutral-500">Shown on the homepage</p>
-                </div>
-                <Switch checked={!!draft.featured} onCheckedChange={(v) => set("featured", v)} />
-              </Row>
-              <Field label="Sort order">
-                <Input
-                  type="number"
-                  value={draft.sort_order ?? 0}
-                  onChange={(e) => set("sort_order", Number(e.target.value))}
-                />
-              </Field>
-            </div>
-          </Section>
-
-          <Section title="Thumbnail">
-            <SingleImageUpload
-              value={draft.thumbnail_url ?? null}
-              onChange={(v) => set("thumbnail_url", v)}
-              bucket="thumbnails"
-              prefix="projects"
-            />
-          </Section>
-
-          <Section title="Details">
-            <div className="space-y-3">
-              <Field label="Role">
-                <Input value={draft.role ?? ""} onChange={(e) => set("role", e.target.value)} />
-              </Field>
-              <Field label="Company">
-                <Input
-                  value={draft.company ?? ""}
-                  onChange={(e) => set("company", e.target.value)}
-                />
-              </Field>
-              <Field label="Category">
-                <Input
-                  value={draft.category ?? ""}
-                  onChange={(e) => set("category", e.target.value)}
-                />
-              </Field>
-              <Field label="Duration">
-                <Input
-                  value={draft.duration ?? ""}
-                  onChange={(e) => set("duration", e.target.value)}
-                  placeholder="6 months · 2024"
-                />
-              </Field>
-              <Field label="Timeline">
-                <Input
-                  value={draft.timeline ?? ""}
-                  onChange={(e) => set("timeline", e.target.value)}
-                />
-              </Field>
-            </div>
-          </Section>
-
-          <Section title="Tools">
-            <ChipListEditor
-              items={draft.tools ?? []}
-              onChange={(v) => set("tools", v)}
-              placeholder="Figma"
-            />
-          </Section>
-
-          <Section title="Tags">
-            <ChipListEditor
-              items={draft.tags ?? []}
-              onChange={(v) => set("tags", v)}
-              placeholder="research"
-            />
-          </Section>
-        </aside>
-      </div>
-    </AdminPage>
+      </AdminPage>
+      <ProjectPreviewDialog
+        open={previewOpen}
+        onOpenChange={setPreviewOpen}
+        project={previewProject}
+      />
+    </>
   );
 }
 
@@ -463,6 +478,123 @@ function Field({
       </Label>
       {children}
       {hint && <p className="text-[11px] text-neutral-500">{hint}</p>}
+    </div>
+  );
+}
+
+function MetricListEditor({
+  items,
+  onChange,
+}: {
+  items: ProjectRow["metrics"];
+  onChange: (items: ProjectRow["metrics"]) => void;
+}) {
+  const update = (index: number, value: ProjectRow["metrics"][number]) =>
+    onChange(items.map((item, i) => (i === index ? value : item)));
+
+  return (
+    <div className="space-y-3">
+      {items.map((item, index) => (
+        <div
+          key={index}
+          className="grid gap-3 rounded-lg border border-neutral-200 p-4 md:grid-cols-[150px_1fr_1fr_auto]"
+        >
+          <Field label="Value">
+            <Input
+              value={item.value}
+              placeholder="2M+"
+              onChange={(event) => update(index, { ...item, value: event.target.value })}
+            />
+          </Field>
+          <Field label="Label">
+            <Input
+              value={item.label}
+              placeholder="Use cases"
+              onChange={(event) => update(index, { ...item, label: event.target.value })}
+            />
+          </Field>
+          <Field label="Supporting hint">
+            <Input
+              value={item.hint ?? ""}
+              placeholder="Internal and external portfolios"
+              onChange={(event) => update(index, { ...item, hint: event.target.value })}
+            />
+          </Field>
+          <Button
+            type="button"
+            variant="ghost"
+            size="icon"
+            className="self-end text-red-600"
+            aria-label="Delete metric"
+            onClick={() => onChange(items.filter((_, i) => i !== index))}
+          >
+            <Trash2 size={14} />
+          </Button>
+        </div>
+      ))}
+      <Button
+        type="button"
+        variant="outline"
+        size="sm"
+        onClick={() => onChange([...items, { value: "", label: "", hint: "" }])}
+      >
+        <Plus size={14} /> Add metric
+      </Button>
+    </div>
+  );
+}
+
+function LinkListEditor({
+  items,
+  onChange,
+}: {
+  items: ProjectRow["links"];
+  onChange: (items: ProjectRow["links"]) => void;
+}) {
+  const update = (index: number, value: ProjectRow["links"][number]) =>
+    onChange(items.map((item, i) => (i === index ? value : item)));
+
+  return (
+    <div className="space-y-3">
+      {items.map((item, index) => (
+        <div
+          key={index}
+          className="grid gap-3 rounded-lg border border-neutral-200 p-4 md:grid-cols-[180px_1fr_auto]"
+        >
+          <Field label="Label">
+            <Input
+              value={item.label}
+              placeholder="Live product"
+              onChange={(event) => update(index, { ...item, label: event.target.value })}
+            />
+          </Field>
+          <Field label="URL">
+            <Input
+              value={item.url}
+              placeholder="https://…"
+              onChange={(event) => update(index, { ...item, url: event.target.value })}
+            />
+          </Field>
+          <Button
+            type="button"
+            variant="ghost"
+            size="icon"
+            className="self-end text-red-600"
+            aria-label="Delete link"
+            onClick={() => onChange(items.filter((_, i) => i !== index))}
+          >
+            <Trash2 size={14} />
+          </Button>
+        </div>
+      ))}
+      <Button
+        type="button"
+        variant="outline"
+        size="sm"
+        onClick={() => onChange([...items, { label: "", url: "" }])}
+      >
+        <Plus size={14} /> Add link
+      </Button>
     </div>
   );
 }

@@ -8,6 +8,7 @@ import {
   PORTFOLIO_SITE,
   PORTFOLIO_SKILLS,
 } from "@/data/portfolio";
+import type { ProjectPresentation } from "@/lib/projectPresentation";
 
 export type ProjectRow = {
   id: string;
@@ -29,6 +30,7 @@ export type ProjectRow = {
   category: string | null;
   timeline: string | null;
   thumbnail_url: string | null;
+  presentation: ProjectPresentation;
   gallery: { url: string; caption?: string }[];
   links: { label: string; url: string }[];
   metrics: { label: string; value: string; hint?: string }[];

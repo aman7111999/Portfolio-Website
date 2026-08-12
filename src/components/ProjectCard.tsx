@@ -3,6 +3,7 @@ import { motion, useReducedMotion } from "framer-motion";
 import { ArrowUpRight, Lock } from "lucide-react";
 import type { ProjectRow } from "@/lib/cms";
 import { PortfolioAnalysisVisual } from "@/components/case/PortfolioAnalysisStory";
+import { getProjectPresentation, resolveCardVisual } from "@/lib/projectPresentation";
 
 export function ProjectCard({
   project,
@@ -14,6 +15,8 @@ export function ProjectCard({
   size?: "lg" | "md" | "compact";
 }) {
   const reduce = useReducedMotion();
+  const presentation = getProjectPresentation(project);
+  const cardVisual = resolveCardVisual(project);
   const locked = !!(project as { locked?: boolean }).locked;
   const number = String(index + 1).padStart(2, "0");
   const compact = size === "compact";
@@ -72,15 +75,15 @@ export function ProjectCard({
             size === "lg" ? "aspect-[16/10]" : compact ? "aspect-[2/1]" : "aspect-[16/9]"
           }`}
         >
-          {project.slug === "portfolio-analysis" ? (
-            <PortfolioAnalysisVisual mode="card" />
-          ) : project.thumbnail_url ? (
+          {cardVisual === "image" && project.thumbnail_url ? (
             <img
               src={project.thumbnail_url}
-              alt=""
+              alt={presentation.card.image_alt}
               className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.025]"
               loading="lazy"
             />
+          ) : cardVisual === "signature" ? (
+            <PortfolioAnalysisVisual mode="card" />
           ) : (
             <div
               aria-hidden
@@ -134,7 +137,9 @@ export function ProjectCard({
         <div className={`flex flex-1 flex-col ${compact ? "p-5 md:p-6" : "p-6 md:p-8"}`}>
           <div className="flex items-start justify-between gap-6">
             <div>
-              <p className="eyebrow">Case study {number}</p>
+              <p className="eyebrow">
+                {presentation.card.eyebrow} {number}
+              </p>
               <h3
                 className={`mt-3 leading-[1.12] tracking-[-0.03em] ${
                   compact ? "text-[clamp(1.3rem,2vw,1.7rem)]" : "text-[clamp(1.45rem,2.4vw,2rem)]"

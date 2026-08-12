@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { motion, useReducedMotion } from "framer-motion";
 import { ArrowUpRight, Lock } from "lucide-react";
 import type { ProjectRow } from "@/lib/cms";
+import { PortfolioAnalysisVisual } from "@/components/case/PortfolioAnalysisStory";
 
 export function ProjectCard({
   project,
@@ -71,7 +72,9 @@ export function ProjectCard({
             size === "lg" ? "aspect-[16/10]" : compact ? "aspect-[2/1]" : "aspect-[16/9]"
           }`}
         >
-          {project.thumbnail_url ? (
+          {project.slug === "portfolio-analysis" ? (
+            <PortfolioAnalysisVisual mode="card" />
+          ) : project.thumbnail_url ? (
             <img
               src={project.thumbnail_url}
               alt=""

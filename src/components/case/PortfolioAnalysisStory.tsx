@@ -1,7 +1,8 @@
 import { motion, useReducedMotion } from "framer-motion";
-import { Fragment } from "react";
+import { useState } from "react";
 import {
-  ArrowDown,
+  ArrowLeft,
+  ArrowRight,
   BarChart3,
   ChevronRight,
   CircleAlert,
@@ -166,158 +167,163 @@ const architectureIcons = [WalletCards, Link2, Sparkles, TrendingUp] as const;
 
 export function PortfolioAnalysisCaseVisuals({ story }: { story: ProjectPresentation["story"] }) {
   const reduce = useReducedMotion();
+  const [activeJourney, setActiveJourney] = useState(0);
+  const journey = story.journey;
+  const activeIndex = journey.length ? Math.min(activeJourney, journey.length - 1) : 0;
+  const active = journey[activeIndex];
+  const visual = journeyVisuals[activeIndex % journeyVisuals.length];
+  const ActiveIcon = visual?.icon ?? Sparkles;
+
+  const move = (direction: -1 | 1) => {
+    if (!journey.length) return;
+    setActiveJourney((activeIndex + direction + journey.length) % journey.length);
+  };
 
   return (
-    <>
-      <section className="container-page py-[var(--space-20)] md:py-[var(--space-32)]">
-        <div className="grid gap-10 lg:grid-cols-12 lg:items-end">
-          <div className="lg:col-span-7">
+    <section className="container-page py-16 md:py-24">
+      <div className="mx-auto max-w-[1040px] border-t border-[var(--color-hairline)] pt-12 md:pt-16">
+        <div className="grid gap-7 md:grid-cols-[minmax(0,1fr)_minmax(260px,0.65fr)] md:items-end">
+          <div>
             <p className="eyebrow text-[var(--color-accent)]">{story.eyebrow}</p>
-            <h2 className="mt-5 max-w-[13ch] text-[clamp(2.5rem,5vw,4.6rem)] leading-[.98] tracking-[-.05em]">
+            <h2 className="mt-4 max-w-[17ch] text-[clamp(2.25rem,4vw,3.35rem)] leading-[1.06] tracking-[-0.038em]">
               {story.title}
             </h2>
           </div>
-          <p className="max-w-[48ch] text-[16px] leading-7 text-[var(--color-muted)] lg:col-span-4 lg:col-start-9">
+          <p className="max-w-[48ch] text-[15px] leading-7 text-[var(--color-muted)]">
             {story.description}
           </p>
         </div>
 
-        <motion.div
-          initial={reduce ? false : { opacity: 0, y: 24 }}
+        <motion.ol
+          initial={reduce ? false : { opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-80px" }}
-          transition={{ duration: 0.8, ease: EASE }}
-          className="mt-12 overflow-hidden rounded-[var(--radius-xl)] border border-[var(--color-hairline-strong)] bg-[var(--color-surface)] p-5 shadow-[var(--elevation-2)] md:p-8 lg:p-10"
+          viewport={{ once: true, margin: "-70px" }}
+          transition={{ duration: 0.75, ease: EASE }}
+          className="mt-10 grid border-y border-[var(--color-hairline-strong)] sm:grid-cols-2 lg:grid-cols-4"
         >
-          <div className="grid gap-3 lg:grid-cols-[1fr_auto_1fr_auto_1.25fr_auto_1fr] lg:items-stretch">
-            {story.architecture_nodes.slice(0, 4).map((node, index) => (
-              <Fragment key={node.id}>
-                {index > 0 && <FlowArrow />}
-                <ArchitectureNode
-                  eyebrow={node.eyebrow}
-                  title={node.title}
-                  copy={node.description}
-                  icon={architectureIcons[index] ?? Sparkles}
-                  featured={index === 2}
-                />
-              </Fragment>
-            ))}
-          </div>
-        </motion.div>
-      </section>
+          {story.architecture_nodes.slice(0, 4).map((node, index) => {
+            const Icon = architectureIcons[index] ?? Sparkles;
+            return (
+              <li
+                key={node.id}
+                className="border-b border-[var(--color-hairline)] py-6 last:border-b-0 sm:border-r sm:px-6 sm:[&:nth-child(even)]:border-r-0 lg:border-b-0 lg:[&:nth-child(even)]:border-r lg:last:border-r-0 lg:first:pl-0 lg:last:pr-0"
+              >
+                <div className="flex items-center justify-between gap-4">
+                  <p className="font-mono text-[9px] uppercase tracking-[0.14em] text-[var(--color-subtle)]">
+                    {node.eyebrow}
+                  </p>
+                  <Icon size={14} className="text-[var(--color-accent)]" />
+                </div>
+                <p className="mt-7 text-[15px] font-medium text-[var(--color-text)]">
+                  {node.title}
+                </p>
+                <p className="mt-2 text-[12px] leading-5 text-[var(--color-muted)]">
+                  {node.description}
+                </p>
+              </li>
+            );
+          })}
+        </motion.ol>
 
-      <section className="border-y border-[var(--color-hairline)] bg-[var(--color-surface)] py-[var(--space-20)] md:py-[var(--space-32)]">
-        <div className="container-page">
-          <div className="flex flex-wrap items-end justify-between gap-7">
-            <div>
-              <p className="eyebrow text-[var(--color-accent)]">{story.journey_eyebrow}</p>
-              <h2 className="mt-5 max-w-[15ch] text-[clamp(2.4rem,4.6vw,4.2rem)] leading-[1] tracking-[-.045em]">
-                {story.journey_title}
-              </h2>
+        {active && visual && (
+          <div className="mt-20 border-t border-[var(--color-hairline)] pt-12 md:mt-24 md:pt-16">
+            <div className="grid gap-6 md:grid-cols-[minmax(0,1fr)_minmax(260px,0.7fr)] md:items-end">
+              <div>
+                <p className="eyebrow text-[var(--color-accent)]">{story.journey_eyebrow}</p>
+                <h3 className="mt-4 max-w-[18ch] text-[clamp(2rem,3.6vw,3rem)] leading-[1.08] tracking-[-0.035em]">
+                  {story.journey_title}
+                </h3>
+              </div>
+              <p className="max-w-[44ch] text-[14px] leading-6 text-[var(--color-muted)]">
+                {story.journey_description}
+              </p>
             </div>
-            <p className="max-w-[39ch] text-[14px] leading-6 text-[var(--color-muted)] md:text-[15px]">
-              {story.journey_description}
-            </p>
-          </div>
 
-          <div className="mt-12 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-            {story.journey.map((item, index) => {
-              const visual = journeyVisuals[index % journeyVisuals.length];
-              const Icon = visual.icon;
-              const number = String(index + 1).padStart(2, "0");
-              return (
-                <motion.article
-                  key={item.id}
-                  initial={reduce ? false : { opacity: 0, y: 24 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: "-70px" }}
-                  transition={{ duration: 0.72, delay: index * 0.06, ease: EASE }}
-                  className="group overflow-hidden rounded-[var(--radius-xl)] border border-[var(--color-hairline-strong)] bg-[var(--color-bg)]"
-                >
-                  <div className="relative min-h-[310px] overflow-hidden bg-[#090d19] p-5">
-                    <div className="absolute inset-0 opacity-35 [background-image:linear-gradient(rgba(255,255,255,.045)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,.045)_1px,transparent_1px)] [background-size:28px_28px]" />
-                    <div className="relative z-[1] flex items-center justify-between">
-                      <span className="font-mono text-[10px] tracking-[.14em] text-white/35">
-                        {number} / {String(story.journey.length).padStart(2, "0")}
-                      </span>
-                      <span
-                        className="grid h-8 w-8 place-items-center rounded-full border border-white/10 bg-white/[.06]"
-                        style={{ color: visual.accent }}
-                      >
-                        <Icon size={14} />
-                      </span>
-                    </div>
-                    {item.image_url ? (
-                      <img
-                        src={item.image_url}
-                        alt={item.title}
-                        className="relative z-[1] mt-5 h-[238px] w-full rounded-[18px] object-contain transition-transform duration-700 group-hover:-translate-y-1"
-                        loading="lazy"
-                      />
-                    ) : (
-                      <div className="relative z-[1] mx-auto mt-5 w-[72%] min-w-[190px] max-w-[230px] transition-transform duration-700 group-hover:-translate-y-1 group-hover:rotate-[1deg]">
-                        {visual.screen}
-                      </div>
-                    )}
-                  </div>
-                  <div className="p-6">
-                    <p className="text-[18px] font-semibold tracking-[-.025em]">{item.title}</p>
-                    <p className="mt-3 text-[14px] leading-6 text-[var(--color-muted)]">
-                      {item.description}
+            <div className="mt-10 overflow-hidden rounded-[var(--radius-lg)] border border-[var(--color-hairline-strong)] bg-[var(--color-surface)] lg:grid lg:grid-cols-[1.15fr_0.85fr]">
+              <motion.div
+                key={active.id}
+                initial={reduce ? false : { opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.4, ease: EASE }}
+                className="relative flex min-h-[430px] items-center justify-center overflow-hidden bg-[#090d19] p-7 md:p-10"
+              >
+                <div className="absolute inset-0 opacity-25 [background-image:linear-gradient(rgba(255,255,255,.045)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,.045)_1px,transparent_1px)] [background-size:32px_32px]" />
+                {active.image_url ? (
+                  <img
+                    src={active.image_url}
+                    alt={active.title}
+                    className="relative z-[1] max-h-[370px] w-full object-contain"
+                    loading="lazy"
+                  />
+                ) : (
+                  <div className="relative z-[1] w-[230px] max-w-[82%]">{visual.screen}</div>
+                )}
+              </motion.div>
+
+              <div className="flex flex-col justify-between p-7 md:p-10">
+                <div>
+                  <div className="flex items-center justify-between gap-6">
+                    <p className="font-mono text-[10px] tracking-[0.14em] text-[var(--color-subtle)]">
+                      {String(activeIndex + 1).padStart(2, "0")} /{" "}
+                      {String(journey.length).padStart(2, "0")}
                     </p>
+                    <span
+                      className="grid h-9 w-9 place-items-center rounded-full bg-[var(--color-elevated)]"
+                      style={{ color: visual.accent }}
+                    >
+                      <ActiveIcon size={15} />
+                    </span>
                   </div>
-                </motion.article>
-              );
-            })}
+                  <h4 className="mt-10 text-[clamp(1.7rem,3vw,2.4rem)] leading-[1.12] tracking-[-0.03em]">
+                    {active.title}
+                  </h4>
+                  <p className="mt-4 max-w-[34ch] text-[14px] leading-7 text-[var(--color-muted)]">
+                    {active.description}
+                  </p>
+                </div>
+
+                <div className="mt-12">
+                  <div className="flex gap-1.5" aria-label="Journey steps">
+                    {journey.map((item, index) => (
+                      <button
+                        key={item.id}
+                        type="button"
+                        onClick={() => setActiveJourney(index)}
+                        aria-label={`Show step ${index + 1}: ${item.title}`}
+                        aria-current={index === activeJourney ? "step" : undefined}
+                        className={`h-1.5 flex-1 rounded-full transition-colors ${
+                          index === activeIndex
+                            ? "bg-[var(--color-accent)]"
+                            : "bg-[var(--color-hairline-strong)] hover:bg-[var(--color-muted)]"
+                        }`}
+                      />
+                    ))}
+                  </div>
+                  <div className="mt-6 flex items-center gap-2">
+                    <button
+                      type="button"
+                      onClick={() => move(-1)}
+                      aria-label="Previous journey step"
+                      className="grid h-10 w-10 place-items-center rounded-full border border-[var(--color-hairline-strong)] text-[var(--color-muted)] transition-colors hover:border-[var(--color-text)] hover:text-[var(--color-text)]"
+                    >
+                      <ArrowLeft size={15} />
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => move(1)}
+                      aria-label="Next journey step"
+                      className="grid h-10 w-10 place-items-center rounded-full border border-[var(--color-hairline-strong)] text-[var(--color-muted)] transition-colors hover:border-[var(--color-text)] hover:text-[var(--color-text)]"
+                    >
+                      <ArrowRight size={15} />
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
-        </div>
-      </section>
-    </>
-  );
-}
-
-function ArchitectureNode({
-  eyebrow,
-  title,
-  copy,
-  icon: Icon,
-  featured = false,
-}: {
-  eyebrow: string;
-  title: string;
-  copy: string;
-  icon: typeof Sparkles;
-  featured?: boolean;
-}) {
-  return (
-    <div
-      className={`rounded-[var(--radius-lg)] border p-5 ${
-        featured
-          ? "border-[var(--color-accent)] bg-[var(--color-accent-wash)]"
-          : "border-[var(--color-hairline)] bg-[var(--color-bg)]"
-      }`}
-    >
-      <div className="flex items-center justify-between gap-4">
-        <p className="font-mono text-[9px] uppercase tracking-[.15em] text-[var(--color-subtle)]">
-          {eyebrow}
-        </p>
-        <Icon
-          size={15}
-          className={featured ? "text-[var(--color-accent)]" : "text-[var(--color-muted)]"}
-        />
+        )}
       </div>
-      <p className="mt-8 text-[16px] font-semibold tracking-[-.02em]">{title}</p>
-      <p className="mt-2 text-[12px] leading-5 text-[var(--color-muted)]">{copy}</p>
-    </div>
-  );
-}
-
-function FlowArrow() {
-  return (
-    <div className="flex items-center justify-center py-1 text-[var(--color-subtle)] lg:py-0">
-      <ChevronRight size={16} className="hidden lg:block" />
-      <ArrowDown size={16} className="lg:hidden" />
-    </div>
+    </section>
   );
 }
 

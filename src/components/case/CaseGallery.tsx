@@ -5,8 +5,8 @@ import { X, ZoomIn } from "lucide-react";
 type GalleryImage = { url: string; caption?: string };
 
 /**
- * Editorial gallery with lightbox (expandable images).
- * Asymmetric spans: first item wide, rest narrow — mosaic feel.
+ * Calm editorial gallery with a lightbox. The first image establishes the
+ * visual story; the remaining images use a predictable two-column rhythm.
  */
 export function CaseGallery({ images }: { images: GalleryImage[] }) {
   const [active, setActive] = useState<number | null>(null);
@@ -16,7 +16,8 @@ export function CaseGallery({ images }: { images: GalleryImage[] }) {
       if (active === null) return;
       if (e.key === "Escape") setActive(null);
       if (e.key === "ArrowRight") setActive((i) => (i === null ? null : (i + 1) % images.length));
-      if (e.key === "ArrowLeft") setActive((i) => (i === null ? null : (i - 1 + images.length) % images.length));
+      if (e.key === "ArrowLeft")
+        setActive((i) => (i === null ? null : (i - 1 + images.length) % images.length));
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
@@ -24,13 +25,9 @@ export function CaseGallery({ images }: { images: GalleryImage[] }) {
 
   return (
     <>
-      <div className="grid gap-[var(--space-4)] md:grid-cols-6 md:gap-[var(--space-6)]">
+      <div className="grid gap-5 md:grid-cols-2 md:gap-6">
         {images.map((img, i) => {
-          const span =
-            i === 0 ? "md:col-span-6" :
-            i % 3 === 1 ? "md:col-span-4" :
-            i % 3 === 2 ? "md:col-span-2" :
-            "md:col-span-3";
+          const span = i === 0 ? "md:col-span-2" : "";
           return (
             <motion.button
               key={img.url + i}
@@ -41,10 +38,10 @@ export function CaseGallery({ images }: { images: GalleryImage[] }) {
               viewport={{ once: true, margin: "-60px" }}
               transition={{ duration: 0.7, delay: (i % 4) * 0.05, ease: [0.22, 1, 0.36, 1] }}
               className={
-                "group relative block overflow-hidden rounded-[var(--radius-lg)] border border-hairline " +
-                "bg-[var(--color-elevated)] shadow-[var(--elevation-1)] " +
-                "transition-shadow duration-[var(--dur-slow)] ease-[var(--ease-out-quart)] " +
-                "hover:shadow-[var(--elevation-3)] " + span
+                "group relative block overflow-hidden rounded-[var(--radius-md)] border border-hairline " +
+                "bg-[var(--color-elevated)] transition-colors duration-[var(--dur-base)] " +
+                "hover:border-[var(--color-hairline-strong)] " +
+                span
               }
               aria-label={img.caption ? `Expand: ${img.caption}` : "Expand image"}
             >
@@ -53,7 +50,7 @@ export function CaseGallery({ images }: { images: GalleryImage[] }) {
                   src={img.url}
                   alt={img.caption ?? ""}
                   loading="lazy"
-                  className="h-full w-full object-cover transition-transform duration-[var(--dur-slower)] ease-[var(--ease-out-quart)] group-hover:scale-[1.04]"
+                  className="h-full w-full object-cover"
                 />
                 <span className="pointer-events-none absolute right-3 top-3 grid h-8 w-8 place-items-center rounded-full bg-black/50 text-white opacity-0 backdrop-blur-sm transition-opacity duration-[var(--dur-base)] group-hover:opacity-100">
                   <ZoomIn size={14} />

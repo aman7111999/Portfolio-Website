@@ -1,35 +1,22 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { motion, useReducedMotion } from "framer-motion";
-import { ArrowLeft, ArrowRight, ArrowUpRight, ExternalLink } from "lucide-react";
+import { ArrowRight, ArrowUpRight } from "lucide-react";
 import { Seo } from "@/lib/seo";
 import { useProjects, useSite, type ProjectRow } from "@/lib/cms";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Tag, Badge } from "@/components/design";
-import { CaseSection } from "@/components/case/CaseSection";
-import { CaseGallery } from "@/components/case/CaseGallery";
 import { ReadingProgress } from "@/components/case/ReadingProgress";
-import { ImpactGrid } from "@/components/case/ImpactGrid";
-import { PrototypeEmbed, isPrototypeLink } from "@/components/case/PrototypeEmbed";
-import { ProseHtml } from "@/components/case/ProseHtml";
-import {
-  PortfolioAnalysisCaseVisuals,
-  PortfolioAnalysisVisual,
-} from "@/components/case/PortfolioAnalysisStory";
+import { ProjectCaseStudyBody, ProjectCaseStudyHero } from "@/components/case/ProjectCaseStudy";
 import { ProjectPasswordGate } from "@/components/projects/ProjectPasswordGate";
 import { fetchProtectedProject, clearAccessToken } from "@/lib/projectAccess";
 import { getProjectPresentation, resolveHeroVisual } from "@/lib/projectPresentation";
 import NotFound from "./NotFound";
 
-const EASE = [0.22, 1, 0.36, 1] as const;
-
 export default function ProjectPage() {
   const { slug = "" } = useParams();
   const { data: siblings } = useProjects({});
   const { data: site } = useSite();
-  const reduce = useReducedMotion();
   const [project, setProject] = useState<ProjectRow | null>(null);
-  const [loading, setLoading] = useState<boolean>(true);
+  const [loading, setLoading] = useState(true);
   const [accessRequired, setAccessRequired] = useState(false);
   const [notFound, setNotFound] = useState(false);
   const [loadError, setLoadError] = useState(false);
@@ -62,11 +49,6 @@ export default function ProjectPage() {
     };
   }, [slug, reloadKey]);
 
-  const prototypeLink = useMemo(
-    () => (project?.links ?? []).find((l) => isPrototypeLink(l.url)),
-    [project],
-  );
-
   if (accessRequired) {
     return (
       <>
@@ -93,6 +75,7 @@ export default function ProjectPage() {
       </div>
     );
   }
+
   if (loadError) {
     return (
       <div className="container-page grid min-h-[60vh] place-items-center py-28 text-center">
@@ -110,62 +93,15 @@ export default function ProjectPage() {
       </div>
     );
   }
+
   if (notFound || !project) return <NotFound />;
 
   const list = siblings ?? [];
-  const i = list.findIndex((p) => p.slug === slug);
-  const prev = i > 0 ? list[i - 1] : list[list.length - 1];
-  const next = i < list.length - 1 ? list[i + 1] : list[0];
+  const projectIndex = list.findIndex((item) => item.slug === slug);
+  const next =
+    list.length > 1 && projectIndex >= 0 ? list[(projectIndex + 1) % list.length] : undefined;
   const presentation = getProjectPresentation(project);
   const heroVisual = resolveHeroVisual(project);
-
-  const chapters = [
-    {
-      id: "overview",
-      chapter: "01",
-      ...presentation.sections.overview,
-      html: project.overview,
-    },
-    {
-      id: "problem",
-      chapter: "02",
-      ...presentation.sections.problem,
-      html: project.problem_statement,
-    },
-    {
-      id: "research",
-      chapter: "03",
-      ...presentation.sections.research,
-      html: project.research,
-    },
-    {
-      id: "process",
-      chapter: "04",
-      ...presentation.sections.process,
-      html: project.design_process,
-    },
-    {
-      id: "solution",
-      chapter: "05",
-      ...presentation.sections.solution,
-      html: project.solution,
-    },
-    {
-      id: "impact",
-      chapter: "06",
-      ...presentation.sections.impact,
-      html: project.outcome,
-    },
-    {
-      id: "reflection",
-      chapter: "07",
-      ...presentation.sections.reflection,
-      html: project.learnings,
-    },
-  ] as const;
-
-  const activeChapters = chapters.filter((c) => c.visible && c.html && c.html.trim().length > 0);
-
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "CreativeWork",
@@ -190,306 +126,23 @@ export default function ProjectPage() {
       <ReadingProgress />
 
       <article>
-        {/* ==================== EDITORIAL HERO ==================== */}
-        <section id="hero" className="container-page pb-16 pt-12 md:pb-24 md:pt-20">
-          <div>
-            <Link
-              to="/work"
-              className="inline-flex items-center gap-2 text-[12px] font-medium text-[var(--color-muted)] transition-colors hover:text-[var(--color-text)]"
-            >
-              <ArrowLeft size={12} /> {presentation.labels.back_to_work}
-            </Link>
-          </div>
+        <ProjectCaseStudyHero
+          project={project}
+          presentation={presentation}
+          backHref="/work"
+          backLabel={presentation.labels.back_to_work}
+          projectNumber={projectIndex + 1}
+        />
 
-          <div className="mt-14 grid gap-10 lg:grid-cols-12 lg:items-end">
-            <motion.div
-              initial={reduce ? false : { opacity: 0, y: 24 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, ease: EASE }}
-              className="lg:col-span-8"
-            >
-              <p className="eyebrow text-[var(--color-accent)]">
-                {project.category ?? "Case study"}
-              </p>
-              <h1 className="mt-5 max-w-[14ch] text-[clamp(3.2rem,7vw,6.25rem)] font-medium leading-[0.96] tracking-[-0.055em] text-[var(--color-text)]">
-                {project.title}
-              </h1>
-              {project.short_description && (
-                <p className="mt-7 max-w-[62ch] text-[17px] leading-[1.7] text-[var(--color-muted)] md:text-[19px]">
-                  {project.short_description}
-                </p>
-              )}
-            </motion.div>
-            <div className="border-t border-[var(--color-hairline-strong)] pt-5 lg:col-span-3 lg:col-start-10">
-              <Meta label={presentation.labels.company} value={project.company} />
-              <div className="mt-5">
-                <Meta label={presentation.labels.timeline} value={project.timeline} />
-              </div>
-            </div>
-          </div>
+        <ProjectCaseStudyBody project={project} presentation={presentation} />
 
-          <motion.div
-            initial={reduce ? false : { opacity: 0, y: 18 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.85, delay: 0.12, ease: EASE }}
-            className="project-visual relative mt-16 aspect-[16/7] overflow-hidden rounded-[var(--radius-lg)] border border-[var(--color-hairline-strong)] bg-[var(--color-elevated)]"
-          >
-            {heroVisual.kind === "image" && heroVisual.imageUrl ? (
-              <img
-                src={heroVisual.imageUrl}
-                alt={presentation.hero.image_alt}
-                className="h-full w-full object-cover"
-              />
-            ) : heroVisual.kind === "signature" ? (
-              <PortfolioAnalysisVisual mode="hero" />
-            ) : (
-              <div
-                aria-hidden
-                className="system-frame absolute inset-0"
-                style={{
-                  background:
-                    "linear-gradient(145deg, color-mix(in oklab, var(--color-accent) 12%, var(--color-elevated)), var(--color-surface))",
-                }}
-              >
-                <div aria-hidden className="tech-grid absolute inset-0 opacity-75" />
-                <span className="system-label absolute left-7 top-7 z-[2] text-[var(--color-muted)] md:left-10 md:top-10">
-                  {project.role?.split("·")[0]?.trim()}
-                </span>
-                <span className="system-label absolute right-7 top-7 z-[2] flex items-center gap-2 text-[var(--color-muted)] md:right-10 md:top-10">
-                  <span className="system-dot" /> Case file / active
-                </span>
-                <div
-                  aria-hidden
-                  className="signal-orbit left-[18%] top-1/2 -translate-y-1/2 scale-125 opacity-70"
-                />
-                <svg
-                  aria-hidden
-                  viewBox="0 0 660 220"
-                  className="absolute left-[12%] top-1/2 z-[1] h-[52%] w-[60%] -translate-y-1/2 overflow-visible text-[var(--color-accent)] opacity-55"
-                  fill="none"
-                >
-                  <path
-                    d="M4 166C82 166 96 60 182 60s100 88 178 88S470 34 656 34"
-                    stroke="currentColor"
-                    strokeWidth="1"
-                  />
-                  <path d="M4 194H322M424 8H656" stroke="currentColor" strokeOpacity=".35" />
-                  <circle cx="182" cy="60" r="6" fill="var(--color-signal)" />
-                  <circle
-                    cx="360"
-                    cy="148"
-                    r="5"
-                    fill="var(--color-elevated)"
-                    stroke="currentColor"
-                  />
-                  <circle cx="656" cy="34" r="5" fill="currentColor" />
-                </svg>
-                <span className="absolute bottom-[-0.15em] right-7 font-serif text-[clamp(8rem,24vw,19rem)] leading-none text-[color-mix(in_oklab,var(--color-accent)_20%,transparent)] md:right-12">
-                  {String(Math.max(i, 0) + 1).padStart(2, "0")}
-                </span>
-              </div>
-            )}
-          </motion.div>
-        </section>
+        {next && <NextProject project={next} label={presentation.labels.next_project} />}
 
-        {/* ==================== META STRIP ==================== */}
-        <section className="container-page pt-[var(--space-16)] md:pt-[var(--space-20)]">
-          <div className="grid gap-[var(--space-8)] border-y border-hairline py-[var(--space-8)] md:grid-cols-4">
-            <Meta label={presentation.labels.role} value={project.role} />
-            <Meta label={presentation.labels.timeline} value={project.timeline} />
-            <Meta label={presentation.labels.duration} value={project.duration} />
-            <Meta label={presentation.labels.category} value={project.category} />
-          </div>
-
-          <nav
-            aria-label="Case study sections"
-            className="mt-8 border-b border-[var(--color-hairline)] pb-6"
-          >
-            <p className="system-label text-[var(--color-subtle)]">
-              {presentation.labels.case_map}
-            </p>
-            <ol className="mt-4 flex gap-x-6 gap-y-3 overflow-x-auto pb-1">
-              {activeChapters.map((chapter) => (
-                <li key={chapter.id} className="shrink-0">
-                  <a
-                    href={`#${chapter.id}`}
-                    className="story-link system-label inline-flex min-h-8 items-center gap-2 text-[var(--color-muted)] hover:text-[var(--color-accent)]"
-                  >
-                    <span className="text-[var(--color-subtle)]">{chapter.chapter}</span>
-                    {chapter.label}
-                  </a>
-                </li>
-              ))}
-            </ol>
-          </nav>
-
-          {(project.tools.length > 0 || project.tags.length > 0) && (
-            <div className="mt-[var(--space-8)] flex flex-wrap items-start gap-[var(--space-8)]">
-              {project.tools.length > 0 && (
-                <div>
-                  <p className="eyebrow mb-[var(--space-3)]">{presentation.labels.technology}</p>
-                  <div className="flex flex-wrap gap-[var(--space-2)]">
-                    {project.tools.map((t) => (
-                      <Badge key={t} tone="accent" size="sm">
-                        {t}
-                      </Badge>
-                    ))}
-                  </div>
-                </div>
-              )}
-              {project.tags.length > 0 && (
-                <div>
-                  <p className="eyebrow mb-[var(--space-3)]">{presentation.labels.tags}</p>
-                  <div className="flex flex-wrap gap-[var(--space-2)]">
-                    {project.tags.map((t) => (
-                      <Tag key={t}>{t}</Tag>
-                    ))}
-                  </div>
-                </div>
-              )}
-            </div>
-          )}
-        </section>
-
-        {/* ==================== STICKY METRIC RIBBON ==================== */}
-        {project.metrics.length > 0 && (
-          <section className="relative py-[var(--space-16)]">
-            <div className="container-page">
-              <div className="grid border-y border-[var(--color-hairline-strong)] md:grid-cols-3">
-                {project.metrics.slice(0, 3).map((m, idx) => (
-                  <motion.div
-                    key={`${m.label}-${idx}`}
-                    initial={reduce ? false : { opacity: 0, y: 12 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true, margin: "-40px" }}
-                    transition={{ duration: 0.7, delay: idx * 0.08, ease: EASE }}
-                    className="flex items-baseline gap-4 border-b border-[var(--color-hairline)] py-6 last:border-b-0 md:border-b-0 md:border-r md:px-6 md:first:pl-0 md:last:border-r-0 md:last:pr-0"
-                  >
-                    <p className="font-display text-[clamp(1.75rem,3vw,2.5rem)] leading-none tracking-[var(--tracking-tightest)] text-[var(--color-accent)]">
-                      {m.value}
-                    </p>
-                    <div>
-                      <p className="eyebrow">{m.label}</p>
-                      {m.hint && (
-                        <p className="mt-1 text-[12px] text-[var(--color-muted)]">{m.hint}</p>
-                      )}
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
-            </div>
-          </section>
-        )}
-
-        {presentation.story.enabled && <PortfolioAnalysisCaseVisuals story={presentation.story} />}
-
-        {/* ==================== CHAPTER SECTIONS ==================== */}
-        {activeChapters.map((c) => {
-          return (
-            <CaseSection
-              key={c.id}
-              id={c.id}
-              chapter={c.chapter}
-              eyebrow={c.eyebrow}
-              title={c.title}
-              variant="rail"
-              tone={c.id === "impact" ? "surface" : "default"}
-            >
-              {c.id === "impact" && project.metrics.length > 0 && (
-                <div className="mb-[var(--space-10)]">
-                  <ImpactGrid items={project.metrics} />
-                </div>
-              )}
-              <ProseHtml html={c.html!} />
-            </CaseSection>
-          );
-        })}
-
-        {/* ==================== PROTOTYPE ==================== */}
-        {prototypeLink && (
-          <CaseSection
-            id="prototype"
-            chapter={String(activeChapters.length + 1).padStart(2, "0")}
-            eyebrow={presentation.prototype.eyebrow}
-            title={presentation.prototype.title}
-            variant="wide"
-            intro={<>{presentation.prototype.description}</>}
-          >
-            <PrototypeEmbed url={prototypeLink.url} label={prototypeLink.label} />
-          </CaseSection>
-        )}
-
-        {/* ==================== GALLERY ==================== */}
-        {project.gallery.length > 0 && (
-          <CaseSection
-            id="gallery"
-            chapter={String(activeChapters.length + (prototypeLink ? 2 : 1)).padStart(2, "0")}
-            eyebrow={presentation.gallery.eyebrow}
-            title={presentation.gallery.title}
-            variant="wide"
-            tone="surface"
-            intro={presentation.gallery.description}
-          >
-            <CaseGallery images={project.gallery} />
-          </CaseSection>
-        )}
-
-        {/* ==================== IMPACT FALLBACK ==================== */}
-        {!activeChapters.find((c) => c.id === "impact") && project.metrics.length > 0 && (
-          <CaseSection
-            id="impact"
-            chapter={String(activeChapters.length + 3).padStart(2, "0")}
-            eyebrow="The outcome"
-            title="Impact"
-            variant="split"
-          >
-            <ImpactGrid items={project.metrics} />
-          </CaseSection>
-        )}
-
-        {/* ==================== LINKS ==================== */}
-        {project.links.filter((l) => !isPrototypeLink(l.url)).length > 0 && (
-          <section className="container-page py-[var(--space-16)]">
-            <p className="eyebrow">{presentation.labels.external_links}</p>
-            <ul className="mt-[var(--space-4)] flex flex-wrap gap-[var(--space-3)]">
-              {project.links
-                .filter((l) => !isPrototypeLink(l.url))
-                .map((l, idx) => (
-                  <li key={idx}>
-                    <a
-                      href={l.url}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="inline-flex items-center gap-[var(--space-2)] rounded-[var(--radius-pill)] border border-hairline bg-[var(--color-elevated)] px-[var(--space-4)] py-[var(--space-2)] text-[13px] text-[var(--color-text)] transition-colors hover:border-[var(--color-hairline-strong)]"
-                    >
-                      {l.label} <ExternalLink size={12} />
-                    </a>
-                  </li>
-                ))}
-            </ul>
-          </section>
-        )}
-
-        {/* ==================== NEXT / PREV ==================== */}
-        {(prev || next) && (
-          <section className="container-page mt-[var(--space-24)] border-t border-hairline pt-[var(--space-16)]">
-            <div className="grid gap-[var(--space-10)] md:grid-cols-2">
-              {prev && (
-                <NavCase project={prev} label={presentation.labels.previous_project} side="prev" />
-              )}
-              {next && (
-                <NavCase project={next} label={presentation.labels.next_project} side="next" />
-              )}
-            </div>
-          </section>
-        )}
-
-        {/* ==================== CTA ==================== */}
-        <section className="container-page mt-[var(--space-24)] pb-[var(--space-20)]">
-          <div className="flex flex-wrap items-end justify-between gap-8 border-t border-[var(--color-hairline-strong)] pt-10 md:pt-14">
+        <section className="container-page pb-20 pt-8 md:pb-24 md:pt-12">
+          <div className="mx-auto flex max-w-[1040px] flex-col items-start justify-between gap-7 border-t border-[var(--color-hairline)] pt-10 md:flex-row md:items-end">
             <div>
               <p className="eyebrow">{presentation.cta.eyebrow}</p>
-              <h2 className="mt-4 max-w-[18ch] text-[clamp(2.25rem,4vw,3.6rem)] font-medium leading-[1.04] tracking-[-0.04em]">
+              <h2 className="mt-4 max-w-[22ch] text-[clamp(2rem,3.5vw,3rem)] font-medium leading-[1.08] tracking-[-0.035em]">
                 {presentation.cta.title}
               </h2>
             </div>
@@ -503,62 +156,26 @@ export default function ProjectPage() {
   );
 }
 
-function Meta({ label, value }: { label: string; value: string | null }) {
-  if (!value) return null;
+function NextProject({ project, label }: { project: ProjectRow; label: string }) {
   return (
-    <div>
-      <p className="eyebrow">{label}</p>
-      <p className="mt-[var(--space-2)] text-[15px] text-[var(--color-text)]">{value}</p>
-    </div>
-  );
-}
-
-function NavCase({
-  project,
-  label,
-  side,
-}: {
-  project: ProjectRow;
-  label: string;
-  side: "prev" | "next";
-}) {
-  return (
-    <Link
-      to={`/projects/${project.slug}`}
-      className={`group block border-t border-[var(--color-hairline-strong)] pt-6 ${
-        side === "next" ? "md:text-right" : ""
-      }`}
-    >
-      <p
-        className={`flex items-center gap-[var(--space-2)] font-mono text-[11px] uppercase tracking-[var(--tracking-widest)] text-[var(--color-muted)] ${
-          side === "next" ? "md:justify-end" : ""
-        }`}
+    <section className="container-page pt-20 md:pt-28">
+      <Link
+        to={`/projects/${project.slug}`}
+        className="group mx-auto flex max-w-[1040px] items-end justify-between gap-8 border-t border-[var(--color-hairline-strong)] pt-10"
       >
-        {side === "prev" ? (
-          <>
-            <ArrowLeft size={12} /> {label}
-          </>
-        ) : (
-          <>
-            {label} <ArrowRight size={12} />
-          </>
-        )}
-      </p>
-      <div
-        className={`mt-5 flex items-start gap-5 ${side === "next" ? "md:flex-row-reverse" : ""}`}
-      >
-        <span className="grid h-11 w-11 shrink-0 place-items-center rounded-full border border-[var(--color-hairline-strong)] text-[var(--color-muted)] transition-colors group-hover:border-[var(--color-accent)] group-hover:text-[var(--color-accent)]">
-          {side === "prev" ? <ArrowLeft size={16} /> : <ArrowRight size={16} />}
-        </span>
         <div>
-          <p className="text-[clamp(1.45rem,2.5vw,2rem)] font-medium leading-[1.15] tracking-[-0.03em] text-[var(--color-text)]">
+          <p className="text-[12px] text-[var(--color-muted)]">{label}</p>
+          <h2 className="mt-3 text-[clamp(2rem,4vw,3.5rem)] font-medium leading-[1.05] tracking-[-0.04em] transition-colors group-hover:text-[var(--color-accent)]">
             {project.title}
-          </p>
-          <p className="mt-2 text-[12px] text-[var(--color-muted)]">
+          </h2>
+          <p className="mt-3 text-[13px] text-[var(--color-muted)]">
             {project.category ?? "Case study"}
           </p>
         </div>
-      </div>
-    </Link>
+        <span className="grid h-12 w-12 shrink-0 place-items-center rounded-full border border-[var(--color-hairline-strong)] text-[var(--color-muted)] transition-colors group-hover:border-[var(--color-accent)] group-hover:text-[var(--color-accent)]">
+          <ArrowRight size={17} />
+        </span>
+      </Link>
+    </section>
   );
 }

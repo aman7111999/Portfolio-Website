@@ -6,7 +6,8 @@ import { Reveal } from "@/components/Reveal";
 import { BrandMark } from "@/components/BrandMark";
 import { PortraitFrame } from "@/components/about/PortraitFrame";
 import type { PortfolioEducation, PortfolioExperience } from "@/data/portfolio";
-import portraitImg from "@/assets/portrait.jpg";
+
+const portraitImg = "/aman-mishra-portfolio-portrait.webp";
 
 const PRINCIPLES = [
   {

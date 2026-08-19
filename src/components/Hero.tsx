@@ -2,7 +2,7 @@ import { motion, useReducedMotion } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useContent, useSite } from "@/lib/cms";
-const portraitImg = "/aman-mishra-portfolio-portrait.webp";
+const portraitImg = "/aman-mishra-portfolio-portrait.png";
 
 type HeroData = {
   available_label: string;

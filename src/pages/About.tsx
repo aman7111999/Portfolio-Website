@@ -7,7 +7,7 @@ import { BrandMark } from "@/components/BrandMark";
 import { PortraitFrame } from "@/components/about/PortraitFrame";
 import type { PortfolioEducation, PortfolioExperience } from "@/data/portfolio";
 
-const portraitImg = "/aman-mishra-portfolio-portrait.webp";
+const portraitImg = "/aman-mishra-portfolio-portrait.png";
 
 const PRINCIPLES = [
   {

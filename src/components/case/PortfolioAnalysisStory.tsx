@@ -189,7 +189,7 @@ export function PortfolioAnalysisCaseVisuals({ story }: { story: ProjectPresenta
               {story.title}
             </h2>
           </div>
-          <p className="max-w-[48ch] text-[15px] leading-7 text-[var(--color-muted)]">
+          <p className="max-w-[48ch] text-[15px] leading-7 text-[var(--color-muted-fg)]">
             {story.description}
           </p>
         </div>
@@ -217,7 +217,7 @@ export function PortfolioAnalysisCaseVisuals({ story }: { story: ProjectPresenta
                 <p className="mt-7 text-[15px] font-medium text-[var(--color-text)]">
                   {node.title}
                 </p>
-                <p className="mt-2 text-[12px] leading-5 text-[var(--color-muted)]">
+                <p className="mt-2 text-[12px] leading-5 text-[var(--color-muted-fg)]">
                   {node.description}
                 </p>
               </li>
@@ -234,7 +234,7 @@ export function PortfolioAnalysisCaseVisuals({ story }: { story: ProjectPresenta
                   {story.journey_title}
                 </h3>
               </div>
-              <p className="max-w-[44ch] text-[14px] leading-6 text-[var(--color-muted)]">
+              <p className="max-w-[44ch] text-[14px] leading-6 text-[var(--color-muted-fg)]">
                 {story.journey_description}
               </p>
             </div>
@@ -277,7 +277,7 @@ export function PortfolioAnalysisCaseVisuals({ story }: { story: ProjectPresenta
                   <h4 className="mt-10 text-[clamp(1.7rem,3vw,2.4rem)] leading-[1.12] tracking-[-0.03em]">
                     {active.title}
                   </h4>
-                  <p className="mt-4 max-w-[34ch] text-[14px] leading-7 text-[var(--color-muted)]">
+                  <p className="mt-4 max-w-[34ch] text-[14px] leading-7 text-[var(--color-muted-fg)]">
                     {active.description}
                   </p>
                 </div>
@@ -294,7 +294,7 @@ export function PortfolioAnalysisCaseVisuals({ story }: { story: ProjectPresenta
                         className={`h-1.5 flex-1 rounded-full transition-colors ${
                           index === activeIndex
                             ? "bg-[var(--color-accent)]"
-                            : "bg-[var(--color-hairline-strong)] hover:bg-[var(--color-muted)]"
+                            : "bg-[var(--color-hairline-strong)] hover:bg-[var(--color-muted-fg)]"
                         }`}
                       />
                     ))}
@@ -304,7 +304,7 @@ export function PortfolioAnalysisCaseVisuals({ story }: { story: ProjectPresenta
                       type="button"
                       onClick={() => move(-1)}
                       aria-label="Previous journey step"
-                      className="grid h-10 w-10 place-items-center rounded-full border border-[var(--color-hairline-strong)] text-[var(--color-muted)] transition-colors hover:border-[var(--color-text)] hover:text-[var(--color-text)]"
+                      className="grid h-10 w-10 place-items-center rounded-full border border-[var(--color-hairline-strong)] text-[var(--color-muted-fg)] transition-colors hover:border-[var(--color-text)] hover:text-[var(--color-text)]"
                     >
                       <ArrowLeft size={15} />
                     </button>
@@ -312,7 +312,7 @@ export function PortfolioAnalysisCaseVisuals({ story }: { story: ProjectPresenta
                       type="button"
                       onClick={() => move(1)}
                       aria-label="Next journey step"
-                      className="grid h-10 w-10 place-items-center rounded-full border border-[var(--color-hairline-strong)] text-[var(--color-muted)] transition-colors hover:border-[var(--color-text)] hover:text-[var(--color-text)]"
+                      className="grid h-10 w-10 place-items-center rounded-full border border-[var(--color-hairline-strong)] text-[var(--color-muted-fg)] transition-colors hover:border-[var(--color-text)] hover:text-[var(--color-text)]"
                     >
                       <ArrowRight size={15} />
                     </button>

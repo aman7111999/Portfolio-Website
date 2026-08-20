@@ -9,10 +9,12 @@ export function ProjectCard({
   project,
   index = 0,
   size = "md",
+  headingLevel = "h3",
 }: {
   project: ProjectRow;
   index?: number;
   size?: "lg" | "md" | "compact";
+  headingLevel?: "h2" | "h3";
 }) {
   const reduce = useReducedMotion();
   const presentation = getProjectPresentation(project);
@@ -56,6 +58,7 @@ export function ProjectCard({
     "bottom-12 left-[39%]",
   ];
   const nodes = signalNodes[visualIndex];
+  const Heading = headingLevel;
 
   return (
     <motion.article
@@ -94,7 +97,7 @@ export function ProjectCard({
               }}
             >
               <div aria-hidden className="tech-grid absolute inset-0 opacity-75" />
-              <div className="absolute inset-x-6 top-6 z-[2] flex items-center justify-between text-[var(--color-muted)] md:inset-x-8 md:top-8">
+              <div className="absolute inset-x-6 top-6 z-[2] flex items-center justify-between text-[var(--color-muted-fg)] md:inset-x-8 md:top-8">
                 <span>{project.company ?? "Product design"}</span>
                 <span className="system-label flex items-center gap-2">
                   <span className="system-dot" /> {project.timeline ?? number}
@@ -140,13 +143,13 @@ export function ProjectCard({
               <p className="eyebrow">
                 {presentation.card.eyebrow} {number}
               </p>
-              <h3
+              <Heading
                 className={`mt-3 leading-[1.12] tracking-[-0.03em] ${
                   compact ? "text-[clamp(1.3rem,2vw,1.7rem)]" : "text-[clamp(1.45rem,2.4vw,2rem)]"
                 }`}
               >
                 {project.title}
-              </h3>
+              </Heading>
             </div>
             <span
               className={`grid shrink-0 place-items-center rounded-full border border-[var(--color-hairline-strong)] text-[var(--color-text)] transition-colors group-hover:border-[var(--color-accent)] group-hover:text-[var(--color-accent)] ${
@@ -159,7 +162,7 @@ export function ProjectCard({
 
           {project.short_description && (
             <p
-              className={`mt-4 max-w-[48ch] text-[14px] leading-[1.65] text-[var(--color-muted)] md:text-[15px] ${
+              className={`mt-4 max-w-[48ch] text-[14px] leading-[1.65] text-[var(--color-muted-fg)] md:text-[15px] ${
                 compact ? "line-clamp-2" : ""
               }`}
             >

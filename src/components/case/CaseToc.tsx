@@ -41,10 +41,7 @@ export function CaseToc({ sections }: { sections: Section[] }) {
           const isActive = active === s.id;
           return (
             <li key={s.id}>
-              <a
-                href={`#${s.id}`}
-                className="group flex items-center gap-[var(--space-3)]"
-              >
+              <a href={`#${s.id}`} className="group flex items-center gap-[var(--space-3)]">
                 <motion.span
                   aria-hidden
                   animate={{
@@ -61,7 +58,7 @@ export function CaseToc({ sections }: { sections: Section[] }) {
                     "font-mono text-[10px] uppercase tracking-[var(--tracking-widest)] transition-colors duration-[var(--dur-base)] " +
                     (isActive
                       ? "text-[var(--color-text)]"
-                      : "text-[var(--color-subtle)] group-hover:text-[var(--color-muted)]")
+                      : "text-[var(--color-subtle)] group-hover:text-[var(--color-muted-fg)]")
                   }
                 >
                   {s.chapter} — {s.label}

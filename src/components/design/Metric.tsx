@@ -39,9 +39,7 @@ export function Metric({
         <CountUp value={value} />
       </p>
       {hint && (
-        <p className="mt-[var(--space-2)] text-[13px] text-[var(--color-muted)]">
-          {hint}
-        </p>
+        <p className="mt-[var(--space-2)] text-[13px] text-[var(--color-muted-fg)]">{hint}</p>
       )}
     </div>
   );

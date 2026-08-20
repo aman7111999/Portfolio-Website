@@ -11,29 +11,18 @@ export type GalleryItem = {
 
 const spanMap: Record<NonNullable<GalleryItem["span"]>, string> = {
   narrow: "md:col-span-1",
-  wide:   "md:col-span-2",
-  full:   "md:col-span-3",
+  wide: "md:col-span-2",
+  full: "md:col-span-3",
 };
 
 /**
  * Editorial media gallery. Items span 1–3 columns of a 3-col grid.
  * Uses design tokens for radius, spacing, elevation.
  */
-export function Gallery({
-  items,
-  className,
-}: {
-  items: GalleryItem[];
-  className?: string;
-}) {
+export function Gallery({ items, className }: { items: GalleryItem[]; className?: string }) {
   const reduce = useReducedMotion();
   return (
-    <div
-      className={clsx(
-        "grid gap-[var(--space-6)] md:grid-cols-3",
-        className,
-      )}
-    >
+    <div className={clsx("grid gap-[var(--space-6)] md:grid-cols-3", className)}>
       {items.map((it, i) => (
         <motion.figure
           key={it.id}
@@ -57,7 +46,7 @@ export function Gallery({
             />
           </div>
           {it.caption && (
-            <figcaption className="px-[var(--space-5)] py-[var(--space-4)] text-[13px] text-[var(--color-muted)]">
+            <figcaption className="px-[var(--space-5)] py-[var(--space-4)] text-[13px] text-[var(--color-muted-fg)]">
               {it.caption}
             </figcaption>
           )}

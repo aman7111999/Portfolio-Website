@@ -2,7 +2,7 @@ import { motion, useReducedMotion } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useContent, useSite } from "@/lib/cms";
-const portraitImg = "/aman-mishra-portfolio-portrait.webp";
+import { DEFAULT_PORTRAIT, ResponsivePortrait } from "@/components/ResponsivePortrait";
 
 type HeroData = {
   available_label: string;
@@ -23,7 +23,7 @@ const FALLBACK: HeroData = {
   headline_accent: "financial products",
   headline_after: "clear and trustworthy.",
   subline:
-    "I lead complex product work from problem framing through launch, with experience across fintech, AI-assisted products, and design systems.",
+    "Senior Product Designer leading fintech, AI-assisted, personalisation, and design-system work from problem framing through launch.",
   cta_label: "View selected work",
   cta_to: "/work",
   secondary_cta_label: "View résumé",
@@ -46,7 +46,7 @@ export function Hero() {
             initial={reduce ? false : { opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.55 }}
-            className="system-label flex items-center gap-3 text-[var(--color-muted)]"
+            className="system-label flex items-center gap-3 text-[var(--color-muted-fg)]"
           >
             <span className="system-dot" />
             {content.available_label}
@@ -69,7 +69,7 @@ export function Hero() {
             initial={reduce ? false : { opacity: 0, y: 14 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.2 }}
-            className="mt-8 max-w-[58ch] text-[16px] leading-[1.7] text-[var(--color-muted)] md:text-[17px]"
+            className="mt-8 max-w-[58ch] text-[16px] leading-[1.7] text-[var(--color-muted-fg)] md:text-[17px]"
           >
             {content.subline}
           </motion.p>
@@ -102,7 +102,7 @@ export function Hero() {
             <p className="eyebrow">Focus</p>
             <div className="mt-3 flex flex-wrap gap-x-5 gap-y-2">
               {(content.brands ?? []).map((item) => (
-                <span key={item} className="text-[13px] text-[var(--color-muted)]">
+                <span key={item} className="text-[13px] text-[var(--color-muted-fg)]">
                   {item}
                 </span>
               ))}
@@ -119,12 +119,12 @@ export function Hero() {
           <figure className="relative mx-auto max-w-[410px] lg:ml-auto lg:mr-0">
             <div className="signal-orbit -right-7 -top-7 z-10 hidden md:block" aria-hidden />
             <div className="system-frame relative aspect-[4/5] overflow-hidden rounded-[var(--radius-lg)] border border-[var(--color-hairline-strong)] bg-[var(--color-elevated)] shadow-[var(--elevation-3)]">
-              <img
-                src={site?.profile_image_url || portraitImg}
+              <ResponsivePortrait
+                src={site?.profile_image_url || DEFAULT_PORTRAIT}
                 alt={name}
                 className="h-full w-full object-cover"
-                width={1024}
-                height={1280}
+                loading="eager"
+                fetchPriority="high"
               />
               <div
                 aria-hidden
@@ -132,7 +132,7 @@ export function Hero() {
               />
               <div className="absolute inset-x-5 top-5 z-10 flex items-center justify-between text-[var(--color-inverse)] mix-blend-difference">
                 <span className="system-label">AM / 2026</span>
-                <span className="system-label">04.5+ YRS</span>
+                <span className="system-label">4.5+ years</span>
               </div>
               <div className="absolute bottom-5 left-5 right-5 z-10 flex items-center justify-between gap-4 rounded-[10px] border border-white/20 bg-black/35 px-4 py-3 text-white backdrop-blur-md">
                 <div className="flex items-center gap-2">

@@ -25,9 +25,10 @@ export default function Work() {
               not screen galleries.
             </span>
           </h1>
-          <p className="mt-6 max-w-2xl text-[16px] leading-[1.6] text-[var(--color-muted)] md:text-lg">
+          <p className="mt-6 max-w-2xl text-[16px] leading-[1.6] text-[var(--color-muted-fg)] md:text-lg">
             Five stories showing how I frame complex problems, navigate constraints, align teams,
-            and move from concept to shipped or build-ready outcomes.
+            and move from concept to shipped or build-ready outcomes. Detailed case studies are
+            password-protected to respect client confidentiality.
           </p>
         </Reveal>
       </section>
@@ -37,7 +38,9 @@ export default function Work() {
           {isLoading &&
             [1, 2, 3, 4].map((i) => <Skeleton key={i} className="aspect-[4/3] w-full" />)}
           {projects?.map((p, i) => (
-            <ProjectCard key={p.slug} project={p} index={i} />
+            <div key={p.slug} className={i === 0 ? "md:col-span-2" : undefined}>
+              <ProjectCard project={p} index={i} size={i === 0 ? "lg" : "md"} headingLevel="h2" />
+            </div>
           ))}
         </div>
       </section>

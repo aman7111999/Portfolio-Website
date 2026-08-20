@@ -32,7 +32,7 @@ export function SectionHeading({ eyebrow, title, right, className }: Props) {
           {eyebrow && (
             <motion.p
               variants={{ hidden: { opacity: 0, y: 8 }, visible: { opacity: 1, y: 0 } }}
-              className="text-xs uppercase tracking-widest text-[var(--color-muted)]"
+              className="text-xs uppercase tracking-widest text-[var(--color-muted-fg)]"
             >
               {eyebrow}
             </motion.p>
@@ -41,7 +41,11 @@ export function SectionHeading({ eyebrow, title, right, className }: Props) {
             <motion.h2
               variants={{
                 hidden: { opacity: 0, y: 16 },
-                visible: { opacity: 1, y: 0, transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] } },
+                visible: {
+                  opacity: 1,
+                  y: 0,
+                  transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] },
+                },
               }}
               className="font-display text-3xl md:text-5xl mt-3"
             >

@@ -4,7 +4,7 @@ export const PORTFOLIO_SITE = {
   name: "Aman Mishra",
   tagline:
     "Senior Product Designer with 4.5+ years of experience across fintech, AI-assisted products, 0-to-1 launches, and design systems.",
-  bio: "I’m a product designer with 4.5+ years of experience designing fintech and investment products across Motilal Oswal and Trinkerr.\n\nAt Motilal Oswal, I work across Riise’s hyper-personalised homepage, 0-to-1 stock discovery, and AI-assisted investing experiences. Previously at Trinkerr, I designed portfolio and advisory products and contributed to the TIQS design system across iOS and Android.\n\nMy work sits at the intersection of product strategy, interaction design, and systems thinking. I’m strongest when the problem is ambiguous, the information is dense, and the experience must balance user needs, business goals, and regulatory constraints.\n\nI work closely with product, engineering, research, and compliance from problem framing and prototyping through handoff, validation, and launch. I’m currently exploring Senior Product Designer opportunities across fintech, AI, consumer products, and complex digital platforms.",
+  bio: "I’m a Senior Product Designer with 4.5+ years of experience designing fintech and investment products across Motilal Oswal and Trinkerr.\n\nAt Motilal Oswal, I work across RIISE’s hyper-personalised homepage, 0-to-1 stock discovery, portfolio analysis, and AI-assisted investing experiences. Previously at Trinkerr, I designed portfolio and advisory products and contributed to the TIQS design system across iOS and Android.\n\nMy work sits at the intersection of product strategy, interaction design, and systems thinking. I’m strongest when the problem is ambiguous, the information is dense, and the experience must balance user needs, business goals, and regulatory constraints.\n\nI work closely with product, engineering, research, and compliance from problem framing and prototyping through handoff, validation, and launch. I’m currently exploring Senior Product Designer opportunities across fintech, AI, personalisation, and complex product platforms.",
   email: "aman755559@gmail.com",
   location: "Mumbai, India",
   profile_image_url: null,
@@ -24,11 +24,11 @@ export const PORTFOLIO_EXPERIENCE = [
     start_date: "Aug 2025",
     end_date: null,
     description:
-      "Leading product design across high-impact Riise initiatives spanning homepage personalisation, stock discovery, AI-assisted investing, and scalable platform experiences.",
+      "Leading product design across high-impact RIISE initiatives spanning homepage personalisation, stock discovery, portfolio analysis, AI-assisted investing, and scalable platform experiences.",
     highlights: [
-      "Re-architected the Riise homepage to prioritise relevant financial products using behaviour, lifecycle, and portfolio signals.",
+      "Re-architected the RIISE homepage to prioritise relevant financial products using behaviour, lifecycle, and portfolio signals.",
       "Led the 0-to-1 product definition of Screener, covering discovery, filters, comparison, saved workflows, and AI-assisted decisions.",
-      "Shaping Mira AI as a unified layer across support, research, portfolio analysis, market briefs, and actionable recommendations.",
+      "Architecting an AI research and portfolio-assistance ecosystem spanning MO Genie, research support, and portfolio analysis.",
       "Partner with product, engineering, and compliance to move multiple complex workstreams from problem framing to implementation.",
     ],
     sort_order: 1,
@@ -84,7 +84,7 @@ export const PORTFOLIO_EDUCATION = [
     id: "masai-school",
     institution: "Masai School",
     degree: "Full Stack UI/UX Designer",
-    field: "Product Design & Frontend Development",
+    field: "UI/UX Design",
     start_date: "Jun 2021",
     end_date: "Jan 2022",
     description: "Bengaluru, India",
@@ -146,7 +146,7 @@ export const PORTFOLIO_SKILLS = [
   },
   {
     group: "Tools",
-    items: ["Figma", "Framer", "ProtoPie", "Figma AI", "After Effects", "Maze"],
+    items: ["Figma", "Framer", "ProtoPie", "Figma AI", "Adobe After Effects"],
   },
 ];
 
@@ -168,7 +168,7 @@ export const PORTFOLIO_CONTENT = {
     headline_accent: "financial products",
     headline_after: "clear and trustworthy.",
     subline:
-      "I’m Aman, a product designer with 4.5+ years across Motilal Oswal and Trinkerr. I lead 0-to-1 products, platform revamps, AI experiences, and design systems from problem framing through launch.",
+      "I’m Aman, a Senior Product Designer with 4.5+ years across Motilal Oswal and Trinkerr. I lead fintech, AI-assisted, personalisation, and design-system work from problem framing through launch.",
     cta_label: "View selected work",
     cta_to: "/work",
     secondary_cta_label: "View résumé",
@@ -196,16 +196,16 @@ export const PORTFOLIO_CONTENT = {
     heading_line2: "complex financial products.",
   },
   home_stats: {
-    eyebrow: "About",
-    heading_line1: "From 0-to-1 launches",
-    heading_accent: "to systems at scale",
+    eyebrow: "Evidence",
+    heading_line1: "Product work with",
+    heading_accent: "real scale and outcomes",
     items: [
       { v: "4.5+", l: "Years in product design" },
+      { v: "890K+", l: "Active clients on the current platform" },
+      { v: "2M+", l: "Portfolio data points designed for" },
       { v: "9×", l: "Portfolio import growth" },
-      { v: "5", l: "Focused case studies" },
     ],
-    body: "I’m {name}, a product designer focused on fintech, AI-assisted experiences, and scalable product systems. I turn dense workflows and ambiguous requirements into clear journeys that users can understand and teams can ship.",
-    quote: "The strongest design decisions make complexity feel inevitable, not visible.",
+    body: "I’m {name}, a Senior Product Designer focused on fintech, AI-assisted experiences, personalisation, and scalable product systems. These figures come from shipped work and the product scale documented in my résumé.",
   },
   home_faq: {
     eyebrow: "Working together",
@@ -229,7 +229,7 @@ export const PORTFOLIO_CONTENT = {
       },
       {
         q: "What roles are you exploring?",
-        a: "Senior Product Designer opportunities across fintech, AI, consumer products, and platform experiences where I can own meaningful product areas and help raise the quality bar.",
+        a: "Senior Product Designer opportunities across fintech, AI, personalisation, and complex product platforms where I can own meaningful product areas and help raise the quality bar.",
       },
     ],
   },
@@ -238,7 +238,7 @@ export const PORTFOLIO_CONTENT = {
     heading_accent: "complexity",
     heading_line2: "feel simple.",
     subline:
-      "I’m exploring Senior Product Designer opportunities across fintech, AI, and product platforms. If you’re building something complex and meaningful, I’d love to hear about it.",
+      "I’m exploring Senior Product Designer opportunities across fintech, AI, personalisation, and complex product platforms. If you’re building something meaningful at scale, I’d love to hear about it.",
     cta_label: "Email me",
   },
   about_hero: {
@@ -365,7 +365,7 @@ export const PORTFOLIO_PROJECTS = [
     short_description:
       "Unifying internal and externally linked portfolios into one insight-to-action experience for clearer investment decisions.",
     overview:
-      "<p>Investors rarely hold their complete wealth in one place. Their Motilal Oswal investments may be only one part of a portfolio spread across brokers, stocks, and mutual funds. The product opportunity was not another holdings view; it was a decision layer that could interpret the whole picture.</p><p>I designed Portfolio Analysis for Riise as a unified experience across <strong>internal Motilal Oswal holdings and externally imported portfolios</strong>. It brings portfolio health, risk, diversification, recommendations, and human advisory support into one continuous journey.</p><p>My role covered product framing, experience architecture, information hierarchy, interaction design, high-fidelity UI, edge states, and design-system-aligned handoff.</p>",
+      "<p>Investors rarely hold their complete wealth in one place. Their Motilal Oswal investments may be only one part of a portfolio spread across brokers, stocks, and mutual funds. The product opportunity was not another holdings view; it was a decision layer that could interpret the whole picture.</p><p>I designed Portfolio Analysis for RIISE as a unified experience across <strong>internal Motilal Oswal holdings and externally imported portfolios</strong>. It brings portfolio health, risk, diversification, recommendations, and human advisory support into one continuous journey.</p><p>My role covered product framing, experience architecture, information hierarchy, interaction design, high-fidelity UI, edge states, and design-system-aligned handoff.</p>",
     problem_statement:
       "<p>Portfolio data was fragmented by source and difficult to translate into a confident next step. A user could see what they owned, but not necessarily what the combined portfolio meant.</p><ul><li>Internal and external investments created separate mental models.</li><li>Dense financial metrics could feel diagnostic without being understandable.</li><li>Stocks and mutual funds required different analysis while still belonging to one portfolio story.</li><li>Insights risked becoming dead ends if the product did not offer an appropriate action.</li><li>Import and syncing required clear consent, trust, progress, failure, and empty states.</li></ul><p>The product goal was to turn fragmented holdings into a coherent analysis that helps investors understand risk, identify gaps, and choose an informed next step.</p>",
     research:
@@ -375,7 +375,7 @@ export const PORTFOLIO_PROJECTS = [
     solution:
       "<p>The final experience works as a connected six-part journey.</p><ul><li><strong>Entry and value framing:</strong> Portfolio Analysis communicates the benefit before asking users to connect more data.</li><li><strong>Unified portfolio scope:</strong> Overall, Motilal Oswal, and External tabs offer control without fragmenting the product.</li><li><strong>External portfolio connection:</strong> Consent-led broker import and visible syncing states reduce uncertainty.</li><li><strong>Stock diagnostics:</strong> Allocation, sector and stock concentration, portfolio risk, and red flags are organised by priority.</li><li><strong>Mutual-fund analysis:</strong> Risk alignment, diversification, and overlap are explained in an asset-appropriate format.</li><li><strong>Decision support:</strong> Relevant IAP mutual-fund portfolios, a relationship-manager conversation, and report download turn insight into an actionable choice.</li></ul><p>The interface uses progressive disclosure and plain-language interpretation to retain analytical depth without becoming a data dump.</p>",
     outcome:
-      "<p>The work established one scalable portfolio-intelligence model across internal and external investments, designed for <strong>2M+ portfolio-analysis use cases</strong>. It aligned the product around a continuous path from holdings to diagnosis to an appropriate next step.</p><p>The design system covers stocks, mutual funds, multiple portfolio sources, import states, light/dark themes, and advisory actions while keeping a consistent core interaction model.</p><p>No unverified conversion or post-launch uplift is presented. The defensible outcome is the product architecture, build-ready journey, and scale of use cases covered.</p>",
+      "<p>The work established one scalable portfolio-intelligence model across internal and external investments and more than <strong>2M portfolio data points</strong>. It aligned the product around a continuous path from holdings to diagnosis to an appropriate next step.</p><p>The design system covers stocks, mutual funds, multiple portfolio sources, import states, light/dark themes, and advisory actions while keeping a consistent core interaction model.</p><p>No unverified conversion or post-launch uplift is presented. The defensible outcome is the product architecture, build-ready journey, and documented scale.</p>",
     learnings:
       "<p>A portfolio score alone creates attention, not confidence. The valuable design work is the layer between the number and the action: explaining why a signal matters, showing where it comes from, and offering help without pretending the interface can replace investor judgement.</p><p>The project also reinforced that source unification is an experience problem before it is a data problem. Users can accept multiple sources as long as the product gives them one stable mental model.</p>",
     role: "Lead product design · Product strategy · Data storytelling",
@@ -387,16 +387,11 @@ export const PORTFOLIO_PROJECTS = [
     timeline: "2025–2026",
     thumbnail_url: null,
     gallery: [],
-    links: [
-      {
-        label: "Figma source",
-        url: "https://www.figma.com/design/xL2pjlUJRgR8NVAirSDS01/Important-Projects?node-id=1-3",
-      },
-    ],
+    links: [],
     metrics: [
       {
         value: "2M+",
-        label: "Portfolio-analysis use cases",
+        label: "Portfolio data points",
         hint: "Across internal and linked external investments",
       },
       {
@@ -418,12 +413,12 @@ export const PORTFOLIO_PROJECTS = [
   },
   {
     id: "riise-personalisation",
-    title: "Riise Hyper-personalisation",
+    title: "RIISE Hyper-personalisation",
     slug: "riise-hyper-personalisation",
     short_description:
       "Re-architecting a complex investment homepage around behaviour, lifecycle stage, and portfolio activity.",
     overview:
-      "<p>Riise brings together Stocks, F&amp;O, Mutual Funds, US Stocks, and Algo Trading in one investment platform. As the product expanded, its homepage became a dense collection of entry points competing for attention.</p><p>As Assistant Manager, Product Design, I lead design across the homepage revamp and related personalisation initiatives. My scope includes problem framing, information architecture, interaction models, high-fidelity design, stakeholder alignment, and implementation review.</p><p>This is current product work. Confidential screens and internal data are intentionally omitted; the case study focuses on the product decisions and reusable framework.</p>",
+      "<p>RIISE brings together Stocks, F&amp;O, Mutual Funds, US Stocks, and Algo Trading in one investment platform. As the product expanded, its homepage became a dense collection of entry points competing for attention.</p><p>As Assistant Manager, Product Design, I lead design across the homepage revamp and related personalisation initiatives. My scope includes problem framing, information architecture, interaction models, high-fidelity design, stakeholder alignment, and implementation review.</p><p>This is current product work. Confidential screens and internal data are intentionally omitted; the case study focuses on the product decisions and reusable framework.</p>",
     problem_statement:
       "<p>The homepage treated every product as equally important for every user. A first-time investor, an active trader, and a mutual-fund customer saw similar prominence across modules, increasing cognitive load and weakening discoverability.</p><ul><li>Too many products competed above the fold.</li><li>Static ordering ignored user behaviour and lifecycle.</li><li>New capabilities were repeatedly added without a scalable hierarchy.</li><li>Multiple teams needed a shared framework for deciding what appears, when, and why.</li></ul>",
     research:
@@ -472,7 +467,7 @@ export const PORTFOLIO_PROJECTS = [
     short_description:
       "Defining a new stock-discovery product across filtering, comparison, saved workflows, and AI-assisted decisions.",
     overview:
-      "<p>Riise needed a structured way for investors to discover stocks beyond search, tips, and isolated research content. Screener was defined as a new product line rather than a single filter screen.</p><p>I led the experience from early architecture through interaction design and developer handoff, working with product and engineering to balance beginner accessibility with the depth expected by experienced investors.</p>",
+      "<p>RIISE needed a structured way for investors to discover stocks beyond search, tips, and isolated research content. Screener was defined as a new product line rather than a single filter screen.</p><p>I led the experience from early architecture through interaction design and developer handoff, working with product and engineering to balance beginner accessibility with the depth expected by experienced investors.</p>",
     problem_statement:
       "<p>Stock discovery tools often force a trade-off: simple experiences lack depth, while advanced screeners overwhelm less experienced users. The product also needed to support repeated workflows, comparison, and a clear path from discovery to decision.</p><ul><li>Users needed meaningful starting points instead of an empty filter builder.</li><li>Beginner and advanced workflows required different levels of control.</li><li>Comparison needed to explain differences, not only display more numbers.</li><li>Saved screeners needed to be easy to duplicate, edit, and reuse.</li></ul>",
     research:

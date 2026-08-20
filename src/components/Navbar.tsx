@@ -69,7 +69,7 @@ export function Navbar() {
             <span className="block text-[14px] font-semibold text-[var(--color-text)] md:text-[15px]">
               {name}
             </span>
-            <span className="hidden text-[11px] text-[var(--color-muted)] sm:block">
+            <span className="hidden text-[11px] text-[var(--color-muted-fg)] sm:block">
               {nav?.role_line ?? NAV_FALLBACK.role_line}
             </span>
           </span>
@@ -84,7 +84,7 @@ export function Navbar() {
                   "relative py-2 text-[14px] font-medium transition-colors " +
                   (isActive
                     ? "text-[var(--color-text)] after:absolute after:inset-x-0 after:-bottom-[19px] after:h-px after:bg-[var(--color-accent)]"
-                    : "text-[var(--color-muted)] hover:text-[var(--color-text)]")
+                    : "text-[var(--color-muted-fg)] hover:text-[var(--color-text)]")
                 }
               >
                 {link.label}
@@ -132,7 +132,7 @@ export function Navbar() {
                     to={link.to}
                     className="flex items-center justify-between py-4 text-[17px] font-medium text-[var(--color-text)]"
                   >
-                    {link.label} <ArrowUpRight size={15} className="text-[var(--color-muted)]" />
+                    {link.label} <ArrowUpRight size={15} className="text-[var(--color-muted-fg)]" />
                   </NavLink>
                 </li>
               ))}

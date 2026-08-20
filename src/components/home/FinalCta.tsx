@@ -15,7 +15,7 @@ const FALLBACK: Data = {
   heading_accent: "complexity",
   heading_line2: "feel simple.",
   subline:
-    "I’m exploring Senior Product Designer roles across fintech, AI, consumer products, and product platforms.",
+    "I’m exploring Senior Product Designer roles across fintech, AI, personalisation, and complex product platforms.",
   cta_label: "Start a conversation",
 };
 

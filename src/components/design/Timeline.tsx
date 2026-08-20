@@ -13,7 +13,10 @@ export function Timeline({ items }: { items: TimelineItem[] }) {
   const reduce = useReducedMotion();
   return (
     <ol className="relative">
-      <span aria-hidden className="absolute left-[7px] top-2 bottom-2 w-px bg-[var(--color-hairline)]" />
+      <span
+        aria-hidden
+        className="absolute left-[7px] top-2 bottom-2 w-px bg-[var(--color-hairline)]"
+      />
       {items.map((it, i) => (
         <motion.li
           key={it.id}
@@ -33,8 +36,12 @@ export function Timeline({ items }: { items: TimelineItem[] }) {
             <p className="font-display text-xl md:text-2xl">{it.title}</p>
             {it.period && <p className="eyebrow">{it.period}</p>}
           </div>
-          {it.meta && <p className="mt-1 text-sm text-[var(--color-muted)]">{it.meta}</p>}
-          {it.body && <div className="mt-4 max-w-2xl text-[15px] leading-relaxed text-[var(--color-muted)]">{it.body}</div>}
+          {it.meta && <p className="mt-1 text-sm text-[var(--color-muted-fg)]">{it.meta}</p>}
+          {it.body && (
+            <div className="mt-4 max-w-2xl text-[15px] leading-relaxed text-[var(--color-muted-fg)]">
+              {it.body}
+            </div>
+          )}
         </motion.li>
       ))}
     </ol>

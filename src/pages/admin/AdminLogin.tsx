@@ -33,13 +33,13 @@ export default function AdminLogin() {
   if (user && !passwordRecovery && !roleLoading) {
     if (isAdmin) return <Navigate to="/admin/overview" replace />;
     return (
-      <div className="min-h-screen grid place-items-center bg-[var(--color-paper)] p-6">
+      <div className="min-h-screen grid place-items-center bg-neutral-50 p-6 text-neutral-900">
         <div className="max-w-md text-center space-y-4">
           <h1 className="font-display text-3xl">Not an admin</h1>
-          <p className="text-[var(--color-muted)]">
+          <p className="text-[var(--color-muted-fg)]">
             You're signed in as <strong>{user.email}</strong> but this account has no admin role.
           </p>
-          <p className="text-sm text-[var(--color-muted)]">
+          <p className="text-sm text-[var(--color-muted-fg)]">
             Ask an existing admin to grant the <code>admin</code> role to your user in the{" "}
             <code>user_roles</code> table.
           </p>
@@ -259,7 +259,7 @@ export default function AdminLogin() {
             <Button type="submit" disabled={busy} className="w-full">
               {busy ? <Loader2 className="animate-spin" /> : "Sign in"}
             </Button>
-            <div className="flex items-center gap-3 text-[11px] uppercase tracking-wider text-[var(--color-muted)]">
+            <div className="flex items-center gap-3 text-[11px] uppercase tracking-wider text-[var(--color-muted-fg)]">
               <span className="h-px flex-1 bg-hairline" /> or{" "}
               <span className="h-px flex-1 bg-hairline" />
             </div>
@@ -300,17 +300,20 @@ function AdminAuthShell({
   children: React.ReactNode;
 }) {
   return (
-    <div className="min-h-screen grid place-items-center bg-[var(--color-paper)] p-6">
-      <div className="w-full max-w-sm rounded-xl border border-hairline bg-white p-8 shadow-sm">
+    <div
+      data-theme="light"
+      className="min-h-screen grid place-items-center bg-neutral-50 p-6 text-neutral-900"
+    >
+      <div className="w-full max-w-sm rounded-xl border border-neutral-200 bg-white p-8 shadow-sm [&_input]:border-neutral-300 [&_input]:bg-white [&_input]:text-neutral-900 [&_input]:placeholder:text-neutral-400 [&_label]:text-neutral-700">
         <div className="mb-6">
           <div className="mb-2 flex items-center gap-2">
             <span className="inline-block h-1.5 w-1.5 rounded-full bg-[var(--color-accent)]" />
-            <span className="text-xs uppercase tracking-widest text-[var(--color-muted)]">
+            <span className="text-xs uppercase tracking-widest text-[var(--color-muted-fg)]">
               Admin
             </span>
           </div>
           <h1 className="font-display text-3xl">{title}</h1>
-          <p className="mt-2 text-sm text-[var(--color-muted)]">{description}</p>
+          <p className="mt-2 text-sm text-[var(--color-muted-fg)]">{description}</p>
         </div>
         {children}
       </div>
@@ -330,7 +333,7 @@ function InlineError({ message }: { message: string }) {
 function FullscreenSpinner() {
   return (
     <div className="min-h-screen grid place-items-center">
-      <Loader2 className="animate-spin text-[var(--color-muted)]" />
+      <Loader2 className="animate-spin text-[var(--color-muted-fg)]" />
     </div>
   );
 }

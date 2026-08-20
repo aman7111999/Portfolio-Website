@@ -24,7 +24,7 @@ export function ImpactGrid({
             {item.value}
           </p>
           {item.hint && (
-            <p className="mt-4 max-w-[28ch] text-[13px] leading-[1.55] text-[var(--color-muted)]">
+            <p className="mt-4 max-w-[28ch] text-[13px] leading-[1.55] text-[var(--color-muted-fg)]">
               {item.hint}
             </p>
           )}

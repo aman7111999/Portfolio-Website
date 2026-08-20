@@ -2,6 +2,7 @@ import { motion, useReducedMotion } from "framer-motion";
 import { ArrowLeft, ExternalLink } from "lucide-react";
 import { Link } from "react-router-dom";
 import type { ProjectRow } from "@/lib/cms";
+import { isPrototypeLink } from "@/lib/prototypeLinks";
 import {
   getProjectPresentation,
   resolveHeroVisual,
@@ -14,7 +15,7 @@ import {
   PortfolioAnalysisVisual,
 } from "@/components/case/PortfolioAnalysisStory";
 import { ProseHtml } from "@/components/case/ProseHtml";
-import { PrototypeEmbed, isPrototypeLink } from "@/components/case/PrototypeEmbed";
+import { PrototypeEmbed } from "@/components/case/PrototypeEmbed";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
@@ -86,7 +87,7 @@ export function ProjectCaseStudyHero({
       {backHref && (
         <Link
           to={backHref}
-          className="inline-flex items-center gap-2 text-[12px] font-medium text-[var(--color-muted)] transition-colors hover:text-[var(--color-text)]"
+          className="inline-flex items-center gap-2 text-[12px] font-medium text-[var(--color-muted-fg)] transition-colors hover:text-[var(--color-text)]"
         >
           <ArrowLeft size={12} /> {backLabel ?? presentation.labels.back_to_work}
         </Link>
@@ -105,7 +106,7 @@ export function ProjectCaseStudyHero({
           {project.title}
         </h1>
         {project.short_description && (
-          <p className="mt-7 max-w-[62ch] text-[18px] leading-[1.7] text-[var(--color-muted)] md:text-[20px]">
+          <p className="mt-7 max-w-[62ch] text-[18px] leading-[1.7] text-[var(--color-muted-fg)] md:text-[20px]">
             {project.short_description}
           </p>
         )}
@@ -176,7 +177,7 @@ export function ProjectCaseStudyBody({
                 <li key={item.id} className="shrink-0">
                   <a
                     href={`#${item.id}`}
-                    className="inline-flex items-center gap-2 text-[12px] text-[var(--color-muted)] transition-colors hover:text-[var(--color-text)]"
+                    className="inline-flex items-center gap-2 text-[12px] text-[var(--color-muted-fg)] transition-colors hover:text-[var(--color-text)]"
                   >
                     <span className="font-mono text-[10px] text-[var(--color-subtle)]">
                       {item.number}
@@ -299,7 +300,7 @@ function EvidenceStrip({ items }: { items: ProjectRow["metrics"] }) {
             </p>
             <p className="mt-3 text-[13px] font-medium text-[var(--color-text)]">{item.label}</p>
             {item.hint && (
-              <p className="mt-1 max-w-[30ch] text-[12px] leading-5 text-[var(--color-muted)]">
+              <p className="mt-1 max-w-[30ch] text-[12px] leading-5 text-[var(--color-muted-fg)]">
                 {item.hint}
               </p>
             )}
@@ -344,7 +345,7 @@ function ProjectArtifacts({
               {title}
             </h2>
             {description && (
-              <p className="mt-4 max-w-[58ch] text-[15px] leading-7 text-[var(--color-muted)]">
+              <p className="mt-4 max-w-[58ch] text-[15px] leading-7 text-[var(--color-muted-fg)]">
                 {description}
               </p>
             )}
@@ -405,7 +406,7 @@ function GeneratedHero({ project, projectNumber }: { project: ProjectRow; projec
       }}
     >
       <div aria-hidden className="tech-grid absolute inset-0 opacity-50" />
-      <span className="system-label absolute left-7 top-7 z-[2] text-[var(--color-muted)] md:left-10 md:top-10">
+      <span className="system-label absolute left-7 top-7 z-[2] text-[var(--color-muted-fg)] md:left-10 md:top-10">
         {project.role?.split("·")[0]?.trim() || "Product design"}
       </span>
       <span className="absolute bottom-[-0.15em] right-7 font-serif text-[clamp(8rem,24vw,19rem)] leading-none text-[color-mix(in_oklab,var(--color-accent)_16%,transparent)] md:right-12">

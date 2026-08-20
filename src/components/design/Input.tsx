@@ -1,4 +1,9 @@
-import { forwardRef, type InputHTMLAttributes, type TextareaHTMLAttributes, type ReactNode } from "react";
+import {
+  forwardRef,
+  type InputHTMLAttributes,
+  type TextareaHTMLAttributes,
+  type ReactNode,
+} from "react";
 import { clsx } from "clsx";
 
 const fieldBase =
@@ -16,28 +21,30 @@ const sizes = {
   lg: "h-12 px-[var(--space-5)] text-[15px]",
 } as const;
 
-export const Input = forwardRef<HTMLInputElement, InputHTMLAttributes<HTMLInputElement> & { inputSize?: keyof typeof sizes }>(
-  function Input({ className, inputSize = "md", ...rest }, ref) {
-    return <input ref={ref} className={clsx(fieldBase, sizes[inputSize], className)} {...rest} />;
-  },
-);
+export const Input = forwardRef<
+  HTMLInputElement,
+  InputHTMLAttributes<HTMLInputElement> & { inputSize?: keyof typeof sizes }
+>(function Input({ className, inputSize = "md", ...rest }, ref) {
+  return <input ref={ref} className={clsx(fieldBase, sizes[inputSize], className)} {...rest} />;
+});
 
-export const Textarea = forwardRef<HTMLTextAreaElement, TextareaHTMLAttributes<HTMLTextAreaElement>>(
-  function Textarea({ className, rows = 5, ...rest }, ref) {
-    return (
-      <textarea
-        ref={ref}
-        rows={rows}
-        className={clsx(
-          fieldBase,
-          "py-[var(--space-3)] px-[var(--space-4)] text-sm leading-[var(--leading-normal)] resize-y",
-          className,
-        )}
-        {...rest}
-      />
-    );
-  },
-);
+export const Textarea = forwardRef<
+  HTMLTextAreaElement,
+  TextareaHTMLAttributes<HTMLTextAreaElement>
+>(function Textarea({ className, rows = 5, ...rest }, ref) {
+  return (
+    <textarea
+      ref={ref}
+      rows={rows}
+      className={clsx(
+        fieldBase,
+        "py-[var(--space-3)] px-[var(--space-4)] text-sm leading-[var(--leading-normal)] resize-y",
+        className,
+      )}
+      {...rest}
+    />
+  );
+});
 
 export function Field({
   label,
@@ -67,7 +74,7 @@ export function Field({
         <span
           className={clsx(
             "text-[12px]",
-            error ? "text-[var(--color-danger)]" : "text-[var(--color-muted)]",
+            error ? "text-[var(--color-danger)]" : "text-[var(--color-muted-fg)]",
           )}
         >
           {error ?? hint}

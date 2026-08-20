@@ -56,6 +56,8 @@ export default function Contact() {
   const d = c ?? FALLBACK;
   const [copied, setCopied] = useState(false);
   const [form, setForm] = useState({ name: "", email: "", message: "" });
+  const [website, setWebsite] = useState("");
+  const [fieldErrors, setFieldErrors] = useState<Partial<Record<keyof typeof form, string>>>({});
 
   const copyEmail = async () => {
     if (!site?.email) return;
@@ -69,12 +71,10 @@ export default function Contact() {
   };
 
   const submit = useMutation({
-    mutationFn: async () => {
-      const parsed = schema.safeParse(form);
-      if (!parsed.success) throw new Error(parsed.error.issues[0].message);
+    mutationFn: async (payload: z.infer<typeof schema>) => {
       const { error } = await supabase
         .from("contact_inquiries")
-        .insert({ ...parsed.data, source: "website" });
+        .insert({ ...payload, source: "website" });
       if (error) throw error;
     },
     onSuccess: () => {
@@ -88,7 +88,7 @@ export default function Contact() {
     <>
       <Seo
         title="Contact"
-        description="Contact Aman Mishra about Senior Product Designer opportunities across fintech, AI, consumer products, and complex digital platforms."
+        description="Contact Aman Mishra about Senior Product Designer opportunities across fintech, AI, personalisation, and complex product platforms."
         path="/contact"
         siteName={site?.name ?? "Portfolio"}
       />
@@ -106,10 +106,10 @@ export default function Contact() {
             </span>
             {d.heading_after}
           </h1>
-          <p className="mt-6 max-w-2xl text-[16px] leading-[1.7] text-[var(--color-muted)] md:text-lg">
-            I’m exploring Senior Product Designer opportunities across fintech, AI, consumer
-            products, and product platforms. If you’re building something complex and meaningful,
-            I’d love to hear about it.
+          <p className="mt-6 max-w-2xl text-[16px] leading-[1.7] text-[var(--color-muted-fg)] md:text-lg">
+            I’m exploring Senior Product Designer opportunities across fintech, AI, personalisation,
+            and complex product platforms. If you’re building something meaningful at scale, I’d
+            love to hear about it.
           </p>
         </Reveal>
       </section>
@@ -129,7 +129,7 @@ export default function Contact() {
               <button
                 type="button"
                 onClick={copyEmail}
-                className="mt-6 inline-flex min-h-11 items-center gap-2 rounded-[8px] border border-[var(--color-hairline-strong)] px-4 py-2 text-[12px] uppercase tracking-widest text-[var(--color-muted)] transition-colors hover:border-[var(--color-text)] hover:text-[var(--color-text)]"
+                className="mt-6 inline-flex min-h-11 items-center gap-2 rounded-[8px] border border-[var(--color-hairline-strong)] px-4 py-2 text-[12px] uppercase tracking-widest text-[var(--color-muted-fg)] transition-colors hover:border-[var(--color-text)] hover:text-[var(--color-text)]"
                 aria-live="polite"
               >
                 <AnimatePresence mode="wait" initial={false}>
@@ -162,11 +162,41 @@ export default function Contact() {
           <form
             onSubmit={(e) => {
               e.preventDefault();
-              submit.mutate();
+              if (website.trim()) {
+                setForm({ name: "", email: "", message: "" });
+                toast.success(d.success_toast);
+                return;
+              }
+              const parsed = schema.safeParse(form);
+              if (!parsed.success) {
+                const flattened = parsed.error.flatten().fieldErrors;
+                setFieldErrors({
+                  name: flattened.name?.[0],
+                  email: flattened.email?.[0],
+                  message: flattened.message?.[0],
+                });
+                return;
+              }
+              setFieldErrors({});
+              submit.mutate(parsed.data);
             }}
-            className="mt-12 max-w-lg space-y-6"
+            className="relative mt-12 max-w-lg space-y-6"
             noValidate
           >
+            <div
+              className="absolute -left-[9999px] top-auto h-px w-px overflow-hidden"
+              aria-hidden="true"
+            >
+              <Label htmlFor="contact-website">Website</Label>
+              <Input
+                id="contact-website"
+                name="website"
+                autoComplete="off"
+                tabIndex={-1}
+                value={website}
+                onChange={(e) => setWebsite(e.target.value)}
+              />
+            </div>
             <div className="space-y-2">
               <Label htmlFor="contact-name" className="eyebrow">
                 {d.form_labels.name}
@@ -176,10 +206,17 @@ export default function Contact() {
                 name="name"
                 autoComplete="name"
                 required
+                maxLength={200}
                 value={form.name}
-                onChange={(e) => setForm({ ...form, name: e.target.value })}
+                onChange={(e) => {
+                  setForm({ ...form, name: e.target.value });
+                  if (fieldErrors.name) setFieldErrors({ ...fieldErrors, name: undefined });
+                }}
+                aria-invalid={!!fieldErrors.name}
+                aria-describedby={fieldErrors.name ? "contact-name-error" : undefined}
                 className="h-12 rounded-lg border-[var(--color-hairline-strong)] bg-[var(--color-surface)] px-4 text-[16px] text-[var(--color-text)] shadow-none transition-colors focus-visible:border-[var(--color-accent)] focus-visible:ring-0"
               />
+              <FieldError id="contact-name-error" message={fieldErrors.name} />
             </div>
             <div className="space-y-2">
               <Label htmlFor="contact-email" className="eyebrow">
@@ -191,10 +228,17 @@ export default function Contact() {
                 type="email"
                 autoComplete="email"
                 required
+                maxLength={320}
                 value={form.email}
-                onChange={(e) => setForm({ ...form, email: e.target.value })}
+                onChange={(e) => {
+                  setForm({ ...form, email: e.target.value });
+                  if (fieldErrors.email) setFieldErrors({ ...fieldErrors, email: undefined });
+                }}
+                aria-invalid={!!fieldErrors.email}
+                aria-describedby={fieldErrors.email ? "contact-email-error" : undefined}
                 className="h-12 rounded-lg border-[var(--color-hairline-strong)] bg-[var(--color-surface)] px-4 text-[16px] text-[var(--color-text)] shadow-none transition-colors focus-visible:border-[var(--color-accent)] focus-visible:ring-0"
               />
+              <FieldError id="contact-email-error" message={fieldErrors.email} />
             </div>
             <div className="space-y-2">
               <Label htmlFor="contact-message" className="eyebrow">
@@ -205,10 +249,17 @@ export default function Contact() {
                 name="message"
                 rows={5}
                 required
+                maxLength={5000}
                 value={form.message}
-                onChange={(e) => setForm({ ...form, message: e.target.value })}
+                onChange={(e) => {
+                  setForm({ ...form, message: e.target.value });
+                  if (fieldErrors.message) setFieldErrors({ ...fieldErrors, message: undefined });
+                }}
+                aria-invalid={!!fieldErrors.message}
+                aria-describedby={fieldErrors.message ? "contact-message-error" : undefined}
                 className="rounded-lg border-[var(--color-hairline-strong)] bg-[var(--color-surface)] px-4 py-3 text-[16px] leading-relaxed text-[var(--color-text)] shadow-none transition-colors focus-visible:border-[var(--color-accent)] focus-visible:ring-0"
               />
+              <FieldError id="contact-message-error" message={fieldErrors.message} />
             </div>
             <button
               type="submit"
@@ -231,6 +282,10 @@ export default function Contact() {
                 </>
               )}
             </button>
+            <p className="max-w-[58ch] text-[12px] leading-[1.55] text-[var(--color-subtle)]">
+              Your details are used only to reply to this enquiry and are not shared or added to a
+              mailing list.
+            </p>
           </form>
         </Reveal>
 
@@ -259,5 +314,14 @@ export default function Contact() {
         </Reveal>
       </section>
     </>
+  );
+}
+
+function FieldError({ id, message }: { id: string; message?: string }) {
+  if (!message) return null;
+  return (
+    <p id={id} role="alert" className="text-[13px] text-red-600">
+      {message}
+    </p>
   );
 }

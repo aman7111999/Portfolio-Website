@@ -102,15 +102,6 @@ export default function ProjectPage() {
     list.length > 1 && projectIndex >= 0 ? list[(projectIndex + 1) % list.length] : undefined;
   const presentation = getProjectPresentation(project);
   const heroVisual = resolveHeroVisual(project);
-  const jsonLd = {
-    "@context": "https://schema.org",
-    "@type": "CreativeWork",
-    name: project.title,
-    author: { "@type": "Person", name: site?.name ?? "" },
-    about: project.category,
-    creator: project.company,
-  };
-
   return (
     <>
       <Seo
@@ -118,9 +109,9 @@ export default function ProjectPage() {
         description={presentation.seo.description}
         path={`/projects/${project.slug}`}
         ogType="article"
-        jsonLd={jsonLd}
         siteName={site?.name ?? "Portfolio"}
         image={heroVisual.imageUrl ?? project.thumbnail_url}
+        noindex
       />
 
       <ReadingProgress />
@@ -164,15 +155,15 @@ function NextProject({ project, label }: { project: ProjectRow; label: string })
         className="group mx-auto flex max-w-[1040px] items-end justify-between gap-8 border-t border-[var(--color-hairline-strong)] pt-10"
       >
         <div>
-          <p className="text-[12px] text-[var(--color-muted)]">{label}</p>
+          <p className="text-[12px] text-[var(--color-muted-fg)]">{label}</p>
           <h2 className="mt-3 text-[clamp(2rem,4vw,3.5rem)] font-medium leading-[1.05] tracking-[-0.04em] transition-colors group-hover:text-[var(--color-accent)]">
             {project.title}
           </h2>
-          <p className="mt-3 text-[13px] text-[var(--color-muted)]">
+          <p className="mt-3 text-[13px] text-[var(--color-muted-fg)]">
             {project.category ?? "Case study"}
           </p>
         </div>
-        <span className="grid h-12 w-12 shrink-0 place-items-center rounded-full border border-[var(--color-hairline-strong)] text-[var(--color-muted)] transition-colors group-hover:border-[var(--color-accent)] group-hover:text-[var(--color-accent)]">
+        <span className="grid h-12 w-12 shrink-0 place-items-center rounded-full border border-[var(--color-hairline-strong)] text-[var(--color-muted-fg)] transition-colors group-hover:border-[var(--color-accent)] group-hover:text-[var(--color-accent)]">
           <ArrowRight size={17} />
         </span>
       </Link>

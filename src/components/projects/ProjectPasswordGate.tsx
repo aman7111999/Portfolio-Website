@@ -31,8 +31,7 @@ const DEFAULTS: Required<Copy> = {
   unlocking_label: "Unlocking…",
   invalid_password_message: "The password is incorrect. Please check it and try again.",
   rate_limit_message: "Too many attempts. Please wait a few minutes before trying again.",
-  not_configured_message:
-    "Project access hasn’t been configured yet. Please check back shortly.",
+  not_configured_message: "Project access hasn’t been configured yet. Please check back shortly.",
   network_error_message: "Something went wrong. Please try again.",
   back_to_projects_label: "Back to Projects",
 };
@@ -48,6 +47,8 @@ export function ProjectPasswordGate({ onUnlocked }: { onUnlocked: () => void }) 
   const [error, setError] = useState<string | null>(null);
   const [shake, setShake] = useState(0);
   const inputRef = useRef<HTMLInputElement>(null);
+  const animate =
+    !reduce && shake > 0 ? { opacity: 1, y: 0, x: [0, -6, 6, -4, 4, 0] } : { opacity: 1, y: 0 };
 
   useEffect(() => {
     inputRef.current?.focus();
@@ -81,16 +82,12 @@ export function ProjectPasswordGate({ onUnlocked }: { onUnlocked: () => void }) 
     <section className="container-page grid min-h-[80vh] place-items-center py-16">
       <motion.div
         initial={reduce ? false : { opacity: 0, y: 16 }}
-        animate={{ opacity: 1, y: 0 }}
+        animate={animate}
         transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
         key={shake}
-        {...(!reduce && shake > 0
-          ? { animate: { opacity: 1, y: 0, x: [0, -6, 6, -4, 4, 0] } }
-          : {})}
         className="w-full max-w-[440px] rounded-[var(--radius-xl)] border border-hairline bg-[var(--color-card)] p-8 shadow-[var(--elevation-2)] backdrop-blur-xl md:p-10"
         style={{
-          backgroundImage:
-            "linear-gradient(180deg, rgba(255,255,255,0.03) 0%, transparent 100%)",
+          backgroundImage: "linear-gradient(180deg, rgba(255,255,255,0.03) 0%, transparent 100%)",
         }}
       >
         <div className="mb-6 flex items-center gap-3">
@@ -98,19 +95,22 @@ export function ProjectPasswordGate({ onUnlocked }: { onUnlocked: () => void }) 
             <Lock size={18} aria-hidden />
           </span>
           <div>
-            <p className="eyebrow text-[var(--color-muted)]">{copy.eyebrow}</p>
+            <p className="eyebrow text-[var(--color-muted-fg)]">{copy.eyebrow}</p>
             <h1 className="mt-1 font-display text-[22px] leading-tight tracking-tight text-[var(--color-text)] md:text-[26px]">
               {copy.heading}
             </h1>
           </div>
         </div>
 
-        <p className="mb-6 text-[15px] leading-relaxed text-[var(--color-muted)]">
+        <p className="mb-6 text-[15px] leading-relaxed text-[var(--color-muted-fg)]">
           {copy.description}
         </p>
 
         <form onSubmit={submit} noValidate>
-          <label htmlFor="project-access-password" className="mb-2 block text-[13px] font-medium text-[var(--color-text)]">
+          <label
+            htmlFor="project-access-password"
+            className="mb-2 block text-[13px] font-medium text-[var(--color-text)]"
+          >
             {copy.password_label}
           </label>
           <div className="relative">
@@ -131,20 +131,24 @@ export function ProjectPasswordGate({ onUnlocked }: { onUnlocked: () => void }) 
               type="button"
               onClick={() => setShow((s) => !s)}
               aria-label={show ? "Hide password" : "Show password"}
-              className="absolute right-2 top-1/2 grid h-9 w-9 -translate-y-1/2 place-items-center rounded-full text-[var(--color-muted)] hover:text-[var(--color-text)]"
+              className="absolute right-2 top-1/2 grid h-9 w-9 -translate-y-1/2 place-items-center rounded-full text-[var(--color-muted-fg)] hover:text-[var(--color-text)]"
             >
               {show ? <EyeOff size={16} /> : <Eye size={16} />}
             </button>
           </div>
 
-          <p
-            id="project-access-error"
-            role="alert"
-            aria-live="polite"
-            className={`mt-3 min-h-[20px] text-[13px] ${error ? "text-[var(--color-danger,#e5484d)]" : "text-transparent"}`}
-          >
-            {error ?? "placeholder"}
-          </p>
+          <div className="mt-3 min-h-[20px]">
+            {error && (
+              <p
+                id="project-access-error"
+                role="alert"
+                aria-live="polite"
+                className="text-[13px] text-[var(--color-danger,#e5484d)]"
+              >
+                {error}
+              </p>
+            )}
+          </div>
 
           <button
             type="submit"
@@ -164,7 +168,7 @@ export function ProjectPasswordGate({ onUnlocked }: { onUnlocked: () => void }) 
         <div className="mt-6 flex justify-center">
           <Link
             to="/work"
-            className="inline-flex min-h-[44px] items-center gap-2 text-[13px] font-medium text-[var(--color-muted)] hover:text-[var(--color-text)]"
+            className="inline-flex min-h-[44px] items-center gap-2 text-[13px] font-medium text-[var(--color-muted-fg)] hover:text-[var(--color-text)]"
           >
             <ArrowLeft size={14} /> {copy.back_to_projects_label}
           </Link>

@@ -10,6 +10,12 @@ import {
 } from "@/data/portfolio";
 import type { ProjectPresentation } from "@/lib/projectPresentation";
 
+const CONTENT_REVISION = Date.parse("2026-08-20T00:00:00.000Z");
+
+function isReviewed(updatedAt?: string | null) {
+  return updatedAt ? Date.parse(updatedAt) >= CONTENT_REVISION : false;
+}
+
 export type ProjectRow = {
   id: string;
   title: string;
@@ -50,7 +56,36 @@ export type SiteSettings = {
   profile_image_url: string | null;
   resume_url: string | null;
   socials: { label: string; url: string }[];
+  updated_at?: string;
 };
+
+export function canonicalizeProject<T extends { slug?: string | null; updated_at?: string | null }>(
+  project: T,
+): T {
+  const local = PORTFOLIO_PROJECTS.find((item) => item.slug === project.slug);
+  const source = local && !isReviewed(project.updated_at) ? { ...project, ...local } : project;
+  const normalized = { ...source } as Record<string, unknown>;
+  const copyFields = [
+    "title",
+    "short_description",
+    "overview",
+    "problem_statement",
+    "research",
+    "design_process",
+    "solution",
+    "outcome",
+    "learnings",
+  ];
+  for (const field of copyFields) {
+    if (typeof normalized[field] === "string") {
+      normalized[field] = (normalized[field] as string).replaceAll("Riise", "RIISE");
+    }
+  }
+  if (normalized.slug === "portfolio-analysis" && "links" in normalized) {
+    normalized.links = [];
+  }
+  return normalized as T;
+}
 
 // ─────────────────────── Editable content blocks ───────────────────────
 export type ContentKey =
@@ -83,15 +118,16 @@ export function useContent<T = unknown>(key: ContentKey, fallback?: T) {
     queryFn: async () => {
       const { data, error } = await supabase
         .from("content_blocks")
-        .select("data")
+        .select("data,updated_at")
         .eq("key", key)
         .maybeSingle();
       if (error) throw error;
-      return (data?.data ?? null) as T | null;
+      return data as { data: T; updated_at: string } | null;
     },
   });
   const local = (PORTFOLIO_CONTENT as Partial<Record<ContentKey, unknown>>)[key] as T | undefined;
-  return { ...q, data: (q.data ?? local ?? fallback ?? null) as T };
+  const reviewed = q.data && isReviewed(q.data.updated_at) ? q.data.data : null;
+  return { ...q, data: (reviewed ?? local ?? fallback ?? q.data?.data ?? null) as T };
 }
 
 export function useAllContent() {
@@ -101,7 +137,10 @@ export function useAllContent() {
       const { data, error } = await supabase.from("content_blocks").select("*");
       if (error) throw error;
       const map: Record<string, unknown> = {};
-      for (const row of data ?? []) map[row.key] = row.data;
+      for (const row of data ?? []) {
+        const local = (PORTFOLIO_CONTENT as Record<string, unknown>)[row.key];
+        map[row.key] = isReviewed(row.updated_at) ? row.data : (local ?? row.data);
+      }
       return { ...PORTFOLIO_CONTENT, ...map };
     },
   });
@@ -113,14 +152,17 @@ export function useSite() {
     queryFn: async (): Promise<SiteSettings | null> => {
       const { data, error } = await supabase
         .from("site_settings")
-        .select("name,tagline,bio,email,location,profile_image_url,resume_url,socials")
+        .select("name,tagline,bio,email,location,profile_image_url,resume_url,socials,updated_at")
         .eq("id", 1)
         .maybeSingle();
       if (error) throw error;
       return data as SiteSettings | null;
     },
   });
-  return { ...q, data: q.data ?? (PORTFOLIO_SITE as SiteSettings) };
+  return {
+    ...q,
+    data: q.data && isReviewed(q.data.updated_at) ? q.data : (PORTFOLIO_SITE as SiteSettings),
+  };
 }
 
 /**
@@ -141,7 +183,9 @@ export function useProjects(
         if (opts.featuredOnly) q = q.eq("featured", true);
         const { data, error } = await q;
         if (error) throw error;
-        return (data ?? []) as unknown as ProjectRow[];
+        return (data ?? []).map((project) =>
+          canonicalizeProject(project),
+        ) as unknown as ProjectRow[];
       }
       let q = supabase
         .from("public_projects_index")
@@ -150,7 +194,7 @@ export function useProjects(
       if (opts.featuredOnly) q = q.eq("featured", true);
       const { data, error } = await q;
       if (error) throw error;
-      return (data ?? []) as unknown as ProjectRow[];
+      return (data ?? []).map((project) => canonicalizeProject(project)) as unknown as ProjectRow[];
     },
   });
 
@@ -161,7 +205,7 @@ export function useProjects(
   if (opts.featuredOnly) fallbackProjects = fallbackProjects.filter((p) => p.featured);
   fallbackProjects.sort((a, b) => a.sort_order - b.sort_order);
 
-  return { ...q, data: q.data ?? fallbackProjects };
+  return { ...q, data: q.data?.map((project) => canonicalizeProject(project)) ?? fallbackProjects };
 }
 
 /** Admin-only: fetch full project row directly (requires admin auth). */
@@ -194,7 +238,11 @@ export function useExperience() {
       return data ?? [];
     },
   });
-  return { ...q, data: q.data ?? PORTFOLIO_EXPERIENCE };
+  const localById = new Map(PORTFOLIO_EXPERIENCE.map((row) => [row.id, row]));
+  const reviewed = q.data?.map((row) =>
+    isReviewed(row.updated_at) ? row : (localById.get(row.id) ?? row),
+  );
+  return { ...q, data: reviewed ?? PORTFOLIO_EXPERIENCE };
 }
 
 export function useEducation() {
@@ -210,7 +258,11 @@ export function useEducation() {
       return data ?? [];
     },
   });
-  return { ...q, data: q.data ?? PORTFOLIO_EDUCATION };
+  const localById = new Map(PORTFOLIO_EDUCATION.map((row) => [row.id, row]));
+  const reviewed = q.data?.map((row) =>
+    isReviewed(row.updated_at) ? row : (localById.get(row.id) ?? row),
+  );
+  return { ...q, data: reviewed ?? PORTFOLIO_EDUCATION };
 }
 
 export function useSkills() {
@@ -219,7 +271,7 @@ export function useSkills() {
     queryFn: async () => {
       const { data, error } = await supabase
         .from("skills")
-        .select("group_name,name,sort_order")
+        .select("group_name,name,sort_order,updated_at")
         .order("sort_order", { ascending: true });
       if (error) throw error;
 
@@ -229,10 +281,13 @@ export function useSkills() {
         items.push(row.name);
         groups.set(row.group_name, items);
       }
-      return Array.from(groups, ([group, items]) => ({ group, items }));
+      return {
+        groups: Array.from(groups, ([group, items]) => ({ group, items })),
+        reviewed: (data ?? []).some((row) => isReviewed(row.updated_at)),
+      };
     },
   });
-  return { ...q, data: q.data ?? PORTFOLIO_SKILLS };
+  return { ...q, data: q.data?.reviewed ? q.data.groups : PORTFOLIO_SKILLS };
 }
 
 export function useTestimonials() {

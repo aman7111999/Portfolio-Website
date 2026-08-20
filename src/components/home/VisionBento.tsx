@@ -3,12 +3,40 @@ import { Globe, Palette, PenTool, Lightbulb, LayoutGrid, TrendingUp } from "luci
 import { Reveal } from "@/components/Reveal";
 
 const CARDS = [
-  { icon: Globe, title: "Get Your Business Online", copy: "Launch your online presence with a professionally designed website that reflects your brand.", span: "md:col-span-6", chip: "Publish" },
-  { icon: Palette, title: "Ultra Custom Designs", copy: "Every business is unique — your website should be too.", span: "md:col-span-6", badge: true },
-  { icon: PenTool, title: "Design Into Reality", copy: "Bring your vision to life with a seamless design-to-development process.", span: "md:col-span-4" },
+  {
+    icon: Globe,
+    title: "Get Your Business Online",
+    copy: "Launch your online presence with a professionally designed website that reflects your brand.",
+    span: "md:col-span-6",
+    chip: "Publish",
+  },
+  {
+    icon: Palette,
+    title: "Ultra Custom Designs",
+    copy: "Every business is unique — your website should be too.",
+    span: "md:col-span-6",
+    badge: true,
+  },
+  {
+    icon: PenTool,
+    title: "Design Into Reality",
+    copy: "Bring your vision to life with a seamless design-to-development process.",
+    span: "md:col-span-4",
+  },
   { icon: Lightbulb, title: "Build your Ideas", copy: "", span: "md:col-span-4", center: true },
-  { icon: LayoutGrid, title: "Organized and Clean", copy: "A well-structured website enhances user experience and ensures easy navigation.", span: "md:col-span-4", wire: true },
-  { icon: TrendingUp, title: "Stand Out in Market", copy: "Distinctive design that positions you above the noise.", span: "md:col-span-12" },
+  {
+    icon: LayoutGrid,
+    title: "Organized and Clean",
+    copy: "A well-structured website enhances user experience and ensures easy navigation.",
+    span: "md:col-span-4",
+    wire: true,
+  },
+  {
+    icon: TrendingUp,
+    title: "Stand Out in Market",
+    copy: "Distinctive design that positions you above the noise.",
+    span: "md:col-span-12",
+  },
 ];
 
 export function VisionBento() {
@@ -46,7 +74,7 @@ export function VisionBento() {
               </h3>
             </div>
             {c.copy && (
-              <p className="mt-3 max-w-md text-[13.5px] leading-relaxed text-[var(--color-muted)]">
+              <p className="mt-3 max-w-md text-[13.5px] leading-relaxed text-[var(--color-muted-fg)]">
                 {c.copy}
               </p>
             )}
@@ -61,8 +89,12 @@ export function VisionBento() {
 
             {c.badge && (
               <div className="mt-8 flex items-center justify-center gap-3">
-                <div className="grid h-16 w-16 place-items-center rounded-2xl border border-[var(--color-hairline-strong)] bg-[var(--color-elevated)] text-2xl font-bold">F</div>
-                <div className="grid h-16 w-16 place-items-center rounded-2xl border border-[var(--color-hairline-strong)] bg-[var(--color-elevated)] text-2xl">◆</div>
+                <div className="grid h-16 w-16 place-items-center rounded-2xl border border-[var(--color-hairline-strong)] bg-[var(--color-elevated)] text-2xl font-bold">
+                  F
+                </div>
+                <div className="grid h-16 w-16 place-items-center rounded-2xl border border-[var(--color-hairline-strong)] bg-[var(--color-elevated)] text-2xl">
+                  ◆
+                </div>
               </div>
             )}
 
@@ -77,7 +109,11 @@ export function VisionBento() {
             {c.wire && (
               <div className="mt-6 space-y-1.5 rounded-lg border border-[var(--color-hairline)] bg-[var(--color-elevated)] p-3">
                 {[80, 60, 90, 45, 70].map((w, k) => (
-                  <div key={k} className="h-1.5 rounded-full bg-[var(--color-hairline-strong)]" style={{ width: `${w}%` }} />
+                  <div
+                    key={k}
+                    className="h-1.5 rounded-full bg-[var(--color-hairline-strong)]"
+                    style={{ width: `${w}%` }}
+                  />
                 ))}
               </div>
             )}

@@ -2,13 +2,19 @@ import { Seo } from "@/lib/seo";
 import { useSite } from "@/lib/cms";
 import { Hero } from "@/components/Hero";
 import { FeaturedWork } from "@/components/home/FeaturedWork";
-import { Experience } from "@/components/home/Experience";
 import { StatsBand } from "@/components/home/StatsBand";
-import { FaqSection } from "@/components/home/FaqSection";
 import { FinalCta } from "@/components/home/FinalCta";
 
 export default function Home() {
   const { data: site } = useSite();
+  const personSchema = {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    name: site?.name ?? "Aman Mishra",
+    jobTitle: "Senior Product Designer",
+    url: "https://amanux.vercel.app/",
+    sameAs: (site?.socials ?? []).map((social) => social.url),
+  };
 
   return (
     <>
@@ -17,13 +23,12 @@ export default function Home() {
         description={site?.tagline ?? "Product designer crafting next-horizon experiences."}
         path="/"
         siteName={site?.name ?? "Aman Mishra"}
+        jsonLd={personSchema}
       />
 
       <Hero />
       <FeaturedWork />
-      <Experience />
       <StatsBand />
-      <FaqSection />
       <FinalCta />
     </>
   );

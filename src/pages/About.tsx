@@ -5,9 +5,8 @@ import { useAllContent, useEducation, useExperience, useSite, useSkills } from "
 import { Reveal } from "@/components/Reveal";
 import { BrandMark } from "@/components/BrandMark";
 import { PortraitFrame } from "@/components/about/PortraitFrame";
+import { DEFAULT_PORTRAIT } from "@/components/ResponsivePortrait";
 import type { PortfolioEducation, PortfolioExperience } from "@/data/portfolio";
-
-const portraitImg = "/aman-mishra-portfolio-portrait.webp";
 
 const PRINCIPLES = [
   {
@@ -35,7 +34,11 @@ export default function About() {
   const { data: skills } = useSkills();
   const { data: content } = useAllContent();
 
-  const hero = content?.about_hero ?? {};
+  const hero = (content?.about_hero ?? {}) as {
+    heading_before?: string;
+    heading_accent?: string;
+    heading_after?: string;
+  };
   const roles = (experience ?? []) as PortfolioExperience[];
   const schools = (education ?? []) as PortfolioEducation[];
   const bio = (site?.bio ?? "")
@@ -60,7 +63,7 @@ export default function About() {
               <BrandMark className="h-10 w-10" />
               <div>
                 <p className="system-label text-[var(--color-accent)]">Profile / AM–01</p>
-                <p className="mt-1 text-[12px] text-[var(--color-muted)]">
+                <p className="mt-1 text-[12px] text-[var(--color-muted-fg)]">
                   Product strategy · Interaction · Systems
                 </p>
               </div>
@@ -87,7 +90,7 @@ export default function About() {
       <section className="container-page grid gap-12 pb-24 lg:grid-cols-12 lg:gap-16 md:pb-32">
         <Reveal className="lg:col-span-5">
           <PortraitFrame
-            src={site?.profile_image_url || portraitImg}
+            src={site?.profile_image_url || DEFAULT_PORTRAIT}
             alt={site?.name ?? "Aman Mishra"}
           />
         </Reveal>
@@ -100,7 +103,7 @@ export default function About() {
                 className={
                   index === 0
                     ? "text-[clamp(1.55rem,2.7vw,2.3rem)] leading-[1.3] tracking-[-0.025em] text-[var(--color-text)]"
-                    : "max-w-[60ch] text-[15px] leading-[1.75] text-[var(--color-muted)] md:text-[16px]"
+                    : "max-w-[60ch] text-[15px] leading-[1.75] text-[var(--color-muted-fg)] md:text-[16px]"
                 }
               >
                 {paragraph}
@@ -133,7 +136,7 @@ export default function About() {
                 </span>
               </h2>
             </div>
-            <p className="max-w-[48ch] text-[15px] leading-[1.7] text-[var(--color-muted)] lg:col-span-5 lg:col-start-8 lg:pt-8">
+            <p className="max-w-[48ch] text-[15px] leading-[1.7] text-[var(--color-muted-fg)] lg:col-span-5 lg:col-start-8 lg:pt-8">
               Senior design work is less about producing more screens and more about helping teams
               make better decisions with confidence.
             </p>
@@ -150,7 +153,7 @@ export default function About() {
                     <span className="system-dot" />
                   </div>
                   <h3 className="mt-8 text-[22px] tracking-[-0.025em]">{principle.title}</h3>
-                  <p className="mt-3 text-[14px] leading-[1.65] text-[var(--color-muted)]">
+                  <p className="mt-3 text-[14px] leading-[1.65] text-[var(--color-muted-fg)]">
                     {principle.body}
                   </p>
                 </article>
@@ -167,7 +170,7 @@ export default function About() {
             <h2 className="mt-4 max-w-[12ch] text-[clamp(2.35rem,4vw,3.6rem)] leading-[1.04] tracking-[-0.04em]">
               Experience without the repetition.
             </h2>
-            <p className="mt-5 max-w-[38ch] text-[14px] leading-[1.7] text-[var(--color-muted)]">
+            <p className="mt-5 max-w-[38ch] text-[14px] leading-[1.7] text-[var(--color-muted-fg)]">
               The detailed responsibilities and outcomes live in the résumé. This is the progression
               at a glance.
             </p>
@@ -207,7 +210,7 @@ export default function About() {
               {schools.map((school) => (
                 <div key={school.id} className="border-t border-[var(--color-hairline)] py-5">
                   <p className="text-[17px] font-medium">{school.institution}</p>
-                  <p className="mt-1 text-[13px] leading-[1.55] text-[var(--color-muted)]">
+                  <p className="mt-1 text-[13px] leading-[1.55] text-[var(--color-muted-fg)]">
                     {[school.degree, school.field].filter(Boolean).join(" · ")}
                   </p>
                 </div>
@@ -221,7 +224,7 @@ export default function About() {
               {(skills ?? []).map((group) => (
                 <div key={group.group} className="border-t border-[var(--color-hairline)] pt-4">
                   <p className="system-label text-[var(--color-accent)]">{group.group}</p>
-                  <p className="mt-3 text-[14px] leading-[1.7] text-[var(--color-muted)]">
+                  <p className="mt-3 text-[14px] leading-[1.7] text-[var(--color-muted-fg)]">
                     {group.items.join(" · ")}
                   </p>
                 </div>

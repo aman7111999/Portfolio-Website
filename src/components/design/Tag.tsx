@@ -5,8 +5,7 @@ type Tone = "muted" | "accent" | "success" | "warning" | "danger";
 type Size = "sm" | "md";
 
 const toneMap: Record<Tone, string> = {
-  muted:
-    "border border-hairline bg-[var(--color-elevated)] text-[var(--color-muted)]",
+  muted: "border border-hairline bg-[var(--color-elevated)] text-[var(--color-muted-fg)]",
   accent:
     "border border-[var(--color-accent)]/30 bg-[var(--color-accent-wash)] text-[var(--color-accent)]",
   success:

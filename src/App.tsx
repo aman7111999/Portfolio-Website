@@ -6,6 +6,7 @@ import { Footer } from "@/components/Footer";
 import { ReadingProgress } from "@/components/ReadingProgress";
 import { PageTransition } from "@/components/PageTransition";
 import { useLenis } from "@/lib/lenis";
+import { Seo } from "@/lib/seo";
 
 const Home = lazy(() => import("@/pages/Home"));
 const Work = lazy(() => import("@/pages/Work"));
@@ -42,7 +43,7 @@ function ScrollToTop() {
 function RouteFallback() {
   return (
     <div
-      className="min-h-[60vh] grid place-items-center text-[13px] text-[var(--color-muted)]"
+      className="min-h-[60vh] grid place-items-center text-[13px] text-[var(--color-muted-fg)]"
       role="status"
       aria-busy="true"
       aria-live="polite"
@@ -79,29 +80,38 @@ export default function App() {
 
   if (isAdmin) {
     return (
-      <Suspense fallback={<RouteFallback />}>
-        <Routes>
-          <Route path="/admin/*" element={<AdminLayout />}>
-            <Route index element={<AdminOverview />} />
-            <Route path="overview" element={<AdminOverview />} />
-            <Route path="projects" element={<AdminProjectsList />} />
-            <Route path="projects/new" element={<AdminProjectEditor />} />
-            <Route path="projects/:id" element={<AdminProjectEditor />} />
-            <Route path="blog" element={<AdminBlogList />} />
-            <Route path="blog/new" element={<AdminBlogEditor />} />
-            <Route path="blog/:id" element={<AdminBlogEditor />} />
-            <Route path="experience" element={<AdminExperience />} />
-            <Route path="education" element={<AdminEducation />} />
-            <Route path="skills" element={<AdminSkills />} />
-            <Route path="testimonials" element={<AdminTestimonials />} />
-            <Route path="resume" element={<AdminResume />} />
-            <Route path="media" element={<AdminMedia />} />
-            <Route path="seo" element={<AdminSeo />} />
-            <Route path="settings" element={<AdminSettings />} />
-            <Route path="content" element={<AdminContent />} />
-          </Route>
-        </Routes>
-      </Suspense>
+      <>
+        <Seo
+          title="Portfolio CMS"
+          description="Private portfolio content management."
+          path={location.pathname}
+          siteName="Aman Mishra"
+          noindex
+        />
+        <Suspense fallback={<RouteFallback />}>
+          <Routes>
+            <Route path="/admin/*" element={<AdminLayout />}>
+              <Route index element={<AdminOverview />} />
+              <Route path="overview" element={<AdminOverview />} />
+              <Route path="projects" element={<AdminProjectsList />} />
+              <Route path="projects/new" element={<AdminProjectEditor />} />
+              <Route path="projects/:id" element={<AdminProjectEditor />} />
+              <Route path="blog" element={<AdminBlogList />} />
+              <Route path="blog/new" element={<AdminBlogEditor />} />
+              <Route path="blog/:id" element={<AdminBlogEditor />} />
+              <Route path="experience" element={<AdminExperience />} />
+              <Route path="education" element={<AdminEducation />} />
+              <Route path="skills" element={<AdminSkills />} />
+              <Route path="testimonials" element={<AdminTestimonials />} />
+              <Route path="resume" element={<AdminResume />} />
+              <Route path="media" element={<AdminMedia />} />
+              <Route path="seo" element={<AdminSeo />} />
+              <Route path="settings" element={<AdminSettings />} />
+              <Route path="content" element={<AdminContent />} />
+            </Route>
+          </Routes>
+        </Suspense>
+      </>
     );
   }
 

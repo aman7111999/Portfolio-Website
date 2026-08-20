@@ -1,5 +1,6 @@
 import { useRef } from "react";
 import { motion, useScroll, useTransform, useReducedMotion } from "framer-motion";
+import { ResponsivePortrait } from "@/components/ResponsivePortrait";
 
 export function PortraitFrame({ src, alt }: { src?: string | null; alt?: string }) {
   const ref = useRef<HTMLDivElement | null>(null);
@@ -20,7 +21,7 @@ export function PortraitFrame({ src, alt }: { src?: string | null; alt?: string 
             <p className="font-display text-4xl italic leading-[1.05] text-[var(--color-text)]">
               {alt ?? "Aman Mishra"}
             </p>
-            <p className="mt-[var(--space-2)] text-sm text-[var(--color-muted)]">
+            <p className="mt-[var(--space-2)] text-sm text-[var(--color-muted-fg)]">
               Product Designer, Mumbai
             </p>
           </div>
@@ -35,12 +36,14 @@ export function PortraitFrame({ src, alt }: { src?: string | null; alt?: string 
       className="relative aspect-[3/4] w-full overflow-hidden rounded-[var(--radius-lg)] border border-hairline"
       style={{ boxShadow: "var(--elevation-3)" }}
     >
-      <motion.div
-        style={{ y, background: `center/cover url(${src})` }}
-        className="absolute inset-[-8%]"
-        aria-label={alt}
-        role="img"
-      />
+      <motion.div style={{ y }} className="absolute inset-[-8%]">
+        <ResponsivePortrait
+          src={src}
+          alt={alt ?? "Aman Mishra"}
+          className="h-full w-full object-cover"
+          sizes="(min-width: 1024px) 430px, 92vw"
+        />
+      </motion.div>
       <span
         aria-hidden
         className="tech-grid absolute inset-0 opacity-20 [mask-image:linear-gradient(to_bottom,black,transparent_42%)]"

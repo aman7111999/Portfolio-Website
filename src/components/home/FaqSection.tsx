@@ -40,7 +40,7 @@ export function FaqSection() {
             </span>{" "}
             {d.heading_line2}
           </h2>
-          <p className="mt-5 max-w-sm text-[15px] leading-[1.65] text-[var(--color-muted)]">
+          <p className="mt-5 max-w-sm text-[15px] leading-[1.65] text-[var(--color-muted-fg)]">
             {d.subline}
           </p>
         </Reveal>
@@ -84,7 +84,7 @@ export function FaqSection() {
                         transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
                         style={{ overflow: "hidden" }}
                       >
-                        <p className="max-w-[62ch] pb-7 pr-12 text-[15px] leading-[1.7] text-[var(--color-muted)] md:text-[16px]">
+                        <p className="max-w-[62ch] pb-7 pr-12 text-[15px] leading-[1.7] text-[var(--color-muted-fg)] md:text-[16px]">
                           {item.a}
                         </p>
                       </motion.div>

@@ -8,20 +8,19 @@ type Data = {
   heading_accent: string;
   items: { v: string; l: string }[];
   body: string;
-  quote: string;
 };
 
 const FALLBACK: Data = {
-  eyebrow: "About",
-  heading_line1: "From 0-to-1 launches",
-  heading_accent: "to systems at scale",
+  eyebrow: "Evidence",
+  heading_line1: "Product work with",
+  heading_accent: "real scale and outcomes",
   items: [
     { v: "4.5+", l: "Years in product design" },
+    { v: "890K+", l: "Active clients on the current platform" },
+    { v: "2M+", l: "Portfolio data points designed for" },
     { v: "9×", l: "Portfolio import growth" },
-    { v: "4", l: "Focused case studies" },
   ],
-  body: "I’m {name}, a product designer focused on complex fintech products, AI-assisted experiences, and scalable product systems.",
-  quote: "The strongest design decisions make complexity feel inevitable, not visible.",
+  body: "I’m {name}, a Senior Product Designer focused on fintech, AI-assisted experiences, personalisation, and scalable product systems. These figures come from shipped work and the product scale documented in my résumé.",
 };
 
 export function StatsBand() {
@@ -41,30 +40,27 @@ export function StatsBand() {
               {copy.heading_accent}
             </span>
           </h2>
-          <p className="mt-7 max-w-[52ch] text-[15px] leading-[1.75] text-[var(--color-muted)]">
+          <p className="mt-7 max-w-[52ch] text-[15px] leading-[1.75] text-[var(--color-muted-fg)]">
             {body}
           </p>
         </Reveal>
 
         <Reveal className="lg:col-span-7">
-          <div className="grid border-y border-[var(--color-hairline-strong)] sm:grid-cols-3">
+          <div className="grid border-y border-[var(--color-hairline-strong)] sm:grid-cols-2 lg:grid-cols-4">
             {copy.items.map((metric) => (
               <div
                 key={metric.l}
-                className="border-b border-[var(--color-hairline)] py-7 last:border-b-0 sm:border-b-0 sm:border-r sm:px-6 sm:first:pl-0 sm:last:border-r-0 sm:last:pr-0"
+                className="border-b border-[var(--color-hairline)] py-7 sm:px-6 sm:[&:nth-child(odd)]:pl-0 sm:[&:nth-child(even)]:border-l lg:border-b-0 lg:border-l lg:first:border-l-0 lg:first:pl-0 lg:last:pr-0"
               >
                 <p className="text-[clamp(2.2rem,5vw,3.5rem)] font-medium leading-none tracking-[-0.05em] text-[var(--color-text)]">
                   <CountUp value={metric.v} />
                 </p>
-                <p className="mt-3 text-[12px] leading-[1.45] text-[var(--color-muted)]">
+                <p className="mt-3 text-[12px] leading-[1.45] text-[var(--color-muted-fg)]">
                   {metric.l}
                 </p>
               </div>
             ))}
           </div>
-          <blockquote className="mt-10 max-w-[34ch] font-serif text-[clamp(1.75rem,3vw,2.5rem)] italic leading-[1.2] text-[var(--color-text)]">
-            “{copy.quote}”
-          </blockquote>
         </Reveal>
       </div>
     </section>

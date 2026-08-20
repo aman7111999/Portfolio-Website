@@ -54,7 +54,7 @@ export function FeaturedWork() {
           {items.map((project, index) => (
             <ProjectCard key={project.slug} project={project} index={index} size="compact" />
           ))}
-          {items.length === 0 && <p className="text-[var(--color-muted)]">No projects yet.</p>}
+          {items.length === 0 && <p className="text-[var(--color-muted-fg)]">No projects yet.</p>}
         </div>
       </div>
     </section>

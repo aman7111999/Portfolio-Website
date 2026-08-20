@@ -44,7 +44,6 @@ export function HeroStage() {
   const l4x = useTransform(smx, (v) => v * 10);
   const l4y = useTransform(smy, (v) => v * 10);
 
-
   return (
     <div
       ref={ref}
@@ -74,7 +73,15 @@ export function HeroStage() {
         transition={{ duration: 80, repeat: Infinity, ease: "linear" }}
       >
         <circle cx="100" cy="100" r="90" fill="none" stroke="#0b0b0c" strokeWidth="0.5" />
-        <circle cx="100" cy="100" r="60" fill="none" stroke="#0b0b0c" strokeWidth="0.5" strokeDasharray="2 4" />
+        <circle
+          cx="100"
+          cy="100"
+          r="60"
+          fill="none"
+          stroke="#0b0b0c"
+          strokeWidth="0.5"
+          strokeDasharray="2 4"
+        />
         <circle cx="100" cy="10" r="3" fill="#ff5a1f" />
       </motion.svg>
 
@@ -86,7 +93,9 @@ export function HeroStage() {
       >
         <div className="flex items-center gap-2">
           <span className="h-2 w-2 rounded-full bg-[var(--color-accent)]" />
-          <span className="text-[10px] uppercase tracking-widest text-[var(--color-muted)]">Component / Button</span>
+          <span className="text-[10px] uppercase tracking-widest text-[var(--color-muted-fg)]">
+            Component / Button
+          </span>
         </div>
         <div className="mt-4 flex items-center gap-2">
           <div className="h-8 flex-1 rounded bg-[var(--color-ink)]" />
@@ -94,7 +103,11 @@ export function HeroStage() {
         </div>
         <div className="mt-3 grid grid-cols-4 gap-1.5">
           {[0, 1, 2, 3].map((i) => (
-            <div key={i} className="h-1.5 rounded-full" style={{ background: ["#0b0b0c","#6b6b70","#c9c4b8","#ff5a1f"][i] }} />
+            <div
+              key={i}
+              className="h-1.5 rounded-full"
+              style={{ background: ["#0b0b0c", "#6b6b70", "#c9c4b8", "#ff5a1f"][i] }}
+            />
           ))}
         </div>
       </motion.div>
@@ -106,7 +119,9 @@ export function HeroStage() {
         transition={reduce ? undefined : { duration: 6, repeat: Infinity, ease: "easeInOut" }}
         className="absolute right-[6%] top-[28%] w-[52%] rounded-md border border-black/10 bg-white p-4 shadow-[0_20px_50px_-30px_rgba(11,11,12,0.35)]"
       >
-        <p className="text-[10px] uppercase tracking-widest text-[var(--color-muted)]">Ship time</p>
+        <p className="text-[10px] uppercase tracking-widest text-[var(--color-muted-fg)]">
+          Ship time
+        </p>
         <p className="font-display text-3xl leading-none mt-2">−38%</p>
         <svg viewBox="0 0 100 30" className="mt-3 h-8 w-full">
           <motion.path
@@ -134,10 +149,16 @@ export function HeroStage() {
         style={{ x: l3x, y: l3y }}
         className="absolute left-[12%] bottom-[14%] w-[46%] rounded-md border border-black/10 bg-white p-4 shadow-[0_20px_50px_-30px_rgba(11,11,12,0.35)]"
       >
-        <p className="text-[10px] uppercase tracking-widest text-[var(--color-muted)]">Tokens / Surface</p>
+        <p className="text-[10px] uppercase tracking-widest text-[var(--color-muted-fg)]">
+          Tokens / Surface
+        </p>
         <div className="mt-3 grid grid-cols-5 gap-1.5">
-          {["#0b0b0c","#2d2d2d","#6b6b70","#c9c4b8","#fafaf7"].map((c) => (
-            <div key={c} className="aspect-square rounded" style={{ background: c, boxShadow: "inset 0 0 0 1px rgba(0,0,0,0.05)" }} />
+          {["#0b0b0c", "#2d2d2d", "#6b6b70", "#c9c4b8", "#fafaf7"].map((c) => (
+            <div
+              key={c}
+              className="aspect-square rounded"
+              style={{ background: c, boxShadow: "inset 0 0 0 1px rgba(0,0,0,0.05)" }}
+            />
           ))}
         </div>
       </motion.div>

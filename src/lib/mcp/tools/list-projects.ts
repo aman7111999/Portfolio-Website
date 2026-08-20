@@ -5,7 +5,8 @@ import { fetchProjects } from "../data";
 export default defineTool({
   name: "list_projects",
   title: "List case studies",
-  description: "List published product design case studies with title, company, role, category, summary, and key metrics.",
+  description:
+    "List public case-study previews. Detailed case-study content remains password-protected.",
   inputSchema: {
     featuredOnly: z.boolean().optional().describe("If true, return only featured projects."),
   },

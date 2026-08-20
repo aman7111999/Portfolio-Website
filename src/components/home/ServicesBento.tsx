@@ -1,9 +1,17 @@
 import { motion, useReducedMotion } from "framer-motion";
-import { Layers, ShoppingBag, Settings2, Sparkles, Zap, Users } from "lucide-react";
+import {
+  Layers,
+  ShoppingBag,
+  Settings2,
+  Sparkles,
+  Zap,
+  Users,
+  type LucideIcon,
+} from "lucide-react";
 import { Reveal } from "@/components/Reveal";
 
 type Service = {
-  icon: any;
+  icon: LucideIcon;
   title: string;
   copy: string;
   span: string;
@@ -12,32 +20,42 @@ type Service = {
 
 const SERVICES: Service[] = [
   {
-    icon: Layers, title: "UI / UX Design",
+    icon: Layers,
+    title: "UI / UX Design",
     copy: "From wireframes to high-fidelity prototypes, I ensure a seamless and engaging interface that aligns with your brand's identity.",
-    span: "md:col-span-4", visual: "avatars",
+    span: "md:col-span-4",
+    visual: "avatars",
   },
   {
-    icon: ShoppingBag, title: "Ecommerce Store",
+    icon: ShoppingBag,
+    title: "Ecommerce Store",
     copy: "Whether you're launching a new shop or optimizing an existing one, I ensure a smooth shopping experience that drives sales.",
-    span: "md:col-span-8", visual: "products",
+    span: "md:col-span-8",
+    visual: "products",
   },
   {
-    icon: Settings2, title: "Website Customization",
+    icon: Settings2,
+    title: "Website Customization",
     copy: "Websites tailored to your specific needs, from layout adjustments to functionality enhancements.",
-    span: "md:col-span-8", visual: "radar",
+    span: "md:col-span-8",
+    visual: "radar",
   },
   {
-    icon: Sparkles, title: "Custom Solutions",
+    icon: Sparkles,
+    title: "Custom Solutions",
     copy: "Bespoke pages, interactions, and CMS setups built for your business.",
     span: "md:col-span-4",
   },
   {
-    icon: Zap, title: "Framer Development",
+    icon: Zap,
+    title: "Framer Development",
     copy: "From sleek animations to responsive layouts, I leverage Framer's power to create stunning, fast-loading sites that stand out.",
-    span: "md:col-span-8", visual: "framer",
+    span: "md:col-span-8",
+    visual: "framer",
   },
   {
-    icon: Users, title: "0 → 1 Product Design",
+    icon: Users,
+    title: "0 → 1 Product Design",
     copy: "Napkin sketches to launched product — research, flows, UI, ship.",
     span: "md:col-span-4",
   },
@@ -93,7 +111,10 @@ function CardVisual({ kind }: { kind?: Service["visual"] }) {
             ✦
           </span>
           {[
-            { t: 0, l: 30 }, { t: 30, l: 90 }, { t: 70, l: 20 }, { t: 60, l: 80 },
+            { t: 0, l: 30 },
+            { t: 30, l: 90 },
+            { t: 70, l: 20 },
+            { t: 60, l: 80 },
           ].map((p, i) => (
             <span
               key={i}
@@ -132,13 +153,15 @@ export function ServicesBento() {
     <section id="services" className="container-page py-24 md:py-32">
       <Reveal className="mx-auto max-w-2xl text-center">
         <p className="eyebrow">Services</p>
-        <h2 className="mt-3 font-semibold leading-[1.05] tracking-[-0.025em] text-[var(--color-text)]"
-            style={{ fontSize: "clamp(2rem, 4.2vw, 3.25rem)" }}>
+        <h2
+          className="mt-3 font-semibold leading-[1.05] tracking-[-0.025em] text-[var(--color-text)]"
+          style={{ fontSize: "clamp(2rem, 4.2vw, 3.25rem)" }}
+        >
           Crafting <span className="text-[var(--color-accent)]">Next-Horizon</span> Experiences
         </h2>
-        <p className="mx-auto mt-4 max-w-lg text-[15px] leading-relaxed text-[var(--color-muted)]">
-          A sharp toolkit that ships product-grade work — design, motion, and
-          development under one roof.
+        <p className="mx-auto mt-4 max-w-lg text-[15px] leading-relaxed text-[var(--color-muted-fg)]">
+          A sharp toolkit that ships product-grade work — design, motion, and development under one
+          roof.
         </p>
       </Reveal>
 
@@ -160,7 +183,7 @@ export function ServicesBento() {
                 {s.title}
               </h3>
             </div>
-            <p className="mt-3 max-w-md text-[13.5px] leading-relaxed text-[var(--color-muted)]">
+            <p className="mt-3 max-w-md text-[13.5px] leading-relaxed text-[var(--color-muted-fg)]">
               {s.copy}
             </p>
             <CardVisual kind={s.visual} />

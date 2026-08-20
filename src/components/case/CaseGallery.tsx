@@ -57,7 +57,7 @@ export function CaseGallery({ images }: { images: GalleryImage[] }) {
                 </span>
               </div>
               {img.caption && (
-                <figcaption className="px-[var(--space-5)] py-[var(--space-3)] text-left text-[13px] text-[var(--color-muted)]">
+                <figcaption className="px-[var(--space-5)] py-[var(--space-3)] text-left text-[13px] text-[var(--color-muted-fg)]">
                   {img.caption}
                 </figcaption>
               )}

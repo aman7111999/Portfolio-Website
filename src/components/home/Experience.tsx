@@ -1,6 +1,5 @@
 import { Reveal } from "@/components/Reveal";
 import { useContent, useExperience } from "@/lib/cms";
-import type { PortfolioExperience } from "@/data/portfolio";
 import { Link } from "react-router-dom";
 import { ArrowUpRight } from "lucide-react";
 
@@ -35,7 +34,7 @@ export function Experience() {
               </span>
             </h2>
           </div>
-          <p className="max-w-sm text-[14px] leading-[1.65] text-[var(--color-muted)] lg:col-span-4 lg:justify-self-end">
+          <p className="max-w-sm text-[14px] leading-[1.65] text-[var(--color-muted-fg)] lg:col-span-4 lg:justify-self-end">
             A progression from hands-on execution to leading ambiguous, cross-functional product
             work.
           </p>
@@ -43,7 +42,7 @@ export function Experience() {
       </Reveal>
 
       <div className="mt-14 border-b border-[var(--color-hairline-strong)]">
-        {allRoles.map((role: PortfolioExperience, index: number) => (
+        {allRoles.map((role, index: number) => (
           <Reveal key={role.id} delay={index * 0.05}>
             <article className="grid gap-6 border-t border-[var(--color-hairline-strong)] py-8 md:grid-cols-[190px_1fr] md:gap-10">
               <div>
@@ -60,7 +59,7 @@ export function Experience() {
                   {role.role}
                 </h3>
                 {role.description && (
-                  <p className="mt-3 max-w-[68ch] text-[15px] leading-[1.7] text-[var(--color-muted)]">
+                  <p className="mt-3 max-w-[68ch] text-[15px] leading-[1.7] text-[var(--color-muted-fg)]">
                     {role.description}
                   </p>
                 )}

@@ -53,7 +53,7 @@ export function TestimonialCard({
           aria-hidden
           className={clsx(
             "grid h-10 w-10 place-items-center overflow-hidden rounded-full",
-            "border border-hairline bg-[var(--color-elevated)] text-[12px] font-mono text-[var(--color-muted)]",
+            "border border-hairline bg-[var(--color-elevated)] text-[12px] font-mono text-[var(--color-muted-fg)]",
           )}
         >
           {avatar ? (
@@ -64,9 +64,7 @@ export function TestimonialCard({
         </span>
         <span className="flex flex-col">
           <span className="text-[13px] font-medium text-[var(--color-text)]">{author}</span>
-          {meta && (
-            <span className="text-[12px] text-[var(--color-muted)]">{meta}</span>
-          )}
+          {meta && <span className="text-[12px] text-[var(--color-muted-fg)]">{meta}</span>}
         </span>
       </figcaption>
     </figure>

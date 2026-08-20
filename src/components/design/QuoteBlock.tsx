@@ -28,10 +28,7 @@ export function QuoteBlock({
       )}
     >
       <blockquote
-        className={clsx(
-          "font-display leading-snug tracking-[var(--tracking-tight)]",
-          sizes[size],
-        )}
+        className={clsx("font-display leading-snug tracking-[var(--tracking-tight)]", sizes[size])}
       >
         <span className="text-[var(--color-accent)]">“</span>
         {children}
@@ -42,7 +39,9 @@ export function QuoteBlock({
           <span className="h-px w-8 bg-[var(--color-hairline-strong)]" />
           <span className="text-sm">
             {author && <span className="text-[var(--color-text)]">{author}</span>}
-            {meta && <span className="ml-[var(--space-2)] text-[var(--color-muted)]">{meta}</span>}
+            {meta && (
+              <span className="ml-[var(--space-2)] text-[var(--color-muted-fg)]">{meta}</span>
+            )}
           </span>
         </figcaption>
       )}

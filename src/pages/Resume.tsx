@@ -1,6 +1,5 @@
 import { Download, MapPin, Mail, ArrowUpRight } from "lucide-react";
 import { useSite, useExperience, useEducation, useSkills, useContent } from "@/lib/cms";
-import type { PortfolioEducation, PortfolioExperience } from "@/data/portfolio";
 import { Reveal } from "@/components/Reveal";
 import { Seo } from "@/lib/seo";
 import { BrandMark } from "@/components/BrandMark";
@@ -57,7 +56,7 @@ export default function Resume() {
             <BrandMark className="h-10 w-10" />
             <div>
               <p className="system-label text-[var(--color-accent)]">Document / Résumé</p>
-              <p className="mt-1 text-[12px] text-[var(--color-muted)]">Updated · 2026</p>
+              <p className="mt-1 text-[12px] text-[var(--color-muted-fg)]">Updated · August 2026</p>
             </div>
           </div>
         </Reveal>
@@ -66,10 +65,10 @@ export default function Resume() {
             <h1 className="max-w-[19ch] text-[clamp(2.8rem,5.4vw,4.8rem)] leading-[1.01] tracking-[-0.045em]">
               {d.heading}
             </h1>
-            <p className="mt-5 max-w-xl text-[16px] leading-[1.6] text-[var(--color-muted)]">
+            <p className="mt-5 max-w-xl text-[16px] leading-[1.6] text-[var(--color-muted-fg)]">
               {d.subline}
             </p>
-            <div className="mt-6 flex flex-wrap items-center gap-4 text-[14px] text-[var(--color-muted)]">
+            <div className="mt-6 flex flex-wrap items-center gap-4 text-[14px] text-[var(--color-muted-fg)]">
               {site?.location && (
                 <span className="inline-flex items-center gap-1.5">
                   <MapPin size={13} /> {site.location}
@@ -91,8 +90,7 @@ export default function Resume() {
               {resumeUrl ? (
                 <a
                   href={resumeUrl}
-                  target="_blank"
-                  rel="noreferrer"
+                  download="Aman_Mishra_Senior_Product_Designer_Resume.pdf"
                   className="btn-primary !py-2 !pr-5 !text-[14px]"
                   style={{ minHeight: 44 }}
                 >
@@ -102,7 +100,7 @@ export default function Resume() {
                   <span>{d.download_label}</span>
                 </a>
               ) : (
-                <span className="rounded-full border border-[var(--color-hairline-strong)] px-4 py-2 text-[13px] text-[var(--color-muted)]">
+                <span className="rounded-full border border-[var(--color-hairline-strong)] px-4 py-2 text-[13px] text-[var(--color-muted-fg)]">
                   PDF coming soon
                 </span>
               )}
@@ -116,25 +114,25 @@ export default function Resume() {
         <Reveal>
           <div className="flex items-baseline justify-between border-b border-[var(--color-hairline)] pb-4">
             <h2 className="text-2xl md:text-3xl">{d.experience_heading}</h2>
-            <span className="system-label text-[var(--color-muted)]">
+            <span className="system-label text-[var(--color-muted-fg)]">
               {(experience ?? []).length} roles
             </span>
           </div>
         </Reveal>
         <div className="mt-8 border-t border-[var(--color-hairline-strong)]">
-          {(experience ?? []).map((r: PortfolioExperience, i: number) => (
+          {(experience ?? []).map((r, i: number) => (
             <Reveal key={r.id} delay={i * 0.04}>
               <article className="border-b border-[var(--color-hairline-strong)] py-7 md:py-9">
                 <div className="grid gap-5 md:grid-cols-[220px_1fr]">
                   <div>
-                    <p className="text-[12px] uppercase tracking-[0.16em] text-[var(--color-muted)] md:text-[13px]">
+                    <p className="text-[12px] uppercase tracking-[0.16em] text-[var(--color-muted-fg)] md:text-[13px]">
                       {fmtPeriod(r.start_date, r.end_date)}
                     </p>
                     <p className="mt-2 text-[18px] font-semibold text-[var(--color-text)] md:text-[20px]">
                       {r.company}
                     </p>
                     {r.location && (
-                      <p className="mt-1 text-[13px] text-[var(--color-muted)]">{r.location}</p>
+                      <p className="mt-1 text-[13px] text-[var(--color-muted-fg)]">{r.location}</p>
                     )}
                   </div>
                   <div>
@@ -142,7 +140,7 @@ export default function Resume() {
                       {r.role}
                     </p>
                     {r.description && (
-                      <p className="mt-2 text-[15px] leading-[1.65] text-[var(--color-muted)] md:text-[16px]">
+                      <p className="mt-2 text-[15px] leading-[1.65] text-[var(--color-muted-fg)] md:text-[16px]">
                         {r.description}
                       </p>
                     )}
@@ -175,21 +173,23 @@ export default function Resume() {
           </div>
         </Reveal>
         <div className="mt-8 grid border-t border-[var(--color-hairline-strong)] md:grid-cols-2">
-          {(education ?? []).map((e: PortfolioEducation) => (
+          {(education ?? []).map((e) => (
             <div
               key={e.id}
               className="border-b border-[var(--color-hairline-strong)] py-6 md:px-6 md:first:pl-0 md:last:border-l md:last:pr-0"
             >
-              <p className="text-[12px] uppercase tracking-[0.16em] text-[var(--color-muted)] md:text-[13px]">
+              <p className="text-[12px] uppercase tracking-[0.16em] text-[var(--color-muted-fg)] md:text-[13px]">
                 {fmtPeriod(e.start_date, e.end_date)}
               </p>
               <p className="mt-2 text-[17px] font-semibold text-[var(--color-text)]">
                 {e.institution}
               </p>
               <p className="mt-1 text-[14px] text-[var(--color-accent)]">{e.degree}</p>
-              {e.field && <p className="mt-0.5 text-[13px] text-[var(--color-muted)]">{e.field}</p>}
+              {e.field && (
+                <p className="mt-0.5 text-[13px] text-[var(--color-muted-fg)]">{e.field}</p>
+              )}
               {e.description && (
-                <p className="mt-2 text-[13px] text-[var(--color-muted)]">{e.description}</p>
+                <p className="mt-2 text-[13px] text-[var(--color-muted-fg)]">{e.description}</p>
               )}
             </div>
           ))}
@@ -207,7 +207,7 @@ export default function Resume() {
           {(skills ?? []).map((g) => (
             <div key={g.group} className="border-t border-[var(--color-hairline-strong)] pt-5">
               <p className="system-label text-[var(--color-accent)]">{g.group}</p>
-              <p className="mt-3 text-[14px] leading-[1.7] text-[var(--color-muted)]">
+              <p className="mt-3 text-[14px] leading-[1.7] text-[var(--color-muted-fg)]">
                 {g.items.join(" · ")}
               </p>
             </div>
@@ -225,8 +225,7 @@ export default function Resume() {
           {resumeUrl && (
             <a
               href={resumeUrl}
-              target="_blank"
-              rel="noreferrer"
+              download="Aman_Mishra_Senior_Product_Designer_Resume.pdf"
               className="btn-primary !py-2 !pr-5 !text-[14px]"
               style={{ minHeight: 44 }}
             >

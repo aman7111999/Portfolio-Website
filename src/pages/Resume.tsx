@@ -77,9 +77,10 @@ export default function Resume() {
               {site?.email && (
                 <a
                   href={`mailto:${site.email}`}
-                  className="min-w-0 break-all hover:text-[var(--color-accent)] sm:inline-flex sm:items-center sm:gap-1.5"
+                  className="inline-flex max-w-full min-w-0 items-center gap-1.5 hover:text-[var(--color-accent)]"
                 >
-                  <Mail size={13} /> {site.email}
+                  <Mail size={13} className="shrink-0" />
+                  <span className="min-w-0 break-all">{site.email}</span>
                 </a>
               )}
             </div>

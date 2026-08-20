@@ -51,7 +51,7 @@ export function StatsBand() {
             {copy.items.map((metric) => (
               <div
                 key={metric.l}
-                className="border-b border-[var(--color-hairline)] py-7 last:border-b-0 sm:border-b-0 sm:border-r sm:px-6 sm:first:pl-0 sm:last:border-r-0 sm:last:pr-0"
+                className="border-b border-[var(--color-hairline)] py-7 text-center last:border-b-0 sm:border-b-0 sm:border-r sm:px-6 sm:text-left sm:first:pl-0 sm:last:border-r-0 sm:last:pr-0"
               >
                 <p className="text-[clamp(2.2rem,5vw,3.5rem)] font-medium leading-none tracking-[-0.05em] text-[var(--color-text)]">
                   <CountUp value={metric.v} />

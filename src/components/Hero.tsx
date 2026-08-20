@@ -78,7 +78,7 @@ export function Hero() {
             initial={reduce ? false : { opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.3 }}
-            className="mt-8 flex flex-wrap items-center gap-4 sm:mt-9 sm:gap-6"
+            className="mt-8 flex flex-col items-stretch gap-4 sm:mt-9 sm:flex-row sm:items-center sm:justify-start sm:gap-6"
           >
             <Link to={content.cta_to} className="btn-primary w-full sm:w-auto">
               {content.cta_label} <ArrowUpRight size={16} />
@@ -86,7 +86,7 @@ export function Hero() {
             {content.secondary_cta_label && content.secondary_cta_to && (
               <Link
                 to={content.secondary_cta_to}
-                className="story-link inline-flex min-h-11 items-center gap-2 text-[14px] font-semibold text-[var(--color-text)]"
+                className="story-link mx-auto inline-flex min-h-11 w-fit items-center justify-center gap-2 text-center text-[14px] font-semibold text-[var(--color-text)] sm:mx-0"
               >
                 {content.secondary_cta_label} <ArrowUpRight size={15} />
               </Link>

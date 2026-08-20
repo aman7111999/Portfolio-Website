@@ -153,6 +153,7 @@ export const PORTFOLIO_SKILLS = [
 export const PORTFOLIO_CONTENT = {
   nav: {
     links: [
+      { label: "Home", to: "/" },
       { label: "Work", to: "/work" },
       { label: "About", to: "/about" },
       { label: "Résumé", to: "/resume" },

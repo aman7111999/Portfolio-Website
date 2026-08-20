@@ -3,13 +3,6 @@ import { SingleImageUpload } from "@/components/admin/ImageUploader";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import type {
   ProjectComparisonStage,
@@ -108,19 +101,28 @@ export function ProjectTypeEditor({
             public case-study layout.
           </p>
         </div>
-        <Field label="Project type">
-          <Select
-            value={presentation.type}
-            onValueChange={(value) => updateType(value as ProjectType)}
-          >
-            <SelectTrigger className="h-11 bg-white">
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="case_study">Standard case study</SelectItem>
-              <SelectItem value="revamp_comparison">Revamp comparison</SelectItem>
-            </SelectContent>
-          </Select>
+        <Field label="Project type" htmlFor="project-type">
+          <div className="relative">
+            <select
+              id="project-type"
+              className="h-11 w-full appearance-none rounded-md border border-neutral-300 bg-white px-3 pr-10 text-sm font-medium text-neutral-900 shadow-sm outline-none transition-colors hover:border-neutral-400 focus:border-neutral-900 focus:ring-2 focus:ring-neutral-900/10"
+              value={presentation.type}
+              onChange={(event) => updateType(event.target.value as ProjectType)}
+            >
+              <option value="case_study">Standard portfolio</option>
+              <option value="revamp_comparison">Revamp comparison</option>
+            </select>
+            <ChevronDown
+              aria-hidden
+              size={16}
+              className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-neutral-500"
+            />
+          </div>
+          <p className="text-[11px] leading-4 text-neutral-500">
+            {presentation.type === "revamp_comparison"
+              ? "Compare two or three design versions in one project."
+              : "Use the standard long-form portfolio case-study layout."}
+          </p>
         </Field>
       </div>
 
@@ -326,16 +328,20 @@ export function ProjectTypeEditor({
 
 function Field({
   label,
+  htmlFor,
   hint,
   children,
 }: {
   label: string;
+  htmlFor?: string;
   hint?: string;
   children: React.ReactNode;
 }) {
   return (
     <div className="space-y-1.5">
-      <Label className="text-xs font-medium text-neutral-700">{label}</Label>
+      <Label htmlFor={htmlFor} className="text-xs font-medium text-neutral-700">
+        {label}
+      </Label>
       {children}
       {hint && <p className="text-[11px] leading-4 text-neutral-400">{hint}</p>}
     </div>

@@ -15,6 +15,7 @@ type NavData = {
 
 const NAV_FALLBACK: NavData = {
   links: [
+    { to: "/", label: "Home" },
     { to: "/work", label: "Work" },
     { to: "/about", label: "About" },
     { to: "/resume", label: "Résumé" },
@@ -48,9 +49,12 @@ export function Navbar() {
 
   const name = site?.name ?? "Aman Mishra";
   const rawLinks = nav?.links ?? NAV_FALLBACK.links;
-  const links = rawLinks.some((link) => link.to === "/resume")
+  const linksWithHome = rawLinks.some((link) => link.to === "/")
     ? rawLinks
-    : [...rawLinks, { to: "/resume", label: "Résumé" }];
+    : [{ to: "/", label: "Home" }, ...rawLinks];
+  const links = linksWithHome.some((link) => link.to === "/resume")
+    ? linksWithHome
+    : [...linksWithHome, { to: "/resume", label: "Résumé" }];
 
   return (
     <motion.header
@@ -80,6 +84,7 @@ export function Navbar() {
             <li key={link.label + link.to}>
               <NavLink
                 to={link.to}
+                end={link.to === "/"}
                 className={({ isActive }) =>
                   "relative py-2 text-[14px] font-medium transition-colors " +
                   (isActive
@@ -130,6 +135,7 @@ export function Navbar() {
                 <li key={link.label + link.to} className="border-b border-[var(--color-hairline)]">
                   <NavLink
                     to={link.to}
+                    end={link.to === "/"}
                     className="flex items-center justify-between py-4 text-[17px] font-medium text-[var(--color-text)]"
                   >
                     {link.label} <ArrowUpRight size={15} className="text-[var(--color-muted)]" />

@@ -1,6 +1,5 @@
 import { Download, MapPin, Mail, ArrowUpRight } from "lucide-react";
 import { useSite, useExperience, useEducation, useSkills, useContent } from "@/lib/cms";
-import type { PortfolioEducation, PortfolioExperience } from "@/data/portfolio";
 import { Reveal } from "@/components/Reveal";
 import { Seo } from "@/lib/seo";
 import { BrandMark } from "@/components/BrandMark";
@@ -51,7 +50,7 @@ export default function Resume() {
         siteName={site?.name ?? "Aman Mishra"}
       />
       {/* Hero */}
-      <section className="container-page pt-16 pb-14 md:pt-24 md:pb-20">
+      <section className="container-page pb-12 pt-10 sm:pb-14 sm:pt-16 md:pb-20 md:pt-24">
         <Reveal>
           <div className="flex items-center gap-3">
             <BrandMark className="h-10 w-10" />
@@ -63,7 +62,7 @@ export default function Resume() {
         </Reveal>
         <div className="mt-6 grid gap-10 md:grid-cols-[1fr_auto] md:items-end">
           <Reveal delay={0.05}>
-            <h1 className="max-w-[19ch] text-[clamp(2.8rem,5.4vw,4.8rem)] leading-[1.01] tracking-[-0.045em]">
+            <h1 className="max-w-[19ch] text-[clamp(2.4rem,11vw,2.9rem)] leading-[1.03] tracking-[-0.04em] sm:text-[clamp(2.8rem,5.4vw,4.8rem)] sm:leading-[1.01] sm:tracking-[-0.045em]">
               {d.heading}
             </h1>
             <p className="mt-5 max-w-xl text-[16px] leading-[1.6] text-[var(--color-muted)]">
@@ -78,7 +77,7 @@ export default function Resume() {
               {site?.email && (
                 <a
                   href={`mailto:${site.email}`}
-                  className="inline-flex items-center gap-1.5 hover:text-[var(--color-accent)]"
+                  className="min-w-0 break-all hover:text-[var(--color-accent)] sm:inline-flex sm:items-center sm:gap-1.5"
                 >
                   <Mail size={13} /> {site.email}
                 </a>
@@ -93,7 +92,7 @@ export default function Resume() {
                   href={resumeUrl}
                   target="_blank"
                   rel="noreferrer"
-                  className="btn-primary !py-2 !pr-5 !text-[14px]"
+                  className="btn-primary w-full !py-2 !pr-5 !text-[14px] sm:w-auto"
                   style={{ minHeight: 44 }}
                 >
                   <span className="grid h-9 w-9 place-items-center rounded-full bg-[var(--color-accent-contrast)] text-[var(--color-accent)]">
@@ -112,7 +111,7 @@ export default function Resume() {
       </section>
 
       {/* Experience */}
-      <section className="container-page py-14 md:py-20">
+      <section className="container-page py-12 sm:py-14 md:py-20">
         <Reveal>
           <div className="flex items-baseline justify-between border-b border-[var(--color-hairline)] pb-4">
             <h2 className="text-2xl md:text-3xl">{d.experience_heading}</h2>
@@ -122,7 +121,7 @@ export default function Resume() {
           </div>
         </Reveal>
         <div className="mt-8 border-t border-[var(--color-hairline-strong)]">
-          {(experience ?? []).map((r: PortfolioExperience, i: number) => (
+          {(experience ?? []).map((r, i: number) => (
             <Reveal key={r.id} delay={i * 0.04}>
               <article className="border-b border-[var(--color-hairline-strong)] py-7 md:py-9">
                 <div className="grid gap-5 md:grid-cols-[220px_1fr]">
@@ -168,14 +167,14 @@ export default function Resume() {
       </section>
 
       {/* Education */}
-      <section className="container-page py-14 md:py-20">
+      <section className="container-page py-12 sm:py-14 md:py-20">
         <Reveal>
           <div className="flex items-baseline justify-between border-b border-[var(--color-hairline)] pb-4">
             <h2 className="text-2xl md:text-3xl">{d.education_heading}</h2>
           </div>
         </Reveal>
         <div className="mt-8 grid border-t border-[var(--color-hairline-strong)] md:grid-cols-2">
-          {(education ?? []).map((e: PortfolioEducation) => (
+          {(education ?? []).map((e) => (
             <div
               key={e.id}
               className="border-b border-[var(--color-hairline-strong)] py-6 md:px-6 md:first:pl-0 md:last:border-l md:last:pr-0"
@@ -197,7 +196,7 @@ export default function Resume() {
       </section>
 
       {/* Skills */}
-      <section className="container-page py-14 md:py-20">
+      <section className="container-page py-12 sm:py-14 md:py-20">
         <Reveal>
           <div className="flex items-baseline justify-between border-b border-[var(--color-hairline)] pb-4">
             <h2 className="text-2xl md:text-3xl">{d.skills_heading}</h2>
@@ -216,8 +215,8 @@ export default function Resume() {
       </section>
 
       {/* CTA */}
-      <section className="container-page pb-24 pt-8">
-        <div className="flex flex-col items-start justify-between gap-5 rounded-[var(--radius-lg)] bg-[var(--color-text)] p-7 text-[var(--color-bg)] md:flex-row md:items-center md:p-9">
+      <section className="container-page pb-16 pt-6 sm:pb-24 sm:pt-8">
+        <div className="flex flex-col items-start justify-between gap-5 rounded-[var(--radius-lg)] bg-[var(--color-text)] p-6 text-[var(--color-bg)] sm:p-7 md:flex-row md:items-center md:p-9">
           <div>
             <p className="system-label opacity-55">Want the printable version?</p>
             <p className="mt-2 text-[17px] md:text-[18px]">Grab the full résumé as a PDF.</p>
@@ -227,7 +226,7 @@ export default function Resume() {
               href={resumeUrl}
               target="_blank"
               rel="noreferrer"
-              className="btn-primary !py-2 !pr-5 !text-[14px]"
+              className="btn-primary w-full !py-2 !pr-5 !text-[14px] sm:w-auto"
               style={{ minHeight: 44 }}
             >
               <span className="grid h-9 w-9 place-items-center rounded-full bg-[var(--color-accent-contrast)] text-[var(--color-accent)]">

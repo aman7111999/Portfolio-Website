@@ -28,13 +28,13 @@ export function FeaturedWork() {
   const copy = content ?? FALLBACK;
 
   return (
-    <section className="border-t border-[var(--color-hairline)] py-24 md:py-32">
+    <section className="border-t border-[var(--color-hairline)] py-16 sm:py-20 md:py-32">
       <div className="container-page">
         <Reveal>
           <div className="flex flex-wrap items-end justify-between gap-8">
             <div className="max-w-3xl">
               <p className="eyebrow">{copy.eyebrow}</p>
-              <h2 className="mt-4 text-[clamp(2.5rem,4.8vw,4.25rem)] leading-[1.02] tracking-[-0.045em]">
+              <h2 className="mt-4 text-[clamp(2.15rem,10vw,2.6rem)] leading-[1.05] tracking-[-0.04em] sm:text-[clamp(2.5rem,4.8vw,4.25rem)] sm:leading-[1.02] sm:tracking-[-0.045em]">
                 {copy.heading_line1}{" "}
                 <span className="font-serif font-normal italic text-[var(--color-accent)]">
                   {copy.heading_line2}
@@ -50,7 +50,7 @@ export function FeaturedWork() {
           </div>
         </Reveal>
 
-        <div className="mt-12 grid gap-5 md:grid-cols-2 md:gap-6">
+        <div className="mt-9 grid gap-5 sm:mt-12 md:grid-cols-2 md:gap-6">
           {items.map((project, index) => (
             <ProjectCard key={project.slug} project={project} index={index} size="compact" />
           ))}

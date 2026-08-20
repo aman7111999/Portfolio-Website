@@ -36,7 +36,7 @@ export function PortfolioAnalysisVisual({ mode = "card" }: { mode?: VisualMode }
       <div className="absolute inset-0 opacity-30 [background-image:linear-gradient(rgba(255,255,255,.055)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,.055)_1px,transparent_1px)] [background-size:34px_34px]" />
 
       <div
-        className={`absolute z-[2] ${large ? "left-[7%] top-[11%]" : "left-6 top-6 md:left-8 md:top-7"}`}
+        className={`absolute z-[2] ${large ? "left-5 top-6 sm:left-[7%] sm:top-[11%]" : "left-5 top-5 sm:left-6 sm:top-6 md:left-8 md:top-7"}`}
       >
         <div className="flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.18em] text-white/55">
           <span className="h-1.5 w-1.5 rounded-full bg-[#55e6c1] shadow-[0_0_16px_rgba(85,230,193,.8)]" />
@@ -44,13 +44,15 @@ export function PortfolioAnalysisVisual({ mode = "card" }: { mode?: VisualMode }
         </div>
         <p
           className={`mt-3 max-w-[12ch] font-medium leading-[.95] tracking-[-0.055em] ${
-            large ? "text-[clamp(2.2rem,5vw,5.2rem)]" : "text-[clamp(1.45rem,3vw,2.8rem)]"
+            large
+              ? "text-[clamp(1.75rem,8vw,2.2rem)] sm:text-[clamp(2.2rem,5vw,5.2rem)]"
+              : "text-[clamp(1.35rem,6vw,1.8rem)] sm:text-[clamp(1.45rem,3vw,2.8rem)]"
           }`}
         >
           Every holding. One decision layer.
         </p>
         {large && (
-          <p className="mt-5 max-w-[36ch] text-[13px] leading-6 text-white/55 md:text-[15px]">
+          <p className="mt-5 hidden max-w-[36ch] text-[13px] leading-6 text-white/55 sm:block md:text-[15px]">
             Internal Motilal Oswal investments and externally linked portfolios, analysed through
             one consistent mental model.
           </p>
@@ -60,8 +62,8 @@ export function PortfolioAnalysisVisual({ mode = "card" }: { mode?: VisualMode }
       <div
         className={`absolute z-[2] rounded-[22px] border border-white/10 bg-white/[.07] shadow-[0_28px_80px_rgba(0,0,0,.45)] backdrop-blur-xl ${
           large
-            ? "-bottom-[16%] right-[7%] h-[92%] w-[35%] min-w-[250px] rotate-[3deg] p-4 md:p-5"
-            : "-bottom-[24%] right-[5%] h-[102%] w-[40%] min-w-[160px] rotate-[4deg] p-3"
+            ? "-bottom-[34%] right-[-13%] h-[94%] w-[62%] min-w-[180px] rotate-[3deg] p-3 sm:-bottom-[16%] sm:right-[7%] sm:w-[35%] sm:min-w-[250px] sm:p-4 md:p-5"
+            : "-bottom-[28%] right-[-2%] h-[102%] w-[48%] min-w-[145px] rotate-[4deg] p-2.5 sm:-bottom-[24%] sm:right-[5%] sm:w-[40%] sm:min-w-[160px] sm:p-3"
         }`}
       >
         <div className="flex items-center justify-between border-b border-white/10 pb-3">
@@ -116,7 +118,11 @@ export function PortfolioAnalysisVisual({ mode = "card" }: { mode?: VisualMode }
       </div>
 
       <div
-        className={`absolute z-[2] flex items-center gap-3 ${large ? "bottom-[10%] left-[7%]" : "bottom-6 left-6"}`}
+        className={`absolute z-[2] items-center gap-3 ${
+          large
+            ? "bottom-[10%] left-[7%] hidden sm:flex"
+            : "bottom-5 left-5 flex sm:bottom-6 sm:left-6"
+        }`}
       >
         <span className="rounded-full border border-white/10 bg-white/[.06] px-3 py-1.5 text-[9px] font-medium uppercase tracking-[.12em] text-white/65 backdrop-blur">
           Internal
@@ -180,12 +186,12 @@ export function PortfolioAnalysisCaseVisuals({ story }: { story: ProjectPresenta
   };
 
   return (
-    <section className="container-page py-16 md:py-24">
-      <div className="mx-auto max-w-[1040px] border-t border-[var(--color-hairline)] pt-12 md:pt-16">
-        <div className="grid gap-7 md:grid-cols-[minmax(0,1fr)_minmax(260px,0.65fr)] md:items-end">
+    <section className="container-page py-14 md:py-24">
+      <div className="mx-auto max-w-[1040px] border-t border-[var(--color-hairline)] pt-10 md:pt-16">
+        <div className="portfolio-story-header grid gap-7 md:grid-cols-[minmax(0,1fr)_minmax(260px,0.65fr)] md:items-end">
           <div>
             <p className="eyebrow text-[var(--color-accent)]">{story.eyebrow}</p>
-            <h2 className="mt-4 max-w-[17ch] text-[clamp(2.25rem,4vw,3.35rem)] leading-[1.06] tracking-[-0.038em]">
+            <h2 className="mt-4 max-w-[17ch] text-[clamp(2rem,8vw,2.5rem)] leading-[1.08] tracking-[-0.035em] sm:text-[clamp(2.25rem,4vw,3.35rem)] sm:leading-[1.06] sm:tracking-[-0.038em]">
               {story.title}
             </h2>
           </div>
@@ -199,7 +205,7 @@ export function PortfolioAnalysisCaseVisuals({ story }: { story: ProjectPresenta
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-70px" }}
           transition={{ duration: 0.75, ease: EASE }}
-          className="mt-10 grid border-y border-[var(--color-hairline-strong)] sm:grid-cols-2 lg:grid-cols-4"
+          className="portfolio-architecture-grid mt-10 grid border-y border-[var(--color-hairline-strong)] sm:grid-cols-2 lg:grid-cols-4"
         >
           {story.architecture_nodes.slice(0, 4).map((node, index) => {
             const Icon = architectureIcons[index] ?? Sparkles;
@@ -226,8 +232,8 @@ export function PortfolioAnalysisCaseVisuals({ story }: { story: ProjectPresenta
         </motion.ol>
 
         {active && visual && (
-          <div className="mt-20 border-t border-[var(--color-hairline)] pt-12 md:mt-24 md:pt-16">
-            <div className="grid gap-6 md:grid-cols-[minmax(0,1fr)_minmax(260px,0.7fr)] md:items-end">
+          <div className="mt-16 border-t border-[var(--color-hairline)] pt-10 md:mt-24 md:pt-16">
+            <div className="portfolio-journey-header grid gap-6 md:grid-cols-[minmax(0,1fr)_minmax(260px,0.7fr)] md:items-end">
               <div>
                 <p className="eyebrow text-[var(--color-accent)]">{story.journey_eyebrow}</p>
                 <h3 className="mt-4 max-w-[18ch] text-[clamp(2rem,3.6vw,3rem)] leading-[1.08] tracking-[-0.035em]">
@@ -239,13 +245,13 @@ export function PortfolioAnalysisCaseVisuals({ story }: { story: ProjectPresenta
               </p>
             </div>
 
-            <div className="mt-10 overflow-hidden rounded-[var(--radius-lg)] border border-[var(--color-hairline-strong)] bg-[var(--color-surface)] lg:grid lg:grid-cols-[1.15fr_0.85fr]">
+            <div className="portfolio-journey-panel mt-10 overflow-hidden rounded-[var(--radius-lg)] border border-[var(--color-hairline-strong)] bg-[var(--color-surface)] lg:grid lg:grid-cols-[1.15fr_0.85fr]">
               <motion.div
                 key={active.id}
                 initial={reduce ? false : { opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.4, ease: EASE }}
-                className="relative flex min-h-[430px] items-center justify-center overflow-hidden bg-[#090d19] p-7 md:p-10"
+                className="relative flex min-h-[340px] items-center justify-center overflow-hidden bg-[#090d19] p-5 sm:min-h-[380px] sm:p-7 md:min-h-[430px] md:p-10"
               >
                 <div className="absolute inset-0 opacity-25 [background-image:linear-gradient(rgba(255,255,255,.045)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,.045)_1px,transparent_1px)] [background-size:32px_32px]" />
                 {active.image_url ? (
@@ -260,7 +266,7 @@ export function PortfolioAnalysisCaseVisuals({ story }: { story: ProjectPresenta
                 )}
               </motion.div>
 
-              <div className="flex flex-col justify-between p-7 md:p-10">
+              <div className="flex flex-col justify-between p-5 sm:p-7 md:p-10">
                 <div>
                   <div className="flex items-center justify-between gap-6">
                     <p className="font-mono text-[10px] tracking-[0.14em] text-[var(--color-subtle)]">
@@ -291,12 +297,16 @@ export function PortfolioAnalysisCaseVisuals({ story }: { story: ProjectPresenta
                         onClick={() => setActiveJourney(index)}
                         aria-label={`Show step ${index + 1}: ${item.title}`}
                         aria-current={index === activeJourney ? "step" : undefined}
-                        className={`h-1.5 flex-1 rounded-full transition-colors ${
-                          index === activeIndex
-                            ? "bg-[var(--color-accent)]"
-                            : "bg-[var(--color-hairline-strong)] hover:bg-[var(--color-muted)]"
-                        }`}
-                      />
+                        className="group grid h-11 flex-1 place-items-center"
+                      >
+                        <span
+                          className={`h-1.5 w-full rounded-full transition-colors ${
+                            index === activeIndex
+                              ? "bg-[var(--color-accent)]"
+                              : "bg-[var(--color-hairline-strong)] group-hover:bg-[var(--color-muted)]"
+                          }`}
+                        />
+                      </button>
                     ))}
                   </div>
                   <div className="mt-6 flex items-center gap-2">

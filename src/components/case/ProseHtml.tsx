@@ -10,7 +10,7 @@ export function ProseHtml({ html, className }: { html: string; className?: strin
   return (
     <div
       className={
-        "prose-editorial max-w-[68ch] text-[17px] leading-[1.75] text-[var(--color-muted)] " +
+        "prose-editorial max-w-[68ch] text-[16px] leading-[1.72] text-[var(--color-muted)] sm:text-[17px] sm:leading-[1.75] " +
         (className ?? "")
       }
       dangerouslySetInnerHTML={{ __html: safe }}

@@ -29,11 +29,11 @@ export function FaqSection() {
   const faq = d.items ?? [];
 
   return (
-    <section className="container-page py-24 md:py-32">
-      <div className="grid gap-12 md:grid-cols-12">
+    <section className="container-page py-16 sm:py-20 md:py-32">
+      <div className="grid gap-10 sm:gap-12 md:grid-cols-12">
         <Reveal className="md:col-span-5">
           <p className="eyebrow">{d.eyebrow}</p>
-          <h2 className="mt-4 text-[clamp(2.4rem,4.2vw,3.7rem)] font-medium leading-[1.04] tracking-[-0.04em] text-[var(--color-text)]">
+          <h2 className="mt-4 text-[clamp(2.1rem,9.5vw,2.5rem)] font-medium leading-[1.06] tracking-[-0.038em] text-[var(--color-text)] sm:text-[clamp(2.4rem,4.2vw,3.7rem)] sm:leading-[1.04] sm:tracking-[-0.04em]">
             {d.heading_line1}{" "}
             <span className="font-serif font-normal italic text-[var(--color-accent)]">
               {d.heading_accent}

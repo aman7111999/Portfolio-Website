@@ -146,7 +146,7 @@ export default function ProjectPage() {
                 {presentation.cta.title}
               </h2>
             </div>
-            <Link to={presentation.cta.url} className="btn-primary">
+            <Link to={presentation.cta.url} className="btn-primary w-full sm:w-auto">
               {presentation.cta.label} <ArrowUpRight size={16} />
             </Link>
           </div>
@@ -161,18 +161,18 @@ function NextProject({ project, label }: { project: ProjectRow; label: string })
     <section className="container-page pt-20 md:pt-28">
       <Link
         to={`/projects/${project.slug}`}
-        className="group mx-auto flex max-w-[1040px] items-end justify-between gap-8 border-t border-[var(--color-hairline-strong)] pt-10"
+        className="group mx-auto flex max-w-[1040px] items-end justify-between gap-4 border-t border-[var(--color-hairline-strong)] pt-8 sm:gap-8 sm:pt-10"
       >
         <div>
           <p className="text-[12px] text-[var(--color-muted)]">{label}</p>
-          <h2 className="mt-3 text-[clamp(2rem,4vw,3.5rem)] font-medium leading-[1.05] tracking-[-0.04em] transition-colors group-hover:text-[var(--color-accent)]">
+          <h2 className="mt-3 text-[clamp(1.75rem,8vw,2.25rem)] font-medium leading-[1.08] tracking-[-0.035em] transition-colors group-hover:text-[var(--color-accent)] sm:text-[clamp(2rem,4vw,3.5rem)] sm:leading-[1.05] sm:tracking-[-0.04em]">
             {project.title}
           </h2>
           <p className="mt-3 text-[13px] text-[var(--color-muted)]">
             {project.category ?? "Case study"}
           </p>
         </div>
-        <span className="grid h-12 w-12 shrink-0 place-items-center rounded-full border border-[var(--color-hairline-strong)] text-[var(--color-muted)] transition-colors group-hover:border-[var(--color-accent)] group-hover:text-[var(--color-accent)]">
+        <span className="grid h-11 w-11 shrink-0 place-items-center rounded-full border border-[var(--color-hairline-strong)] text-[var(--color-muted)] transition-colors group-hover:border-[var(--color-accent)] group-hover:text-[var(--color-accent)] sm:h-12 sm:w-12">
           <ArrowRight size={17} />
         </span>
       </Link>

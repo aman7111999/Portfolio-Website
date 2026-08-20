@@ -1,5 +1,25 @@
 export type ProjectVisualStyle = "auto" | "image" | "signature" | "generated";
 
+export type ProjectType = "case_study" | "revamp_comparison";
+
+export type ProjectComparisonStage = {
+  id: string;
+  label: string;
+  title: string;
+  timeframe: string;
+  image_url: string | null;
+  image_alt: string;
+  description: string;
+  highlights: string[];
+};
+
+export type ProjectComparisonPresentation = {
+  eyebrow: string;
+  title: string;
+  description: string;
+  stages: ProjectComparisonStage[];
+};
+
 export type ProjectSectionKey =
   "overview" | "problem" | "research" | "process" | "solution" | "impact" | "reflection";
 
@@ -25,6 +45,7 @@ export type ArchitectureNode = {
 };
 
 export type ProjectPresentation = {
+  type: ProjectType;
   card: {
     style: ProjectVisualStyle;
     image_alt: string;
@@ -35,6 +56,7 @@ export type ProjectPresentation = {
     image_url: string | null;
     image_alt: string;
   };
+  comparison: ProjectComparisonPresentation;
   story: {
     enabled: boolean;
     eyebrow: string;
@@ -205,6 +227,29 @@ const architectureDefaults: ArchitectureNode[] = [
   },
 ];
 
+const comparisonStageDefaults: ProjectComparisonStage[] = [
+  {
+    id: "oldest",
+    label: "Oldest",
+    title: "Original experience",
+    timeframe: "Version 01",
+    image_url: null,
+    image_alt: "Original product design",
+    description: "Show the earliest version and explain what limited the experience.",
+    highlights: ["Original structure", "Key usability constraint"],
+  },
+  {
+    id: "latest",
+    label: "Latest",
+    title: "Improved revamp",
+    timeframe: "Current version",
+    image_url: null,
+    image_alt: "Latest improved product design",
+    description: "Show the strongest current version and the decisions that made it better.",
+    highlights: ["Clearer hierarchy", "Lower decision effort"],
+  },
+];
+
 const isObject = (value: unknown): value is Record<string, unknown> =>
   !!value && typeof value === "object" && !Array.isArray(value);
 
@@ -216,6 +261,9 @@ const nullableText = (value: unknown, fallback: string | null = null) =>
 const visualStyle = (value: unknown): ProjectVisualStyle =>
   value === "image" || value === "signature" || value === "generated" ? value : "auto";
 
+const projectType = (value: unknown): ProjectType =>
+  value === "revamp_comparison" ? "revamp_comparison" : "case_study";
+
 export function getProjectPresentation(project: {
   slug: string;
   title?: string;
@@ -225,6 +273,7 @@ export function getProjectPresentation(project: {
   const raw = isObject(project.presentation) ? project.presentation : {};
   const rawCard = isObject(raw.card) ? raw.card : {};
   const rawHero = isObject(raw.hero) ? raw.hero : {};
+  const rawComparison = isObject(raw.comparison) ? raw.comparison : {};
   const rawStory = isObject(raw.story) ? raw.story : {};
   const rawGallery = isObject(raw.gallery) ? raw.gallery : {};
   const rawPrototype = isObject(raw.prototype) ? raw.prototype : {};
@@ -233,6 +282,35 @@ export function getProjectPresentation(project: {
   const rawCta = isObject(raw.cta) ? raw.cta : {};
   const rawSections = isObject(raw.sections) ? raw.sections : {};
   const isPortfolioAnalysis = project.slug === "portfolio-analysis";
+
+  const rawComparisonStages = Array.isArray(rawComparison.stages) ? rawComparison.stages : [];
+  const comparisonStagesSource =
+    rawComparisonStages.length >= 2 ? rawComparisonStages.slice(0, 3) : comparisonStageDefaults;
+  const comparisonStages = comparisonStagesSource.map((item, index) => {
+    const source = isObject(item) ? item : {};
+    const fallback = comparisonStageDefaults[index] ?? {
+      id: `stage-${index + 1}`,
+      label: `Version ${index + 1}`,
+      title: "Design iteration",
+      timeframe: "",
+      image_url: null,
+      image_alt: `Design iteration ${index + 1}`,
+      description: "",
+      highlights: [],
+    };
+    return {
+      id: text(source.id, fallback.id),
+      label: text(source.label, fallback.label),
+      title: text(source.title, fallback.title),
+      timeframe: text(source.timeframe, fallback.timeframe),
+      image_url: nullableText(source.image_url, fallback.image_url),
+      image_alt: text(source.image_alt, fallback.image_alt),
+      description: text(source.description, fallback.description),
+      highlights: Array.isArray(source.highlights)
+        ? source.highlights.filter((item): item is string => typeof item === "string").slice(0, 6)
+        : fallback.highlights,
+    };
+  });
 
   const sections = PROJECT_SECTION_KEYS.reduce(
     (result, key) => {
@@ -286,6 +364,7 @@ export function getProjectPresentation(project: {
   });
 
   return {
+    type: projectType(raw.type),
     card: {
       style: visualStyle(rawCard.style),
       image_alt: text(rawCard.image_alt, `${project.title ?? "Project"} preview`),
@@ -295,6 +374,15 @@ export function getProjectPresentation(project: {
       style: visualStyle(rawHero.style),
       image_url: nullableText(rawHero.image_url),
       image_alt: text(rawHero.image_alt, `${project.title ?? "Project"} case study`),
+    },
+    comparison: {
+      eyebrow: text(rawComparison.eyebrow, "Design evolution"),
+      title: text(rawComparison.title, "How the experience changed over time."),
+      description: text(
+        rawComparison.description,
+        "A direct comparison of the hierarchy, interaction model, and product decisions across each major revamp.",
+      ),
+      stages: comparisonStages,
     },
     story: {
       enabled: typeof rawStory.enabled === "boolean" ? rawStory.enabled : isPortfolioAnalysis,

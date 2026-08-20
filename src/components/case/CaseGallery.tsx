@@ -81,7 +81,7 @@ export function CaseGallery({ images }: { images: GalleryImage[] }) {
               type="button"
               onClick={() => setActive(null)}
               aria-label="Close"
-              className="absolute right-6 top-6 z-10 grid h-11 w-11 place-items-center rounded-full border border-white/20 bg-black/40 text-white backdrop-blur-sm transition-colors hover:bg-white/10"
+              className="absolute right-3 top-3 z-10 grid h-11 w-11 place-items-center rounded-full border border-white/20 bg-black/40 text-white backdrop-blur-sm transition-colors hover:bg-white/10 sm:right-6 sm:top-6"
             >
               <X size={18} />
             </button>
@@ -92,12 +92,12 @@ export function CaseGallery({ images }: { images: GalleryImage[] }) {
               exit={{ opacity: 0, scale: 0.98 }}
               transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
               onClick={(e) => e.stopPropagation()}
-              className="m-auto flex max-h-[92vh] max-w-[92vw] flex-col items-center gap-4 p-6"
+              className="m-auto flex max-h-[94svh] max-w-[96vw] flex-col items-center gap-3 p-3 sm:max-h-[92vh] sm:max-w-[92vw] sm:gap-4 sm:p-6"
             >
               <img
                 src={images[active].url}
                 alt={images[active].caption ?? ""}
-                className="max-h-[80vh] max-w-full rounded-[var(--radius-md)] object-contain shadow-[var(--elevation-4)]"
+                className="max-h-[78svh] max-w-full rounded-[var(--radius-md)] object-contain shadow-[var(--elevation-4)] sm:max-h-[80vh]"
               />
               {images[active].caption && (
                 <figcaption className="max-w-2xl text-center text-sm text-white/80">

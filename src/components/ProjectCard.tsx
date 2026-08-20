@@ -134,15 +134,17 @@ export function ProjectCard({
           )}
         </div>
 
-        <div className={`flex flex-1 flex-col ${compact ? "p-5 md:p-6" : "p-6 md:p-8"}`}>
-          <div className="flex items-start justify-between gap-6">
-            <div>
+        <div className={`flex flex-1 flex-col ${compact ? "p-5 md:p-6" : "p-5 sm:p-6 md:p-8"}`}>
+          <div className="flex items-start justify-between gap-4 sm:gap-6">
+            <div className="min-w-0">
               <p className="eyebrow">
                 {presentation.card.eyebrow} {number}
               </p>
               <h3
                 className={`mt-3 leading-[1.12] tracking-[-0.03em] ${
-                  compact ? "text-[clamp(1.3rem,2vw,1.7rem)]" : "text-[clamp(1.45rem,2.4vw,2rem)]"
+                  compact
+                    ? "text-[clamp(1.3rem,6vw,1.7rem)]"
+                    : "text-[clamp(1.35rem,6.5vw,1.75rem)] sm:text-[clamp(1.45rem,2.4vw,2rem)]"
                 }`}
               >
                 {project.title}
@@ -172,7 +174,9 @@ export function ProjectCard({
               compact ? "pt-5" : "pt-7"
             }`}
           >
-            <span>{project.role?.split("·")[0]?.trim() ?? "Product design"}</span>
+            <span className="min-w-0 truncate">
+              {project.role?.split("·")[0]?.trim() ?? "Product design"}
+            </span>
             {locked && (
               <span className="inline-flex items-center gap-1.5">
                 <Lock size={11} /> Under NDA

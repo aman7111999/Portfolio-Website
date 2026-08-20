@@ -90,7 +90,7 @@ export function ProjectPreviewDialog({
             }`}
           >
             {surface === "card" ? (
-              <div className="mx-auto max-w-3xl p-6 md:p-12">
+              <div className="project-card-preview-shell mx-auto max-w-3xl p-6 md:p-12">
                 <div className="pointer-events-none">
                   <ProjectCard project={project} size="lg" />
                 </div>

@@ -17,6 +17,7 @@ import { RichEditor } from "@/components/admin/RichEditor";
 import { ImageGallery, type GalleryImage } from "@/components/admin/ImageUploader";
 import { AdminPage } from "@/components/admin/AdminPage";
 import { ProjectPresentationEditor } from "@/components/admin/ProjectPresentationEditor";
+import { ProjectTypeEditor } from "@/components/admin/ProjectTypeEditor";
 import { ProjectPreviewDialog } from "@/components/admin/ProjectPreviewDialog";
 import { getProjectPresentation, type ProjectPresentation } from "@/lib/projectPresentation";
 
@@ -247,6 +248,12 @@ export default function ProjectEditor() {
                 </Field>
               </div>
             </Section>
+
+            <ProjectTypeEditor
+              slug={draft.slug}
+              presentation={getProjectPresentation(draft)}
+              onChange={(value) => set("presentation", value)}
+            />
 
             <ProjectPresentationEditor
               slug={draft.slug}

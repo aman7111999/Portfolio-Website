@@ -1,6 +1,5 @@
 import { Reveal } from "@/components/Reveal";
 import { useContent, useExperience } from "@/lib/cms";
-import type { PortfolioExperience } from "@/data/portfolio";
 import { Link } from "react-router-dom";
 import { ArrowUpRight } from "lucide-react";
 
@@ -23,12 +22,12 @@ export function Experience() {
   const allRoles = rows ?? [];
 
   return (
-    <section className="container-page py-24 md:py-32">
+    <section className="container-page py-16 sm:py-20 md:py-32">
       <Reveal>
         <div className="grid gap-6 lg:grid-cols-12 lg:items-end">
           <div className="lg:col-span-8">
             <p className="eyebrow">{copy.eyebrow}</p>
-            <h2 className="mt-4 text-[clamp(2.5rem,4.6vw,4rem)] leading-[1.04] tracking-[-0.04em]">
+            <h2 className="mt-4 text-[clamp(2.15rem,10vw,2.6rem)] leading-[1.06] tracking-[-0.038em] sm:text-[clamp(2.5rem,4.6vw,4rem)] sm:leading-[1.04] sm:tracking-[-0.04em]">
               {copy.heading_line1}{" "}
               <span className="font-serif font-normal italic text-[var(--color-accent)]">
                 {copy.heading_line2}
@@ -42,8 +41,8 @@ export function Experience() {
         </div>
       </Reveal>
 
-      <div className="mt-14 border-b border-[var(--color-hairline-strong)]">
-        {allRoles.map((role: PortfolioExperience, index: number) => (
+      <div className="mt-10 border-b border-[var(--color-hairline-strong)] sm:mt-14">
+        {allRoles.map((role, index: number) => (
           <Reveal key={role.id} delay={index * 0.05}>
             <article className="grid gap-6 border-t border-[var(--color-hairline-strong)] py-8 md:grid-cols-[190px_1fr] md:gap-10">
               <div>

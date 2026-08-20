@@ -210,6 +210,30 @@
       background-color var(--dur-slow) var(--ease-out-quart),
       color var(--dur-slow) var(--ease-out-quart);
   }
+  main,
+  section,
+  article,
+  header,
+  footer,
+  nav,
+  div {
+    min-width: 0;
+  }
+  img,
+  video,
+  iframe,
+  svg {
+    max-width: 100%;
+  }
+  h1,
+  h2,
+  h3,
+  h4,
+  p,
+  li,
+  dd {
+    overflow-wrap: anywhere;
+  }
   ::selection {
     background: var(--color-accent);
     color: var(--color-accent-contrast);
@@ -250,6 +274,11 @@
 @media (min-width: 768px) {
   .container-page {
     padding-inline: 40px;
+  }
+}
+@media (max-width: 479px) {
+  .container-page {
+    padding-inline: 16px;
   }
 }
 @media (min-width: 1280px) {
@@ -753,4 +782,113 @@
 .prose-editorial :where(img) {
   border-radius: 16px;
   border: 1px solid var(--color-hairline);
+}
+
+/* ============================================================
+   Mobile layout safeguards
+   ============================================================ */
+
+@media (max-width: 639px) {
+  .eyebrow {
+    font-size: 11px;
+    line-height: 1.45;
+  }
+
+  .btn-primary,
+  .btn-secondary {
+    min-height: 44px;
+    justify-content: center;
+  }
+
+  .prose-editorial :where(p, ul, ol, blockquote, figure, pre) {
+    margin-block: 15px;
+  }
+
+  .prose-editorial :where(h2, h3, h4) {
+    margin-top: 28px;
+  }
+
+  .prose-editorial :where(h2) {
+    font-size: 22px;
+  }
+
+  .prose-editorial :where(h3) {
+    font-size: 19px;
+  }
+
+  .prose-editorial :where(blockquote) {
+    padding-left: 16px;
+    font-size: 19px;
+  }
+
+  .prose-editorial :where(img) {
+    height: auto;
+    border-radius: 12px;
+  }
+
+  .premium-cta::after {
+    top: -190px;
+    right: -150px;
+  }
+}
+
+/* The CMS preview is a 390px container rendered inside a desktop viewport,
+   so viewport media queries alone cannot represent the phone layout. */
+.project-preview-mobile .container-page {
+  padding-inline: 16px !important;
+}
+.project-preview-mobile .case-study-hero {
+  padding-top: 32px !important;
+  padding-bottom: 48px !important;
+}
+.project-preview-mobile .case-study-title {
+  font-size: clamp(2.45rem, 12vw, 3.25rem) !important;
+  line-height: 1 !important;
+}
+.project-preview-mobile .case-hero-meta,
+.project-preview-mobile .case-narrative-grid,
+.project-preview-mobile .case-evidence-grid,
+.project-preview-mobile .comparison-header-grid,
+.project-preview-mobile .case-artifact-heading,
+.project-preview-mobile .portfolio-story-header,
+.project-preview-mobile .portfolio-journey-header,
+.project-preview-mobile .portfolio-architecture-grid {
+  grid-template-columns: minmax(0, 1fr) !important;
+}
+.project-preview-mobile .case-hero-visual {
+  min-height: 0 !important;
+  margin-top: 36px !important;
+  border-radius: var(--radius-md) !important;
+  aspect-ratio: 4 / 3 !important;
+}
+.project-preview-mobile .case-hero-visual > img {
+  object-fit: contain !important;
+}
+.project-preview-mobile .case-outline {
+  align-items: stretch !important;
+  flex-direction: column !important;
+}
+.project-preview-mobile .case-narrative-grid {
+  gap: 28px !important;
+  padding-top: 40px !important;
+}
+.project-preview-mobile .case-evidence-grid > * {
+  border-right: 0 !important;
+  border-bottom: 1px solid var(--color-hairline) !important;
+  padding: 20px 0 !important;
+}
+.project-preview-mobile .case-evidence-grid > :last-child {
+  border-bottom: 0 !important;
+}
+.project-preview-mobile .comparison-mobile {
+  display: block !important;
+}
+.project-preview-mobile .comparison-desktop {
+  display: none !important;
+}
+.project-preview-mobile .portfolio-journey-panel {
+  display: block !important;
+}
+.project-preview-mobile .project-card-preview-shell {
+  padding: 16px !important;
 }

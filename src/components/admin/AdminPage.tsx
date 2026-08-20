@@ -29,7 +29,7 @@ export function AdminPage({
   return (
     <div className={clsx("mx-auto", wide ? "max-w-[1400px]" : "max-w-6xl")}>
       {crumbs && crumbs.length > 0 && (
-        <nav className="mb-4 flex items-center gap-1 text-xs text-neutral-500">
+        <nav className="mb-4 flex max-w-full items-center gap-1 overflow-x-auto whitespace-nowrap pb-1 text-xs text-neutral-500">
           {crumbs.map((c, i) => (
             <span key={i} className="inline-flex items-center gap-1">
               {c.to ? (
@@ -44,17 +44,21 @@ export function AdminPage({
           ))}
         </nav>
       )}
-      <header className="mb-8 flex flex-wrap items-end justify-between gap-4">
+      <header className="mb-6 flex flex-wrap items-end justify-between gap-4 sm:mb-8">
         <div className="min-w-0">
           {eyebrow && (
             <p className="text-[11px] uppercase tracking-widest text-neutral-500">{eyebrow}</p>
           )}
-          <h1 className="mt-1 font-display text-4xl leading-tight text-neutral-900">{title}</h1>
-          {description && (
-            <p className="mt-2 max-w-xl text-sm text-neutral-500">{description}</p>
-          )}
+          <h1 className="mt-1 font-display text-3xl leading-tight text-neutral-900 sm:text-4xl">
+            {title}
+          </h1>
+          {description && <p className="mt-2 max-w-xl text-sm text-neutral-500">{description}</p>}
         </div>
-        {actions && <div className="flex flex-wrap items-center gap-2">{actions}</div>}
+        {actions && (
+          <div className="flex w-full flex-wrap items-center gap-2 sm:w-auto [&>*]:flex-1 sm:[&>*]:flex-none">
+            {actions}
+          </div>
+        )}
       </header>
       {children}
     </div>

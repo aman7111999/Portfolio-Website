@@ -15,6 +15,7 @@ import {
 } from "@/components/case/PortfolioAnalysisStory";
 import { ProseHtml } from "@/components/case/ProseHtml";
 import { PrototypeEmbed, isPrototypeLink } from "@/components/case/PrototypeEmbed";
+import { ProjectComparisonStory } from "@/components/case/ProjectComparisonStory";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
@@ -82,11 +83,14 @@ export function ProjectCaseStudyHero({
   const hero = resolveHeroVisual(project);
 
   return (
-    <section id="hero" className="container-page pb-14 pt-10 md:pb-20 md:pt-16">
+    <section
+      id="hero"
+      className="case-study-hero container-page pb-12 pt-8 sm:pb-14 sm:pt-10 md:pb-20 md:pt-16"
+    >
       {backHref && (
         <Link
           to={backHref}
-          className="inline-flex items-center gap-2 text-[12px] font-medium text-[var(--color-muted)] transition-colors hover:text-[var(--color-text)]"
+          className="inline-flex min-h-11 items-center gap-2 text-[12px] font-medium text-[var(--color-muted)] transition-colors hover:text-[var(--color-text)]"
         >
           <ArrowLeft size={12} /> {backLabel ?? presentation.labels.back_to_work}
         </Link>
@@ -96,21 +100,21 @@ export function ProjectCaseStudyHero({
         initial={reduce ? false : { opacity: 0, y: 18 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.75, ease: EASE }}
-        className={backHref ? "mt-14 max-w-[1040px]" : "max-w-[1040px]"}
+        className={backHref ? "mt-9 max-w-[1040px] sm:mt-14" : "max-w-[1040px]"}
       >
         <p className="eyebrow text-[var(--color-accent)]">
           {[project.company, project.category].filter(Boolean).join(" · ") || "Case study"}
         </p>
-        <h1 className="mt-5 max-w-[16ch] text-[clamp(3rem,6.5vw,5.6rem)] font-medium leading-[0.98] tracking-[-0.052em] text-[var(--color-text)]">
+        <h1 className="case-study-title mt-4 max-w-[16ch] text-[clamp(2.55rem,12vw,3.4rem)] font-medium leading-[1] tracking-[-0.045em] text-[var(--color-text)] sm:mt-5 sm:text-[clamp(3rem,6.5vw,5.6rem)] sm:leading-[0.98] sm:tracking-[-0.052em]">
           {project.title}
         </h1>
         {project.short_description && (
-          <p className="mt-7 max-w-[62ch] text-[18px] leading-[1.7] text-[var(--color-muted)] md:text-[20px]">
+          <p className="mt-5 max-w-[62ch] text-[16px] leading-[1.65] text-[var(--color-muted)] sm:mt-7 sm:text-[18px] md:text-[20px]">
             {project.short_description}
           </p>
         )}
 
-        <dl className="mt-10 grid max-w-[960px] gap-6 border-t border-[var(--color-hairline)] pt-6 sm:grid-cols-3">
+        <dl className="case-hero-meta mt-8 grid max-w-[960px] gap-4 border-t border-[var(--color-hairline)] pt-5 sm:mt-10 sm:grid-cols-3 sm:gap-6 sm:pt-6">
           <HeroMeta label={presentation.labels.role} value={project.role} />
           <HeroMeta label={presentation.labels.duration} value={project.duration} />
           <HeroMeta label={presentation.labels.timeline} value={project.timeline} />
@@ -121,13 +125,13 @@ export function ProjectCaseStudyHero({
         initial={reduce ? false : { opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.85, delay: 0.1, ease: EASE }}
-        className="project-visual relative mt-12 aspect-[16/8] min-h-[260px] overflow-hidden rounded-[var(--radius-lg)] border border-[var(--color-hairline-strong)] bg-[var(--color-elevated)] md:mt-14"
+        className="case-hero-visual project-visual relative mt-9 aspect-[4/3] min-h-0 overflow-hidden rounded-[var(--radius-md)] border border-[var(--color-hairline-strong)] bg-[var(--color-elevated)] sm:mt-12 sm:aspect-[16/9] sm:rounded-[var(--radius-lg)] md:mt-14 md:aspect-[16/8] md:min-h-[260px]"
       >
         {hero.kind === "image" && hero.imageUrl ? (
           <img
             src={hero.imageUrl}
             alt={presentation.hero.image_alt}
-            className="h-full w-full object-cover"
+            className="h-full w-full object-contain md:object-cover"
           />
         ) : hero.kind === "signature" ? (
           <PortfolioAnalysisVisual mode="hero" />
@@ -151,17 +155,29 @@ export function ProjectCaseStudyBody({
   const externalLinks = (project.links ?? []).filter((link) => !isPrototypeLink(link.url));
   const hasExperience = presentation.story.enabled;
   const hasArtifacts = !!prototypeLink || project.gallery.length > 0 || externalLinks.length > 0;
-
-  const storyLinks = groups.map((group) => ({
-    id: group.id,
-    label: group.label,
-    number: group.number,
-  }));
+  const isComparison = presentation.type === "revamp_comparison";
 
   const context = groups.find((group) => group.id === "context");
   const approach = groups.find((group) => group.id === "approach");
   const solution = groups.find((group) => group.id === "solution");
   const outcome = groups.find((group) => group.id === "outcome");
+  const storyLinks = isComparison
+    ? [
+        context && { id: context.id, label: context.label },
+        approach && { id: approach.id, label: approach.label },
+        { id: "evolution", label: presentation.comparison.eyebrow || "Design evolution" },
+        solution && { id: solution.id, label: solution.label },
+        outcome && { id: outcome.id, label: outcome.label },
+      ]
+        .filter((item): item is { id: string; label: string } => !!item)
+        .map((item, index) => ({ ...item, number: String(index + 1).padStart(2, "0") }))
+    : groups.map((group) => ({
+        id: group.id,
+        label: group.label,
+        number: group.number,
+      }));
+  const displayNumberFor = (group: StoryGroup) =>
+    storyLinks.find((item) => item.id === group.id)?.number ?? group.number;
 
   return (
     <>
@@ -169,9 +185,9 @@ export function ProjectCaseStudyBody({
 
       {storyLinks.length > 1 && (
         <nav aria-label="Case study outline" className="container-page pb-10 md:pb-14">
-          <div className="mx-auto flex max-w-[1040px] flex-col gap-4 border-y border-[var(--color-hairline)] py-5 md:flex-row md:items-center md:justify-between">
+          <div className="case-outline mx-auto flex max-w-[1040px] flex-col gap-4 border-y border-[var(--color-hairline)] py-5 md:flex-row md:items-center md:justify-between">
             <p className="text-[13px] font-medium text-[var(--color-text)]">The story in brief</p>
-            <ol className="flex gap-x-5 gap-y-3 overflow-x-auto">
+            <ol className="flex max-w-full gap-x-5 gap-y-3 overflow-x-auto pb-1">
               {storyLinks.map((item) => (
                 <li key={item.id} className="shrink-0">
                   <a
@@ -190,9 +206,12 @@ export function ProjectCaseStudyBody({
         </nav>
       )}
 
-      {context && <NarrativeGroup group={context} />}
-      {approach && <NarrativeGroup group={approach} />}
-      {solution && <NarrativeGroup group={solution} />}
+      {context && <NarrativeGroup group={context} displayNumber={displayNumberFor(context)} />}
+      {approach && <NarrativeGroup group={approach} displayNumber={displayNumberFor(approach)} />}
+
+      {isComparison && <ProjectComparisonStory comparison={presentation.comparison} />}
+
+      {solution && <NarrativeGroup group={solution} displayNumber={displayNumberFor(solution)} />}
 
       {hasExperience && (
         <div id="experience" className="scroll-mt-28">
@@ -210,7 +229,7 @@ export function ProjectCaseStudyBody({
         />
       )}
 
-      {outcome && <NarrativeGroup group={outcome} />}
+      {outcome && <NarrativeGroup group={outcome} displayNumber={displayNumberFor(outcome)} />}
     </>
   );
 }
@@ -239,15 +258,21 @@ function buildGroups(project: ProjectRow, presentation: ProjectPresentation): St
     .map((group, index) => ({ ...group, number: String(index + 1).padStart(2, "0") }));
 }
 
-function NarrativeGroup({ group }: { group: StoryGroup }) {
+function NarrativeGroup({
+  group,
+  displayNumber = group.number,
+}: {
+  group: StoryGroup;
+  displayNumber?: string;
+}) {
   const reduce = useReducedMotion();
 
   return (
-    <section id={group.id} className="container-page scroll-mt-28 py-16 md:py-24">
-      <div className="mx-auto grid max-w-[1040px] gap-9 border-t border-[var(--color-hairline)] pt-12 md:grid-cols-[150px_minmax(0,1fr)] md:gap-14 md:pt-16">
+    <section id={group.id} className="container-page scroll-mt-24 py-14 sm:scroll-mt-28 md:py-24">
+      <div className="case-narrative-grid mx-auto grid max-w-[1040px] gap-7 border-t border-[var(--color-hairline)] pt-10 md:grid-cols-[150px_minmax(0,1fr)] md:gap-14 md:pt-16">
         <aside>
           <p className="font-mono text-[10px] tracking-[0.16em] text-[var(--color-accent)]">
-            {group.number}
+            {displayNumber}
           </p>
           <p className="mt-3 text-[14px] font-medium text-[var(--color-text)]">{group.label}</p>
           <p className="mt-2 max-w-[18ch] text-[12px] leading-5 text-[var(--color-subtle)]">
@@ -268,7 +293,7 @@ function NarrativeGroup({ group }: { group: StoryGroup }) {
             >
               <p className="eyebrow text-[var(--color-accent)]">{part.eyebrow}</p>
               {index === 0 ? (
-                <h2 className="mt-4 max-w-[20ch] text-[clamp(2.25rem,4vw,3.35rem)] leading-[1.06] tracking-[-0.038em]">
+                <h2 className="mt-4 max-w-[20ch] text-[clamp(2rem,8vw,2.5rem)] leading-[1.08] tracking-[-0.035em] sm:text-[clamp(2.25rem,4vw,3.35rem)] sm:leading-[1.06] sm:tracking-[-0.038em]">
                   {part.title}
                 </h2>
               ) : (
@@ -288,11 +313,11 @@ function NarrativeGroup({ group }: { group: StoryGroup }) {
 function EvidenceStrip({ items }: { items: ProjectRow["metrics"] }) {
   return (
     <section aria-label="Project evidence" className="container-page pb-14 md:pb-20">
-      <div className="mx-auto grid max-w-[1040px] border-y border-[var(--color-hairline-strong)] sm:grid-cols-3">
+      <div className="case-evidence-grid mx-auto grid max-w-[1040px] border-y border-[var(--color-hairline-strong)] sm:grid-cols-3">
         {items.map((item, index) => (
           <div
             key={`${item.label}-${index}`}
-            className="border-b border-[var(--color-hairline)] py-6 last:border-b-0 sm:border-b-0 sm:border-r sm:px-7 sm:first:pl-0 sm:last:border-r-0 sm:last:pr-0"
+            className="border-b border-[var(--color-hairline)] py-5 last:border-b-0 sm:border-b-0 sm:border-r sm:px-7 sm:py-6 sm:first:pl-0 sm:last:border-r-0 sm:last:pr-0"
           >
             <p className="text-[clamp(2rem,4vw,3rem)] font-medium leading-none tracking-[-0.04em] text-[var(--color-text)]">
               {item.value}
@@ -335,9 +360,9 @@ function ProjectArtifacts({
       : null;
 
   return (
-    <section id={id} className="container-page scroll-mt-28 py-16 md:py-24">
-      <div className="mx-auto max-w-[1040px] border-t border-[var(--color-hairline)] pt-12 md:pt-16">
-        <div className="grid gap-6 md:grid-cols-[minmax(0,1fr)_auto] md:items-end">
+    <section id={id} className="container-page scroll-mt-24 py-14 sm:scroll-mt-28 md:py-24">
+      <div className="mx-auto max-w-[1040px] border-t border-[var(--color-hairline)] pt-10 md:pt-16">
+        <div className="case-artifact-heading grid gap-6 md:grid-cols-[minmax(0,1fr)_auto] md:items-end">
           <div>
             <p className="eyebrow text-[var(--color-accent)]">Selected work</p>
             <h2 className="mt-4 max-w-[20ch] text-[clamp(2.25rem,4vw,3.35rem)] leading-[1.06] tracking-[-0.038em]">

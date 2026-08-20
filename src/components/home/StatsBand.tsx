@@ -31,11 +31,11 @@ export function StatsBand() {
   const body = copy.body.replace("{name}", site?.name ?? "Aman");
 
   return (
-    <section className="border-y border-[var(--color-hairline-strong)] bg-[var(--color-surface)] py-24 md:py-28">
-      <div className="container-page grid gap-14 lg:grid-cols-12 lg:gap-20">
+    <section className="border-y border-[var(--color-hairline-strong)] bg-[var(--color-surface)] py-16 sm:py-20 md:py-28">
+      <div className="container-page grid gap-10 sm:gap-14 lg:grid-cols-12 lg:gap-20">
         <Reveal className="lg:col-span-5">
           <p className="eyebrow">{copy.eyebrow}</p>
-          <h2 className="mt-4 text-[clamp(2.4rem,4.2vw,3.7rem)] leading-[1.04] tracking-[-0.04em]">
+          <h2 className="mt-4 text-[clamp(2.1rem,9.5vw,2.5rem)] leading-[1.06] tracking-[-0.038em] sm:text-[clamp(2.4rem,4.2vw,3.7rem)] sm:leading-[1.04] sm:tracking-[-0.04em]">
             {copy.heading_line1}{" "}
             <span className="font-serif font-normal italic text-[var(--color-accent)]">
               {copy.heading_accent}

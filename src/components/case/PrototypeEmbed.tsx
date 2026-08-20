@@ -1,7 +1,8 @@
 import { ExternalLink, Maximize2, Minimize2 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
-const EMBEDDABLE = /(figma\.com\/proto|figma\.com\/embed|framer\.com|codesandbox\.io\/embed|codepen\.io|youtube\.com\/embed|player\.vimeo\.com)/i;
+const EMBEDDABLE =
+  /(figma\.com\/proto|figma\.com\/embed|framer\.com|codesandbox\.io\/embed|codepen\.io|youtube\.com\/embed|player\.vimeo\.com)/i;
 
 export function isPrototypeLink(url: string): boolean {
   return EMBEDDABLE.test(url);
@@ -24,9 +25,10 @@ export function PrototypeEmbed({
   const ref = useRef<HTMLElement>(null);
   const [fs, setFs] = useState(false);
 
-  const src = url.includes("figma.com") && !url.includes("figma.com/embed")
-    ? `https://www.figma.com/embed?embed_host=share&url=${encodeURIComponent(url)}`
-    : url;
+  const src =
+    url.includes("figma.com") && !url.includes("figma.com/embed")
+      ? `https://www.figma.com/embed?embed_host=share&url=${encodeURIComponent(url)}`
+      : url;
 
   const toggleFs = async () => {
     if (!ref.current) return;
@@ -50,14 +52,14 @@ export function PrototypeEmbed({
       ref={ref}
       className="group/proto relative overflow-hidden rounded-[var(--radius-xl)] border border-hairline bg-[var(--color-card)] shadow-[var(--elevation-2)] transition-shadow duration-[var(--dur-slow)] hover:shadow-[var(--elevation-3)]"
     >
-      <div className="flex items-center justify-between border-b border-hairline bg-[var(--color-surface)] px-[var(--space-5)] py-[var(--space-3)]">
-        <div className="flex items-center gap-[var(--space-3)]">
+      <div className="flex items-center justify-between gap-2 border-b border-hairline bg-[var(--color-surface)] px-3 py-[var(--space-3)] sm:px-[var(--space-5)]">
+        <div className="flex min-w-0 items-center gap-2 sm:gap-[var(--space-3)]">
           <span aria-hidden className="flex gap-[var(--space-1)]">
             <span className="h-2 w-2 rounded-full bg-[var(--color-hairline-strong)]" />
             <span className="h-2 w-2 rounded-full bg-[var(--color-hairline-strong)]" />
             <span className="h-2 w-2 rounded-full bg-[var(--color-accent)]" />
           </span>
-          <span className="font-mono text-[11px] uppercase tracking-[var(--tracking-widest)] text-[var(--color-muted)]">
+          <span className="truncate font-mono text-[10px] uppercase tracking-[0.12em] text-[var(--color-muted)] sm:text-[11px] sm:tracking-[var(--tracking-widest)]">
             {label ?? "Live prototype"}
           </span>
         </div>
@@ -81,7 +83,10 @@ export function PrototypeEmbed({
         </div>
       </div>
       <div
-        style={{ aspectRatio: fs ? undefined : aspect, height: fs ? "calc(100vh - 46px)" : undefined }}
+        style={{
+          aspectRatio: fs ? undefined : aspect,
+          height: fs ? "calc(100vh - 46px)" : undefined,
+        }}
         className="w-full bg-[var(--color-elevated)]"
       >
         <iframe

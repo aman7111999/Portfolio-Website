@@ -31,8 +31,7 @@ const DEFAULTS: Required<Copy> = {
   unlocking_label: "Unlocking…",
   invalid_password_message: "The password is incorrect. Please check it and try again.",
   rate_limit_message: "Too many attempts. Please wait a few minutes before trying again.",
-  not_configured_message:
-    "Project access hasn’t been configured yet. Please check back shortly.",
+  not_configured_message: "Project access hasn’t been configured yet. Please check back shortly.",
   network_error_message: "Something went wrong. Please try again.",
   back_to_projects_label: "Back to Projects",
 };
@@ -81,16 +80,16 @@ export function ProjectPasswordGate({ onUnlocked }: { onUnlocked: () => void }) 
     <section className="container-page grid min-h-[80vh] place-items-center py-16">
       <motion.div
         initial={reduce ? false : { opacity: 0, y: 16 }}
-        animate={{ opacity: 1, y: 0 }}
+        animate={
+          !reduce && shake > 0
+            ? { opacity: 1, y: 0, x: [0, -6, 6, -4, 4, 0] }
+            : { opacity: 1, y: 0 }
+        }
         transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
         key={shake}
-        {...(!reduce && shake > 0
-          ? { animate: { opacity: 1, y: 0, x: [0, -6, 6, -4, 4, 0] } }
-          : {})}
-        className="w-full max-w-[440px] rounded-[var(--radius-xl)] border border-hairline bg-[var(--color-card)] p-8 shadow-[var(--elevation-2)] backdrop-blur-xl md:p-10"
+        className="w-full max-w-[440px] rounded-[var(--radius-xl)] border border-hairline bg-[var(--color-card)] p-6 shadow-[var(--elevation-2)] backdrop-blur-xl sm:p-8 md:p-10"
         style={{
-          backgroundImage:
-            "linear-gradient(180deg, rgba(255,255,255,0.03) 0%, transparent 100%)",
+          backgroundImage: "linear-gradient(180deg, rgba(255,255,255,0.03) 0%, transparent 100%)",
         }}
       >
         <div className="mb-6 flex items-center gap-3">
@@ -110,7 +109,10 @@ export function ProjectPasswordGate({ onUnlocked }: { onUnlocked: () => void }) 
         </p>
 
         <form onSubmit={submit} noValidate>
-          <label htmlFor="project-access-password" className="mb-2 block text-[13px] font-medium text-[var(--color-text)]">
+          <label
+            htmlFor="project-access-password"
+            className="mb-2 block text-[13px] font-medium text-[var(--color-text)]"
+          >
             {copy.password_label}
           </label>
           <div className="relative">

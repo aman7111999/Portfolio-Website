@@ -35,7 +35,11 @@ export default function About() {
   const { data: skills } = useSkills();
   const { data: content } = useAllContent();
 
-  const hero = content?.about_hero ?? {};
+  const hero = (content?.about_hero ?? {}) as {
+    heading_before?: string;
+    heading_accent?: string;
+    heading_after?: string;
+  };
   const roles = (experience ?? []) as PortfolioExperience[];
   const schools = (education ?? []) as PortfolioEducation[];
   const bio = (site?.bio ?? "")
@@ -53,8 +57,8 @@ export default function About() {
         siteName={site?.name ?? "Portfolio"}
       />
 
-      <section className="container-page pb-16 pt-14 md:pb-24 md:pt-24">
-        <div className="grid gap-12 lg:grid-cols-12 lg:items-end">
+      <section className="container-page pb-12 pt-10 sm:pb-16 sm:pt-14 md:pb-24 md:pt-24">
+        <div className="grid gap-10 sm:gap-12 lg:grid-cols-12 lg:items-end">
           <Reveal className="lg:col-span-8">
             <div className="flex items-center gap-3">
               <BrandMark className="h-10 w-10" />
@@ -65,7 +69,7 @@ export default function About() {
                 </p>
               </div>
             </div>
-            <h1 className="mt-8 max-w-[11ch] text-[clamp(3.2rem,7vw,6rem)] font-medium leading-[0.96] tracking-[-0.055em]">
+            <h1 className="mt-7 max-w-[11ch] text-[clamp(2.55rem,12vw,3.2rem)] font-medium leading-[1] tracking-[-0.047em] sm:mt-8 sm:text-[clamp(3.2rem,7vw,6rem)] sm:leading-[0.96] sm:tracking-[-0.055em]">
               {hero.heading_before ?? "A designer who"}{" "}
               <span className="font-serif font-normal italic text-[var(--color-accent)]">
                 {hero.heading_accent ?? "listens"}
@@ -84,7 +88,7 @@ export default function About() {
         </div>
       </section>
 
-      <section className="container-page grid gap-12 pb-24 lg:grid-cols-12 lg:gap-16 md:pb-32">
+      <section className="container-page grid gap-10 pb-16 sm:gap-12 sm:pb-24 md:pb-32 lg:grid-cols-12 lg:gap-16">
         <Reveal className="lg:col-span-5">
           <PortraitFrame
             src={site?.profile_image_url || portraitImg}
@@ -121,12 +125,12 @@ export default function About() {
         </Reveal>
       </section>
 
-      <section className="border-y border-[var(--color-hairline-strong)] bg-[var(--color-surface)] py-24 md:py-28">
+      <section className="border-y border-[var(--color-hairline-strong)] bg-[var(--color-surface)] py-16 sm:py-20 md:py-28">
         <div className="container-page">
           <Reveal className="grid gap-8 lg:grid-cols-12">
             <div className="lg:col-span-5">
               <p className="eyebrow">Operating principles</p>
-              <h2 className="mt-4 max-w-[12ch] text-[clamp(2.5rem,4.5vw,4rem)] leading-[1.02] tracking-[-0.045em]">
+              <h2 className="mt-4 max-w-[12ch] text-[clamp(2.1rem,9.5vw,2.55rem)] leading-[1.06] tracking-[-0.038em] sm:text-[clamp(2.5rem,4.5vw,4rem)] sm:leading-[1.02] sm:tracking-[-0.045em]">
                 How I turn ambiguity into{" "}
                 <span className="font-serif font-normal italic text-[var(--color-accent)]">
                   direction.
@@ -139,7 +143,7 @@ export default function About() {
             </p>
           </Reveal>
 
-          <div className="mt-14 grid border-y border-[var(--color-hairline-strong)] md:grid-cols-3">
+          <div className="mt-10 grid border-y border-[var(--color-hairline-strong)] sm:mt-14 md:grid-cols-3">
             {PRINCIPLES.map((principle, index) => (
               <Reveal key={principle.title} delay={index * 0.06}>
                 <article className="h-full border-b border-[var(--color-hairline)] py-7 md:border-b-0 md:border-r md:px-7 md:first:pl-0 md:last:border-r-0 md:last:pr-0">
@@ -160,11 +164,11 @@ export default function About() {
         </div>
       </section>
 
-      <section className="container-page py-24 md:py-32">
-        <div className="grid gap-14 lg:grid-cols-12">
+      <section className="container-page py-16 sm:py-20 md:py-32">
+        <div className="grid gap-10 sm:gap-14 lg:grid-cols-12">
           <Reveal className="lg:col-span-4">
             <p className="eyebrow">Career snapshot</p>
-            <h2 className="mt-4 max-w-[12ch] text-[clamp(2.35rem,4vw,3.6rem)] leading-[1.04] tracking-[-0.04em]">
+            <h2 className="mt-4 max-w-[12ch] text-[clamp(2.05rem,9vw,2.45rem)] leading-[1.06] tracking-[-0.038em] sm:text-[clamp(2.35rem,4vw,3.6rem)] sm:leading-[1.04] sm:tracking-[-0.04em]">
               Experience without the repetition.
             </h2>
             <p className="mt-5 max-w-[38ch] text-[14px] leading-[1.7] text-[var(--color-muted)]">
@@ -185,8 +189,8 @@ export default function About() {
                   </p>
                   <div>
                     <div className="flex items-baseline justify-between gap-4">
-                      <h3 className="text-[19px] tracking-[-0.02em]">{role.role}</h3>
-                      <span className="system-label text-[var(--color-subtle)]">
+                      <h3 className="min-w-0 text-[19px] tracking-[-0.02em]">{role.role}</h3>
+                      <span className="system-label shrink-0 text-[var(--color-subtle)]">
                         {String(index + 1).padStart(2, "0")}
                       </span>
                     </div>
@@ -199,8 +203,8 @@ export default function About() {
         </div>
       </section>
 
-      <section className="container-page border-t border-[var(--color-hairline-strong)] py-20 md:py-24">
-        <div className="grid gap-14 lg:grid-cols-12">
+      <section className="container-page border-t border-[var(--color-hairline-strong)] py-16 sm:py-20 md:py-24">
+        <div className="grid gap-10 sm:gap-14 lg:grid-cols-12">
           <Reveal className="lg:col-span-5">
             <p className="eyebrow">Education</p>
             <div className="mt-6 border-b border-[var(--color-hairline)]">
@@ -231,7 +235,7 @@ export default function About() {
         </div>
       </section>
 
-      <section className="container-page pb-24 pt-8">
+      <section className="container-page pb-16 pt-6 sm:pb-24 sm:pt-8">
         <Reveal>
           <div className="flex flex-wrap items-end justify-between gap-8 border-t border-[var(--color-hairline-strong)] pt-10">
             <div>

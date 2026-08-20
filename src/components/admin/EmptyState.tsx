@@ -79,8 +79,8 @@ export function BulkActionBar({
 }) {
   if (count === 0) return null;
   return (
-    <div className="pointer-events-none fixed inset-x-0 bottom-6 z-40 flex justify-center px-4">
-      <div className="pointer-events-auto flex items-center gap-3 rounded-full border border-neutral-200 bg-neutral-900 py-2 pl-4 pr-2 text-white shadow-2xl">
+    <div className="pointer-events-none fixed inset-x-0 bottom-3 z-40 flex justify-center px-3 sm:bottom-6 sm:px-4">
+      <div className="pointer-events-auto flex max-w-full items-center gap-2 overflow-x-auto rounded-xl border border-neutral-200 bg-neutral-900 py-2 pl-3 pr-2 text-white shadow-2xl sm:gap-3 sm:rounded-full sm:pl-4">
         <span className="text-sm">
           <strong className="tabular-nums">{count}</strong> selected
         </span>

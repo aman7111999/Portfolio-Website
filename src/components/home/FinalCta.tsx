@@ -25,16 +25,16 @@ export function FinalCta() {
   const copy = content ?? FALLBACK;
 
   return (
-    <section className="border-t border-[var(--color-ending-border)] bg-[var(--color-ending)] py-20 md:py-28">
+    <section className="border-t border-[var(--color-ending-border)] bg-[var(--color-ending)] py-14 sm:py-20 md:py-28">
       <div className="container-page">
         <Reveal>
-          <div className="premium-cta grid gap-10 rounded-[var(--radius-xl)] p-8 text-[var(--color-cta-text)] md:p-12 lg:grid-cols-12 lg:items-end lg:p-16">
+          <div className="premium-cta grid gap-8 rounded-[var(--radius-lg)] p-6 text-[var(--color-cta-text)] sm:gap-10 sm:rounded-[var(--radius-xl)] sm:p-8 md:p-12 lg:grid-cols-12 lg:items-end lg:p-16">
             <div className="relative z-[1] lg:col-span-8">
               <p className="system-label flex items-center gap-2 text-[var(--color-cta-muted)]">
                 <span className="h-1.5 w-1.5 rounded-full bg-[var(--color-cta-accent)] shadow-[0_0_0_4px_var(--color-cta-glow)]" />
                 Available for the right team
               </p>
-              <h2 className="mt-5 max-w-[15ch] text-[clamp(2.6rem,5vw,4.5rem)] font-medium leading-[1.02] tracking-[-0.045em] !text-[var(--color-cta-text)]">
+              <h2 className="mt-5 max-w-[15ch] text-[clamp(2.15rem,10vw,2.7rem)] font-medium leading-[1.05] tracking-[-0.04em] !text-[var(--color-cta-text)] sm:text-[clamp(2.6rem,5vw,4.5rem)] sm:leading-[1.02] sm:tracking-[-0.045em]">
                 {copy.heading_line1}{" "}
                 <span className="font-serif font-normal italic text-[var(--color-cta-accent)]">
                   {copy.heading_accent}

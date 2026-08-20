@@ -2,19 +2,12 @@ import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import { useProjects } from "@/lib/cms";
+import { useProjects, type ProjectRow } from "@/lib/cms";
+import { getProjectPresentation } from "@/lib/projectPresentation";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
-import {
-  Plus,
-  Pencil,
-  Trash2,
-  ExternalLink,
-  FolderKanban,
-  EyeOff,
-  Eye,
-} from "lucide-react";
+import { Plus, Pencil, Trash2, ExternalLink, FolderKanban, EyeOff, Eye } from "lucide-react";
 import { toast } from "sonner";
 import {
   AlertDialog,
@@ -132,7 +125,8 @@ export default function ProjectsList() {
   const toggleSelect = (id: string) => {
     setSelected((s) => {
       const n = new Set(s);
-      n.has(id) ? n.delete(id) : n.add(id);
+      if (n.has(id)) n.delete(id);
+      else n.add(id);
       return n;
     });
   };
@@ -148,7 +142,7 @@ export default function ProjectsList() {
     <AdminPage
       eyebrow="Case studies"
       title="Projects"
-      description="Manage your featured work. Drag rows to reorder."
+      description="Manage case studies and revamp comparisons together. Drag rows to reorder."
       actions={
         <Button asChild>
           <Link to="/admin/projects/new">
@@ -164,7 +158,11 @@ export default function ProjectsList() {
         placeholder="Search projects, company, category…"
         filters={
           <>
-            <ToolbarChip active={filter === "all"} onClick={() => setFilter("all")} count={counts.all}>
+            <ToolbarChip
+              active={filter === "all"}
+              onClick={() => setFilter("all")}
+              count={counts.all}
+            >
               All
             </ToolbarChip>
             <ToolbarChip
@@ -275,7 +273,7 @@ export default function ProjectsList() {
           <AlertDialogHeader>
             <AlertDialogTitle>Delete project?</AlertDialogTitle>
             <AlertDialogDescription>
-              This removes the case study permanently. This cannot be undone.
+              This removes the project permanently. This cannot be undone.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
@@ -295,7 +293,7 @@ export default function ProjectsList() {
           <AlertDialogHeader>
             <AlertDialogTitle>Delete {selected.size} projects?</AlertDialogTitle>
             <AlertDialogDescription>
-              This removes all selected case studies permanently.
+              This removes all selected projects permanently.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
@@ -320,23 +318,25 @@ function ProjectRow({
   onDelete,
   handle,
 }: {
-  project: any;
+  project: ProjectRow;
   selected: boolean;
   onToggle: () => void;
   onDelete: () => void;
   handle?: React.ReactNode;
 }) {
+  const presentation = getProjectPresentation(p);
+
   return (
     <div
       className={clsx(
-        "flex items-center gap-3 rounded-lg border bg-white p-3 transition-all",
+        "flex flex-wrap items-center gap-3 rounded-lg border bg-white p-3 transition-all",
         selected ? "border-neutral-900 shadow-sm" : "border-neutral-200 hover:border-neutral-300",
       )}
     >
       {handle}
       <Checkbox checked={selected} onCheckedChange={onToggle} aria-label={`Select ${p.title}`} />
       <div
-        className="h-14 w-20 shrink-0 rounded border border-neutral-200"
+        className="h-12 w-16 shrink-0 rounded border border-neutral-200 sm:h-14 sm:w-20"
         style={{
           background: p.thumbnail_url
             ? `center/cover url(${p.thumbnail_url})`
@@ -351,6 +351,11 @@ function ProjectRow({
               Featured
             </Badge>
           )}
+          {presentation.type === "revamp_comparison" && (
+            <Badge variant="outline" className="h-5 px-1.5 text-[10px] text-blue-700">
+              Comparison
+            </Badge>
+          )}
           {p.published ? (
             <Badge className="h-5 px-1.5 text-[10px]">Published</Badge>
           ) : (
@@ -363,7 +368,7 @@ function ProjectRow({
           {[p.company, p.category, p.duration].filter(Boolean).join(" · ") || p.slug}
         </p>
       </div>
-      <div className="flex items-center">
+      <div className="ml-auto flex items-center max-sm:w-full max-sm:justify-end max-sm:border-t max-sm:border-neutral-100 max-sm:pt-2">
         {p.published && (
           <Button variant="ghost" size="icon" asChild className="h-8 w-8">
             <Link to={`/projects/${p.slug}`} target="_blank" aria-label="View">

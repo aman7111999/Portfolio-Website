@@ -93,12 +93,12 @@ export default function Contact() {
         siteName={site?.name ?? "Portfolio"}
       />
 
-      <section className="container-page pb-12 pt-12 md:pb-16 md:pt-20">
+      <section className="container-page pb-10 pt-8 sm:pb-12 sm:pt-12 md:pb-16 md:pt-20">
         <Reveal>
           <p className="eyebrow">{d.eyebrow}</p>
           <h1
             className="display-hero mt-6 max-w-[14ch] leading-[1.02]"
-            style={{ fontSize: "clamp(3rem, 6vw, 5.5rem)" }}
+            style={{ fontSize: "clamp(2.5rem, 11vw, 5.5rem)" }}
           >
             {d.heading_before}{" "}
             <span className="font-serif font-normal italic text-[var(--color-accent)]">
@@ -114,14 +114,14 @@ export default function Contact() {
         </Reveal>
       </section>
 
-      <section className="container-page grid gap-12 pb-24 md:grid-cols-12 md:gap-16 md:pb-32">
+      <section className="container-page grid gap-10 pb-16 sm:gap-12 sm:pb-24 md:grid-cols-12 md:gap-16 md:pb-32">
         <Reveal className="md:col-span-7">
           {site?.email && (
             <>
               <a
                 href={`mailto:${site.email}`}
                 className="mt-2 inline-flex max-w-full items-center gap-3 font-display link-underline break-all"
-                style={{ fontSize: "clamp(1.5rem, 5vw, 3rem)", lineHeight: 1.15 }}
+                style={{ fontSize: "clamp(1.3rem, 6vw, 3rem)", lineHeight: 1.2 }}
               >
                 <span className="min-w-0 break-all">{site.email}</span>
                 <ArrowUpRight size={24} className="shrink-0" aria-hidden />
@@ -164,7 +164,7 @@ export default function Contact() {
               e.preventDefault();
               submit.mutate();
             }}
-            className="mt-12 max-w-lg space-y-6"
+            className="mt-10 max-w-lg space-y-6 sm:mt-12"
             noValidate
           >
             <div className="space-y-2">
@@ -213,7 +213,7 @@ export default function Contact() {
             <button
               type="submit"
               disabled={submit.isPending}
-              className="group inline-flex min-h-11 items-center gap-3 rounded-full bg-[var(--color-text)] px-6 py-3 text-[13px] font-medium uppercase tracking-[0.18em] text-[var(--color-inverse)] shadow-[var(--elevation-2)] transition-all hover:bg-[var(--color-accent)] hover:text-[var(--color-accent-contrast)] hover:shadow-[var(--elevation-3)] disabled:opacity-60"
+              className="group inline-flex min-h-11 w-full items-center justify-center gap-3 rounded-full bg-[var(--color-text)] px-6 py-3 text-[13px] font-medium uppercase tracking-[0.18em] text-[var(--color-inverse)] shadow-[var(--elevation-2)] transition-all hover:bg-[var(--color-accent)] hover:text-[var(--color-accent-contrast)] hover:shadow-[var(--elevation-3)] disabled:opacity-60 sm:w-auto"
             >
               {submit.isPending ? (
                 <>

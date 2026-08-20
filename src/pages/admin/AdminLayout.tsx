@@ -233,7 +233,7 @@ export default function AdminLayout() {
             <div className="ml-auto flex items-center gap-2">
               <Button variant="ghost" size="sm" asChild>
                 <Link to="/" target="_blank" className="text-neutral-600 hover:text-neutral-900">
-                  <ExternalLink size={14} /> View site
+                  <ExternalLink size={14} /> <span className="hidden sm:inline">View site</span>
                 </Link>
               </Button>
             </div>

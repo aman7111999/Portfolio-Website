@@ -125,7 +125,7 @@ export function Navbar() {
             transition={{ duration: 0.24 }}
             className="overflow-hidden border-t border-[var(--color-hairline)] bg-[var(--color-surface)] md:hidden"
           >
-            <ul className="container-page py-4">
+            <ul className="container-page max-h-[calc(100svh-76px)] overflow-y-auto py-4">
               {links.map((link) => (
                 <li key={link.label + link.to} className="border-b border-[var(--color-hairline)]">
                   <NavLink

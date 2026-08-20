@@ -31,7 +31,7 @@ export function AdminToolbar({
       )}
     >
       {onSearch && (
-        <div className="relative flex-1 min-w-[200px]">
+        <div className="relative min-w-0 flex-1 basis-full sm:min-w-[200px] sm:basis-auto">
           <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-neutral-400" />
           <Input
             value={search ?? ""}
@@ -51,7 +51,11 @@ export function AdminToolbar({
           )}
         </div>
       )}
-      {filters && <div className="flex items-center gap-1">{filters}</div>}
+      {filters && (
+        <div className="flex max-w-full items-center gap-1 overflow-x-auto pb-1 sm:pb-0">
+          {filters}
+        </div>
+      )}
       {actions && <div className="ml-auto flex items-center gap-2">{actions}</div>}
     </div>
   );

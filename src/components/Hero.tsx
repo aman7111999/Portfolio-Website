@@ -39,8 +39,8 @@ export function Hero() {
   const name = site?.name ?? "Aman Mishra";
 
   return (
-    <section className="container-page relative pb-24 pt-14 md:pb-32 md:pt-24">
-      <div className="grid items-center gap-14 lg:grid-cols-12 lg:gap-16">
+    <section className="container-page relative pb-16 pt-10 sm:pb-20 sm:pt-14 md:pb-32 md:pt-24">
+      <div className="grid items-center gap-10 sm:gap-14 lg:grid-cols-12 lg:gap-16">
         <div className="lg:col-span-7">
           <motion.div
             initial={reduce ? false : { opacity: 0, y: 8 }}
@@ -56,7 +56,7 @@ export function Hero() {
             initial={reduce ? false : { opacity: 0, y: 22 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.08, ease: [0.22, 1, 0.36, 1] }}
-            className="mt-7 max-w-[13ch] text-[clamp(3.15rem,6.4vw,5.25rem)] font-medium leading-[0.98] tracking-[-0.05em] text-[var(--color-text)]"
+            className="mt-6 max-w-[13ch] text-[clamp(2.55rem,12vw,3.15rem)] font-medium leading-[1] tracking-[-0.045em] text-[var(--color-text)] sm:mt-7 sm:text-[clamp(3.15rem,6.4vw,5.25rem)] sm:leading-[0.98] sm:tracking-[-0.05em]"
           >
             {content.headline_before}{" "}
             <span className="font-serif font-normal italic tracking-[-0.025em] text-[var(--color-accent)]">
@@ -78,9 +78,9 @@ export function Hero() {
             initial={reduce ? false : { opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.3 }}
-            className="mt-9 flex flex-wrap items-center gap-6"
+            className="mt-8 flex flex-wrap items-center gap-4 sm:mt-9 sm:gap-6"
           >
-            <Link to={content.cta_to} className="btn-primary">
+            <Link to={content.cta_to} className="btn-primary w-full sm:w-auto">
               {content.cta_label} <ArrowUpRight size={16} />
             </Link>
             {content.secondary_cta_label && content.secondary_cta_to && (
@@ -97,7 +97,7 @@ export function Hero() {
             initial={reduce ? false : { opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.7, delay: 0.42 }}
-            className="mt-14 border-t border-[var(--color-hairline)] pt-5"
+            className="mt-10 border-t border-[var(--color-hairline)] pt-5 sm:mt-14"
           >
             <p className="eyebrow">Focus</p>
             <div className="mt-3 flex flex-wrap gap-x-5 gap-y-2">
@@ -134,7 +134,7 @@ export function Hero() {
                 <span className="system-label">AM / 2026</span>
                 <span className="system-label">04.5+ YRS</span>
               </div>
-              <div className="absolute bottom-5 left-5 right-5 z-10 flex items-center justify-between gap-4 rounded-[10px] border border-white/20 bg-black/35 px-4 py-3 text-white backdrop-blur-md">
+              <div className="absolute bottom-4 left-4 right-4 z-10 flex items-center justify-between gap-3 rounded-[10px] border border-white/20 bg-black/35 px-3 py-3 text-white backdrop-blur-md sm:bottom-5 sm:left-5 sm:right-5 sm:gap-4 sm:px-4">
                 <div className="flex items-center gap-2">
                   <span className="system-dot" />
                   <span className="system-label">Product systems online</span>

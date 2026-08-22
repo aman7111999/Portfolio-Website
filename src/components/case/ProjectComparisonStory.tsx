@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { motion, useReducedMotion } from "framer-motion";
-import { ArrowRight, Check, ImageOff, Maximize2, MoveVertical } from "lucide-react";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import { ArrowRight, Check, ImageOff, Maximize2, MoveVertical, X } from "lucide-react";
 import type {
   ProjectComparisonPresentation,
   ProjectComparisonStage,
@@ -15,6 +15,7 @@ export function ProjectComparisonStory({
 }) {
   const reduce = useReducedMotion();
   const [activeIndex, setActiveIndex] = useState(comparison.stages.length - 1);
+  const [expandedIndex, setExpandedIndex] = useState<number | null>(null);
   const stages = comparison.stages.slice(0, 3);
 
   useEffect(() => {
@@ -77,6 +78,7 @@ export function ProjectComparisonStory({
               stage={active}
               index={activeIndex}
               current={activeIndex === stages.length - 1}
+              onViewFull={() => setExpandedIndex(activeIndex)}
             />
           </motion.div>
         </div>
@@ -95,7 +97,12 @@ export function ProjectComparisonStory({
               transition={{ duration: 0.7, delay: index * 0.08, ease: EASE }}
               className="relative min-w-0"
             >
-              <ComparisonCard stage={stage} index={index} current={index === stages.length - 1} />
+              <ComparisonCard
+                stage={stage}
+                index={index}
+                current={index === stages.length - 1}
+                onViewFull={() => setExpandedIndex(index)}
+              />
               {index < stages.length - 1 && (
                 <span
                   aria-hidden
@@ -114,6 +121,16 @@ export function ProjectComparisonStory({
           <span className="font-medium text-[var(--color-accent)]">Best improved revamp</span>
         </div>
       </div>
+
+      <AnimatePresence>
+        {expandedIndex !== null && stages[expandedIndex]?.image_url && (
+          <ComparisonLightbox
+            stage={stages[expandedIndex]}
+            reduce={!!reduce}
+            onClose={() => setExpandedIndex(null)}
+          />
+        )}
+      </AnimatePresence>
     </section>
   );
 }
@@ -122,10 +139,12 @@ function ComparisonCard({
   stage,
   index,
   current,
+  onViewFull,
 }: {
   stage: ProjectComparisonStage;
   index: number;
   current: boolean;
+  onViewFull: () => void;
 }) {
   return (
     <article
@@ -153,7 +172,7 @@ function ComparisonCard({
         )}
       </div>
 
-      <ComparisonStageMedia stage={stage} index={index} current={current} />
+      <ComparisonStageMedia stage={stage} index={index} current={current} onViewFull={onViewFull} />
 
       <div className="flex flex-1 flex-col p-5 md:p-6">
         <h3 className="comparison-card-title text-[clamp(1.35rem,2.2vw,1.75rem)] leading-[1.16] tracking-[-0.025em]">
@@ -186,10 +205,12 @@ function ComparisonStageMedia({
   stage,
   index,
   current,
+  onViewFull,
 }: {
   stage: ProjectComparisonStage;
   index: number;
   current: boolean;
+  onViewFull: () => void;
 }) {
   const [failed, setFailed] = useState(false);
 
@@ -246,16 +267,92 @@ function ComparisonStageMedia({
             <MoveVertical size={11} /> Scroll screen
           </span>
         )}
-        <a
-          href={stage.image_url}
-          target="_blank"
-          rel="noreferrer"
+        <button
+          type="button"
+          onClick={onViewFull}
           aria-label={`Open ${stage.label} design at full size`}
           className="pointer-events-auto ml-auto inline-flex min-h-9 items-center gap-1.5 rounded-full border border-white/20 bg-black/70 px-3 text-[10px] font-semibold text-white backdrop-blur-sm transition-colors hover:bg-black/85"
         >
           <Maximize2 size={11} /> View full
-        </a>
+        </button>
       </div>
     </div>
+  );
+}
+
+function ComparisonLightbox({
+  stage,
+  reduce,
+  onClose,
+}: {
+  stage: ProjectComparisonStage;
+  reduce: boolean;
+  onClose: () => void;
+}) {
+  useEffect(() => {
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") onClose();
+    };
+
+    window.addEventListener("keydown", onKeyDown);
+    return () => {
+      window.removeEventListener("keydown", onKeyDown);
+      document.body.style.overflow = previousOverflow;
+    };
+  }, [onClose]);
+
+  return (
+    <motion.div
+      role="dialog"
+      aria-modal="true"
+      aria-label={`${stage.label} design at full size`}
+      initial={reduce ? false : { opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.25 }}
+      onClick={onClose}
+      className="fixed inset-0 z-[100] overflow-y-auto bg-black/92 backdrop-blur-md"
+    >
+      <div className="sticky top-0 z-10 flex min-h-16 items-center justify-between gap-4 border-b border-white/15 bg-black/75 px-4 text-white backdrop-blur-md sm:px-6">
+        <div className="min-w-0">
+          <p className="truncate text-[12px] font-semibold uppercase tracking-[0.1em]">
+            {stage.label}
+          </p>
+          {stage.timeframe && (
+            <p className="mt-0.5 truncate text-[11px] text-white/60">{stage.timeframe}</p>
+          )}
+        </div>
+        <button
+          type="button"
+          onClick={onClose}
+          aria-label="Close full-screen design"
+          className="grid h-11 w-11 shrink-0 place-items-center rounded-full border border-white/20 bg-white/10 text-white transition-colors hover:bg-white/20"
+        >
+          <X size={18} />
+        </button>
+      </div>
+
+      <motion.figure
+        initial={reduce ? false : { opacity: 0, y: 16 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: 8 }}
+        transition={{ duration: 0.35, ease: EASE }}
+        onClick={(event) => event.stopPropagation()}
+        className="mx-auto w-full max-w-[760px] px-3 pb-8 pt-4 sm:px-6 sm:pb-12 sm:pt-6"
+      >
+        <img
+          src={stage.image_url ?? ""}
+          alt={stage.image_alt}
+          className="block h-auto w-full rounded-[var(--radius-md)] bg-white shadow-2xl"
+        />
+        <figcaption className="px-1 pt-4 text-[13px] leading-6 text-white/70">
+          Scroll to explore the complete {stage.label.toLowerCase()} screen. Press Esc or use the
+          close button to return to the case study.
+        </figcaption>
+      </motion.figure>
+    </motion.div>
   );
 }

@@ -154,12 +154,30 @@ function ComparisonHeroVisual({ stages }: { stages: ProjectComparisonStage[] }) 
 
   return (
     <div className="relative h-full w-full overflow-hidden bg-[linear-gradient(145deg,var(--color-elevated),var(--color-surface))]">
-      <div aria-hidden className="tech-grid absolute inset-0 opacity-55" />
+      <div aria-hidden className="tech-grid absolute inset-0 opacity-40" />
+      <div
+        aria-hidden
+        className="absolute -right-[8%] top-[16%] h-[74%] w-[38%] rounded-full bg-[color-mix(in_oklab,var(--color-accent)_10%,transparent)] blur-[80px]"
+      />
+      <div className="comparison-hero-status absolute inset-x-0 top-0 z-[2] flex min-h-12 items-center justify-between gap-4 border-b border-[var(--color-hairline)] bg-[color-mix(in_oklab,var(--color-surface)_58%,transparent)] px-4 backdrop-blur-sm sm:min-h-16 sm:px-7 md:px-9">
+        <p className="inline-flex items-center gap-2 text-[9px] font-semibold uppercase tracking-[0.13em] text-[var(--color-muted)] sm:text-[10px]">
+          <span className="h-1.5 w-1.5 rounded-full bg-[var(--color-accent)]" />
+          Portfolio evolution
+        </p>
+        <div className="flex items-center gap-2 font-mono text-[9px] text-[var(--color-subtle)] sm:gap-3 sm:text-[10px]">
+          <span>01</span>
+          <span className="h-px w-7 bg-[var(--color-hairline-strong)] sm:w-12" />
+          <span className="text-[var(--color-accent)]">03</span>
+        </div>
+      </div>
 
-      <div className="comparison-hero-mobile relative z-[1] flex h-full items-end justify-center px-5 pt-5 sm:hidden">
-        <figure className="flex h-[94%] w-[62%] max-w-[210px] min-w-0 flex-col overflow-hidden rounded-t-[12px] border border-[color-mix(in_oklab,var(--color-accent)_55%,var(--color-hairline-strong))] bg-[var(--color-surface)] shadow-[var(--elevation-2)]">
+      <div className="comparison-hero-mobile relative z-[1] flex h-full items-end justify-center px-5 pt-14 sm:hidden">
+        <figure className="flex h-[79%] w-[64%] max-w-[210px] min-w-0 flex-col overflow-hidden rounded-t-[12px] border border-[color-mix(in_oklab,var(--color-accent)_60%,var(--color-hairline-strong))] bg-[var(--color-surface)] shadow-[0_14px_40px_color-mix(in_oklab,var(--color-accent)_16%,transparent)]">
           <figcaption className="flex min-h-9 items-center justify-between gap-2 border-b border-[var(--color-hairline)] px-2.5 text-[9px] font-semibold uppercase tracking-[0.08em] text-[var(--color-muted)]">
-            <span className="truncate">{currentStage.label}</span>
+            <span className="inline-flex min-w-0 items-center gap-1.5">
+              <span className="font-mono text-[var(--color-subtle)]">03</span>
+              <span className="truncate">{currentStage.label}</span>
+            </span>
             <span className="shrink-0 text-[var(--color-accent)]">Current</span>
           </figcaption>
           <img
@@ -170,20 +188,25 @@ function ComparisonHeroVisual({ stages }: { stages: ProjectComparisonStage[] }) 
         </figure>
       </div>
 
-      <div className="comparison-hero-desktop relative z-[1] hidden h-full items-end justify-center gap-4 px-8 pt-8 sm:flex md:gap-7 md:px-14">
+      <div className="comparison-hero-desktop relative z-[1] hidden h-full items-end justify-center gap-4 px-8 pt-20 sm:flex md:gap-7 md:px-14">
         {stages.map((stage, index) => {
           const current = index === stages.length - 1;
           return (
             <figure
               key={stage.id}
-              className={`flex h-[90%] min-w-0 max-w-[300px] flex-1 flex-col overflow-hidden rounded-t-[14px] border bg-[var(--color-surface)] shadow-[var(--elevation-2)] ${
+              className={`flex h-[84%] min-w-0 max-w-[300px] flex-1 flex-col overflow-hidden rounded-t-[14px] border bg-[var(--color-surface)] transition-[border-color,box-shadow,opacity] duration-500 ${
                 current
-                  ? "border-[color-mix(in_oklab,var(--color-accent)_55%,var(--color-hairline-strong))]"
-                  : "border-[var(--color-hairline-strong)] opacity-82"
+                  ? "border-[color-mix(in_oklab,var(--color-accent)_65%,var(--color-hairline-strong))] shadow-[0_18px_60px_color-mix(in_oklab,var(--color-accent)_16%,transparent)]"
+                  : "border-[var(--color-hairline-strong)] opacity-72 shadow-[var(--elevation-1)]"
               }`}
             >
               <figcaption className="flex min-h-11 items-center justify-between gap-2 border-b border-[var(--color-hairline)] px-3 text-[10px] font-semibold uppercase tracking-[0.08em] text-[var(--color-muted)]">
-                <span className="truncate">{stage.label}</span>
+                <span className="inline-flex min-w-0 items-center gap-2">
+                  <span className="font-mono text-[var(--color-subtle)]">
+                    {String(index + 1).padStart(2, "0")}
+                  </span>
+                  <span className="truncate">{stage.label}</span>
+                </span>
                 {current && <span className="shrink-0 text-[var(--color-accent)]">Current</span>}
               </figcaption>
               <img

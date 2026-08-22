@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { ArrowRight, Check, ImageOff, Maximize2, MoveVertical, X } from "lucide-react";
+import { createPortal } from "react-dom";
 import type {
   ProjectComparisonPresentation,
   ProjectComparisonStage,
@@ -122,15 +123,19 @@ export function ProjectComparisonStory({
         </div>
       </div>
 
-      <AnimatePresence>
-        {expandedIndex !== null && stages[expandedIndex]?.image_url && (
-          <ComparisonLightbox
-            stage={stages[expandedIndex]}
-            reduce={!!reduce}
-            onClose={() => setExpandedIndex(null)}
-          />
+      {typeof document !== "undefined" &&
+        createPortal(
+          <AnimatePresence>
+            {expandedIndex !== null && stages[expandedIndex]?.image_url && (
+              <ComparisonLightbox
+                stage={stages[expandedIndex]}
+                reduce={!!reduce}
+                onClose={() => setExpandedIndex(null)}
+              />
+            )}
+          </AnimatePresence>,
+          document.body,
         )}
-      </AnimatePresence>
     </section>
   );
 }
@@ -306,6 +311,7 @@ function ComparisonLightbox({
 
   return (
     <motion.div
+      data-lenis-prevent
       role="dialog"
       aria-modal="true"
       aria-label={`${stage.label} design at full size`}
@@ -314,7 +320,7 @@ function ComparisonLightbox({
       exit={{ opacity: 0 }}
       transition={{ duration: 0.25 }}
       onClick={onClose}
-      className="fixed inset-0 z-[100] overflow-y-auto bg-black/92 backdrop-blur-md"
+      className="fixed inset-0 z-[100] touch-pan-y overflow-y-auto overscroll-contain bg-black/92 backdrop-blur-md [-webkit-overflow-scrolling:touch]"
     >
       <div className="sticky top-0 z-10 flex min-h-16 items-center justify-between gap-4 border-b border-white/15 bg-black/75 px-4 text-white backdrop-blur-md sm:px-6">
         <div className="min-w-0">

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
-import { ArrowRight, Check } from "lucide-react";
+import { ArrowRight, Check, ImageOff, Maximize2, MoveVertical } from "lucide-react";
 import type {
   ProjectComparisonPresentation,
   ProjectComparisonStage,
@@ -26,12 +26,15 @@ export function ProjectComparisonStory({
   const active = stages[Math.min(activeIndex, stages.length - 1)];
 
   return (
-    <section id="evolution" className="container-page scroll-mt-24 py-14 sm:scroll-mt-28 md:py-24">
+    <section
+      id="evolution"
+      className="comparison-section container-page scroll-mt-24 py-14 sm:scroll-mt-28 md:py-24"
+    >
       <div className="mx-auto max-w-[1120px] border-t border-[var(--color-hairline)] pt-10 md:pt-16">
         <div className="comparison-header-grid grid gap-6 md:grid-cols-[minmax(0,1fr)_minmax(260px,0.7fr)] md:items-end">
           <div>
             <p className="eyebrow text-[var(--color-accent)]">{comparison.eyebrow}</p>
-            <h2 className="mt-4 max-w-[18ch] text-[clamp(2.05rem,4vw,3.4rem)] leading-[1.06] tracking-[-0.038em]">
+            <h2 className="comparison-title mt-4 max-w-[18ch] text-[clamp(2.05rem,4vw,3.4rem)] leading-[1.06] tracking-[-0.038em]">
               {comparison.title}
             </h2>
           </div>
@@ -59,11 +62,6 @@ export function ProjectComparisonStory({
                 }`}
               >
                 <span className="block truncate">{stage.label}</span>
-                {stage.timeframe && (
-                  <span className="mt-0.5 block truncate text-[9px] font-normal opacity-70">
-                    {stage.timeframe}
-                  </span>
-                )}
               </button>
             ))}
           </div>
@@ -155,26 +153,10 @@ function ComparisonCard({
         )}
       </div>
 
-      <div className="relative aspect-[4/5] overflow-hidden border-b border-[var(--color-hairline)] bg-[var(--color-elevated)] sm:aspect-[16/11] md:aspect-[4/5]">
-        {stage.image_url ? (
-          <img
-            src={stage.image_url}
-            alt={stage.image_alt}
-            loading="lazy"
-            className="h-full w-full object-contain p-2 sm:p-3"
-          />
-        ) : (
-          <div className="system-frame absolute inset-0 grid place-items-center">
-            <div aria-hidden className="tech-grid absolute inset-0 opacity-50" />
-            <span className="relative font-serif text-[clamp(5rem,18vw,9rem)] leading-none text-[color-mix(in_oklab,var(--color-accent)_22%,transparent)]">
-              {String(index + 1).padStart(2, "0")}
-            </span>
-          </div>
-        )}
-      </div>
+      <ComparisonStageMedia stage={stage} index={index} current={current} />
 
       <div className="flex flex-1 flex-col p-5 md:p-6">
-        <h3 className="text-[clamp(1.35rem,2.2vw,1.75rem)] leading-[1.16] tracking-[-0.025em]">
+        <h3 className="comparison-card-title text-[clamp(1.35rem,2.2vw,1.75rem)] leading-[1.16] tracking-[-0.025em]">
           {stage.title}
         </h3>
         {stage.description && (
@@ -197,5 +179,83 @@ function ComparisonCard({
         )}
       </div>
     </article>
+  );
+}
+
+function ComparisonStageMedia({
+  stage,
+  index,
+  current,
+}: {
+  stage: ProjectComparisonStage;
+  index: number;
+  current: boolean;
+}) {
+  const [failed, setFailed] = useState(false);
+
+  useEffect(() => {
+    setFailed(false);
+  }, [stage.image_url]);
+
+  if (!stage.image_url) {
+    return (
+      <div className="comparison-stage-media system-frame relative grid h-[min(68vh,600px)] min-h-[440px] place-items-center overflow-hidden border-b border-[var(--color-hairline)] bg-[var(--color-elevated)] md:h-[560px] lg:h-[660px]">
+        <div aria-hidden className="tech-grid absolute inset-0 opacity-50" />
+        <span className="relative font-serif text-[clamp(5rem,18vw,9rem)] leading-none text-[color-mix(in_oklab,var(--color-accent)_22%,transparent)]">
+          {String(index + 1).padStart(2, "0")}
+        </span>
+      </div>
+    );
+  }
+
+  return (
+    <div className="comparison-stage-media relative h-[min(68vh,600px)] min-h-[440px] overflow-hidden border-b border-[var(--color-hairline)] bg-[var(--color-elevated)] md:h-[560px] lg:h-[660px]">
+      {failed ? (
+        <div className="absolute inset-0 grid place-items-center px-6 text-center">
+          <div>
+            <ImageOff className="mx-auto text-[var(--color-subtle)]" size={24} />
+            <p className="mt-3 text-[13px] font-medium text-[var(--color-text)]">
+              This screen could not be loaded
+            </p>
+            <p className="mt-1 text-[12px] leading-5 text-[var(--color-muted)]">
+              Replace the image from the CMS or try opening the original.
+            </p>
+          </div>
+        </div>
+      ) : (
+        <div
+          role="region"
+          tabIndex={0}
+          aria-label={`Scrollable ${stage.label} design screen`}
+          className="h-full overflow-y-auto overscroll-contain scroll-smooth focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[var(--color-accent)]"
+        >
+          <img
+            src={stage.image_url}
+            alt={stage.image_alt}
+            loading={current ? "eager" : "lazy"}
+            decoding="async"
+            onError={() => setFailed(true)}
+            className="block h-auto w-full"
+          />
+        </div>
+      )}
+
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 flex items-end justify-between gap-3 bg-gradient-to-t from-black/60 via-black/15 to-transparent px-3 pb-3 pt-10 text-white">
+        {!failed && (
+          <span className="inline-flex items-center gap-1.5 text-[10px] font-medium">
+            <MoveVertical size={11} /> Scroll screen
+          </span>
+        )}
+        <a
+          href={stage.image_url}
+          target="_blank"
+          rel="noreferrer"
+          aria-label={`Open ${stage.label} design at full size`}
+          className="pointer-events-auto ml-auto inline-flex min-h-9 items-center gap-1.5 rounded-full border border-white/20 bg-black/70 px-3 text-[10px] font-semibold text-white backdrop-blur-sm transition-colors hover:bg-black/85"
+        >
+          <Maximize2 size={11} /> View full
+        </a>
+      </div>
+    </div>
   );
 }

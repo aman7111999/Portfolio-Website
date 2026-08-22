@@ -418,6 +418,206 @@ export const PORTFOLIO_PROJECTS = [
     updated_at: stamp,
   },
   {
+    id: "riise-portfolio-revamp",
+    title: "RIISE Portfolio Revamp",
+    slug: "riise-portfolio-revamp",
+    short_description:
+      "Simplifying a data-heavy, multi-product portfolio into a calm, structured experience with clearer priorities and lower cognitive load.",
+    overview:
+      "<p>RIISE brings many kinds of investments into one place—stocks, mutual funds, U.S. stocks, bonds, investment strategies, and more. That breadth is powerful, but it also made the portfolio page carry too much at once.</p><p>The oldest experience worked, yet it felt dated and asked users to scan the same numbers across a long series of cards. When I joined Motilal Oswal, our first shared task was to build a stronger design system and bring it into RIISE, the company’s highest-revenue product.</p><p>That system gave the product a cleaner, more dependable visual language. It also gave us the confidence to go further: not just restyle the portfolio, but rethink how it should feel when many products live together.</p>",
+    problem_statement:
+      "<p>The page grew by adding one more card whenever a product was added. Over time, the portfolio became longer, louder, and harder to read.</p><ul><li>Total value, profit and loss, allocation, and product details competed for attention.</li><li>The same information repeated across multiple asset cards.</li><li>Users had to work to understand what mattered right now.</li><li>A visual refresh alone would not solve the underlying structure.</li></ul><p>The challenge was simple to say and difficult to solve: <strong>show more financial products while making the experience feel lighter.</strong></p>",
+    research:
+      "<p>I reviewed the existing journey screen by screen and compared it with leading wealth products. The most useful question was not “How do we make this prettier?” It was “What does someone need to understand in the first few seconds?”</p><ol><li>What is my portfolio worth?</li><li>How is it doing today?</li><li>Where is my money invested?</li><li>Is anything asking for attention?</li><li>How do I move into a specific asset?</li></ol><p>That simple sequence became the backbone of the revamp.</p>",
+    design_process:
+      "<p>The work moved through three deliberate stages.</p><ol><li><strong>Stabilise the foundation.</strong> We built and applied the RIISE design system across the older experience, bringing consistency to type, spacing, colour, components, and states.</li><li><strong>See past the polish.</strong> The system made the page feel more modern, but the same repeated-card structure was still doing too much work.</li><li><strong>Rebuild the reading order.</strong> I reorganised the portfolio around one clear summary, readable asset groups, and signals that help users notice what deserves attention.</li></ol><p>At each step, I checked how the page would behave as more products and states were added. The goal was not a perfect static screen. It was a structure that could keep growing without becoming heavy again.</p>",
+    solution:
+      "<p>The latest portfolio starts with the full picture, then lets users move into detail at their own pace.</p><ul><li><strong>One clear summary:</strong> current value, invested value, and profit or loss now read as one connected story.</li><li><strong>Choice without fragmentation:</strong> Overall, Motilal Oswal, and External views keep the source visible without splitting the experience.</li><li><strong>Assets as readable rows:</strong> stocks, mutual funds, U.S. stocks, IAP, and non-tradable holdings show allocation and performance without repeating an entire card.</li><li><strong>Attention before exploration:</strong> risk and performance signals point to what may need a closer look.</li><li><strong>Secondary value at the right depth:</strong> MTF borrowing, dividends, ideas, and other modules sit below the essential portfolio view.</li></ul><p>The result is not less data. It is <strong>better-timed data</strong>.</p>",
+    outcome:
+      "<p>The latest experience can hold a wider product mix while feeling calmer and easier to scan. It gives the RIISE portfolio a visual and interaction standard that now stands alongside leading investment products.</p><p>The work also changed the internal conversation. We moved from applying a design system to using that system as a foundation for deeper product decisions. Instead of adding one more card, the team now had a clearer model for what belongs first, what can wait, and how new products should enter the portfolio.</p><p>No unsupported uplift is claimed here. The evidence is visible in the evolution: stronger hierarchy, lower repetition, and a structure designed to scale.</p>",
+    learnings:
+      "<p>A design system can make a product consistent, but consistency alone does not make it simple. The real improvement came when we stopped treating every data point as equally urgent.</p><p>My biggest learning: <strong>simplification is not removing information. It is giving every piece of information the right moment.</strong></p>",
+    role: "Portfolio UX · Visual design · Design-system adoption",
+    duration: "Design-system rollout to latest revamp",
+    company: "Motilal Oswal Financial Services",
+    tools: ["Figma", "Design system", "Prototyping"],
+    tags: ["Fintech", "Portfolio", "UX revamp", "Visual design"],
+    category: "Portfolio redesign",
+    timeline: "2025–2026",
+    thumbnail_url: "/projects/riise-portfolio-revamp/riise-latest-revamp.jpg",
+    presentation: {
+      type: "revamp_comparison",
+      card: {
+        style: "image",
+        image_alt: "Latest RIISE multi-product portfolio revamp",
+        eyebrow: "Revamp comparison",
+      },
+      hero: {
+        style: "image",
+        image_url: "/projects/riise-portfolio-revamp/riise-latest-revamp.jpg",
+        image_alt: "Latest RIISE portfolio experience across multiple investment products",
+      },
+      comparison: {
+        eyebrow: "Design evolution",
+        title: "From stacked data to one clear portfolio story.",
+        description:
+          "The products stayed complex. The experience became easier to read with every stage—first through consistency, then through a deeper rethink of what users should see first.",
+        stages: [
+          {
+            id: "oldest",
+            label: "Oldest",
+            title: "A working page without a clear point of view",
+            timeframe: "Original experience",
+            image_url: "/projects/riise-portfolio-revamp/riise-original.png",
+            image_alt: "Original RIISE portfolio with repeated cards for each investment product",
+            description:
+              "Every product had its own card and repeated the same financial details. The experience worked, but reading it took effort and the visual language felt dated.",
+            highlights: [
+              "Repeated information across product cards",
+              "Weak priority between essential and supporting data",
+              "Every new product made the page longer",
+            ],
+          },
+          {
+            id: "systemised",
+            label: "Systemised",
+            title: "A stronger system, still carrying the old structure",
+            timeframe: "Design-system rollout",
+            image_url: "/projects/riise-portfolio-revamp/riise-design-system.jpg",
+            image_alt: "RIISE portfolio after the new design system and UI improvements",
+            description:
+              "Applying the new RIISE design system improved type, spacing, colour, components, and trust. The page felt modern, but its content model still came from the older experience.",
+            highlights: [
+              "Consistent components and spacing",
+              "Clearer readability and visual trust",
+              "A stable foundation for deeper UX change",
+            ],
+          },
+          {
+            id: "revamped",
+            label: "Revamped",
+            title: "A calm view across every investment",
+            timeframe: "Latest experience",
+            image_url: "/projects/riise-portfolio-revamp/riise-latest-revamp.jpg",
+            image_alt:
+              "Latest RIISE portfolio revamp with a clear summary and structured asset list",
+            description:
+              "The latest page is organised around the questions users bring to a portfolio: what do I have, how is it doing, where is it invested, and what needs attention?",
+            highlights: [
+              "Priority information appears first",
+              "Assets stay scannable without hiding detail",
+              "Risk, allocation, and performance guide the next action",
+            ],
+          },
+        ],
+      },
+      story: { enabled: false },
+      gallery: {
+        eyebrow: "Visual archive",
+        title: "The portfolio in detail",
+        description: "Key moments from the RIISE portfolio evolution.",
+      },
+      prototype: {
+        eyebrow: "Prototype",
+        title: "Explore the experience",
+        description: "Walk through the latest RIISE portfolio journey.",
+      },
+      labels: {
+        back_to_work: "Back to work",
+        company: "Company",
+        timeline: "Timeline",
+        role: "My contribution",
+        duration: "Journey",
+        category: "Category",
+        case_map: "Case map",
+        technology: "Tools",
+        tags: "Focus",
+        external_links: "External links",
+        previous_project: "Previous",
+        next_project: "Next project",
+      },
+      seo: {
+        title: "RIISE Portfolio Revamp",
+        description:
+          "How Aman Mishra simplified a data-heavy, multi-product investment portfolio through design-system adoption and a deeper UX revamp.",
+      },
+      cta: {
+        eyebrow: "More product work",
+        title: "Complex product. Clear experience.",
+        label: "View more work",
+        url: "/work",
+      },
+      sections: {
+        overview: {
+          visible: true,
+          label: "Overview",
+          eyebrow: "The product",
+          title: "A portfolio carrying too much at once",
+        },
+        problem: {
+          visible: true,
+          label: "Challenge",
+          eyebrow: "The tension",
+          title: "Show more without making people work harder",
+        },
+        research: {
+          visible: true,
+          label: "Direction",
+          eyebrow: "The simple questions",
+          title: "What users need in the first few seconds",
+        },
+        process: {
+          visible: true,
+          label: "Approach",
+          eyebrow: "Three deliberate stages",
+          title: "Fix the foundation, then rethink the experience",
+        },
+        solution: {
+          visible: true,
+          label: "Revamp",
+          eyebrow: "The latest experience",
+          title: "Less repetition. Clearer priorities.",
+        },
+        impact: {
+          visible: true,
+          label: "Outcome",
+          eyebrow: "What changed",
+          title: "A portfolio built to grow without feeling heavier",
+        },
+        reflection: {
+          visible: true,
+          label: "Learning",
+          eyebrow: "What stayed with me",
+          title: "Consistency opens the door. Hierarchy changes the experience.",
+        },
+      },
+    },
+    gallery: [],
+    links: [],
+    metrics: [
+      {
+        value: "3 stages",
+        label: "Visible product evolution",
+        hint: "Original, systemised, and fully revamped",
+      },
+      {
+        value: "5+ assets",
+        label: "One portfolio structure",
+        hint: "Stocks, funds, U.S. stocks, IAP, and more",
+      },
+      {
+        value: "1 view",
+        label: "From summary to action",
+        hint: "Value, performance, allocation, and risk",
+      },
+    ],
+    featured: true,
+    published: false,
+    sort_order: 2,
+    created_at: stamp,
+    updated_at: stamp,
+  },
+  {
     id: "riise-personalisation",
     title: "Riise Hyper-personalisation",
     slug: "riise-hyper-personalisation",

@@ -845,6 +845,10 @@
   font-size: clamp(2.45rem, 12vw, 3.25rem) !important;
   line-height: 1 !important;
 }
+.project-preview-mobile .case-hero-summary {
+  margin-top: 20px !important;
+  font-size: 16px !important;
+}
 .project-preview-mobile .case-hero-meta,
 .project-preview-mobile .case-narrative-grid,
 .project-preview-mobile .case-evidence-grid,
@@ -864,6 +868,12 @@
 .project-preview-mobile .case-hero-visual > img {
   object-fit: contain !important;
 }
+.project-preview-mobile .comparison-hero-mobile {
+  display: flex !important;
+}
+.project-preview-mobile .comparison-hero-desktop {
+  display: none !important;
+}
 .project-preview-mobile .case-outline {
   align-items: stretch !important;
   flex-direction: column !important;
@@ -871,6 +881,20 @@
 .project-preview-mobile .case-narrative-grid {
   gap: 28px !important;
   padding-top: 40px !important;
+}
+.project-preview-mobile .case-narrative-section,
+.project-preview-mobile .comparison-section {
+  padding-block: 56px !important;
+}
+.project-preview-mobile .comparison-title {
+  font-size: 2.15rem !important;
+}
+.project-preview-mobile .comparison-card-title {
+  font-size: 1.35rem !important;
+}
+.project-preview-mobile .comparison-stage-media {
+  height: 540px !important;
+  min-height: 0 !important;
 }
 .project-preview-mobile .case-evidence-grid > * {
   border-right: 0 !important;

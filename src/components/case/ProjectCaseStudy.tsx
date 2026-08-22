@@ -5,6 +5,7 @@ import type { ProjectRow } from "@/lib/cms";
 import {
   getProjectPresentation,
   resolveHeroVisual,
+  type ProjectComparisonStage,
   type ProjectPresentation,
   type ProjectSectionKey,
 } from "@/lib/projectPresentation";
@@ -81,6 +82,9 @@ export function ProjectCaseStudyHero({
 }) {
   const reduce = useReducedMotion();
   const hero = resolveHeroVisual(project);
+  const comparisonHeroStages = presentation.comparison.stages
+    .filter((stage) => !!stage.image_url)
+    .slice(0, 3);
 
   return (
     <section
@@ -109,7 +113,7 @@ export function ProjectCaseStudyHero({
           {project.title}
         </h1>
         {project.short_description && (
-          <p className="mt-5 max-w-[62ch] text-[16px] leading-[1.65] text-[var(--color-muted)] sm:mt-7 sm:text-[18px] md:text-[20px]">
+          <p className="case-hero-summary mt-5 max-w-[62ch] text-[16px] leading-[1.65] text-[var(--color-muted)] sm:mt-7 sm:text-[18px] md:text-[20px]">
             {project.short_description}
           </p>
         )}
@@ -127,7 +131,9 @@ export function ProjectCaseStudyHero({
         transition={{ duration: 0.85, delay: 0.1, ease: EASE }}
         className="case-hero-visual project-visual relative mt-9 aspect-[4/3] min-h-0 overflow-hidden rounded-[var(--radius-md)] border border-[var(--color-hairline-strong)] bg-[var(--color-elevated)] sm:mt-12 sm:aspect-[16/9] sm:rounded-[var(--radius-lg)] md:mt-14 md:aspect-[16/8] md:min-h-[260px]"
       >
-        {hero.kind === "image" && hero.imageUrl ? (
+        {presentation.type === "revamp_comparison" && comparisonHeroStages.length >= 2 ? (
+          <ComparisonHeroVisual stages={comparisonHeroStages} />
+        ) : hero.kind === "image" && hero.imageUrl ? (
           <img
             src={hero.imageUrl}
             alt={presentation.hero.image_alt}
@@ -140,6 +146,56 @@ export function ProjectCaseStudyHero({
         )}
       </motion.div>
     </section>
+  );
+}
+
+function ComparisonHeroVisual({ stages }: { stages: ProjectComparisonStage[] }) {
+  const currentStage = stages[stages.length - 1];
+
+  return (
+    <div className="relative h-full w-full overflow-hidden bg-[linear-gradient(145deg,var(--color-elevated),var(--color-surface))]">
+      <div aria-hidden className="tech-grid absolute inset-0 opacity-55" />
+
+      <div className="comparison-hero-mobile relative z-[1] flex h-full items-end justify-center px-5 pt-5 sm:hidden">
+        <figure className="flex h-[94%] w-[62%] max-w-[210px] min-w-0 flex-col overflow-hidden rounded-t-[12px] border border-[color-mix(in_oklab,var(--color-accent)_55%,var(--color-hairline-strong))] bg-[var(--color-surface)] shadow-[var(--elevation-2)]">
+          <figcaption className="flex min-h-9 items-center justify-between gap-2 border-b border-[var(--color-hairline)] px-2.5 text-[9px] font-semibold uppercase tracking-[0.08em] text-[var(--color-muted)]">
+            <span className="truncate">{currentStage.label}</span>
+            <span className="shrink-0 text-[var(--color-accent)]">Current</span>
+          </figcaption>
+          <img
+            src={currentStage.image_url ?? ""}
+            alt={currentStage.image_alt}
+            className="min-h-0 w-full flex-1 object-cover object-top"
+          />
+        </figure>
+      </div>
+
+      <div className="comparison-hero-desktop relative z-[1] hidden h-full items-end justify-center gap-4 px-8 pt-8 sm:flex md:gap-7 md:px-14">
+        {stages.map((stage, index) => {
+          const current = index === stages.length - 1;
+          return (
+            <figure
+              key={stage.id}
+              className={`flex h-[90%] min-w-0 max-w-[300px] flex-1 flex-col overflow-hidden rounded-t-[14px] border bg-[var(--color-surface)] shadow-[var(--elevation-2)] ${
+                current
+                  ? "border-[color-mix(in_oklab,var(--color-accent)_55%,var(--color-hairline-strong))]"
+                  : "border-[var(--color-hairline-strong)] opacity-82"
+              }`}
+            >
+              <figcaption className="flex min-h-11 items-center justify-between gap-2 border-b border-[var(--color-hairline)] px-3 text-[10px] font-semibold uppercase tracking-[0.08em] text-[var(--color-muted)]">
+                <span className="truncate">{stage.label}</span>
+                {current && <span className="shrink-0 text-[var(--color-accent)]">Current</span>}
+              </figcaption>
+              <img
+                src={stage.image_url ?? ""}
+                alt={stage.image_alt}
+                className="h-full min-h-0 w-full flex-1 object-cover object-top"
+              />
+            </figure>
+          );
+        })}
+      </div>
+    </div>
   );
 }
 
@@ -268,7 +324,10 @@ function NarrativeGroup({
   const reduce = useReducedMotion();
 
   return (
-    <section id={group.id} className="container-page scroll-mt-24 py-14 sm:scroll-mt-28 md:py-24">
+    <section
+      id={group.id}
+      className="case-narrative-section container-page scroll-mt-24 py-14 sm:scroll-mt-28 md:py-24"
+    >
       <div className="case-narrative-grid mx-auto grid max-w-[1040px] gap-7 border-t border-[var(--color-hairline)] pt-10 md:grid-cols-[150px_minmax(0,1fr)] md:gap-14 md:pt-16">
         <aside>
           <p className="font-mono text-[10px] tracking-[0.16em] text-[var(--color-accent)]">

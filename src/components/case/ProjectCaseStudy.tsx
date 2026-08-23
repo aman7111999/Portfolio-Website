@@ -17,6 +17,7 @@ import {
 import { ProseHtml } from "@/components/case/ProseHtml";
 import { PrototypeEmbed, isPrototypeLink } from "@/components/case/PrototypeEmbed";
 import { ProjectComparisonStory } from "@/components/case/ProjectComparisonStory";
+import { PortfolioRevampVisual } from "@/components/projects/PortfolioRevampVisual";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
@@ -131,7 +132,9 @@ export function ProjectCaseStudyHero({
         transition={{ duration: 0.85, delay: 0.1, ease: EASE }}
         className="case-hero-visual project-visual relative mt-9 aspect-[4/3] min-h-0 overflow-hidden rounded-[var(--radius-md)] border border-[var(--color-hairline-strong)] bg-[var(--color-elevated)] sm:mt-12 sm:aspect-[16/9] sm:rounded-[var(--radius-lg)] md:mt-14 md:aspect-[16/8] md:min-h-[260px]"
       >
-        {presentation.type === "revamp_comparison" && comparisonHeroStages.length >= 2 ? (
+        {project.slug === "riise-portfolio-revamp" ? (
+          <PortfolioRevampVisual variant="hero" />
+        ) : presentation.type === "revamp_comparison" && comparisonHeroStages.length >= 2 ? (
           <ComparisonHeroVisual stages={comparisonHeroStages} />
         ) : hero.kind === "image" && hero.imageUrl ? (
           <img

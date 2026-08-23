@@ -4,6 +4,7 @@ import { ArrowUpRight, Lock } from "lucide-react";
 import type { ProjectRow } from "@/lib/cms";
 import { PortfolioAnalysisVisual } from "@/components/case/PortfolioAnalysisStory";
 import { getProjectPresentation, resolveCardVisual } from "@/lib/projectPresentation";
+import { PortfolioRevampVisual } from "@/components/projects/PortfolioRevampVisual";
 
 export function ProjectCard({
   project,
@@ -20,6 +21,7 @@ export function ProjectCard({
   const locked = !!(project as { locked?: boolean }).locked;
   const number = String(index + 1).padStart(2, "0");
   const compact = size === "compact";
+  const isPortfolioRevamp = project.slug === "riise-portfolio-revamp";
   const visualIndex = index % 4;
   const signalPaths = [
     "M4 126C52 126 60 54 112 54S174 112 220 112 284 36 354 36",
@@ -75,7 +77,9 @@ export function ProjectCard({
             size === "lg" ? "aspect-[16/10]" : compact ? "aspect-[2/1]" : "aspect-[16/9]"
           }`}
         >
-          {cardVisual === "image" && project.thumbnail_url ? (
+          {isPortfolioRevamp ? (
+            <PortfolioRevampVisual variant="card" />
+          ) : cardVisual === "image" && project.thumbnail_url ? (
             <img
               src={project.thumbnail_url}
               alt={presentation.card.image_alt}

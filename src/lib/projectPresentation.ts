@@ -1,3 +1,8 @@
+import {
+  PORTFOLIO_ANALYSIS_SCENARIOS,
+  type PortfolioAnalysisScreenTheme,
+} from "@/data/portfolioAnalysisScreens";
+
 export type ProjectVisualStyle = "auto" | "image" | "signature" | "generated";
 
 export type ProjectType = "case_study" | "revamp_comparison";
@@ -37,6 +42,24 @@ export type ProjectJourneyItem = {
   image_url: string | null;
 };
 
+export type ProjectStoryScreen = {
+  id: string;
+  title: string;
+  description: string;
+  image_url: string | null;
+  image_alt: string;
+  theme: PortfolioAnalysisScreenTheme;
+};
+
+export type ProjectStoryScenario = {
+  id: string;
+  tab_label: string;
+  eyebrow: string;
+  title: string;
+  description: string;
+  screens: ProjectStoryScreen[];
+};
+
 export type ArchitectureNode = {
   id: string;
   eyebrow: string;
@@ -67,6 +90,7 @@ export type ProjectPresentation = {
     journey_title: string;
     journey_description: string;
     journey: ProjectJourneyItem[];
+    scenarios: ProjectStoryScenario[];
   };
   gallery: {
     eyebrow: string;
@@ -193,6 +217,24 @@ const portfolioJourneyDefaults: ProjectJourneyItem[] = [
   },
 ];
 
+const portfolioScenarioDefaults: ProjectStoryScenario[] = PORTFOLIO_ANALYSIS_SCENARIOS.map(
+  (scenario) => ({
+    id: scenario.id,
+    tab_label: scenario.tabLabel,
+    eyebrow: scenario.eyebrow,
+    title: scenario.title,
+    description: scenario.description,
+    screens: scenario.screens.map((screen) => ({
+      id: screen.id,
+      title: screen.title,
+      description: screen.description,
+      image_url: screen.url,
+      image_alt: screen.alt,
+      theme: screen.theme,
+    })),
+  }),
+);
+
 const architectureDefaults: ArchitectureNode[] = [
   {
     id: "internal",
@@ -256,6 +298,9 @@ const visualStyle = (value: unknown): ProjectVisualStyle =>
 
 const projectType = (value: unknown): ProjectType =>
   value === "revamp_comparison" ? "revamp_comparison" : "case_study";
+
+const screenTheme = (value: unknown): PortfolioAnalysisScreenTheme =>
+  value === "light" || value === "dark" ? value : "mixed";
 
 export function getProjectPresentation(project: {
   slug: string;
@@ -338,6 +383,49 @@ export function getProjectPresentation(project: {
     };
   });
 
+  const rawScenarios = Array.isArray(rawStory.scenarios) ? rawStory.scenarios : null;
+  const scenarioSource = rawScenarios ?? (isPortfolioAnalysis ? portfolioScenarioDefaults : []);
+  const scenarios = scenarioSource.slice(0, 12).map((item, scenarioIndex) => {
+    const source = isObject(item) ? item : {};
+    const fallback = portfolioScenarioDefaults[scenarioIndex] ?? {
+      id: `scenario-${scenarioIndex + 1}`,
+      tab_label: `View ${scenarioIndex + 1}`,
+      eyebrow: "Portfolio view",
+      title: "Portfolio analysis view",
+      description: "",
+      screens: [],
+    };
+    const rawScreens = Array.isArray(source.screens) ? source.screens : fallback.screens;
+    const screens = rawScreens.slice(0, 24).map((screenItem, screenIndex) => {
+      const screenSource = isObject(screenItem) ? screenItem : {};
+      const screenFallback = fallback.screens[screenIndex] ?? {
+        id: `screen-${scenarioIndex + 1}-${screenIndex + 1}`,
+        title: `Screen ${screenIndex + 1}`,
+        description: "",
+        image_url: null,
+        image_alt: `Portfolio Analysis screen ${screenIndex + 1}`,
+        theme: "mixed" as const,
+      };
+      return {
+        id: text(screenSource.id, screenFallback.id),
+        title: text(screenSource.title, screenFallback.title),
+        description: text(screenSource.description, screenFallback.description),
+        image_url: nullableText(screenSource.image_url, screenFallback.image_url),
+        image_alt: text(screenSource.image_alt, screenFallback.image_alt),
+        theme: screenTheme(screenSource.theme ?? screenFallback.theme),
+      };
+    });
+
+    return {
+      id: text(source.id, fallback.id),
+      tab_label: text(source.tab_label, fallback.tab_label),
+      eyebrow: text(source.eyebrow, fallback.eyebrow),
+      title: text(source.title, fallback.title),
+      description: text(source.description, fallback.description),
+      screens,
+    };
+  });
+
   const rawNodes = Array.isArray(rawStory.architecture_nodes) ? rawStory.architecture_nodes : [];
   const nodeSource = rawNodes.length > 0 ? rawNodes : architectureDefaults;
   const architectureNodes = nodeSource.map((item, index) => {
@@ -393,6 +481,7 @@ export function getProjectPresentation(project: {
         "Explore the supplied MO and external stock and mutual-fund flows. Each screen is scrollable here and available at full resolution.",
       ),
       journey,
+      scenarios,
     },
     gallery: {
       eyebrow: text(rawGallery.eyebrow, "Visual archive"),

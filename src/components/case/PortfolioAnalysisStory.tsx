@@ -15,7 +15,6 @@ import type { ProjectPresentation } from "@/lib/projectPresentation";
 import {
   PORTFOLIO_ANALYSIS_HERO_SCREENS,
   PORTFOLIO_ANALYSIS_SCENARIOS,
-  PORTFOLIO_ANALYSIS_SCREEN_COUNT,
   type PortfolioAnalysisScenario,
   type PortfolioAnalysisScreen,
 } from "@/data/portfolioAnalysisScreens";
@@ -190,7 +189,6 @@ export function PortfolioAnalysisCaseVisuals({ story }: { story: ProjectPresenta
     ? Math.min(activeScreenIndex, activeScenario.screens.length - 1)
     : 0;
   const activeScreen = activeScenario?.screens[safeScreenIndex];
-  const usingCmsScreens = scenarios[0]?.id === "cms-selected-journey";
   const screenCount = scenarios.reduce((total, scenario) => total + scenario.screens.length, 0);
 
   const selectScenario = (id: string) => {
@@ -224,9 +222,8 @@ export function PortfolioAnalysisCaseVisuals({ story }: { story: ProjectPresenta
               {story.description}
             </p>
             <p className="mt-4 font-mono text-[10px] uppercase tracking-[0.14em] text-[var(--color-subtle)]">
-              {usingCmsScreens
-                ? `${screenCount} CMS-selected screens`
-                : `4 portfolio views · ${PORTFOLIO_ANALYSIS_SCREEN_COUNT} real screens`}
+              {scenarios.length} portfolio views · {screenCount} real screen
+              {screenCount === 1 ? "" : "s"}
             </p>
           </div>
         </div>
@@ -272,32 +269,36 @@ export function PortfolioAnalysisCaseVisuals({ story }: { story: ProjectPresenta
             </p>
           </div>
 
-          <div className="mt-9 overflow-x-auto pb-1">
-            <div
-              role="tablist"
-              aria-label="Portfolio Analysis scenarios"
-              className="grid min-w-[790px] rounded-[12px] border border-[var(--color-hairline-strong)] bg-[var(--color-surface)] p-1"
-              style={{ gridTemplateColumns: `repeat(${scenarios.length}, minmax(0, 1fr))` }}
-            >
-              {scenarios.map((scenario) => {
-                const selected = scenario.id === activeScenario.id;
-                return (
-                  <button
-                    key={scenario.id}
-                    type="button"
-                    role="tab"
-                    aria-selected={selected}
-                    onClick={() => selectScenario(scenario.id)}
-                    className={`min-h-12 rounded-[9px] px-3 text-[11px] font-semibold transition-colors ${
-                      selected
-                        ? "bg-[var(--color-accent)] text-[var(--color-accent-contrast)]"
-                        : "text-[var(--color-muted-fg)] hover:text-[var(--color-text)]"
-                    }`}
-                  >
-                    {scenario.tabLabel}
-                  </button>
-                );
-              })}
+          <div className="mt-9 flex flex-col gap-3 rounded-[14px] border border-[var(--color-hairline-strong)] bg-[var(--color-surface)] p-3 sm:flex-row sm:items-center sm:gap-4">
+            <p className="shrink-0 px-1 font-mono text-[9px] uppercase tracking-[0.14em] text-[var(--color-subtle)]">
+              Portfolio view
+            </p>
+            <div className="min-w-0 flex-1 overflow-x-auto pb-1 sm:pb-0">
+              <div
+                role="tablist"
+                aria-label="Portfolio Analysis scenarios"
+                className="flex w-max min-w-full gap-1.5"
+              >
+                {scenarios.map((scenario) => {
+                  const selected = scenario.id === activeScenario.id;
+                  return (
+                    <button
+                      key={scenario.id}
+                      type="button"
+                      role="tab"
+                      aria-selected={selected}
+                      onClick={() => selectScenario(scenario.id)}
+                      className={`min-h-10 shrink-0 rounded-[9px] border px-3.5 text-[10px] font-semibold transition-colors sm:text-[11px] ${
+                        selected
+                          ? "border-[var(--color-accent)] bg-[var(--color-accent)] text-[var(--color-accent-contrast)]"
+                          : "border-[var(--color-hairline)] bg-[var(--color-elevated)] text-[var(--color-muted-fg)] hover:border-[var(--color-hairline-strong)] hover:text-[var(--color-text)]"
+                      }`}
+                    >
+                      {scenario.tabLabel}
+                    </button>
+                  );
+                })}
+              </div>
             </div>
           </div>
 
@@ -315,20 +316,23 @@ export function PortfolioAnalysisCaseVisuals({ story }: { story: ProjectPresenta
               <ScreenThemeBadge theme={activeScreen.theme} />
             </div>
 
-            <div className="grid lg:grid-cols-[340px_minmax(0,1fr)]">
-              <aside className="border-b border-[var(--color-hairline)] p-5 sm:p-7 lg:border-b-0 lg:border-r">
-                <h4 className="text-[clamp(1.6rem,2.6vw,2.15rem)] leading-[1.12] tracking-[-0.03em]">
+            <div className="grid lg:grid-cols-[minmax(285px,360px)_minmax(0,1fr)]">
+              <aside className="flex min-h-0 flex-col border-b border-[var(--color-hairline)] p-5 sm:p-7 lg:h-[720px] lg:border-b-0 lg:border-r xl:h-[760px]">
+                <h4 className="text-[clamp(1.55rem,2.35vw,2rem)] leading-[1.12] tracking-[-0.03em]">
                   {activeScenario.title}
                 </h4>
                 <p className="mt-4 text-[14px] leading-6 text-[var(--color-muted-fg)]">
                   {activeScenario.description}
                 </p>
 
-                <div className="mt-7 border-t border-[var(--color-hairline)] pt-5">
+                <div className="mt-7 flex min-h-0 flex-1 flex-col border-t border-[var(--color-hairline)] pt-5">
                   <p className="font-mono text-[9px] uppercase tracking-[0.14em] text-[var(--color-subtle)]">
                     Choose a screen
                   </p>
-                  <div className="mt-3 grid gap-2 sm:grid-cols-2 lg:grid-cols-1">
+                  <div
+                    data-lenis-prevent
+                    className="mt-3 grid gap-2 sm:grid-cols-2 lg:min-h-0 lg:flex-1 lg:grid-cols-1 lg:content-start lg:overflow-y-auto lg:overscroll-contain lg:pr-1"
+                  >
                     {activeScenario.screens.map((screen, index) => {
                       const selected = index === safeScreenIndex;
                       return (
@@ -347,10 +351,10 @@ export function PortfolioAnalysisCaseVisuals({ story }: { story: ProjectPresenta
                             {String(index + 1).padStart(2, "0")}
                           </span>
                           <span className="min-w-0">
-                            <span className="block truncate text-[11px] font-semibold">
+                            <span className="block line-clamp-1 text-[11px] font-semibold">
                               {screen.title}
                             </span>
-                            <span className="mt-0.5 hidden truncate text-[10px] text-[var(--color-subtle)] xl:block">
+                            <span className="mt-0.5 hidden line-clamp-1 text-[10px] text-[var(--color-subtle)] xl:block">
                               {screen.description}
                             </span>
                           </span>
@@ -393,6 +397,43 @@ export function PortfolioAnalysisCaseVisuals({ story }: { story: ProjectPresenta
 }
 
 function buildScenarios(story: ProjectPresentation["story"]): PortfolioAnalysisScenario[] {
+  const configuredScenarios = story.scenarios.flatMap<PortfolioAnalysisScenario>(
+    (scenario, scenarioIndex) => {
+      const screens = scenario.screens.flatMap<PortfolioAnalysisScreen>((screen, screenIndex) =>
+        screen.image_url
+          ? [
+              {
+                id: screen.id || `scenario-${scenarioIndex + 1}-screen-${screenIndex + 1}`,
+                title: screen.title || `Screen ${screenIndex + 1}`,
+                description: screen.description,
+                url: screen.image_url,
+                alt:
+                  screen.image_alt ||
+                  screen.title ||
+                  `Portfolio Analysis screen ${screenIndex + 1}`,
+                theme: screen.theme,
+              },
+            ]
+          : [],
+      );
+
+      return screens.length
+        ? [
+            {
+              id: scenario.id || `scenario-${scenarioIndex + 1}`,
+              tabLabel: scenario.tab_label || `View ${scenarioIndex + 1}`,
+              eyebrow: scenario.eyebrow,
+              title: scenario.title,
+              description: scenario.description,
+              screens,
+            },
+          ]
+        : [];
+    },
+  );
+
+  if (configuredScenarios.length) return configuredScenarios;
+
   const cmsScreens = story.journey.flatMap<PortfolioAnalysisScreen>((item, index) =>
     item.image_url
       ? [
@@ -448,14 +489,15 @@ function ScreenViewer({
   }, [screen.url]);
 
   return (
-    <div className="relative h-[min(72svh,680px)] min-h-[500px] overflow-hidden bg-[#090b11] sm:min-h-[580px] md:h-[720px]">
-      <div className="absolute inset-0 opacity-30 [background-image:linear-gradient(rgba(255,255,255,.045)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,.045)_1px,transparent_1px)] [background-size:28px_28px]" />
+    <div className="relative h-[min(74svh,680px)] min-h-[520px] overflow-hidden bg-[#090b11] sm:min-h-[600px] lg:h-[720px] xl:h-[760px]">
+      <div className="absolute inset-0 opacity-24 [background-image:linear-gradient(rgba(255,255,255,.045)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,.045)_1px,transparent_1px)] [background-size:28px_28px]" />
+      <div className="absolute inset-x-[12%] bottom-[-18%] h-[42%] rounded-full bg-[rgba(83,72,210,.18)] blur-[90px]" />
       <motion.div
         key={screen.id}
         initial={reduce ? false : { opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.35, ease: EASE }}
-        className="absolute inset-0 p-4 pb-20 sm:p-7 sm:pb-24"
+        className="absolute inset-0 p-3 pb-16 sm:p-5 sm:pb-20"
       >
         {failed ? (
           <div className="grid h-full place-items-center text-center text-white">
@@ -473,7 +515,7 @@ function ScreenViewer({
             role="region"
             tabIndex={0}
             aria-label={`Scrollable ${screen.title} flow`}
-            className="mx-auto h-full w-full max-w-[440px] touch-pan-y overflow-y-auto overscroll-contain rounded-[28px] border-[7px] border-[#252936] bg-white shadow-[0_34px_90px_rgba(0,0,0,.55)] [-webkit-overflow-scrolling:touch] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8d82ff]"
+            className="mx-auto h-full w-full max-w-[520px] touch-pan-y overflow-y-auto overscroll-contain rounded-[24px] border-[5px] border-[#252936] bg-white shadow-[0_30px_80px_rgba(0,0,0,.52)] [-webkit-overflow-scrolling:touch] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8d82ff]"
           >
             <img
               src={screen.url}
@@ -487,7 +529,7 @@ function ScreenViewer({
         )}
       </motion.div>
 
-      <div className="pointer-events-none absolute inset-x-0 bottom-0 z-[3] flex items-end justify-between gap-3 bg-gradient-to-t from-black/88 via-black/45 to-transparent px-4 pb-4 pt-16 text-white sm:px-6 sm:pb-5">
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 z-[3] flex items-end justify-between gap-3 bg-gradient-to-t from-black/88 via-black/45 to-transparent px-4 pb-4 pt-12 text-white sm:px-5 sm:pb-5">
         {!failed && (
           <span className="inline-flex items-center gap-1.5 text-[10px] font-medium text-white/75">
             <MoveVertical size={12} /> Scroll complete flow

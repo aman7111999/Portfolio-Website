@@ -14,7 +14,10 @@ type HeroData = {
   cta_to: string;
   secondary_cta_label?: string;
   secondary_cta_to?: string;
-  brands: string[];
+  expertise_label: string;
+  expertise: string[];
+  portrait_role: string;
+  portrait_scope: string;
 };
 
 const FALLBACK: HeroData = {
@@ -28,14 +31,25 @@ const FALLBACK: HeroData = {
   cta_to: "/work",
   secondary_cta_label: "View résumé",
   secondary_cta_to: "/resume",
-  brands: ["Fintech", "0-to-1 products", "AI experiences", "Design systems"],
+  expertise_label: "UX expertise",
+  expertise: [
+    "0→1 product strategy",
+    "UX research",
+    "Information architecture",
+    "Interaction & visual design",
+    "Prototyping & validation",
+    "Design systems",
+    "Complex financial workflows",
+  ],
+  portrait_role: "Senior product designer",
+  portrait_scope: "Research → launch",
 };
 
 export function Hero() {
   const reduce = useReducedMotion();
   const { data: site } = useSite();
   const { data: hero } = useContent<HeroData>("hero", FALLBACK);
-  const content = hero ?? FALLBACK;
+  const content = { ...FALLBACK, ...(hero ?? {}) };
   const name = site?.name ?? "Aman Mishra";
 
   return (
@@ -99,9 +113,9 @@ export function Hero() {
             transition={{ duration: 0.7, delay: 0.42 }}
             className="mt-10 border-t border-[var(--color-hairline)] pt-5 sm:mt-14"
           >
-            <p className="eyebrow">Focus</p>
+            <p className="eyebrow">{content.expertise_label}</p>
             <div className="mt-3 flex flex-wrap gap-x-5 gap-y-2">
-              {(content.brands ?? []).map((item) => (
+              {content.expertise.map((item) => (
                 <span key={item} className="text-[13px] text-[var(--color-muted)]">
                   {item}
                 </span>
@@ -137,9 +151,11 @@ export function Hero() {
               <div className="absolute bottom-4 left-4 right-4 z-10 flex items-center justify-between gap-3 rounded-[10px] border border-white/20 bg-black/35 px-3 py-3 text-white backdrop-blur-md sm:bottom-5 sm:left-5 sm:right-5 sm:gap-4 sm:px-4">
                 <div className="flex items-center gap-2">
                   <span className="system-dot" />
-                  <span className="system-label">Product systems online</span>
+                  <span className="system-label">{content.portrait_role}</span>
                 </div>
-                <span className="system-label hidden opacity-65 sm:block">Strategy × craft</span>
+                <span className="system-label hidden opacity-65 sm:block">
+                  {content.portrait_scope}
+                </span>
               </div>
             </div>
             <figcaption className="grid grid-cols-2 gap-4 border-b border-[var(--color-hairline)] py-4 text-[12px]">

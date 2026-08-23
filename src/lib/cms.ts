@@ -101,7 +101,30 @@ export function useAllContent() {
       const { data, error } = await supabase.from("content_blocks").select("*");
       if (error) throw error;
       const map: Record<string, unknown> = {};
-      for (const row of data ?? []) map[row.key] = row.data;
+      for (const row of data ?? []) {
+        const local = (PORTFOLIO_CONTENT as Record<string, unknown>)[row.key];
+        const remote = row.data;
+        const merged =
+          local &&
+          remote &&
+          typeof local === "object" &&
+          typeof remote === "object" &&
+          !Array.isArray(local) &&
+          !Array.isArray(remote)
+            ? { ...local, ...remote }
+            : remote;
+
+        // `brands` was the original name for the home expertise list. Keep the
+        // CMS focused on the clearer replacement field and remove the legacy key
+        // the next time the hero block is saved.
+        if (row.key === "hero" && merged && typeof merged === "object" && !Array.isArray(merged)) {
+          const hero = { ...(merged as Record<string, unknown>) };
+          delete hero.brands;
+          map[row.key] = hero;
+        } else {
+          map[row.key] = merged;
+        }
+      }
       return { ...PORTFOLIO_CONTENT, ...map };
     },
   });

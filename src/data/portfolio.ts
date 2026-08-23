@@ -644,7 +644,7 @@ export const PORTFOLIO_PROJECTS = [
     tags: ["Fintech", "Onboarding", "Activation", "Research"],
     category: "Onboarding & activation",
     timeline: "2026",
-    thumbnail_url: "/projects/riise-first-time-user-journey/05-first-trade-light.webp",
+    thumbnail_url: "/projects/riise-first-time-user-journey/card-cover-premium.webp",
     presentation: {
       type: "case_study",
       card: {

@@ -668,6 +668,12 @@ export const PORTFOLIO_PROJECTS = [
         image_url: "/projects/riise-first-time-user-journey/05-first-trade-light.webp",
         image_alt: "Five stages of the RIISE guest-to-first-trade experience",
       },
+      theme_switcher: {
+        enabled: true,
+        default_theme: "light",
+        light_label: "Light",
+        dark_label: "Dark",
+      },
       story: { enabled: false },
       gallery: {
         eyebrow: "Journey screens",

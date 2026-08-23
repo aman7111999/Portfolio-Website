@@ -126,6 +126,79 @@ export function ProjectPresentationEditor({
         </div>
       </EditorPanel>
 
+      {slug === "riise-first-time-user-journey" && (
+        <EditorPanel
+          title="Journey theme switch"
+          description="Controls the Light and Dark switch shown above the five activation states."
+        >
+          <div className="space-y-5">
+            <div className="flex items-center justify-between gap-5 rounded-lg border border-neutral-200 bg-neutral-50 p-4">
+              <div>
+                <p className="text-sm font-medium text-neutral-900">Show Light/Dark switch</p>
+                <p className="mt-0.5 text-xs text-neutral-500">
+                  Turn this off to show only the selected default theme.
+                </p>
+              </div>
+              <Switch
+                checked={presentation.theme_switcher.enabled}
+                onCheckedChange={(enabled) =>
+                  update("theme_switcher", { ...presentation.theme_switcher, enabled })
+                }
+              />
+            </div>
+
+            <div className="grid gap-4 md:grid-cols-3">
+              <Field label="Default theme">
+                <Select
+                  value={presentation.theme_switcher.default_theme}
+                  onValueChange={(default_theme: "light" | "dark") =>
+                    update("theme_switcher", {
+                      ...presentation.theme_switcher,
+                      default_theme,
+                    })
+                  }
+                >
+                  <SelectTrigger>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="light">Light</SelectItem>
+                    <SelectItem value="dark">Dark</SelectItem>
+                  </SelectContent>
+                </Select>
+              </Field>
+              <Field label="Light tab label">
+                <Input
+                  value={presentation.theme_switcher.light_label}
+                  onChange={(event) =>
+                    update("theme_switcher", {
+                      ...presentation.theme_switcher,
+                      light_label: event.target.value,
+                    })
+                  }
+                />
+              </Field>
+              <Field label="Dark tab label">
+                <Input
+                  value={presentation.theme_switcher.dark_label}
+                  onChange={(event) =>
+                    update("theme_switcher", {
+                      ...presentation.theme_switcher,
+                      dark_label: event.target.value,
+                    })
+                  }
+                />
+              </Field>
+            </div>
+
+            <p className="rounded-lg border border-blue-100 bg-blue-50 px-4 py-3 text-xs leading-5 text-blue-800">
+              The first five gallery images are the Light journey and the next five are Dark. Keep
+              captions ending in · Light or · Dark so replacements stay paired automatically.
+            </p>
+          </div>
+        </EditorPanel>
+      )}
+
       <EditorPanel
         title="Experience story"
         description="A CMS-controlled architecture and screen journey. It can be enabled for any project."

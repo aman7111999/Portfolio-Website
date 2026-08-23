@@ -1,7 +1,8 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import { ArrowRight, Maximize2, Moon, Sun } from "lucide-react";
 import type { ProjectRow } from "@/lib/cms";
+import type { ProjectPresentation } from "@/lib/projectPresentation";
 import {
   FullscreenImageViewer,
   type FullscreenImage,
@@ -40,6 +41,7 @@ const JOURNEY_STAGES = [
 
 type JourneyTheme = "light" | "dark";
 type GalleryImage = ProjectRow["gallery"][number];
+type ThemeSwitcher = ProjectPresentation["theme_switcher"];
 
 function themeImages(images: ProjectRow["gallery"], theme: JourneyTheme) {
   const matched = images.filter((image) =>
@@ -136,12 +138,26 @@ export function GuestJourneyHeroVisual({ images }: { images: ProjectRow["gallery
   );
 }
 
-export function GuestJourneyCaseVisuals({ images }: { images: ProjectRow["gallery"] }) {
+export function GuestJourneyCaseVisuals({
+  images,
+  themeSwitcher,
+}: {
+  images: ProjectRow["gallery"];
+  themeSwitcher: ThemeSwitcher;
+}) {
   const reduce = useReducedMotion();
-  const [theme, setTheme] = useState<JourneyTheme>("light");
+  const [theme, setTheme] = useState<JourneyTheme>(themeSwitcher.default_theme);
   const [activeIndex, setActiveIndex] = useState(0);
   const [viewerImage, setViewerImage] = useState<FullscreenImage | null>(null);
   const selectedImages = useMemo(() => themeImages(images, theme), [images, theme]);
+  const themeOptions = [
+    { value: "light" as const, label: themeSwitcher.light_label, icon: Sun },
+    { value: "dark" as const, label: themeSwitcher.dark_label, icon: Moon },
+  ];
+
+  useEffect(() => {
+    setTheme(themeSwitcher.default_theme);
+  }, [themeSwitcher.default_theme]);
 
   if (selectedImages.length < JOURNEY_STAGES.length) return null;
 
@@ -150,7 +166,9 @@ export function GuestJourneyCaseVisuals({ images }: { images: ProjectRow["galler
       src: image.url,
       alt: image.caption ?? `${JOURNEY_STAGES[index].label} ${theme} screen`,
       label: JOURNEY_STAGES[index].label,
-      meta: `${theme === "light" ? "Light" : "Dark"} theme · Stage ${index + 1} of 5`,
+      meta: `${
+        theme === "light" ? themeSwitcher.light_label : themeSwitcher.dark_label
+      } theme · Stage ${index + 1} of 5`,
       caption: `${JOURNEY_STAGES[index].title}. Scroll to explore the complete screen.`,
     });
   };
@@ -173,30 +191,33 @@ export function GuestJourneyCaseVisuals({ images }: { images: ProjectRow["galler
             </p>
           </div>
 
-          <div
-            className="inline-grid min-h-11 grid-cols-2 rounded-[10px] border border-[var(--color-hairline-strong)] bg-[var(--color-surface)] p-1"
-            aria-label="Preview theme"
-          >
-            {(["light", "dark"] as const).map((option) => {
-              const selected = theme === option;
-              return (
-                <button
-                  key={option}
-                  type="button"
-                  onClick={() => setTheme(option)}
-                  aria-pressed={selected}
-                  className={`inline-flex min-h-9 items-center justify-center gap-2 rounded-[7px] px-4 text-[11px] font-semibold capitalize transition-colors ${
-                    selected
-                      ? "bg-[var(--color-accent)] text-[var(--color-accent-contrast)]"
-                      : "text-[var(--color-muted)]"
-                  }`}
-                >
-                  {option === "light" ? <Sun size={12} /> : <Moon size={12} />}
-                  {option}
-                </button>
-              );
-            })}
-          </div>
+          {themeSwitcher.enabled && (
+            <div
+              className="inline-grid min-h-11 grid-cols-2 rounded-[10px] border border-[var(--color-hairline-strong)] bg-[var(--color-surface)] p-1"
+              aria-label="Preview theme"
+            >
+              {themeOptions.map((option) => {
+                const selected = theme === option.value;
+                const Icon = option.icon;
+                return (
+                  <button
+                    key={option.value}
+                    type="button"
+                    onClick={() => setTheme(option.value)}
+                    aria-pressed={selected}
+                    className={`inline-flex min-h-9 items-center justify-center gap-2 rounded-[7px] px-4 text-[11px] font-semibold transition-colors ${
+                      selected
+                        ? "bg-[var(--color-accent)] text-[var(--color-accent-contrast)]"
+                        : "text-[var(--color-muted)]"
+                    }`}
+                  >
+                    <Icon size={12} />
+                    {option.label}
+                  </button>
+                );
+              })}
+            </div>
+          )}
         </div>
 
         <div className="guest-journey-mobile mt-10 lg:hidden">

@@ -7,6 +7,8 @@ export type ProjectVisualStyle = "auto" | "image" | "signature" | "generated";
 
 export type ProjectType = "case_study" | "revamp_comparison";
 
+export type ProjectTheme = "light" | "dark";
+
 export type ProjectComparisonStage = {
   id: string;
   label: string;
@@ -78,6 +80,12 @@ export type ProjectPresentation = {
     style: ProjectVisualStyle;
     image_url: string | null;
     image_alt: string;
+  };
+  theme_switcher: {
+    enabled: boolean;
+    default_theme: ProjectTheme;
+    light_label: string;
+    dark_label: string;
   };
   comparison: ProjectComparisonPresentation;
   story: {
@@ -299,6 +307,8 @@ const visualStyle = (value: unknown): ProjectVisualStyle =>
 const projectType = (value: unknown): ProjectType =>
   value === "revamp_comparison" ? "revamp_comparison" : "case_study";
 
+const projectTheme = (value: unknown): ProjectTheme => (value === "dark" ? "dark" : "light");
+
 const screenTheme = (value: unknown): PortfolioAnalysisScreenTheme =>
   value === "light" || value === "dark" ? value : "mixed";
 
@@ -311,6 +321,7 @@ export function getProjectPresentation(project: {
   const raw = isObject(project.presentation) ? project.presentation : {};
   const rawCard = isObject(raw.card) ? raw.card : {};
   const rawHero = isObject(raw.hero) ? raw.hero : {};
+  const rawThemeSwitcher = isObject(raw.theme_switcher) ? raw.theme_switcher : {};
   const rawComparison = isObject(raw.comparison) ? raw.comparison : {};
   const rawStory = isObject(raw.story) ? raw.story : {};
   const rawGallery = isObject(raw.gallery) ? raw.gallery : {};
@@ -320,6 +331,7 @@ export function getProjectPresentation(project: {
   const rawCta = isObject(raw.cta) ? raw.cta : {};
   const rawSections = isObject(raw.sections) ? raw.sections : {};
   const isPortfolioAnalysis = project.slug === "portfolio-analysis";
+  const isGuestJourney = project.slug === "riise-first-time-user-journey";
 
   const rawComparisonStages = Array.isArray(rawComparison.stages) ? rawComparison.stages : [];
   const comparisonStagesSource =
@@ -455,6 +467,13 @@ export function getProjectPresentation(project: {
       style: visualStyle(rawHero.style),
       image_url: nullableText(rawHero.image_url),
       image_alt: text(rawHero.image_alt, `${project.title ?? "Project"} case study`),
+    },
+    theme_switcher: {
+      enabled:
+        typeof rawThemeSwitcher.enabled === "boolean" ? rawThemeSwitcher.enabled : isGuestJourney,
+      default_theme: projectTheme(rawThemeSwitcher.default_theme),
+      light_label: text(rawThemeSwitcher.light_label, "Light"),
+      dark_label: text(rawThemeSwitcher.dark_label, "Dark"),
     },
     comparison: {
       eyebrow: text(rawComparison.eyebrow, "Design evolution"),

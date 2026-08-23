@@ -309,7 +309,12 @@ export function ProjectCaseStudyBody({
       {approach && <NarrativeGroup group={approach} displayNumber={displayNumberFor(approach)} />}
 
       {isComparison && <ProjectComparisonStory comparison={presentation.comparison} />}
-      {hasGuestJourney && <GuestJourneyCaseVisuals images={project.gallery} />}
+      {hasGuestJourney && (
+        <GuestJourneyCaseVisuals
+          images={project.gallery}
+          themeSwitcher={presentation.theme_switcher}
+        />
+      )}
 
       {solution && <NarrativeGroup group={solution} displayNumber={displayNumberFor(solution)} />}
 

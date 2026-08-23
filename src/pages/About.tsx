@@ -11,21 +11,21 @@ const portraitImg = "/aman-mishra-portfolio-portrait.png";
 
 const PRINCIPLES = [
   {
-    title: "Frame before form",
-    body: "Align the user problem, business goal, constraints, and success signal before committing to screens.",
+    title: "Understand the problem",
+    body: "I ask what the user is trying to do, what the business needs, and which constraints are real before I commit to screens.",
   },
   {
-    title: "Reduce decision cost",
-    body: "Make dense information understandable, progressive, and useful at the exact moment a user needs it.",
+    title: "Make the page easier to read",
+    body: "I decide what belongs first, what can wait, and what needs an explanation when the information gets dense.",
   },
   {
-    title: "Design the system",
-    body: "Create patterns that scale across journeys, teams, and releases instead of solving one screen in isolation.",
+    title: "Think past one release",
+    body: "I look for patterns that can survive new states, products, and teams instead of solving only the screen in front of me.",
   },
 ];
 
 function formatPeriod(start?: string | null, end?: string | null) {
-  return [start?.trim(), end?.trim() || "Present"].filter(Boolean).join(" — ");
+  return [start?.trim(), end?.trim() || "Present"].filter(Boolean).join("–");
 }
 
 export default function About() {
@@ -129,17 +129,17 @@ export default function About() {
         <div className="container-page">
           <Reveal className="grid gap-8 lg:grid-cols-12">
             <div className="lg:col-span-5">
-              <p className="eyebrow">Operating principles</p>
+              <p className="eyebrow">How I work</p>
               <h2 className="mt-4 max-w-[12ch] text-[clamp(2.1rem,9.5vw,2.55rem)] leading-[1.06] tracking-[-0.038em] sm:text-[clamp(2.5rem,4.5vw,4rem)] sm:leading-[1.02] sm:tracking-[-0.045em]">
-                How I turn ambiguity into{" "}
+                When the brief is{" "}
                 <span className="font-serif font-normal italic text-[var(--color-accent)]">
-                  direction.
+                  still unclear.
                 </span>
               </h2>
             </div>
             <p className="max-w-[48ch] text-[15px] leading-[1.7] text-[var(--color-muted)] lg:col-span-5 lg:col-start-8 lg:pt-8">
-              Senior design work is less about producing more screens and more about helping teams
-              make better decisions with confidence.
+              I ask questions early, prototype the uncertain parts, and stay close enough to the
+              build to see where the design needs to change.
             </p>
           </Reveal>
 
@@ -169,11 +169,11 @@ export default function About() {
           <Reveal className="lg:col-span-4">
             <p className="eyebrow">Career snapshot</p>
             <h2 className="mt-4 max-w-[12ch] text-[clamp(2.05rem,9vw,2.45rem)] leading-[1.06] tracking-[-0.038em] sm:text-[clamp(2.35rem,4vw,3.6rem)] sm:leading-[1.04] sm:tracking-[-0.04em]">
-              Experience without the repetition.
+              Where I’ve worked.
             </h2>
             <p className="mt-5 max-w-[38ch] text-[14px] leading-[1.7] text-[var(--color-muted)]">
-              The detailed responsibilities and outcomes live in the résumé. This is the progression
-              at a glance.
+              This is the short version. The résumé has the responsibilities and results behind each
+              role.
             </p>
           </Reveal>
 

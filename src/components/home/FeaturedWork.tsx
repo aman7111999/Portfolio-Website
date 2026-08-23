@@ -14,8 +14,8 @@ type Data = {
 
 const FALLBACK: Data = {
   eyebrow: "Selected work",
-  heading_line1: "Complex product work,",
-  heading_line2: "explained with clarity.",
+  heading_line1: "A few problems I’ve",
+  heading_line2: "enjoyed untangling.",
   view_all_label: "View all work",
   view_all_to: "/work",
 };

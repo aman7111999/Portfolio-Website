@@ -32,7 +32,10 @@ export default function SettingsAdmin() {
   const save = useMutation({
     mutationFn: async () => {
       if (!d) return;
-      const { error } = await supabase.from("site_settings").update(d as any).eq("id", 1);
+      const { error } = await supabase
+        .from("site_settings")
+        .update(d as any)
+        .eq("id", 1);
       if (error) throw error;
     },
     onSuccess: () => {
@@ -90,7 +93,7 @@ export default function SettingsAdmin() {
                 </F>
               </div>
               <div className="md:col-span-2">
-                <F label="Bio" hint="Multi-paragraph OK — split with blank lines.">
+                <F label="Bio" hint="Use a blank line between paragraphs.">
                   <Textarea
                     rows={5}
                     value={d.bio ?? ""}
@@ -170,7 +173,11 @@ export default function SettingsAdmin() {
 
 function ProjectAccessSection() {
   const qc = useQueryClient();
-  const { data: status, isLoading, refetch } = useQuery({
+  const {
+    data: status,
+    isLoading,
+    refetch,
+  } = useQuery({
     queryKey: ["project-access-status"],
     queryFn: fetchAccessStatus,
   });
@@ -205,11 +212,16 @@ function ProjectAccessSection() {
     if (pw1.length < 8) return toast.error("Password must be at least 8 characters");
     if (pw1 !== pw2) return toast.error("Passwords do not match");
     setBusy(true);
-    const res = await setProjectPassword({ password: pw1, enabled, session_duration_hours: duration });
+    const res = await setProjectPassword({
+      password: pw1,
+      enabled,
+      session_duration_hours: duration,
+    });
     setBusy(false);
     if (res.ok) {
       toast.success("Password updated. All previous sessions invalidated.");
-      setPw1(""); setPw2("");
+      setPw1("");
+      setPw2("");
       qc.invalidateQueries({ queryKey: ["project-access-status"] });
       refetch();
     } else {

@@ -13,15 +13,15 @@ type Data = {
 
 const FALLBACK: Data = {
   eyebrow: "About",
-  heading_line1: "From 0-to-1 launches",
-  heading_accent: "to systems at scale",
+  heading_line1: "From first sketch",
+  heading_accent: "to shipped product",
   items: [
     { v: "4.5+", l: "Years in product design" },
     { v: "9×", l: "Portfolio import growth" },
     { v: "4", l: "Focused case studies" },
   ],
-  body: "I’m {name}, a product designer focused on complex fintech products, AI-assisted experiences, and scalable product systems.",
-  quote: "The strongest design decisions make complexity feel inevitable, not visible.",
+  body: "Most of my work has been in investing products, where a screen can carry a lot of data and still needs to feel calm. I enjoy working through that mess with product and engineering until the next step feels obvious.",
+  quote: "I enjoy the moment when a complicated flow finally feels obvious.",
 };
 
 export function StatsBand() {

@@ -14,11 +14,11 @@ type Data = {
 };
 
 const FALLBACK: Data = {
-  eyebrow: "FAQ",
-  heading_line1: "Commonly",
-  heading_accent: "Asked",
-  heading_line2: "Questions",
-  subline: "Answers to what people ask before we start. Have another? Ping me.",
+  eyebrow: "Working with me",
+  heading_line1: "What it’s like",
+  heading_accent: "working",
+  heading_line2: "with me",
+  subline: "The questions hiring managers usually ask, answered plainly.",
   items: [],
 };
 

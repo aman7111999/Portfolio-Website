@@ -152,7 +152,7 @@ import { defineTool as defineTool4 } from "npm:@lovable.dev/mcp-js@0.20.1";
 var get_experience_default = defineTool4({
   name: "get_experience",
   title: "Work experience",
-  description: "Return work experience \u2014 roles, companies, timelines, and descriptions.",
+  description: "Return work experience, including roles, companies, timelines, and descriptions.",
   inputSchema: {},
   annotations: { readOnlyHint: true, idempotentHint: true, openWorldHint: false },
   handler: async () => {
@@ -177,7 +177,7 @@ function getSupabase() {
 var contact_inquiry_default = defineTool5({
   name: "contact_inquiry",
   title: "Submit a contact inquiry",
-  description: "Send a message to Aman Mishra on the visitor's behalf. Use only when the visitor has explicitly asked to contact him. Include the visitor's own name, email, and message \u2014 never invented values.",
+  description: "Send a message to Aman Mishra on the visitor's behalf. Use only when the visitor has explicitly asked to contact him. Include the visitor's own name, email, and message, never invented values.",
   inputSchema: {
     name: z3.string().trim().min(1).max(200).describe("Visitor's full name."),
     email: z3.string().trim().email().max(320).describe("Visitor's email address."),
@@ -198,7 +198,7 @@ var contact_inquiry_default = defineTool5({
         content: [
           {
             type: "text",
-            text: `Thanks \u2014 your message was delivered to Aman. He'll reply to ${email}.`
+            text: `Thanks. Your message was delivered to Aman. He'll reply to ${email}.`
           }
         ],
         structuredContent: { delivered: true }
@@ -213,7 +213,7 @@ var contact_inquiry_default = defineTool5({
 // src/lib/mcp/index.ts
 var mcp_default = defineMcp({
   name: "aman-mishra-portfolio",
-  title: "Aman Mishra \u2014 Portfolio",
+  title: "Aman Mishra | Portfolio",
   version: "0.1.0",
   instructions: "Tools for exploring Aman Mishra's product design portfolio. Use list_projects and get_project to reference case studies, get_about and get_experience for background, and contact_inquiry only when a visitor explicitly asks to contact him.",
   tools: [list_projects_default, get_project_default, get_about_default, get_experience_default, contact_inquiry_default]

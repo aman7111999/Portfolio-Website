@@ -3,12 +3,40 @@ import { Globe, Palette, PenTool, Lightbulb, LayoutGrid, TrendingUp } from "luci
 import { Reveal } from "@/components/Reveal";
 
 const CARDS = [
-  { icon: Globe, title: "Get Your Business Online", copy: "Launch your online presence with a professionally designed website that reflects your brand.", span: "md:col-span-6", chip: "Publish" },
-  { icon: Palette, title: "Ultra Custom Designs", copy: "Every business is unique — your website should be too.", span: "md:col-span-6", badge: true },
-  { icon: PenTool, title: "Design Into Reality", copy: "Bring your vision to life with a seamless design-to-development process.", span: "md:col-span-4" },
-  { icon: Lightbulb, title: "Build your Ideas", copy: "", span: "md:col-span-4", center: true },
-  { icon: LayoutGrid, title: "Organized and Clean", copy: "A well-structured website enhances user experience and ensures easy navigation.", span: "md:col-span-4", wire: true },
-  { icon: TrendingUp, title: "Stand Out in Market", copy: "Distinctive design that positions you above the noise.", span: "md:col-span-12" },
+  {
+    icon: Globe,
+    title: "Publish with confidence",
+    copy: "A responsive site with the essential content, states, and handoff details covered.",
+    span: "md:col-span-6",
+    chip: "Publish",
+  },
+  {
+    icon: Palette,
+    title: "Fit the product",
+    copy: "The visual language should suit the product, not look borrowed from a template.",
+    span: "md:col-span-6",
+    badge: true,
+  },
+  {
+    icon: PenTool,
+    title: "Design with the build in mind",
+    copy: "Decisions stay grounded in the components, breakpoints, and technical constraints behind the screen.",
+    span: "md:col-span-4",
+  },
+  { icon: Lightbulb, title: "Test the idea", copy: "", span: "md:col-span-4", center: true },
+  {
+    icon: LayoutGrid,
+    title: "Keep the structure clear",
+    copy: "People should understand where they are and what they can do without stopping to decode the page.",
+    span: "md:col-span-4",
+    wire: true,
+  },
+  {
+    icon: TrendingUp,
+    title: "Make the difference useful",
+    copy: "Distinctive choices should help the product communicate, not compete with the content.",
+    span: "md:col-span-12",
+  },
 ];
 
 export function VisionBento() {
@@ -22,8 +50,8 @@ export function VisionBento() {
           className="mt-3 font-semibold leading-[1.05] tracking-[-0.025em] text-[var(--color-text)]"
           style={{ fontSize: "clamp(2rem, 4.2vw, 3.25rem)" }}
         >
-          Bringing Your <span className="text-[var(--color-accent)]">Vision to Life</span> with
-          <br /> Cutting-Edge Design &amp; Development
+          From an early idea to a{" "}
+          <span className="text-[var(--color-accent)]">working product</span>
         </h2>
       </Reveal>
 
@@ -61,8 +89,12 @@ export function VisionBento() {
 
             {c.badge && (
               <div className="mt-8 flex items-center justify-center gap-3">
-                <div className="grid h-16 w-16 place-items-center rounded-2xl border border-[var(--color-hairline-strong)] bg-[var(--color-elevated)] text-2xl font-bold">F</div>
-                <div className="grid h-16 w-16 place-items-center rounded-2xl border border-[var(--color-hairline-strong)] bg-[var(--color-elevated)] text-2xl">◆</div>
+                <div className="grid h-16 w-16 place-items-center rounded-2xl border border-[var(--color-hairline-strong)] bg-[var(--color-elevated)] text-2xl font-bold">
+                  F
+                </div>
+                <div className="grid h-16 w-16 place-items-center rounded-2xl border border-[var(--color-hairline-strong)] bg-[var(--color-elevated)] text-2xl">
+                  ◆
+                </div>
               </div>
             )}
 
@@ -77,7 +109,11 @@ export function VisionBento() {
             {c.wire && (
               <div className="mt-6 space-y-1.5 rounded-lg border border-[var(--color-hairline)] bg-[var(--color-elevated)] p-3">
                 {[80, 60, 90, 45, 70].map((w, k) => (
-                  <div key={k} className="h-1.5 rounded-full bg-[var(--color-hairline-strong)]" style={{ width: `${w}%` }} />
+                  <div
+                    key={k}
+                    className="h-1.5 rounded-full bg-[var(--color-hairline-strong)]"
+                    style={{ width: `${w}%` }}
+                  />
                 ))}
               </div>
             )}

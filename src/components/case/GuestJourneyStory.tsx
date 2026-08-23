@@ -187,7 +187,7 @@ export function GuestJourneyCaseVisuals({
             </h2>
             <p className="mt-5 max-w-[62ch] text-[15px] leading-7 text-[var(--color-muted)]">
               The home page stays familiar while one focused card changes with the user’s account
-              state—from seeing why RIISE is useful to placing the first trade.
+              state, from seeing why RIISE is useful to placing the first trade.
             </p>
           </div>
 

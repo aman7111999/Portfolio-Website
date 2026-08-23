@@ -9,6 +9,7 @@ import {
   PORTFOLIO_SKILLS,
 } from "@/data/portfolio";
 import type { ProjectPresentation } from "@/lib/projectPresentation";
+import { cleanPublicCopy } from "@/lib/publicCopy";
 
 export type ProjectRow = {
   id: string;
@@ -91,7 +92,7 @@ export function useContent<T = unknown>(key: ContentKey, fallback?: T) {
     },
   });
   const local = (PORTFOLIO_CONTENT as Partial<Record<ContentKey, unknown>>)[key] as T | undefined;
-  return { ...q, data: (q.data ?? local ?? fallback ?? null) as T };
+  return { ...q, data: cleanPublicCopy((q.data ?? local ?? fallback ?? null) as T) };
 }
 
 export function useAllContent() {
@@ -125,7 +126,7 @@ export function useAllContent() {
           map[row.key] = merged;
         }
       }
-      return { ...PORTFOLIO_CONTENT, ...map };
+      return cleanPublicCopy({ ...PORTFOLIO_CONTENT, ...map });
     },
   });
 }
@@ -143,7 +144,7 @@ export function useSite() {
       return data as SiteSettings | null;
     },
   });
-  return { ...q, data: q.data ?? (PORTFOLIO_SITE as SiteSettings) };
+  return { ...q, data: cleanPublicCopy(q.data ?? (PORTFOLIO_SITE as SiteSettings)) };
 }
 
 /**
@@ -164,7 +165,7 @@ export function useProjects(
         if (opts.featuredOnly) q = q.eq("featured", true);
         const { data, error } = await q;
         if (error) throw error;
-        return (data ?? []) as unknown as ProjectRow[];
+        return cleanPublicCopy((data ?? []) as unknown as ProjectRow[]);
       }
       let q = supabase
         .from("public_projects_index")
@@ -173,7 +174,7 @@ export function useProjects(
       if (opts.featuredOnly) q = q.eq("featured", true);
       const { data, error } = await q;
       if (error) throw error;
-      return (data ?? []) as unknown as ProjectRow[];
+      return cleanPublicCopy((data ?? []) as unknown as ProjectRow[]);
     },
   });
 
@@ -184,7 +185,7 @@ export function useProjects(
   if (opts.featuredOnly) fallbackProjects = fallbackProjects.filter((p) => p.featured);
   fallbackProjects.sort((a, b) => a.sort_order - b.sort_order);
 
-  return { ...q, data: q.data ?? fallbackProjects };
+  return { ...q, data: cleanPublicCopy(q.data ?? fallbackProjects) };
 }
 
 /** Admin-only: fetch full project row directly (requires admin auth). */
@@ -198,7 +199,7 @@ export function useProject(slug: string) {
         .eq("slug", slug)
         .maybeSingle();
       if (error) throw error;
-      return data as unknown as ProjectRow | null;
+      return cleanPublicCopy(data as unknown as ProjectRow | null);
     },
     enabled: !!slug,
   });
@@ -214,10 +215,10 @@ export function useExperience() {
         .eq("published", true)
         .order("sort_order", { ascending: true });
       if (error) throw error;
-      return data ?? [];
+      return cleanPublicCopy(data ?? []);
     },
   });
-  return { ...q, data: q.data ?? PORTFOLIO_EXPERIENCE };
+  return { ...q, data: cleanPublicCopy(q.data ?? PORTFOLIO_EXPERIENCE) };
 }
 
 export function useEducation() {
@@ -230,10 +231,10 @@ export function useEducation() {
         .eq("published", true)
         .order("sort_order", { ascending: true });
       if (error) throw error;
-      return data ?? [];
+      return cleanPublicCopy(data ?? []);
     },
   });
-  return { ...q, data: q.data ?? PORTFOLIO_EDUCATION };
+  return { ...q, data: cleanPublicCopy(q.data ?? PORTFOLIO_EDUCATION) };
 }
 
 export function useSkills() {
@@ -252,10 +253,10 @@ export function useSkills() {
         items.push(row.name);
         groups.set(row.group_name, items);
       }
-      return Array.from(groups, ([group, items]) => ({ group, items }));
+      return cleanPublicCopy(Array.from(groups, ([group, items]) => ({ group, items })));
     },
   });
-  return { ...q, data: q.data ?? PORTFOLIO_SKILLS };
+  return { ...q, data: cleanPublicCopy(q.data ?? PORTFOLIO_SKILLS) };
 }
 
 export function useTestimonials() {
@@ -268,7 +269,7 @@ export function useTestimonials() {
         .eq("published", true)
         .order("sort_order", { ascending: true });
       if (error) throw error;
-      return data ?? [];
+      return cleanPublicCopy(data ?? []);
     },
   });
   return { ...q, data: q.data ?? [] };
@@ -285,7 +286,7 @@ export function useBlogs(publishedOnly = true) {
       if (publishedOnly) q = q.eq("published", true);
       const { data, error } = await q;
       if (error) throw error;
-      return data ?? [];
+      return cleanPublicCopy(data ?? []);
     },
   });
 }

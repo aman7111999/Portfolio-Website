@@ -28,7 +28,7 @@ const FALLBACK: ResumePage = {
 function fmtPeriod(s?: string | null, e?: string | null) {
   const a = (s ?? "").trim();
   const b = (e ?? "").trim() || "Present";
-  return [a, b].filter(Boolean).join(" — ");
+  return [a, b].filter(Boolean).join("–");
 }
 
 export default function Resume() {
@@ -44,7 +44,7 @@ export default function Resume() {
   return (
     <>
       <Seo
-        title="Résumé — Senior Product Designer"
+        title="Résumé | Senior Product Designer"
         description="Aman Mishra’s product-design experience across Motilal Oswal, Trinkerr, fintech, AI-assisted products, and design systems."
         path="/resume"
         siteName={site?.name ?? "Aman Mishra"}

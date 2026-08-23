@@ -12,33 +12,43 @@ type Service = {
 
 const SERVICES: Service[] = [
   {
-    icon: Layers, title: "UI / UX Design",
-    copy: "From wireframes to high-fidelity prototypes, I ensure a seamless and engaging interface that aligns with your brand's identity.",
-    span: "md:col-span-4", visual: "avatars",
+    icon: Layers,
+    title: "UI / UX Design",
+    copy: "Research, flows, prototypes, and interface design for products that need more than a visual refresh.",
+    span: "md:col-span-4",
+    visual: "avatars",
   },
   {
-    icon: ShoppingBag, title: "Ecommerce Store",
-    copy: "Whether you're launching a new shop or optimizing an existing one, I ensure a smooth shopping experience that drives sales.",
-    span: "md:col-span-8", visual: "products",
+    icon: ShoppingBag,
+    title: "Ecommerce Store",
+    copy: "Storefront, product, cart, and checkout flows designed around the way people actually shop.",
+    span: "md:col-span-8",
+    visual: "products",
   },
   {
-    icon: Settings2, title: "Website Customization",
-    copy: "Websites tailored to your specific needs, from layout adjustments to functionality enhancements.",
-    span: "md:col-span-8", visual: "radar",
+    icon: Settings2,
+    title: "Website Customization",
+    copy: "Focused improvements to structure, interaction, content, and the parts of a website that get in the way.",
+    span: "md:col-span-8",
+    visual: "radar",
   },
   {
-    icon: Sparkles, title: "Custom Solutions",
-    copy: "Bespoke pages, interactions, and CMS setups built for your business.",
+    icon: Sparkles,
+    title: "Custom Solutions",
+    copy: "Pages, interactions, and CMS setups built around a specific product need.",
     span: "md:col-span-4",
   },
   {
-    icon: Zap, title: "Framer Development",
-    copy: "From sleek animations to responsive layouts, I leverage Framer's power to create stunning, fast-loading sites that stand out.",
-    span: "md:col-span-8", visual: "framer",
+    icon: Zap,
+    title: "Framer Development",
+    copy: "Responsive Framer sites with considered motion, clean structure, and an editor the team can keep using.",
+    span: "md:col-span-8",
+    visual: "framer",
   },
   {
-    icon: Users, title: "0 → 1 Product Design",
-    copy: "Napkin sketches to launched product — research, flows, UI, ship.",
+    icon: Users,
+    title: "0 → 1 Product Design",
+    copy: "From an early brief to research, flows, prototypes, build reviews, and launch.",
     span: "md:col-span-4",
   },
 ];
@@ -93,7 +103,10 @@ function CardVisual({ kind }: { kind?: Service["visual"] }) {
             ✦
           </span>
           {[
-            { t: 0, l: 30 }, { t: 30, l: 90 }, { t: 70, l: 20 }, { t: 60, l: 80 },
+            { t: 0, l: 30 },
+            { t: 30, l: 90 },
+            { t: 70, l: 20 },
+            { t: 60, l: 80 },
           ].map((p, i) => (
             <span
               key={i}
@@ -132,13 +145,16 @@ export function ServicesBento() {
     <section id="services" className="container-page py-24 md:py-32">
       <Reveal className="mx-auto max-w-2xl text-center">
         <p className="eyebrow">Services</p>
-        <h2 className="mt-3 font-semibold leading-[1.05] tracking-[-0.025em] text-[var(--color-text)]"
-            style={{ fontSize: "clamp(2rem, 4.2vw, 3.25rem)" }}>
-          Crafting <span className="text-[var(--color-accent)]">Next-Horizon</span> Experiences
+        <h2
+          className="mt-3 font-semibold leading-[1.05] tracking-[-0.025em] text-[var(--color-text)]"
+          style={{ fontSize: "clamp(2rem, 4.2vw, 3.25rem)" }}
+        >
+          Product design from <span className="text-[var(--color-accent)]">early brief</span> to
+          launch
         </h2>
         <p className="mx-auto mt-4 max-w-lg text-[15px] leading-relaxed text-[var(--color-muted)]">
-          A sharp toolkit that ships product-grade work — design, motion, and
-          development under one roof.
+          Research, interaction design, visual craft, motion, and enough development knowledge to
+          stay useful during the build.
         </p>
       </Reveal>
 

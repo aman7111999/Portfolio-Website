@@ -100,7 +100,11 @@ export default function BlogEditor() {
     onError: (e: Error) => toast.error(e.message),
   });
 
-  const wordCount = draft.body.replace(/<[^>]+>/g, " ").trim().split(/\s+/).filter(Boolean).length;
+  const wordCount = draft.body
+    .replace(/<[^>]+>/g, " ")
+    .trim()
+    .split(/\s+/)
+    .filter(Boolean).length;
   const readMinutes = Math.max(1, Math.round(wordCount / 220));
 
   if (!isNew && isLoading)
@@ -117,7 +121,11 @@ export default function BlogEditor() {
       eyebrow={isNew ? "New post" : "Editing"}
       title={draft.title || "Untitled"}
       description={
-        dirty ? "Unsaved changes" : isNew ? "Start writing — save when ready." : "All changes saved"
+        dirty
+          ? "Unsaved changes"
+          : isNew
+            ? "Start writing, then save when ready."
+            : "All changes saved"
       }
       actions={
         <>
@@ -214,10 +222,7 @@ export default function BlogEditor() {
                 <p className="text-sm font-medium text-neutral-900">Published</p>
                 <p className="text-xs text-neutral-500">Visible on the public site</p>
               </div>
-              <Switch
-                checked={draft.published}
-                onCheckedChange={(v) => update("published", v)}
-              />
+              <Switch checked={draft.published} onCheckedChange={(v) => update("published", v)} />
             </div>
             {draft.published && !isNew && (
               <Button variant="outline" size="sm" asChild className="mt-4 w-full">

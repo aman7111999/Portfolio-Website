@@ -139,12 +139,10 @@ export default function AdminOverview() {
             <p className="mt-4 text-xs uppercase tracking-widest text-neutral-500">{s.label}</p>
             <div className="mt-1 flex items-baseline gap-2">
               <span className="font-display text-3xl tabular-nums text-neutral-900">
-                {isLoading ? "—" : s.total}
+                {isLoading ? "…" : s.total}
               </span>
               {typeof s.published === "number" && (
-                <span className="text-xs text-neutral-500">
-                  {s.published} published
-                </span>
+                <span className="text-xs text-neutral-500">{s.published} published</span>
               )}
             </div>
           </Link>
@@ -156,10 +154,7 @@ export default function AdminOverview() {
         <section className="rounded-xl border border-neutral-200 bg-white lg:col-span-2">
           <header className="flex items-center justify-between border-b border-neutral-100 px-5 py-4">
             <h2 className="font-display text-lg text-neutral-900">Recent projects</h2>
-            <Link
-              to="/admin/projects"
-              className="text-xs text-neutral-500 hover:text-neutral-900"
-            >
+            <Link to="/admin/projects" className="text-xs text-neutral-500 hover:text-neutral-900">
               View all →
             </Link>
           </header>

@@ -14,7 +14,7 @@ export default defineTool({
   name: "contact_inquiry",
   title: "Submit a contact inquiry",
   description:
-    "Send a message to Aman Mishra on the visitor's behalf. Use only when the visitor has explicitly asked to contact him. Include the visitor's own name, email, and message — never invented values.",
+    "Send a message to Aman Mishra on the visitor's behalf. Use only when the visitor has explicitly asked to contact him. Include the visitor's own name, email, and message, never invented values.",
   inputSchema: {
     name: z.string().trim().min(1).max(200).describe("Visitor's full name."),
     email: z.string().trim().email().max(320).describe("Visitor's email address."),
@@ -37,7 +37,7 @@ export default defineTool({
         content: [
           {
             type: "text",
-            text: `Thanks — your message was delivered to Aman. He'll reply to ${email}.`,
+            text: `Thanks. Your message was delivered to Aman. He'll reply to ${email}.`,
           },
         ],
         structuredContent: { delivered: true },

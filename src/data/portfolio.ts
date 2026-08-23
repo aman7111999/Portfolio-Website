@@ -3,8 +3,8 @@ const stamp = "2026-07-31T00:00:00.000Z";
 export const PORTFOLIO_SITE = {
   name: "Aman Mishra",
   tagline:
-    "Senior Product Designer with 4.5+ years of experience across fintech, AI-assisted products, 0-to-1 launches, and design systems.",
-  bio: "I’m a product designer with 4.5+ years of experience designing fintech and investment products across Motilal Oswal and Trinkerr.\n\nAt Motilal Oswal, I work across Riise’s hyper-personalised homepage, 0-to-1 stock discovery, and AI-assisted investing experiences. Previously at Trinkerr, I designed portfolio and advisory products and contributed to the TIQS design system across iOS and Android.\n\nMy work sits at the intersection of product strategy, interaction design, and systems thinking. I’m strongest when the problem is ambiguous, the information is dense, and the experience must balance user needs, business goals, and regulatory constraints.\n\nI work closely with product, engineering, research, and compliance from problem framing and prototyping through handoff, validation, and launch. I’m currently exploring Senior Product Designer opportunities across fintech, AI, consumer products, and complex digital platforms.",
+    "Senior Product Designer with 4.5+ years designing investment products, AI-assisted tools, and design systems at Motilal Oswal and Trinkerr.",
+  bio: "I’m a product designer with 4.5+ years of experience designing fintech and investment products across Motilal Oswal and Trinkerr.\n\nAt Motilal Oswal, I work across Riise’s hyper-personalised homepage, 0-to-1 stock discovery, and AI-assisted investing experiences. Previously at Trinkerr, I designed portfolio and advisory products and contributed to the TIQS design system across iOS and Android.\n\nI’m usually working on problems with a lot of information, an unclear starting point, and constraints that cannot be designed away. I like finding the structure that helps the user decide what to do next.\n\nI stay close to product, engineering, research, and compliance from the first sketch through the shipped build. I’m currently looking for a Senior Product Designer role in fintech, AI, or another product with genuinely complicated workflows.",
   email: "aman755559@gmail.com",
   location: "Mumbai, India",
   profile_image_url: null,
@@ -24,7 +24,7 @@ export const PORTFOLIO_EXPERIENCE = [
     start_date: "Aug 2025",
     end_date: null,
     description:
-      "Leading product design across high-impact Riise initiatives spanning homepage personalisation, stock discovery, AI-assisted investing, and scalable platform experiences.",
+      "At Motilal Oswal, I design Riise’s homepage personalisation, stock discovery, AI-assisted investing, and portfolio experiences.",
     highlights: [
       "Re-architected the Riise homepage to prioritise relevant financial products using behaviour, lifecycle, and portfolio signals.",
       "Led the 0-to-1 product definition of Screener, covering discovery, filters, comparison, saved workflows, and AI-assisted decisions.",
@@ -44,7 +44,7 @@ export const PORTFOLIO_EXPERIENCE = [
     start_date: "Feb 2023",
     end_date: "Apr 2025",
     description:
-      "Designed investing and advisory experiences for a SEBI-registered platform, with a focus on data storytelling, product adoption, and cross-platform consistency.",
+      "At Trinkerr, I designed portfolio and advisory products for a SEBI-registered platform across iOS and Android.",
     highlights: [
       "Turned portfolio import into an insight-led Portfolio Health Report, contributing to a 9× increase in imports after launch.",
       "Introduced a demo report that helped users understand the value before connecting a broker, contributing a further 1.2× lift.",
@@ -64,7 +64,7 @@ export const PORTFOLIO_EXPERIENCE = [
     start_date: "Jan 2022",
     end_date: "Feb 2023",
     description:
-      "Owned foundational investing experiences across portfolio tracking, watchlists, stock details, and transaction flows for mobile users.",
+      "I worked on the everyday investing flows: portfolios, watchlists, stock details, and transactions on mobile.",
     highlights: [
       "Mapped complex investment information into clearer mobile flows and reusable interaction patterns.",
       "Used interviews, usability testing, and heuristic reviews to identify friction and guide iteration.",
@@ -193,71 +193,70 @@ export const PORTFOLIO_CONTENT = {
       { icon: "Framer", tint: "accent", pos: { top: "56%", left: "-16%" } },
       { icon: "PenTool", tint: "text", pos: { bottom: "12%", left: "-8%" } },
     ],
-    badge_text: "FINTECH • AI • PRODUCT SYSTEMS •",
+    badge_text: "FINTECH • RESEARCH • INTERACTION •",
   },
   home_featured: {
     eyebrow: "Selected work",
-    heading_line1: "Complex problems. Clear decisions.",
-    heading_line2: "Evidence over decoration.",
+    heading_line1: "A few problems I’ve",
+    heading_line2: "enjoyed untangling.",
     view_all_label: "View all projects",
     view_all_to: "/work",
   },
   home_experience: {
     eyebrow: "Experience",
-    heading_line1: "4.5+ years simplifying",
-    heading_line2: "complex financial products.",
+    heading_line1: "4.5+ years designing",
+    heading_line2: "investment products.",
   },
   home_stats: {
     eyebrow: "About",
-    heading_line1: "From 0-to-1 launches",
-    heading_accent: "to systems at scale",
+    heading_line1: "From first sketch",
+    heading_accent: "to shipped product",
     items: [
       { v: "4.5+", l: "Years in product design" },
       { v: "9×", l: "Portfolio import growth" },
       { v: "5", l: "Focused case studies" },
     ],
-    body: "I’m {name}, a product designer focused on fintech, AI-assisted experiences, and scalable product systems. I turn dense workflows and ambiguous requirements into clear journeys that users can understand and teams can ship.",
-    quote: "The strongest design decisions make complexity feel inevitable, not visible.",
+    body: "Most of my work has been in investing products, where a screen can carry a lot of data and still needs to feel calm. I enjoy working through that mess with product and engineering until the next step feels obvious.",
+    quote: "I enjoy the moment when a complicated flow finally feels obvious.",
   },
   home_faq: {
-    eyebrow: "Working together",
-    heading_line1: "How I",
-    heading_accent: "work",
-    heading_line2: "on complex products",
-    subline:
-      "A concise view of the ownership and collaboration I bring to a senior product-design role.",
+    eyebrow: "Working with me",
+    heading_line1: "What it’s like",
+    heading_accent: "working",
+    heading_line2: "with me",
+    subline: "The questions hiring managers usually ask, answered plainly.",
     items: [
       {
         q: "What problems do you work best on?",
-        a: "Complex B2C products where information is dense, the problem is ambiguous, and design must balance user needs, business goals, technical constraints, and compliance.",
+        a: "I do my best work on products with dense information, unclear starting points, and real constraints. Investing products are a good example: the experience has to help the user, work for the business, and stay honest about risk.",
       },
       {
         q: "What does end-to-end ownership mean in your work?",
-        a: "I contribute from problem framing and product discovery through information architecture, prototyping, validation, visual design, handoff, implementation reviews, and post-launch iteration.",
+        a: "I stay with a problem from the first conversation through research, flows, prototypes, visual design, build reviews, and the changes that follow launch.",
       },
       {
         q: "How do you collaborate with product and engineering?",
-        a: "I align early on the problem, constraints, and success criteria; make trade-offs visible; prototype decisions quickly; and stay involved through development so the shipped experience retains its intent.",
+        a: "I bring product and engineering in early, prototype the uncertain parts, and write down the trade-offs. During the build, I review the real product with the team instead of treating handoff as the finish line.",
       },
       {
         q: "What roles are you exploring?",
-        a: "Senior Product Designer opportunities across fintech, AI, consumer products, and platform experiences where I can own meaningful product areas and help raise the quality bar.",
+        a: "I’m looking for a Senior Product Designer role where I can own a meaningful product area. Fintech and AI are natural fits, but I’m also interested in consumer products with complicated workflows.",
       },
     ],
   },
   home_cta: {
-    heading_line1: "Let’s make",
-    heading_accent: "complexity",
-    heading_line2: "feel simple.",
+    heading_line1: "Have a product",
+    heading_accent: "problem",
+    heading_line2: "worth talking through?",
     subline:
-      "I’m exploring Senior Product Designer opportunities across fintech, AI, and product platforms. If you’re building something complex and meaningful, I’d love to hear about it.",
+      "I’m open to Senior Product Designer roles. If the work involves fintech, AI, or a product with a lot of moving parts, I’d be glad to hear about it.",
     cta_label: "Email me",
   },
   about_hero: {
     badge: "About Aman",
-    heading_before: "I turn complex product problems into",
-    heading_accent: "clear, scalable",
-    heading_after: "experiences.",
+    heading_before: "I design products that make",
+    heading_accent: "dense information",
+    heading_after: "easier to act on.",
     meta: [
       { k: "Based in", v: "Mumbai, India" },
       { k: "Experience", v: "4.5+ years" },
@@ -269,60 +268,59 @@ export const PORTFOLIO_CONTENT = {
   },
   about_timeline: {
     badge: "Career timeline",
-    heading: "Growing from execution to product ownership.",
-    subline:
-      "A progression across foundational investing journeys, measurable product outcomes, 0-to-1 launches, and platform-level design.",
+    heading: "I started with screens. The work grew into systems and product decisions.",
+    subline: "The roles, products, and decisions that shaped how I work today.",
   },
   about_experience: {
     badge: "Experience",
-    heading: "The products and teams I’ve helped move forward.",
-    subline: "Open each role to see the scope, decisions, and outcomes I owned or influenced.",
+    heading: "What I worked on, and what changed.",
+    subline: "Open a role for the products, responsibilities, and results behind it.",
   },
   about_education: {
     badge: "Education",
     heading: "A technical foundation, redirected into product design.",
   },
-  about_tools: { badge: "Capabilities", heading: "Strategy, craft, research, and systems." },
+  about_tools: { badge: "Capabilities", heading: "The skills I use most often." },
   about_philosophy: {
     badge: "Design principles",
-    heading: "Four principles I use when the answer is not obvious.",
+    heading: "Four habits I rely on when the answer is not obvious.",
     items: [
       {
-        k: "Clarity before novelty",
+        k: "Make the next step obvious",
         v: "A distinctive interface still needs to make the next decision obvious.",
       },
       {
-        k: "Evidence before preference",
+        k: "Ask for evidence",
         v: "Research, product data, constraints, and user behaviour should shape the direction.",
       },
       {
-        k: "Systems before isolated screens",
+        k: "Design beyond one screen",
         v: "Reusable patterns make both the experience and the team more consistent.",
       },
       {
-        k: "Shipping is part of design",
+        k: "Stay until it ships",
         v: "I stay close to engineering through implementation, QA, and iteration.",
       },
     ],
   },
   about_working_style: {
     badge: "Working style",
-    heading: "How I move work from ambiguity to release.",
+    heading: "How I work through an unclear product problem.",
     items: [
       {
-        k: "Frame the problem",
+        k: "Start with the problem",
         v: "Align on the user, business goal, constraints, assumptions, and success signals before polishing screens.",
       },
       {
-        k: "Prototype the decision",
+        k: "Prototype early",
         v: "Use the smallest useful prototype to expose gaps, compare directions, and build alignment.",
       },
       {
-        k: "Make trade-offs visible",
+        k: "Call out trade-offs",
         v: "Document what changed, why it changed, and what the team is deliberately not solving yet.",
       },
       {
-        k: "Stay through implementation",
+        k: "Stay close to the build",
         v: "Review builds with engineering and protect the intent without ignoring technical reality.",
       },
     ],
@@ -330,9 +328,12 @@ export const PORTFOLIO_CONTENT = {
   about_books: { items: [] },
   about_values: {
     badge: "What I bring",
-    heading: "The qualities behind the output.",
+    heading: "What teammates can expect from me.",
     items: [
-      { k: "Ownership", v: "I stay accountable for the outcome, not only the design file." },
+      {
+        k: "Ownership",
+        v: "I stay accountable for what ships and keep checking the work after handoff.",
+      },
       { k: "Clarity", v: "I make decisions and their reasoning easy for teams to understand." },
       { k: "Curiosity", v: "I keep testing assumptions until the real problem becomes visible." },
       { k: "Craft", v: "I care about the details because they shape trust in the product." },
@@ -341,8 +342,8 @@ export const PORTFOLIO_CONTENT = {
   about_fun_facts: { items: [] },
   contact_page: {
     eyebrow: "Start a conversation",
-    heading_before: "Let’s simplify",
-    heading_accent: "something complex",
+    heading_before: "Tell me what",
+    heading_accent: "you’re working on",
     heading_after: ".",
     copy_email_label: "Copy email",
     copied_label: "Copied",
@@ -353,7 +354,7 @@ export const PORTFOLIO_CONTENT = {
       send: "Send message",
       sending: "Sending",
     },
-    success_toast: "Message sent — I’ll get back to you soon.",
+    success_toast: "Message sent. I’ll get back to you soon.",
     elsewhere_label: "Elsewhere",
     based_in_label: "Based in",
   },
@@ -361,7 +362,7 @@ export const PORTFOLIO_CONTENT = {
     eyebrow: "Résumé",
     heading: "4.5+ years across fintech products, AI, and design systems.",
     subline:
-      "A concise view of my product scope, progression, and core capabilities. Download the PDF for applications and recruiter conversations.",
+      "The short version of my experience, projects, and skills. The PDF is ready for applications and recruiter conversations.",
     download_label: "Download résumé",
     experience_heading: "Experience",
     education_heading: "Education",
@@ -377,17 +378,17 @@ export const PORTFOLIO_PROJECTS = [
     short_description:
       "Unifying internal and externally linked portfolios into one insight-to-action experience for clearer investment decisions.",
     overview:
-      "<p>Investors rarely hold their complete wealth in one place. Their Motilal Oswal investments may be only one part of a portfolio spread across brokers, stocks, and mutual funds. The product opportunity was not another holdings view; it was a decision layer that could interpret the whole picture.</p><p>I designed Portfolio Analysis for Riise as a unified experience across <strong>internal Motilal Oswal holdings and externally imported portfolios</strong>. It brings portfolio health, risk, diversification, recommendations, and human advisory support into one continuous journey.</p><p>My role covered product framing, experience architecture, information hierarchy, interaction design, high-fidelity UI, edge states, and design-system-aligned handoff.</p>",
+      "<p>Investors rarely hold their complete wealth in one place. Their Motilal Oswal investments may be only one part of a portfolio spread across brokers, stocks, and mutual funds. The real need was a decision layer that could interpret the whole picture, not another list of holdings.</p><p>I designed Portfolio Analysis for Riise as a unified experience across <strong>internal Motilal Oswal holdings and externally imported portfolios</strong>. It brings portfolio health, risk, diversification, recommendations, and human advisory support into one continuous journey.</p><p>My role covered product framing, experience architecture, information hierarchy, interaction design, high-fidelity UI, edge states, and design-system-aligned handoff.</p>",
     problem_statement:
       "<p>Portfolio data was fragmented by source and difficult to translate into a confident next step. A user could see what they owned, but not necessarily what the combined portfolio meant.</p><ul><li>Internal and external investments created separate mental models.</li><li>Dense financial metrics could feel diagnostic without being understandable.</li><li>Stocks and mutual funds required different analysis while still belonging to one portfolio story.</li><li>Insights risked becoming dead ends if the product did not offer an appropriate action.</li><li>Import and syncing required clear consent, trust, progress, failure, and empty states.</li></ul><p>The product goal was to turn fragmented holdings into a coherent analysis that helps investors understand risk, identify gaps, and choose an informed next step.</p>",
     research:
-      "<p>I audited the existing portfolio, import, stock-research, mutual-fund, and advisory journeys, then mapped the questions users need answered as they move from visibility to action.</p><p>The synthesis revealed four recurring needs: <strong>completeness</strong> across brokers, <strong>interpretation</strong> of complex metrics, <strong>prioritisation</strong> of what deserves attention, and <strong>support</strong> at the moment a decision becomes consequential.</p><p>These inputs shaped a product principle: keep the data source visible, but never make the user learn a different analysis model for each source.</p>",
+      "<p>I audited the existing portfolio, import, stock-research, mutual-fund, and advisory journeys, then mapped the questions users need answered as they move from visibility to action.</p><p>Four questions kept coming up: <strong>completeness</strong> across brokers, <strong>interpretation</strong> of complex metrics, <strong>prioritisation</strong> of what deserves attention, and <strong>support</strong> at the moment a decision becomes consequential.</p><p>These inputs shaped a product principle: keep the data source visible, but never make the user learn a different analysis model for each source.</p>",
     design_process:
       "<p>I structured the experience around investor questions instead of backend data categories.</p><ol><li><strong>What is being analysed?</strong> Overall, Motilal Oswal, and External views preserve source context.</li><li><strong>Is my portfolio healthy?</strong> A concise overview surfaces allocation, risk, diversification, and attention areas.</li><li><strong>Why does it matter?</strong> Every metric is paired with interpretation and portfolio-specific context.</li><li><strong>Where is the issue?</strong> Progressive disclosure connects a diagnosis to the affected stocks or funds.</li><li><strong>What can I do next?</strong> IAP portfolios, RM support, and downloadable reports support different confidence levels.</li></ol><p>I also designed the non-ideal journey: no external portfolio, first-time connection, consent, syncing, partial data, errors, empty analysis, and light/dark states. This made the system buildable beyond the ideal happy path.</p>",
     solution:
       "<p>The final experience works as a connected six-part journey.</p><ul><li><strong>Entry and value framing:</strong> Portfolio Analysis communicates the benefit before asking users to connect more data.</li><li><strong>Unified portfolio scope:</strong> Overall, Motilal Oswal, and External tabs offer control without fragmenting the product.</li><li><strong>External portfolio connection:</strong> Consent-led broker import and visible syncing states reduce uncertainty.</li><li><strong>Stock diagnostics:</strong> Allocation, sector and stock concentration, portfolio risk, and red flags are organised by priority.</li><li><strong>Mutual-fund analysis:</strong> Risk alignment, diversification, and overlap are explained in an asset-appropriate format.</li><li><strong>Decision support:</strong> Relevant IAP mutual-fund portfolios, a relationship-manager conversation, and report download turn insight into an actionable choice.</li></ul><p>The interface uses progressive disclosure and plain-language interpretation to retain analytical depth without becoming a data dump.</p>",
     outcome:
-      "<p>The work established one scalable portfolio-intelligence model across internal and external investments, designed for <strong>2M+ portfolio-analysis use cases</strong>. It aligned the product around a continuous path from holdings to diagnosis to an appropriate next step.</p><p>The design system covers stocks, mutual funds, multiple portfolio sources, import states, light/dark themes, and advisory actions while keeping a consistent core interaction model.</p><p>No unverified conversion or post-launch uplift is presented. The defensible outcome is the product architecture, build-ready journey, and scale of use cases covered.</p>",
+      "<p>I designed one portfolio-analysis model for internal and external investments, covering <strong>2M+ portfolio-analysis use cases</strong>. It aligned the product around a continuous path from holdings to diagnosis to an appropriate next step.</p><p>The design system covers stocks, mutual funds, multiple portfolio sources, import states, light/dark themes, and advisory actions while keeping a consistent core interaction model.</p><p>The product is still confidential, so I am showing the scope, architecture, and build-ready journey rather than a conversion claim.</p>",
     learnings:
       "<p>A portfolio score alone creates attention, not confidence. The valuable design work is the layer between the number and the action: explaining why a signal matters, showing where it comes from, and offering help without pretending the interface can replace investor judgement.</p><p>The project also reinforced that source unification is an experience problem before it is a data problem. Users can accept multiple sources as long as the product gives them one stable mental model.</p>",
     role: "Lead product design · Product strategy · Data storytelling",
@@ -433,9 +434,9 @@ export const PORTFOLIO_PROJECTS = [
     title: "RIISE Portfolio Revamp",
     slug: "riise-portfolio-revamp",
     short_description:
-      "Simplifying a data-heavy, multi-product portfolio into a calm, structured experience with clearer priorities and lower cognitive load.",
+      "Reworking a crowded multi-product portfolio so people can understand value, performance, allocation, and risk without digging through repeated cards.",
     overview:
-      "<p>RIISE brings many kinds of investments into one place—stocks, mutual funds, U.S. stocks, bonds, investment strategies, and more. That breadth is powerful, but it also made the portfolio page carry too much at once.</p><p>The oldest experience worked, yet it felt dated and asked users to scan the same numbers across a long series of cards. When I joined Motilal Oswal, our first shared task was to build a stronger design system and bring it into RIISE, the company’s highest-revenue product.</p><p>That system gave the product a cleaner, more dependable visual language. It also gave us the confidence to go further: not just restyle the portfolio, but rethink how it should feel when many products live together.</p>",
+      "<p>RIISE brings many kinds of investments into one place: stocks, mutual funds, U.S. stocks, bonds, investment strategies, and more. That breadth is useful, but it also made the portfolio page carry too much at once.</p><p>The oldest experience worked, yet it felt dated and asked users to scan the same numbers across a long series of cards. When I joined Motilal Oswal, our first shared task was to build a stronger design system and bring it into RIISE, the company’s highest-revenue product.</p><p>That system gave the product a cleaner, more dependable visual language. It also gave us the confidence to go further: not just restyle the portfolio, but rethink how it should feel when many products live together.</p>",
     problem_statement:
       "<p>The page grew by adding one more card whenever a product was added. Over time, the portfolio became longer, louder, and harder to read.</p><ul><li>Total value, profit and loss, allocation, and product details competed for attention.</li><li>The same information repeated across multiple asset cards.</li><li>Users had to work to understand what mattered right now.</li><li>A visual refresh alone would not solve the underlying structure.</li></ul><p>The challenge was simple to say and difficult to solve: <strong>show more financial products while making the experience feel lighter.</strong></p>",
     research:
@@ -443,11 +444,11 @@ export const PORTFOLIO_PROJECTS = [
     design_process:
       "<p>The work moved through three deliberate stages.</p><ol><li><strong>Stabilise the foundation.</strong> We built and applied the RIISE design system across the older experience, bringing consistency to type, spacing, colour, components, and states.</li><li><strong>See past the polish.</strong> The system made the page feel more modern, but the same repeated-card structure was still doing too much work.</li><li><strong>Rebuild the reading order.</strong> I reorganised the portfolio around one clear summary, readable asset groups, and signals that help users notice what deserves attention.</li></ol><p>At each step, I checked how the page would behave as more products and states were added. The goal was not a perfect static screen. It was a structure that could keep growing without becoming heavy again.</p>",
     solution:
-      "<p>The latest portfolio starts with the full picture, then lets users move into detail at their own pace.</p><ul><li><strong>One clear summary:</strong> current value, invested value, and profit or loss now read as one connected story.</li><li><strong>Choice without fragmentation:</strong> Overall, Motilal Oswal, and External views keep the source visible without splitting the experience.</li><li><strong>Assets as readable rows:</strong> stocks, mutual funds, U.S. stocks, IAP, and non-tradable holdings show allocation and performance without repeating an entire card.</li><li><strong>Attention before exploration:</strong> risk and performance signals point to what may need a closer look.</li><li><strong>Secondary value at the right depth:</strong> MTF borrowing, dividends, ideas, and other modules sit below the essential portfolio view.</li></ul><p>The result is not less data. It is <strong>better-timed data</strong>.</p>",
+      "<p>The latest portfolio starts with the full picture, then lets users move into detail at their own pace.</p><ul><li><strong>One clear summary:</strong> current value, invested value, and profit or loss now read as one connected story.</li><li><strong>Choice without fragmentation:</strong> Overall, Motilal Oswal, and External views keep the source visible without splitting the experience.</li><li><strong>Assets as readable rows:</strong> stocks, mutual funds, U.S. stocks, IAP, and non-tradable holdings show allocation and performance without repeating an entire card.</li><li><strong>Attention before exploration:</strong> risk and performance signals point to what may need a closer look.</li><li><strong>Secondary value at the right depth:</strong> MTF borrowing, dividends, ideas, and other modules sit below the essential portfolio view.</li></ul><p>The data is still there, but it appears when it becomes useful.</p>",
     outcome:
-      "<p>The latest experience can hold a wider product mix while feeling calmer and easier to scan. It gives the RIISE portfolio a visual and interaction standard that now stands alongside leading investment products.</p><p>The work also changed the internal conversation. We moved from applying a design system to using that system as a foundation for deeper product decisions. Instead of adding one more card, the team now had a clearer model for what belongs first, what can wait, and how new products should enter the portfolio.</p><p>No unsupported uplift is claimed here. The evidence is visible in the evolution: stronger hierarchy, lower repetition, and a structure designed to scale.</p>",
+      "<p>The latest experience can hold a wider product mix while feeling calmer and easier to scan. It gives the RIISE portfolio a visual and interaction standard that now stands alongside leading investment products.</p><p>The work also changed the internal conversation. We moved from applying a design system to using that system as a foundation for deeper product decisions. Instead of adding one more card, the team now had a clearer model for what belongs first, what can wait, and how new products should enter the portfolio.</p><p>This work is still being rolled out, so I am not attaching an uplift figure. The visible change is a clearer hierarchy, less repetition, and a structure that can take on new products.</p>",
     learnings:
-      "<p>A design system can make a product consistent, but consistency alone does not make it simple. The real improvement came when we stopped treating every data point as equally urgent.</p><p>My biggest learning: <strong>simplification is not removing information. It is giving every piece of information the right moment.</strong></p>",
+      "<p>A design system can make a product consistent, but consistency alone does not make it simple. The real improvement came when we stopped treating every data point as equally urgent.</p><p>I learned that removing information was rarely the answer. Better hierarchy was.</p>",
     role: "Portfolio UX · Visual design · Design-system adoption",
     duration: "Design-system rollout to latest revamp",
     company: "Motilal Oswal Financial Services",
@@ -472,7 +473,7 @@ export const PORTFOLIO_PROJECTS = [
         eyebrow: "Design evolution",
         title: "From stacked data to one clear portfolio story.",
         description:
-          "The products stayed complex. The experience became easier to read with every stage—first through consistency, then through a deeper rethink of what users should see first.",
+          "The products stayed complex. The experience became easier to read at each stage, first through consistency and then through a deeper rethink of what users should see first.",
         stages: [
           {
             id: "oldest",
@@ -599,7 +600,7 @@ export const PORTFOLIO_PROJECTS = [
           visible: true,
           label: "Learning",
           eyebrow: "What stayed with me",
-          title: "Consistency opens the door. Hierarchy changes the experience.",
+          title: "What the design system could not solve on its own.",
         },
       },
     },
@@ -633,9 +634,9 @@ export const PORTFOLIO_PROJECTS = [
     title: "RIISE First-Time User Journey",
     slug: "riise-first-time-user-journey",
     short_description:
-      "Helping new users understand RIISE’s value, complete setup, fund their account, and place their first trade—one clear step at a time.",
+      "Helping new users understand RIISE’s value, complete setup, fund their account, and place their first trade one clear step at a time.",
     overview:
-      "<p>A first visit to an investment platform begins with an empty portfolio and a simple question: “Why should I stay?” For RIISE, the answer could not be another setup form. It had to be the strength Motilal Oswal is already known for—research.</p><p>I designed the first-time experience around a fair exchange. New users could explore the platform, see a real research idea, and understand what deeper access could unlock. In return, each setup request—KYC, verification, funds, and the first trade—arrived with a visible reason to continue.</p>",
+      "<p>A first visit to an investment platform begins with an empty portfolio and a simple question: “Why should I stay?” A setup form would not give them a reason. RIISE already had a stronger answer: research.</p><p>I designed the first-time experience around a fair exchange. New users could explore the platform, see a real research idea, and understand what deeper access could unlock. In return, each setup request, from KYC and verification to funds and the first trade, arrived with a visible reason to continue.</p>",
     problem_statement:
       "<p>The risk was a dead-end guest experience: too many locked features, too little proof of value, and several important steps competing at once.</p><ul><li>Asking for KYC too early could feel like paperwork without a payoff.</li><li>Showing every research call would remove the value of completing setup.</li><li>Hiding everything would make RIISE feel empty.</li><li>The journey had to react to account status without making users relearn the homepage.</li></ul><p>The challenge was to <strong>let people feel the product before asking them to finish becoming a customer.</strong></p>",
     research:
@@ -645,9 +646,9 @@ export const PORTFOLIO_PROJECTS = [
     solution:
       "<p>The final journey feels less like a funnel and more like a guided first session.</p><ul><li><strong>Guest:</strong> explore RIISE and see enough research to understand its value.</li><li><strong>Complete KYC:</strong> connect the setup request to the access it unlocks.</li><li><strong>Verification:</strong> set clear expectations and keep useful actions available.</li><li><strong>Add funds:</strong> make account readiness the next focused step.</li><li><strong>First trade:</strong> bring expert ideas forward when the user can act on them.</li></ul><p>A persistent setup reminder keeps progress visible without interrupting exploration.</p>",
     outcome:
-      "<p>The experience gives first-time users a reason to continue before their portfolio has any activity. It also gives the product team one reusable model for guest, incomplete, waiting, funded, and trade-ready states.</p><p>The evidence here is the journey itself rather than an invented conversion claim: each screen has one clear next action, research stays visible, and the page grows more useful as the account becomes more complete.</p>",
+      "<p>The experience gives first-time users a reason to continue before their portfolio has any activity. It also gives the product team one reusable model for guest, incomplete, waiting, funded, and trade-ready states.</p><p>This is pre-launch work, so I am not claiming a conversion lift. The result is a complete set of states with one clear next action at each stage.</p>",
     learnings:
-      "<p>A nudge works better when it points to a reward people can already understand. The strongest onboarding message was not “Complete your KYC.” It was “Here is what becomes possible when you do.”</p>",
+      "<p>KYC copy became easier once every request pointed to a visible benefit. Instead of asking users to finish setup in the abstract, the page showed what they would unlock next.</p>",
     role: "Journey strategy · UX/UI design · Prototyping",
     duration: "Guest discovery to first trade",
     company: "Motilal Oswal Financial Services",
@@ -706,7 +707,7 @@ export const PORTFOLIO_PROJECTS = [
       },
       cta: {
         eyebrow: "More product work",
-        title: "Product value before product friction.",
+        title: "Show the value before asking for setup.",
         label: "View more work",
         url: "/work",
       },
@@ -832,15 +833,15 @@ export const PORTFOLIO_PROJECTS = [
     problem_statement:
       "<p>The homepage treated every product as equally important for every user. A first-time investor, an active trader, and a mutual-fund customer saw similar prominence across modules, increasing cognitive load and weakening discoverability.</p><ul><li>Too many products competed above the fold.</li><li>Static ordering ignored user behaviour and lifecycle.</li><li>New capabilities were repeatedly added without a scalable hierarchy.</li><li>Multiple teams needed a shared framework for deciding what appears, when, and why.</li></ul>",
     research:
-      "<p>I audited the existing homepage, mapped entry points and dependencies, reviewed available behaviour and portfolio signals, and worked with product stakeholders across business lines.</p><p>The key insight was that personalisation was not only a recommendation problem. It was an information-architecture problem: the platform needed stable rules for relevance, priority, continuity, and discovery.</p>",
+      "<p>I audited the existing homepage, mapped entry points and dependencies, reviewed available behaviour and portfolio signals, and worked with product stakeholders across business lines.</p><p>The audit changed how I saw the problem. Recommendations were only one part of it; the homepage also needed stable rules for relevance, priority, continuity, and discovery.</p>",
     design_process:
       "<p>I reframed the homepage as a system of prioritised zones rather than a fixed sequence of cards.</p><ol><li>Mapped user states across new, returning, invested, and active cohorts.</li><li>Separated persistent utilities from behaviour-led modules and discovery content.</li><li>Defined prioritisation rules using recent activity, holdings, lifecycle, and product eligibility.</li><li>Created responsive templates so teams could add modules without breaking the hierarchy.</li><li>Reviewed states with product, engineering, and compliance before high-fidelity handoff.</li></ol>",
     solution:
       "<p>The proposed architecture gives each user a clearer starting point while preserving access to the wider product ecosystem.</p><ul><li>A contextual top section for the user’s most relevant tasks and holdings.</li><li>Behaviour-led continuation modules that help users resume meaningful activity.</li><li>Lifecycle-aware discovery for products the user has not yet adopted.</li><li>Reusable module rules and component patterns for scalable future additions.</li><li>Dedicated new-user states that build understanding before promoting advanced products.</li></ul>",
     outcome:
-      "<p>The work created a shared personalisation framework across multiple product teams and shifted the conversation from adding homepage cards to managing relevance. It reduced structural ambiguity for design and engineering and established a scalable direction for implementation.</p><p>Because this work is current, outcome claims are limited to what can be stated honestly without exposing internal performance data.</p>",
+      "<p>I created a shared framework that product teams could use to decide what appears, when it appears, and why. That gave design and engineering a clearer structure for implementation.</p><p>This work is still in progress, so I have kept the outcome to decisions I can discuss without exposing internal performance data.</p>",
     learnings:
-      "<p>Personalisation fails when it becomes a collection of isolated recommendations. The stronger approach is to define a coherent hierarchy first, then use signals to adapt it. Senior design ownership here meant making product rules, dependencies, and trade-offs visible—not only producing the final UI.</p>",
+      "<p>I learned to define the hierarchy before adding personalisation signals. My role was as much about making rules, dependencies, and trade-offs clear as it was about designing the interface.</p>",
     role: "Lead product design · Product strategy · Information architecture",
     duration: "Current product work",
     company: "Motilal Oswal Financial Services",
@@ -872,7 +873,7 @@ export const PORTFOLIO_PROJECTS = [
   },
   {
     id: "screener",
-    title: "Screener — 0-to-1 Stock Discovery",
+    title: "Screener: 0-to-1 Stock Discovery",
     slug: "screener-stock-discovery",
     short_description:
       "Defining a new stock-discovery product across filtering, comparison, saved workflows, and AI-assisted decisions.",
@@ -887,9 +888,9 @@ export const PORTFOLIO_PROJECTS = [
     solution:
       "<p>The resulting product system supports exploration without hiding expert capability.</p><ul><li>Category-led landing page with trending and ready-made screeners.</li><li>Progressive filter builder with clear active criteria and result feedback.</li><li>Stock comparison that highlights meaningful differences before showing full data.</li><li>AI-assisted explanation designed as decision support, not a substitute for judgement.</li><li>Reusable saved screeners that users can revisit, duplicate, and refine.</li></ul>",
     outcome:
-      "<p>The work established the foundational experience and reusable architecture for a new product line. It aligned product and engineering around a shared scope, clarified the novice-to-advanced progression, and produced a build-ready interaction model.</p><p>No adoption or conversion figures are claimed because verified post-launch data is not yet available for publication.</p>",
+      "<p>I took the product from an early brief to a build-ready interaction model. Product and engineering left with a shared scope and a clear path from beginner to advanced use.</p><p>The product has not produced a publishable post-launch metric yet, so the outcome here is the product definition and build-ready model.</p>",
     learnings:
-      "<p>The strongest way to simplify an advanced tool is not to remove capability. It is to provide meaningful starting points, reveal complexity progressively, and make every added control explain its effect.</p>",
+      "<p>I learned that an advanced tool does not need fewer capabilities. It needs useful starting points, progressive controls, and clear feedback when a filter changes the result.</p>",
     role: "0-to-1 product design · IA · Interaction design",
     duration: "Concept to developer handoff",
     company: "Motilal Oswal Financial Services",
@@ -926,7 +927,7 @@ export const PORTFOLIO_PROJECTS = [
     short_description:
       "Turning a low-value portfolio-import flow into an insight-led experience that gave users a reason to connect their investments.",
     overview:
-      "<p>Trinkerr allowed users to import a portfolio, but the feature offered limited value after connection—especially for users with a single broker. Importing financial data required trust and effort, while the immediate benefit was unclear.</p><p>I redesigned the experience around a Portfolio Health Report: a clear, actionable view of performance, valuation, risk, allocation, and portfolio red flags.</p>",
+      "<p>Trinkerr allowed users to import a portfolio, but the feature offered limited value after connection, especially for users with a single broker. Importing financial data required trust and effort, while the immediate benefit was unclear.</p><p>I redesigned the experience around a Portfolio Health Report: a clear, actionable view of performance, valuation, risk, allocation, and portfolio red flags.</p>",
     problem_statement:
       "<p>The original flow optimised the act of importing rather than the reason to import.</p><ul><li>Users could already view holdings in their broker app.</li><li>Connecting a broker introduced trust and privacy concerns.</li><li>The product did not preview the value users would receive.</li><li>Complex financial metrics risked becoming a dense data dump.</li></ul><p>The business goal was to improve portfolio imports; the user goal was to understand whether their portfolio was healthy and what deserved attention.</p>",
     research:
@@ -936,7 +937,7 @@ export const PORTFOLIO_PROJECTS = [
     solution:
       "<p>The redesigned experience connected import directly to a valuable outcome.</p><ul><li>An insight-led health report immediately after portfolio connection.</li><li>Benchmarks and interpretation beside financial metrics.</li><li>Allocation views that explain concentration rather than only showing a chart.</li><li>Red flags framed as prioritised areas to investigate.</li><li>A demo health report that previews the value before users connect a broker.</li></ul>",
     outcome:
-      "<p>The Portfolio Health Report contributed to a 9× increase in portfolio imports after launch. Introducing the demo report—so users could understand the value before connecting a broker—contributed a further 1.2× lift.</p><p>The project demonstrated that adoption improved when the experience made the promised outcome visible before asking users for effort and trust.</p>",
+      "<p>The Portfolio Health Report contributed to a 9× increase in portfolio imports after launch. Introducing the demo report, so users could understand the value before connecting a broker, contributed a further 1.2× lift.</p><p>The increase came after users could see what they would get before they were asked to connect a broker.</p>",
     learnings:
       "<p>The initial instinct was to optimise the import flow. The more important product decision was to improve the value proposition after import. Showing a credible preview reduced uncertainty more effectively than adding more persuasion to the connection step.</p>",
     role: "End-to-end product design · Data storytelling · Adoption",
@@ -985,9 +986,9 @@ export const PORTFOLIO_PROJECTS = [
     solution:
       "<p>TIQS 2.0 provided a clearer shared language across product surfaces.</p><ul><li>Tokenised foundations for theme-aware design.</li><li>Reusable components with structured variants and properties.</li><li>Touch targets, contrast, disabled states, and interaction guidance.</li><li>Consistent iconography and numerical typography for fintech data.</li><li>Documentation and handoff patterns designed for asynchronous collaboration.</li></ul>",
     outcome:
-      "<p>The system reduced avoidable inconsistency, made component decisions easier to review, and improved the shared understanding between design and engineering. It also created a stronger base for scaling new product modules without recreating common patterns.</p><p>No percentage reduction is presented because a verified measurement source is not available for publication.</p>",
+      "<p>The system reduced avoidable inconsistency, made component decisions easier to review, and improved the shared understanding between design and engineering. It also created a stronger base for scaling new product modules without recreating common patterns.</p><p>We did not track a publishable percentage reduction, so I am keeping the outcome to the changes we could verify in the product and handoff process.</p>",
     learnings:
-      "<p>A design system scales through governance and adoption, not the size of its library. Component properties, naming, documentation, and code alignment often create more value than adding another set of polished variants.</p>",
+      "<p>What made the system useful was not the size of the library. It was the less visible work around naming, documentation, code mapping, and adoption.</p>",
     role: "Design systems · Cross-platform UX · Documentation",
     duration: "System audit through adoption",
     company: "Trinkerr / TIQS",

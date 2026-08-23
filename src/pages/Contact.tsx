@@ -33,8 +33,8 @@ type ContactData = {
 
 const FALLBACK: ContactData = {
   eyebrow: "Say hello",
-  heading_before: "Let's make",
-  heading_accent: "something",
+  heading_before: "Tell me what",
+  heading_accent: "you’re working on",
   heading_after: ".",
   copy_email_label: "Copy email",
   copied_label: "Copied",
@@ -45,7 +45,7 @@ const FALLBACK: ContactData = {
     send: "Send message",
     sending: "Sending",
   },
-  success_toast: "Message sent — I'll reply within 2 business days.",
+  success_toast: "Message sent. I'll reply within 2 business days.",
   elsewhere_label: "Elsewhere",
   based_in_label: "Based in",
 };
@@ -107,9 +107,8 @@ export default function Contact() {
             {d.heading_after}
           </h1>
           <p className="mt-6 max-w-2xl text-[16px] leading-[1.7] text-[var(--color-muted)] md:text-lg">
-            I’m exploring Senior Product Designer opportunities across fintech, AI, consumer
-            products, and product platforms. If you’re building something complex and meaningful,
-            I’d love to hear about it.
+            I’m looking for a Senior Product Designer role. Tell me about the product, the team, and
+            the problem you need help with. I read every message and reply myself.
           </p>
         </Reveal>
       </section>

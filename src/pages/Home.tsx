@@ -13,8 +13,11 @@ export default function Home() {
   return (
     <>
       <Seo
-        title={`${site?.name ?? "Aman Mishra"} — Senior Product Designer`}
-        description={site?.tagline ?? "Product designer crafting next-horizon experiences."}
+        title={`${site?.name ?? "Aman Mishra"} | Senior Product Designer`}
+        description={
+          site?.tagline ??
+          "Senior Product Designer working across investment products, AI-assisted tools, and design systems."
+        }
         path="/"
         siteName={site?.name ?? "Aman Mishra"}
       />

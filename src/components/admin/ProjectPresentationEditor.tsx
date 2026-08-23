@@ -7,6 +7,7 @@ import type {
 } from "@/lib/projectPresentation";
 import { PROJECT_SECTION_KEYS } from "@/lib/projectPresentation";
 import { SingleImageUpload } from "@/components/admin/ImageUploader";
+import { PortfolioScenarioEditor } from "@/components/admin/PortfolioScenarioEditor";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -256,115 +257,123 @@ export function ProjectPresentationEditor({
               </div>
             </div>
 
-            <div className="space-y-4">
-              <div className="flex items-center justify-between gap-4">
-                <div>
-                  <p className="text-sm font-semibold text-neutral-900">Journey screens</p>
-                  <p className="text-xs text-neutral-500">
-                    Upload any screen to replace its generated fallback.
-                  </p>
-                </div>
-                <Button
-                  type="button"
-                  variant="outline"
-                  size="sm"
-                  onClick={() =>
-                    update("story", {
-                      ...presentation.story,
-                      journey: [
-                        ...presentation.story.journey,
-                        {
-                          id: `step-${Date.now()}`,
-                          title: "New journey step",
-                          description: "",
-                          image_url: null,
-                        },
-                      ],
-                    })
-                  }
-                >
-                  <Plus size={14} /> Add screen
-                </Button>
-              </div>
-
-              {presentation.story.journey.map((item, index) => (
-                <div
-                  key={item.id}
-                  className="grid gap-4 rounded-xl border border-neutral-200 bg-neutral-50 p-4 md:grid-cols-[220px_minmax(0,1fr)]"
-                >
-                  <SingleImageUpload
-                    value={item.image_url}
-                    onChange={(image_url) => updateJourney(index, { ...item, image_url })}
-                    bucket="project-images"
-                    prefix={`journey/${slug || "draft"}`}
-                    aspect="portrait"
-                  />
-                  <div className="space-y-3">
-                    <div className="flex items-center justify-between gap-3">
-                      <p className="text-xs font-semibold uppercase tracking-wider text-neutral-500">
-                        Step {String(index + 1).padStart(2, "0")}
-                      </p>
-                      <div className="flex items-center gap-1">
-                        <Button
-                          type="button"
-                          variant="ghost"
-                          size="icon"
-                          className="h-8 w-8"
-                          aria-label="Move up"
-                          disabled={index === 0}
-                          onClick={() => moveJourney(index, -1)}
-                        >
-                          <ChevronUp size={14} />
-                        </Button>
-                        <Button
-                          type="button"
-                          variant="ghost"
-                          size="icon"
-                          className="h-8 w-8"
-                          aria-label="Move down"
-                          disabled={index === presentation.story.journey.length - 1}
-                          onClick={() => moveJourney(index, 1)}
-                        >
-                          <ChevronDown size={14} />
-                        </Button>
-                        <Button
-                          type="button"
-                          variant="ghost"
-                          size="icon"
-                          className="h-8 w-8 text-red-600 hover:text-red-700"
-                          aria-label="Delete screen"
-                          onClick={() =>
-                            update("story", {
-                              ...presentation.story,
-                              journey: presentation.story.journey.filter((_, i) => i !== index),
-                            })
-                          }
-                        >
-                          <Trash2 size={14} />
-                        </Button>
-                      </div>
-                    </div>
-                    <Field label="Title">
-                      <Input
-                        value={item.title}
-                        onChange={(event) =>
-                          updateJourney(index, { ...item, title: event.target.value })
-                        }
-                      />
-                    </Field>
-                    <Field label="Description">
-                      <Textarea
-                        rows={3}
-                        value={item.description}
-                        onChange={(event) =>
-                          updateJourney(index, { ...item, description: event.target.value })
-                        }
-                      />
-                    </Field>
+            {slug === "portfolio-analysis" ? (
+              <PortfolioScenarioEditor
+                slug={slug}
+                scenarios={presentation.story.scenarios}
+                onChange={(scenarios) => update("story", { ...presentation.story, scenarios })}
+              />
+            ) : (
+              <div className="space-y-4">
+                <div className="flex items-center justify-between gap-4">
+                  <div>
+                    <p className="text-sm font-semibold text-neutral-900">Journey screens</p>
+                    <p className="text-xs text-neutral-500">
+                      Upload any screen to replace its generated fallback.
+                    </p>
                   </div>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={() =>
+                      update("story", {
+                        ...presentation.story,
+                        journey: [
+                          ...presentation.story.journey,
+                          {
+                            id: `step-${Date.now()}`,
+                            title: "New journey step",
+                            description: "",
+                            image_url: null,
+                          },
+                        ],
+                      })
+                    }
+                  >
+                    <Plus size={14} /> Add screen
+                  </Button>
                 </div>
-              ))}
-            </div>
+
+                {presentation.story.journey.map((item, index) => (
+                  <div
+                    key={item.id}
+                    className="grid gap-4 rounded-xl border border-neutral-200 bg-neutral-50 p-4 md:grid-cols-[220px_minmax(0,1fr)]"
+                  >
+                    <SingleImageUpload
+                      value={item.image_url}
+                      onChange={(image_url) => updateJourney(index, { ...item, image_url })}
+                      bucket="project-images"
+                      prefix={`journey/${slug || "draft"}`}
+                      aspect="portrait"
+                    />
+                    <div className="space-y-3">
+                      <div className="flex items-center justify-between gap-3">
+                        <p className="text-xs font-semibold uppercase tracking-wider text-neutral-500">
+                          Step {String(index + 1).padStart(2, "0")}
+                        </p>
+                        <div className="flex items-center gap-1">
+                          <Button
+                            type="button"
+                            variant="ghost"
+                            size="icon"
+                            className="h-8 w-8"
+                            aria-label="Move up"
+                            disabled={index === 0}
+                            onClick={() => moveJourney(index, -1)}
+                          >
+                            <ChevronUp size={14} />
+                          </Button>
+                          <Button
+                            type="button"
+                            variant="ghost"
+                            size="icon"
+                            className="h-8 w-8"
+                            aria-label="Move down"
+                            disabled={index === presentation.story.journey.length - 1}
+                            onClick={() => moveJourney(index, 1)}
+                          >
+                            <ChevronDown size={14} />
+                          </Button>
+                          <Button
+                            type="button"
+                            variant="ghost"
+                            size="icon"
+                            className="h-8 w-8 text-red-600 hover:text-red-700"
+                            aria-label="Delete screen"
+                            onClick={() =>
+                              update("story", {
+                                ...presentation.story,
+                                journey: presentation.story.journey.filter((_, i) => i !== index),
+                              })
+                            }
+                          >
+                            <Trash2 size={14} />
+                          </Button>
+                        </div>
+                      </div>
+                      <Field label="Title">
+                        <Input
+                          value={item.title}
+                          onChange={(event) =>
+                            updateJourney(index, { ...item, title: event.target.value })
+                          }
+                        />
+                      </Field>
+                      <Field label="Description">
+                        <Textarea
+                          rows={3}
+                          value={item.description}
+                          onChange={(event) =>
+                            updateJourney(index, { ...item, description: event.target.value })
+                          }
+                        />
+                      </Field>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         )}
       </EditorPanel>

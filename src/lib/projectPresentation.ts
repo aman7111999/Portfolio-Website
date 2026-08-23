@@ -1,3 +1,8 @@
+import {
+  PORTFOLIO_ANALYSIS_SCENARIOS,
+  type PortfolioAnalysisScreenTheme,
+} from "@/data/portfolioAnalysisScreens";
+
 export type ProjectVisualStyle = "auto" | "image" | "signature" | "generated";
 
 export type ProjectType = "case_study" | "revamp_comparison";
@@ -37,6 +42,24 @@ export type ProjectJourneyItem = {
   image_url: string | null;
 };
 
+export type ProjectStoryScreen = {
+  id: string;
+  title: string;
+  description: string;
+  image_url: string | null;
+  image_alt: string;
+  theme: PortfolioAnalysisScreenTheme;
+};
+
+export type ProjectStoryScenario = {
+  id: string;
+  tab_label: string;
+  eyebrow: string;
+  title: string;
+  description: string;
+  screens: ProjectStoryScreen[];
+};
+
 export type ArchitectureNode = {
   id: string;
   eyebrow: string;
@@ -67,6 +90,7 @@ export type ProjectPresentation = {
     journey_title: string;
     journey_description: string;
     journey: ProjectJourneyItem[];
+    scenarios: ProjectStoryScenario[];
   };
   gallery: {
     eyebrow: string;
@@ -157,48 +181,59 @@ const sectionDefaults: Record<ProjectSectionKey, ProjectSectionPresentation> = {
 
 const portfolioJourneyDefaults: ProjectJourneyItem[] = [
   {
-    id: "entry",
-    title: "Find the value",
+    id: "mo-stocks",
+    title: "MO stocks",
     description:
-      "A clear Portfolio Analysis entry point explains the outcome before asking for effort.",
+      "Internal stock holdings move from an attention signal to the affected allocation and next step.",
     image_url: null,
   },
   {
-    id: "scope",
-    title: "Choose the scope",
+    id: "external-stocks",
+    title: "External stocks",
     description:
-      "Overall, Motilal Oswal, and External views keep source context visible without splitting the experience.",
+      "Linked stock holdings use the same analysis language while keeping the external source visible.",
     image_url: null,
   },
   {
-    id: "connect",
-    title: "Connect external wealth",
+    id: "mo-mutual-funds",
+    title: "MO mutual funds",
     description:
-      "Broker import, consent, and syncing states make a high-trust transition feel predictable.",
+      "Fund performance and concentration are prioritised, explained, and connected to the affected schemes.",
     image_url: null,
   },
   {
-    id: "stocks",
-    title: "Read stock health",
+    id: "external-mutual-funds",
+    title: "External mutual funds",
     description:
-      "Allocation, concentration, and red flags translate raw holdings into a prioritised diagnosis.",
+      "Imported funds follow the same stable hierarchy without hiding where the investments are held.",
     image_url: null,
   },
   {
-    id: "funds",
-    title: "Evaluate mutual funds",
+    id: "risk-states",
+    title: "Risk details and states",
     description:
-      "Risk and diversification are explained in context, not presented as isolated financial scores.",
-    image_url: null,
-  },
-  {
-    id: "actions",
-    title: "Move from insight to action",
-    description:
-      "IAP portfolios, an RM conversation, and report download support different levels of confidence.",
+      "Light, dark, collapsed, expanded, and breakdown states make the analysis buildable beyond one happy path.",
     image_url: null,
   },
 ];
+
+const portfolioScenarioDefaults: ProjectStoryScenario[] = PORTFOLIO_ANALYSIS_SCENARIOS.map(
+  (scenario) => ({
+    id: scenario.id,
+    tab_label: scenario.tabLabel,
+    eyebrow: scenario.eyebrow,
+    title: scenario.title,
+    description: scenario.description,
+    screens: scenario.screens.map((screen) => ({
+      id: screen.id,
+      title: screen.title,
+      description: screen.description,
+      image_url: screen.url,
+      image_alt: screen.alt,
+      theme: screen.theme,
+    })),
+  }),
+);
 
 const architectureDefaults: ArchitectureNode[] = [
   {
@@ -263,6 +298,9 @@ const visualStyle = (value: unknown): ProjectVisualStyle =>
 
 const projectType = (value: unknown): ProjectType =>
   value === "revamp_comparison" ? "revamp_comparison" : "case_study";
+
+const screenTheme = (value: unknown): PortfolioAnalysisScreenTheme =>
+  value === "light" || value === "dark" ? value : "mixed";
 
 export function getProjectPresentation(project: {
   slug: string;
@@ -345,6 +383,49 @@ export function getProjectPresentation(project: {
     };
   });
 
+  const rawScenarios = Array.isArray(rawStory.scenarios) ? rawStory.scenarios : null;
+  const scenarioSource = rawScenarios ?? (isPortfolioAnalysis ? portfolioScenarioDefaults : []);
+  const scenarios = scenarioSource.slice(0, 12).map((item, scenarioIndex) => {
+    const source = isObject(item) ? item : {};
+    const fallback = portfolioScenarioDefaults[scenarioIndex] ?? {
+      id: `scenario-${scenarioIndex + 1}`,
+      tab_label: `View ${scenarioIndex + 1}`,
+      eyebrow: "Portfolio view",
+      title: "Portfolio analysis view",
+      description: "",
+      screens: [],
+    };
+    const rawScreens = Array.isArray(source.screens) ? source.screens : fallback.screens;
+    const screens = rawScreens.slice(0, 24).map((screenItem, screenIndex) => {
+      const screenSource = isObject(screenItem) ? screenItem : {};
+      const screenFallback = fallback.screens[screenIndex] ?? {
+        id: `screen-${scenarioIndex + 1}-${screenIndex + 1}`,
+        title: `Screen ${screenIndex + 1}`,
+        description: "",
+        image_url: null,
+        image_alt: `Portfolio Analysis screen ${screenIndex + 1}`,
+        theme: "mixed" as const,
+      };
+      return {
+        id: text(screenSource.id, screenFallback.id),
+        title: text(screenSource.title, screenFallback.title),
+        description: text(screenSource.description, screenFallback.description),
+        image_url: nullableText(screenSource.image_url, screenFallback.image_url),
+        image_alt: text(screenSource.image_alt, screenFallback.image_alt),
+        theme: screenTheme(screenSource.theme ?? screenFallback.theme),
+      };
+    });
+
+    return {
+      id: text(source.id, fallback.id),
+      tab_label: text(source.tab_label, fallback.tab_label),
+      eyebrow: text(source.eyebrow, fallback.eyebrow),
+      title: text(source.title, fallback.title),
+      description: text(source.description, fallback.description),
+      screens,
+    };
+  });
+
   const rawNodes = Array.isArray(rawStory.architecture_nodes) ? rawStory.architecture_nodes : [];
   const nodeSource = rawNodes.length > 0 ? rawNodes : architectureDefaults;
   const architectureNodes = nodeSource.map((item, index) => {
@@ -368,7 +449,7 @@ export function getProjectPresentation(project: {
     card: {
       style: visualStyle(rawCard.style),
       image_alt: text(rawCard.image_alt, `${project.title ?? "Project"} preview`),
-      eyebrow: text(rawCard.eyebrow, "Case study"),
+      eyebrow: text(rawCard.eyebrow, isPortfolioAnalysis ? "Portfolio intelligence" : "Case study"),
     },
     hero: {
       style: visualStyle(rawHero.style),
@@ -387,19 +468,20 @@ export function getProjectPresentation(project: {
     story: {
       enabled: typeof rawStory.enabled === "boolean" ? rawStory.enabled : isPortfolioAnalysis,
       eyebrow: text(rawStory.eyebrow, "Experience architecture"),
-      title: text(rawStory.title, "One analysis model for every portfolio."),
+      title: text(rawStory.title, "One analysis model across four portfolio views."),
       description: text(
         rawStory.description,
-        "The interface keeps portfolio source visible, then applies the same diagnostic logic across internal and externally imported investments. Users learn one system instead of relearning the product for every broker or asset type.",
+        "Motilal Oswal and external holdings remain distinct, while stocks and mutual funds share a consistent path from risk signal to explanation and an appropriate next step.",
       ),
       architecture_nodes: architectureNodes,
-      journey_eyebrow: text(rawStory.journey_eyebrow, "Screen journey"),
-      journey_title: text(rawStory.journey_title, "Six moments. One continuous decision flow."),
+      journey_eyebrow: text(rawStory.journey_eyebrow, "Real product screens"),
+      journey_title: text(rawStory.journey_title, "Four portfolios. Every important state."),
       journey_description: text(
         rawStory.journey_description,
-        "Each screen answers the next investor question while preserving context from the previous step.",
+        "Explore the supplied MO and external stock and mutual-fund flows. Each screen is scrollable here and available at full resolution.",
       ),
       journey,
+      scenarios,
     },
     gallery: {
       eyebrow: text(rawGallery.eyebrow, "Visual archive"),

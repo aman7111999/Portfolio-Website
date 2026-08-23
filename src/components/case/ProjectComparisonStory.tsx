@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
-import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
-import { ArrowRight, Check, ImageOff, Maximize2, MoveVertical, X } from "lucide-react";
-import { createPortal } from "react-dom";
+import { motion, useReducedMotion } from "framer-motion";
+import { ArrowRight, Check, ImageOff, Maximize2, MoveVertical } from "lucide-react";
 import type {
   ProjectComparisonPresentation,
   ProjectComparisonStage,
 } from "@/lib/projectPresentation";
+import { FullscreenImageViewer } from "@/components/case/FullscreenImageViewer";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
@@ -26,6 +26,7 @@ export function ProjectComparisonStory({
   if (stages.length < 2) return null;
 
   const active = stages[Math.min(activeIndex, stages.length - 1)];
+  const expandedStage = expandedIndex === null ? null : stages[expandedIndex];
 
   return (
     <section
@@ -123,19 +124,19 @@ export function ProjectComparisonStory({
         </div>
       </div>
 
-      {typeof document !== "undefined" &&
-        createPortal(
-          <AnimatePresence>
-            {expandedIndex !== null && stages[expandedIndex]?.image_url && (
-              <ComparisonLightbox
-                stage={stages[expandedIndex]}
-                reduce={!!reduce}
-                onClose={() => setExpandedIndex(null)}
-              />
-            )}
-          </AnimatePresence>,
-          document.body,
-        )}
+      <FullscreenImageViewer
+        image={
+          expandedStage?.image_url
+            ? {
+                src: expandedStage.image_url,
+                alt: expandedStage.image_alt,
+                label: `${expandedStage.label} design`,
+                meta: expandedStage.timeframe,
+              }
+            : null
+        }
+        onClose={() => setExpandedIndex(null)}
+      />
     </section>
   );
 }
@@ -282,83 +283,5 @@ function ComparisonStageMedia({
         </button>
       </div>
     </div>
-  );
-}
-
-function ComparisonLightbox({
-  stage,
-  reduce,
-  onClose,
-}: {
-  stage: ProjectComparisonStage;
-  reduce: boolean;
-  onClose: () => void;
-}) {
-  useEffect(() => {
-    const previousOverflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-
-    const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") onClose();
-    };
-
-    window.addEventListener("keydown", onKeyDown);
-    return () => {
-      window.removeEventListener("keydown", onKeyDown);
-      document.body.style.overflow = previousOverflow;
-    };
-  }, [onClose]);
-
-  return (
-    <motion.div
-      data-lenis-prevent
-      role="dialog"
-      aria-modal="true"
-      aria-label={`${stage.label} design at full size`}
-      initial={reduce ? false : { opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      transition={{ duration: 0.25 }}
-      onClick={onClose}
-      className="fixed inset-0 z-[100] touch-pan-y overflow-y-auto overscroll-contain bg-black/92 backdrop-blur-md [-webkit-overflow-scrolling:touch]"
-    >
-      <div className="sticky top-0 z-10 flex min-h-16 items-center justify-between gap-4 border-b border-white/15 bg-black/75 px-4 text-white backdrop-blur-md sm:px-6">
-        <div className="min-w-0">
-          <p className="truncate text-[12px] font-semibold uppercase tracking-[0.1em]">
-            {stage.label}
-          </p>
-          {stage.timeframe && (
-            <p className="mt-0.5 truncate text-[11px] text-white/60">{stage.timeframe}</p>
-          )}
-        </div>
-        <button
-          type="button"
-          onClick={onClose}
-          aria-label="Close full-screen design"
-          className="grid h-11 w-11 shrink-0 place-items-center rounded-full border border-white/20 bg-white/10 text-white transition-colors hover:bg-white/20"
-        >
-          <X size={18} />
-        </button>
-      </div>
-
-      <motion.figure
-        initial={reduce ? false : { opacity: 0, y: 16 }}
-        animate={{ opacity: 1, y: 0 }}
-        exit={{ opacity: 0, y: 8 }}
-        transition={{ duration: 0.35, ease: EASE }}
-        onClick={(event) => event.stopPropagation()}
-        className="mx-auto w-full max-w-[760px] px-3 pb-8 pt-4 sm:px-6 sm:pb-12 sm:pt-6"
-      >
-        <img
-          src={stage.image_url ?? ""}
-          alt={stage.image_alt}
-          className="block h-auto w-full rounded-[var(--radius-md)] bg-white shadow-2xl"
-        />
-        <figcaption className="px-1 pt-4 text-[13px] leading-6 text-white/70">
-          Scroll to explore the complete {stage.label.toLowerCase()} screen. Press Esc or use the
-          close button to return to the case study.
-        </figcaption>
-      </motion.figure>
-    </motion.div>
   );
 }

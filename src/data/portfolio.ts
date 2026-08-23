@@ -618,6 +618,193 @@ export const PORTFOLIO_PROJECTS = [
     updated_at: stamp,
   },
   {
+    id: "riise-first-time-user-journey",
+    title: "RIISE First-Time User Journey",
+    slug: "riise-first-time-user-journey",
+    short_description:
+      "Helping new users understand RIISE’s value, complete setup, fund their account, and place their first trade—one clear step at a time.",
+    overview:
+      "<p>A first visit to an investment platform begins with an empty portfolio and a simple question: “Why should I stay?” For RIISE, the answer could not be another setup form. It had to be the strength Motilal Oswal is already known for—research.</p><p>I designed the first-time experience around a fair exchange. New users could explore the platform, see a real research idea, and understand what deeper access could unlock. In return, each setup request—KYC, verification, funds, and the first trade—arrived with a visible reason to continue.</p>",
+    problem_statement:
+      "<p>The risk was a dead-end guest experience: too many locked features, too little proof of value, and several important steps competing at once.</p><ul><li>Asking for KYC too early could feel like paperwork without a payoff.</li><li>Showing every research call would remove the value of completing setup.</li><li>Hiding everything would make RIISE feel empty.</li><li>The journey had to react to account status without making users relearn the homepage.</li></ul><p>The challenge was to <strong>let people feel the product before asking them to finish becoming a customer.</strong></p>",
+    research:
+      "<p>I mapped the questions a new user carries through the first session:</p><ol><li>What can I do here right now?</li><li>Why is this platform worth setting up?</li><li>What will KYC unlock?</li><li>What can I do while verification is in progress?</li><li>What is the single next step?</li></ol><p>That turned onboarding from one long checklist into five useful product states.</p>",
+    design_process:
+      "<p>I kept the homepage structure stable and changed only what needed to respond to the user’s progress.</p><ol><li><strong>Lead with value.</strong> Research, products, and market ideas remain explorable from the guest state.</li><li><strong>Preview the reward.</strong> One research call is readable while more ideas stay visibly locked.</li><li><strong>Ask for one action.</strong> The activation card changes from KYC to verification, funds, and first trade.</li><li><strong>Use waiting time well.</strong> Verification is not a blank screen; users can prepare the account and keep exploring.</li><li><strong>Preserve orientation.</strong> The same page, hierarchy, and navigation continue across all five states and both themes.</li></ol>",
+    solution:
+      "<p>The final journey feels less like a funnel and more like a guided first session.</p><ul><li><strong>Guest:</strong> explore RIISE and see enough research to understand its value.</li><li><strong>Complete KYC:</strong> connect the setup request to the access it unlocks.</li><li><strong>Verification:</strong> set clear expectations and keep useful actions available.</li><li><strong>Add funds:</strong> make account readiness the next focused step.</li><li><strong>First trade:</strong> bring expert ideas forward when the user can act on them.</li></ul><p>A persistent setup reminder keeps progress visible without interrupting exploration.</p>",
+    outcome:
+      "<p>The experience gives first-time users a reason to continue before their portfolio has any activity. It also gives the product team one reusable model for guest, incomplete, waiting, funded, and trade-ready states.</p><p>The evidence here is the journey itself rather than an invented conversion claim: each screen has one clear next action, research stays visible, and the page grows more useful as the account becomes more complete.</p>",
+    learnings:
+      "<p>A nudge works better when it points to a reward people can already understand. The strongest onboarding message was not “Complete your KYC.” It was “Here is what becomes possible when you do.”</p>",
+    role: "Journey strategy · UX/UI design · Prototyping",
+    duration: "Guest discovery to first trade",
+    company: "Motilal Oswal Financial Services",
+    tools: ["Figma", "Design system", "Prototyping"],
+    tags: ["Fintech", "Onboarding", "Activation", "Research"],
+    category: "Onboarding & activation",
+    timeline: "2026",
+    thumbnail_url: "/projects/riise-first-time-user-journey/card-cover-premium.webp",
+    presentation: {
+      type: "case_study",
+      card: {
+        style: "image",
+        image_alt: "RIISE first-time user experience ready for a first trade",
+        eyebrow: "First-time journey",
+      },
+      hero: {
+        style: "image",
+        image_url: "/projects/riise-first-time-user-journey/05-first-trade-light.webp",
+        image_alt: "Five stages of the RIISE guest-to-first-trade experience",
+      },
+      story: { enabled: false },
+      gallery: {
+        eyebrow: "Journey screens",
+        title: "Every state in full",
+        description: "Explore the complete light and dark experiences.",
+      },
+      prototype: {
+        eyebrow: "Prototype",
+        title: "Explore the first session",
+        description: "Walk from guest discovery to the first trade.",
+      },
+      labels: {
+        back_to_work: "Back to work",
+        company: "Company",
+        timeline: "Timeline",
+        role: "My contribution",
+        duration: "Journey",
+        category: "Category",
+        case_map: "Case map",
+        technology: "Tools",
+        tags: "Focus",
+        external_links: "External links",
+        previous_project: "Previous",
+        next_project: "Next project",
+      },
+      seo: {
+        title: "RIISE First-Time User Journey",
+        description:
+          "How Aman Mishra designed a value-led RIISE journey from guest discovery through KYC, account funding, and the first trade.",
+      },
+      cta: {
+        eyebrow: "More product work",
+        title: "Product value before product friction.",
+        label: "View more work",
+        url: "/work",
+      },
+      sections: {
+        overview: {
+          visible: true,
+          label: "Overview",
+          eyebrow: "The first visit",
+          title: "An empty portfolio should not feel like an empty product",
+        },
+        problem: {
+          visible: true,
+          label: "Challenge",
+          eyebrow: "The tension",
+          title: "Show enough value without giving everything away",
+        },
+        research: {
+          visible: true,
+          label: "Direction",
+          eyebrow: "The questions",
+          title: "What a new user needs before the first commitment",
+        },
+        process: {
+          visible: true,
+          label: "Approach",
+          eyebrow: "The approach",
+          title: "Keep the page stable. Let the next step change.",
+        },
+        solution: {
+          visible: true,
+          label: "Solution",
+          eyebrow: "Five states",
+          title: "From guest curiosity to the first trade",
+        },
+        impact: {
+          visible: true,
+          label: "Outcome",
+          eyebrow: "What changed",
+          title: "A first session with a visible reason to continue",
+        },
+        reflection: {
+          visible: true,
+          label: "Learning",
+          eyebrow: "What stayed with me",
+          title: "A good nudge makes the reward feel real",
+        },
+      },
+    },
+    gallery: [
+      {
+        url: "/projects/riise-first-time-user-journey/01-guest-light.webp",
+        caption: "Guest · Light",
+      },
+      {
+        url: "/projects/riise-first-time-user-journey/02-kyc-light.webp",
+        caption: "Complete KYC · Light",
+      },
+      {
+        url: "/projects/riise-first-time-user-journey/03-verification-light.webp",
+        caption: "Verification · Light",
+      },
+      {
+        url: "/projects/riise-first-time-user-journey/04-add-funds-light.webp",
+        caption: "Add funds · Light",
+      },
+      {
+        url: "/projects/riise-first-time-user-journey/05-first-trade-light.webp",
+        caption: "First trade · Light",
+      },
+      {
+        url: "/projects/riise-first-time-user-journey/01-guest-dark.webp",
+        caption: "Guest · Dark",
+      },
+      {
+        url: "/projects/riise-first-time-user-journey/02-kyc-dark.webp",
+        caption: "Complete KYC · Dark",
+      },
+      {
+        url: "/projects/riise-first-time-user-journey/03-verification-dark.webp",
+        caption: "Verification · Dark",
+      },
+      {
+        url: "/projects/riise-first-time-user-journey/04-add-funds-dark.webp",
+        caption: "Add funds · Dark",
+      },
+      {
+        url: "/projects/riise-first-time-user-journey/05-first-trade-dark.webp",
+        caption: "First trade · Dark",
+      },
+    ],
+    links: [],
+    metrics: [
+      {
+        value: "5 states",
+        label: "One activation path",
+        hint: "Guest, KYC, verification, funds, and first trade",
+      },
+      {
+        value: "2 themes",
+        label: "One consistent journey",
+        hint: "Light and dark experiences",
+      },
+      {
+        value: "1 next step",
+        label: "At every stage",
+        hint: "A focused action without blocking exploration",
+      },
+    ],
+    featured: true,
+    published: false,
+    sort_order: 3,
+    created_at: stamp,
+    updated_at: stamp,
+  },
+  {
     id: "riise-personalisation",
     title: "Riise Hyper-personalisation",
     slug: "riise-hyper-personalisation",

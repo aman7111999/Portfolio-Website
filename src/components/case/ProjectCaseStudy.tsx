@@ -17,6 +17,10 @@ import {
 import { ProseHtml } from "@/components/case/ProseHtml";
 import { PrototypeEmbed, isPrototypeLink } from "@/components/case/PrototypeEmbed";
 import { ProjectComparisonStory } from "@/components/case/ProjectComparisonStory";
+import {
+  GuestJourneyCaseVisuals,
+  GuestJourneyHeroVisual,
+} from "@/components/case/GuestJourneyStory";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
@@ -85,6 +89,7 @@ export function ProjectCaseStudyHero({
   const comparisonHeroStages = presentation.comparison.stages
     .filter((stage) => !!stage.image_url)
     .slice(0, 3);
+  const isGuestJourney = project.slug === "riise-first-time-user-journey";
 
   return (
     <section
@@ -131,7 +136,9 @@ export function ProjectCaseStudyHero({
         transition={{ duration: 0.85, delay: 0.1, ease: EASE }}
         className="case-hero-visual project-visual relative mt-9 aspect-[4/3] min-h-0 overflow-hidden rounded-[var(--radius-md)] border border-[var(--color-hairline-strong)] bg-[var(--color-elevated)] sm:mt-12 sm:aspect-[16/9] sm:rounded-[var(--radius-lg)] md:mt-14 md:aspect-[16/8] md:min-h-[260px]"
       >
-        {presentation.type === "revamp_comparison" && comparisonHeroStages.length >= 2 ? (
+        {isGuestJourney && project.gallery.length >= 5 ? (
+          <GuestJourneyHeroVisual images={project.gallery} />
+        ) : presentation.type === "revamp_comparison" && comparisonHeroStages.length >= 2 ? (
           <ComparisonHeroVisual stages={comparisonHeroStages} />
         ) : hero.kind === "image" && hero.imageUrl ? (
           <img
@@ -233,14 +240,17 @@ export function ProjectCaseStudyBody({
   const prototypeLink = (project.links ?? []).find((link) => isPrototypeLink(link.url));
   const externalLinks = (project.links ?? []).filter((link) => !isPrototypeLink(link.url));
   const hasExperience = presentation.story.enabled;
-  const hasArtifacts = !!prototypeLink || project.gallery.length > 0 || externalLinks.length > 0;
   const isComparison = presentation.type === "revamp_comparison";
+  const hasGuestJourney =
+    project.slug === "riise-first-time-user-journey" && project.gallery.length >= 5;
+  const hasArtifacts =
+    !!prototypeLink || (!hasGuestJourney && project.gallery.length > 0) || externalLinks.length > 0;
 
   const context = groups.find((group) => group.id === "context");
   const approach = groups.find((group) => group.id === "approach");
   const solution = groups.find((group) => group.id === "solution");
   const outcome = groups.find((group) => group.id === "outcome");
-  const storyLinks = isComparison
+  const customStoryItems = isComparison
     ? [
         context && { id: context.id, label: context.label },
         approach && { id: approach.id, label: approach.label },
@@ -248,13 +258,20 @@ export function ProjectCaseStudyBody({
         solution && { id: solution.id, label: solution.label },
         outcome && { id: outcome.id, label: outcome.label },
       ]
+    : hasGuestJourney
+      ? [
+          context && { id: context.id, label: context.label },
+          approach && { id: approach.id, label: approach.label },
+          { id: "journey", label: "Journey" },
+          solution && { id: solution.id, label: solution.label },
+          outcome && { id: outcome.id, label: outcome.label },
+        ]
+      : null;
+  const storyLinks = customStoryItems
+    ? customStoryItems
         .filter((item): item is { id: string; label: string } => !!item)
         .map((item, index) => ({ ...item, number: String(index + 1).padStart(2, "0") }))
-    : groups.map((group) => ({
-        id: group.id,
-        label: group.label,
-        number: group.number,
-      }));
+    : groups.map((group) => ({ id: group.id, label: group.label, number: group.number }));
   const displayNumberFor = (group: StoryGroup) =>
     storyLinks.find((item) => item.id === group.id)?.number ?? group.number;
 
@@ -289,6 +306,7 @@ export function ProjectCaseStudyBody({
       {approach && <NarrativeGroup group={approach} displayNumber={displayNumberFor(approach)} />}
 
       {isComparison && <ProjectComparisonStory comparison={presentation.comparison} />}
+      {hasGuestJourney && <GuestJourneyCaseVisuals images={project.gallery} />}
 
       {solution && <NarrativeGroup group={solution} displayNumber={displayNumberFor(solution)} />}
 

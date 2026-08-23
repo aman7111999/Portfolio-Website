@@ -874,6 +874,12 @@
 .project-preview-mobile .comparison-hero-desktop {
   display: none !important;
 }
+.project-preview-mobile .guest-journey-hero-mobile {
+  display: flex !important;
+}
+.project-preview-mobile .guest-journey-hero-desktop {
+  display: none !important;
+}
 .project-preview-mobile .case-outline {
   align-items: stretch !important;
   flex-direction: column !important;
@@ -908,6 +914,22 @@
   display: block !important;
 }
 .project-preview-mobile .comparison-desktop {
+  display: none !important;
+}
+.project-preview-mobile .guest-journey-section {
+  padding-block: 56px !important;
+}
+.project-preview-mobile .guest-journey-heading {
+  grid-template-columns: minmax(0, 1fr) !important;
+}
+.project-preview-mobile .guest-journey-title {
+  font-size: 2.15rem !important;
+}
+.project-preview-mobile .guest-journey-mobile {
+  display: block !important;
+}
+.project-preview-mobile .guest-journey-desktop,
+.project-preview-mobile .guest-journey-rail {
   display: none !important;
 }
 .project-preview-mobile .portfolio-journey-panel {

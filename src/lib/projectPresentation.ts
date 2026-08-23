@@ -157,45 +157,38 @@ const sectionDefaults: Record<ProjectSectionKey, ProjectSectionPresentation> = {
 
 const portfolioJourneyDefaults: ProjectJourneyItem[] = [
   {
-    id: "entry",
-    title: "Find the value",
+    id: "mo-stocks",
+    title: "MO stocks",
     description:
-      "A clear Portfolio Analysis entry point explains the outcome before asking for effort.",
+      "Internal stock holdings move from an attention signal to the affected allocation and next step.",
     image_url: null,
   },
   {
-    id: "scope",
-    title: "Choose the scope",
+    id: "external-stocks",
+    title: "External stocks",
     description:
-      "Overall, Motilal Oswal, and External views keep source context visible without splitting the experience.",
+      "Linked stock holdings use the same analysis language while keeping the external source visible.",
     image_url: null,
   },
   {
-    id: "connect",
-    title: "Connect external wealth",
+    id: "mo-mutual-funds",
+    title: "MO mutual funds",
     description:
-      "Broker import, consent, and syncing states make a high-trust transition feel predictable.",
+      "Fund performance and concentration are prioritised, explained, and connected to the affected schemes.",
     image_url: null,
   },
   {
-    id: "stocks",
-    title: "Read stock health",
+    id: "external-mutual-funds",
+    title: "External mutual funds",
     description:
-      "Allocation, concentration, and red flags translate raw holdings into a prioritised diagnosis.",
+      "Imported funds follow the same stable hierarchy without hiding where the investments are held.",
     image_url: null,
   },
   {
-    id: "funds",
-    title: "Evaluate mutual funds",
+    id: "risk-states",
+    title: "Risk details and states",
     description:
-      "Risk and diversification are explained in context, not presented as isolated financial scores.",
-    image_url: null,
-  },
-  {
-    id: "actions",
-    title: "Move from insight to action",
-    description:
-      "IAP portfolios, an RM conversation, and report download support different levels of confidence.",
+      "Light, dark, collapsed, expanded, and breakdown states make the analysis buildable beyond one happy path.",
     image_url: null,
   },
 ];
@@ -368,7 +361,7 @@ export function getProjectPresentation(project: {
     card: {
       style: visualStyle(rawCard.style),
       image_alt: text(rawCard.image_alt, `${project.title ?? "Project"} preview`),
-      eyebrow: text(rawCard.eyebrow, "Case study"),
+      eyebrow: text(rawCard.eyebrow, isPortfolioAnalysis ? "Portfolio intelligence" : "Case study"),
     },
     hero: {
       style: visualStyle(rawHero.style),
@@ -387,17 +380,17 @@ export function getProjectPresentation(project: {
     story: {
       enabled: typeof rawStory.enabled === "boolean" ? rawStory.enabled : isPortfolioAnalysis,
       eyebrow: text(rawStory.eyebrow, "Experience architecture"),
-      title: text(rawStory.title, "One analysis model for every portfolio."),
+      title: text(rawStory.title, "One analysis model across four portfolio views."),
       description: text(
         rawStory.description,
-        "The interface keeps portfolio source visible, then applies the same diagnostic logic across internal and externally imported investments. Users learn one system instead of relearning the product for every broker or asset type.",
+        "Motilal Oswal and external holdings remain distinct, while stocks and mutual funds share a consistent path from risk signal to explanation and an appropriate next step.",
       ),
       architecture_nodes: architectureNodes,
-      journey_eyebrow: text(rawStory.journey_eyebrow, "Screen journey"),
-      journey_title: text(rawStory.journey_title, "Six moments. One continuous decision flow."),
+      journey_eyebrow: text(rawStory.journey_eyebrow, "Real product screens"),
+      journey_title: text(rawStory.journey_title, "Four portfolios. Every important state."),
       journey_description: text(
         rawStory.journey_description,
-        "Each screen answers the next investor question while preserving context from the previous step.",
+        "Explore the supplied MO and external stock and mutual-fund flows. Each screen is scrollable here and available at full resolution.",
       ),
       journey,
     },

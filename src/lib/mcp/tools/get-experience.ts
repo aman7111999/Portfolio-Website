@@ -4,7 +4,7 @@ import { fetchExperience } from "../data";
 export default defineTool({
   name: "get_experience",
   title: "Work experience",
-  description: "Return work experience — roles, companies, timelines, and descriptions.",
+  description: "Return work experience, including roles, companies, timelines, and descriptions.",
   inputSchema: {},
   annotations: { readOnlyHint: true, idempotentHint: true, openWorldHint: false },
   handler: async () => {

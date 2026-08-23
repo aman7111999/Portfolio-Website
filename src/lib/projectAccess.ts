@@ -1,5 +1,6 @@
 import { supabase } from "@/integrations/supabase/client";
 import type { ProjectRow } from "@/lib/cms";
+import { cleanPublicCopy } from "@/lib/publicCopy";
 
 const TOKEN_KEY = "portfolio_project_access_token";
 const EXP_KEY = "portfolio_project_access_expires";
@@ -100,7 +101,7 @@ export async function fetchProtectedProject(
     if (result.error === "unauthorized") return { ok: false, error: "unauthorized" };
     if (result.error === "not_found") return { ok: false, error: "not_found" };
     if (!result.project) return { ok: false, error: "network" };
-    return { ok: true, project: result.project };
+    return { ok: true, project: cleanPublicCopy(result.project) };
   } catch {
     return { ok: false, error: "network" };
   }

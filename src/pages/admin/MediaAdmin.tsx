@@ -11,11 +11,7 @@ import { AdminToolbar } from "@/components/admin/AdminToolbar";
 import { EmptyState, BulkActionBar } from "@/components/admin/EmptyState";
 import { DropZone } from "@/components/admin/ImageUploader";
 import { clsx } from "clsx";
-import {
-  Dialog,
-  DialogContent,
-  DialogTitle,
-} from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 
 const BUCKETS = ["project-images", "thumbnails", "profile"] as const;
 
@@ -135,7 +131,9 @@ function BucketBrowser({ bucket }: { bucket: string }) {
                 aria-label="Grid view"
                 className={clsx(
                   "grid h-7 w-7 place-items-center rounded",
-                  view === "grid" ? "bg-neutral-900 text-white" : "text-neutral-500 hover:bg-neutral-100",
+                  view === "grid"
+                    ? "bg-neutral-900 text-white"
+                    : "text-neutral-500 hover:bg-neutral-100",
                 )}
               >
                 <Grid3x3 size={13} />
@@ -145,7 +143,9 @@ function BucketBrowser({ bucket }: { bucket: string }) {
                 aria-label="List view"
                 className={clsx(
                   "grid h-7 w-7 place-items-center rounded",
-                  view === "list" ? "bg-neutral-900 text-white" : "text-neutral-500 hover:bg-neutral-100",
+                  view === "list"
+                    ? "bg-neutral-900 text-white"
+                    : "text-neutral-500 hover:bg-neutral-100",
                 )}
               >
                 <List size={13} />
@@ -224,10 +224,7 @@ function BucketBrowser({ bucket }: { bucket: string }) {
         <div className="overflow-hidden rounded-lg border border-neutral-200 bg-white">
           <ul className="divide-y divide-neutral-100">
             {filtered.map((it) => (
-              <li
-                key={it.name}
-                className="flex items-center gap-3 px-3 py-2 hover:bg-neutral-50"
-              >
+              <li key={it.name} className="flex items-center gap-3 px-3 py-2 hover:bg-neutral-50">
                 <Checkbox
                   checked={selected.has(it.name)}
                   onCheckedChange={() => toggleSelect(it.name)}
@@ -240,7 +237,7 @@ function BucketBrowser({ bucket }: { bucket: string }) {
                 />
                 <p className="min-w-0 flex-1 truncate text-sm">{it.name}</p>
                 <span className="text-xs text-neutral-500 tabular-nums">
-                  {it.size ? `${(it.size / 1024).toFixed(0)} KB` : "—"}
+                  {it.size ? `${(it.size / 1024).toFixed(0)} KB` : "Not available"}
                 </span>
                 <Button
                   variant="ghost"
@@ -283,7 +280,11 @@ function BucketBrowser({ bucket }: { bucket: string }) {
           <DialogTitle className="sr-only">{preview?.name}</DialogTitle>
           {preview && (
             <>
-              <img src={preview.url} alt={preview.name} className="max-h-[75vh] w-full object-contain bg-neutral-100" />
+              <img
+                src={preview.url}
+                alt={preview.name}
+                className="max-h-[75vh] w-full object-contain bg-neutral-100"
+              />
               <div className="flex items-center gap-2 border-t border-neutral-100 p-3">
                 <p className="min-w-0 flex-1 truncate text-sm">{preview.name}</p>
                 <Button

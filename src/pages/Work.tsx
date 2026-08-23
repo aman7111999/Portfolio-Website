@@ -20,14 +20,14 @@ export default function Work() {
         <Reveal>
           <p className="eyebrow">Selected case studies</p>
           <h1 className="mt-4 max-w-[14ch] text-[clamp(2.5rem,12vw,3.15rem)] font-medium leading-[1] tracking-[-0.045em] sm:mt-5 sm:text-[clamp(3rem,6vw,5.5rem)] sm:leading-[0.98] sm:tracking-[-0.05em]">
-            Product decisions,{" "}
+            Case studies from{" "}
             <span className="font-serif font-normal italic text-[var(--color-accent)]">
-              not screen galleries.
+              real product work.
             </span>
           </h1>
           <p className="mt-6 max-w-2xl text-[16px] leading-[1.6] text-[var(--color-muted)] md:text-lg">
-            Five stories showing how I frame complex problems, navigate constraints, align teams,
-            and move from concept to shipped or build-ready outcomes.
+            Each one covers the brief, the decisions, the screens, and the result. Where a metric is
+            available, I’ve included it. Where it isn’t, I’ve said so.
           </p>
         </Reveal>
       </section>

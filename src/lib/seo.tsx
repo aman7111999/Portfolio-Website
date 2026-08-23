@@ -21,7 +21,7 @@ export function Seo({
   noindex,
   image,
 }: Props) {
-  const fullTitle = title.includes(siteName) ? title : `${title} — ${siteName}`;
+  const fullTitle = title.includes(siteName) ? title : `${title} | ${siteName}`;
   const desc = description ?? "";
   const siteUrl = (import.meta.env.VITE_SITE_URL || "https://amanux.vercel.app").replace(/\/$/, "");
   const absoluteUrl = new URL(path, `${siteUrl}/`).toString();

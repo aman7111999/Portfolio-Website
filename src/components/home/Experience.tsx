@@ -12,7 +12,7 @@ const FALLBACK: Data = {
 };
 
 function formatPeriod(start?: string | null, end?: string | null) {
-  return [start?.trim(), end?.trim() || "Present"].filter(Boolean).join(" — ");
+  return [start?.trim(), end?.trim() || "Present"].filter(Boolean).join("–");
 }
 
 export function Experience() {
@@ -35,8 +35,8 @@ export function Experience() {
             </h2>
           </div>
           <p className="max-w-sm text-[14px] leading-[1.65] text-[var(--color-muted)] lg:col-span-4 lg:justify-self-end">
-            A progression from hands-on execution to leading ambiguous, cross-functional product
-            work.
+            I started with core investing flows and now lead product work across portfolios,
+            discovery, personalisation, and AI-assisted experiences.
           </p>
         </div>
       </Reveal>

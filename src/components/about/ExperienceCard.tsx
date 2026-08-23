@@ -25,7 +25,7 @@ export function ExperienceCard({ item, index }: { item: ExperienceRow; index: nu
   const reduce = useReducedMotion();
   const period = [fmt(item.start_date), item.end_date ? fmt(item.end_date) : "Present"]
     .filter(Boolean)
-    .join(" — ");
+    .join("–");
 
   return (
     <motion.article
@@ -49,7 +49,9 @@ export function ExperienceCard({ item, index }: { item: ExperienceRow; index: nu
               {String(index + 1).padStart(2, "0")}
             </Badge>
             <p className="eyebrow">{period}</p>
-            {item.location && <p className="eyebrow text-[var(--color-subtle)]">· {item.location}</p>}
+            {item.location && (
+              <p className="eyebrow text-[var(--color-subtle)]">· {item.location}</p>
+            )}
           </div>
           <h3 className="font-display text-2xl md:text-4xl mt-[var(--space-3)] leading-tight">
             {item.company}
@@ -63,7 +65,12 @@ export function ExperienceCard({ item, index }: { item: ExperienceRow; index: nu
           className="grid h-10 w-10 shrink-0 place-items-center rounded-full border border-hairline text-[var(--color-text)]"
         >
           <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-            <path d="M7 1v12M1 7h12" stroke="currentColor" strokeWidth="1.25" strokeLinecap="round" />
+            <path
+              d="M7 1v12M1 7h12"
+              stroke="currentColor"
+              strokeWidth="1.25"
+              strokeLinecap="round"
+            />
           </svg>
         </motion.span>
       </button>
@@ -109,7 +116,10 @@ export function ExperienceCard({ item, index }: { item: ExperienceRow; index: nu
       <span
         aria-hidden
         className="pointer-events-none absolute inset-x-0 -bottom-24 h-24 opacity-0 transition-opacity duration-500 group-hover:opacity-100"
-        style={{ background: "radial-gradient(60% 100% at 50% 0%, var(--color-accent-glow), transparent 70%)" }}
+        style={{
+          background:
+            "radial-gradient(60% 100% at 50% 0%, var(--color-accent-glow), transparent 70%)",
+        }}
       />
     </motion.article>
   );

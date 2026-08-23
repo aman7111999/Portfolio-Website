@@ -280,7 +280,7 @@ const comparisonStageDefaults: ProjectComparisonStage[] = [
     timeframe: "Current version",
     image_url: null,
     image_alt: "Latest improved product design",
-    description: "Show the strongest current version and the decisions that made it better.",
+    description: "Show the current version and explain what changed along the way.",
     highlights: ["Clearer hierarchy", "Lower decision effort"],
   },
 ];
@@ -488,7 +488,7 @@ export function getProjectPresentation(project: {
       title: text(rawGallery.title, "Selected artifacts"),
       description: text(
         rawGallery.description,
-        "Screens, flows, and moments from the design process — tap any image to expand.",
+        "Screens and flows from the project. Tap any image to expand it.",
       ),
     },
     prototype: {
@@ -496,7 +496,7 @@ export function getProjectPresentation(project: {
       title: text(rawPrototype.title, "Interactive prototype"),
       description: text(
         rawPrototype.description,
-        "A working prototype of the flow — click through the way a user would. Best experienced on desktop. Tap the expand icon for fullscreen.",
+        "Click through the working prototype as a user would. It works best on desktop, and the expand icon opens it full screen.",
       ),
     },
     labels: {

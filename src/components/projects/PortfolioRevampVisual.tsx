@@ -44,7 +44,7 @@ export function PortfolioRevampVisual({ variant = "card" }: PortfolioRevampVisua
           <span className="portfolio-revamp-brandmark">R</span>
           RIISE / PORTFOLIO
         </span>
-        <span>2025—26</span>
+        <span>2025–26</span>
       </div>
 
       <div className="portfolio-revamp-copy" aria-hidden>

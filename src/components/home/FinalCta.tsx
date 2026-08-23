@@ -11,11 +11,11 @@ type Data = {
 };
 
 const FALLBACK: Data = {
-  heading_line1: "Let’s make",
-  heading_accent: "complexity",
-  heading_line2: "feel simple.",
+  heading_line1: "Have a product",
+  heading_accent: "problem",
+  heading_line2: "worth talking through?",
   subline:
-    "I’m exploring Senior Product Designer roles across fintech, AI, consumer products, and product platforms.",
+    "I’m open to Senior Product Designer roles. If the work involves fintech, AI, or a product with a lot of moving parts, I’d be glad to hear about it.",
   cta_label: "Start a conversation",
 };
 
@@ -32,7 +32,7 @@ export function FinalCta() {
             <div className="relative z-[1] lg:col-span-8">
               <p className="system-label flex items-center gap-2 text-[var(--color-cta-muted)]">
                 <span className="h-1.5 w-1.5 rounded-full bg-[var(--color-cta-accent)] shadow-[0_0_0_4px_var(--color-cta-glow)]" />
-                Available for the right team
+                Open to senior product design roles
               </p>
               <h2 className="mt-5 max-w-[15ch] text-[clamp(2.15rem,10vw,2.7rem)] font-medium leading-[1.05] tracking-[-0.04em] !text-[var(--color-cta-text)] sm:text-[clamp(2.6rem,5vw,4.5rem)] sm:leading-[1.02] sm:tracking-[-0.045em]">
                 {copy.heading_line1}{" "}

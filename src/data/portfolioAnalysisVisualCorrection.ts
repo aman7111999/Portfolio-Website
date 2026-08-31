@@ -1,4 +1,4 @@
-import { PORTFOLIO_ANALYSIS_COVER_WEBP } from "@/data/portfolioAnalysisCoverAsset";
+const PORTFOLIO_ANALYSIS_COVER = "/projects/portfolio-analysis/portfolio-analysis-cover.webp";
 
 export function applyPortfolioAnalysisVisualCorrection<T extends { slug: string }>(project: T): T {
   if (project.slug !== "portfolio-analysis") return project;
@@ -17,13 +17,13 @@ export function applyPortfolioAnalysisVisualCorrection<T extends { slug: string 
 
   return {
     ...current,
-    thumbnail_url: PORTFOLIO_ANALYSIS_COVER_WEBP,
+    thumbnail_url: PORTFOLIO_ANALYSIS_COVER,
     presentation: {
       ...presentation,
       hero: {
         ...currentHero,
         style: "image",
-        image_url: PORTFOLIO_ANALYSIS_COVER_WEBP,
+        image_url: PORTFOLIO_ANALYSIS_COVER,
         image_alt:
           "Portfolio Analysis cover highlighting performance, allocation, risk, and diversification",
       },

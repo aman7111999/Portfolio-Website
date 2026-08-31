@@ -5,6 +5,7 @@ import type { ProjectRow } from "@/lib/cms";
 import { PortfolioAnalysisVisual } from "@/components/case/PortfolioAnalysisStory";
 import { getProjectPresentation, resolveCardVisual } from "@/lib/projectPresentation";
 import { PortfolioRevampVisual } from "@/components/projects/PortfolioRevampVisual";
+import { PortfolioAnalysisCardVisual } from "@/components/projects/PortfolioAnalysisCardVisual";
 import { applyProjectStoryCorrections } from "@/data/projectStoryCorrections";
 import { applyFirstTimeJourneyCorrection } from "@/data/firstTimeJourneyCorrection";
 
@@ -84,7 +85,7 @@ export function ProjectCard({
           {isPortfolioRevamp ? (
             <PortfolioRevampVisual variant="card" />
           ) : isPortfolioAnalysis ? (
-            <PortfolioAnalysisVisual mode="card" />
+            <PortfolioAnalysisCardVisual />
           ) : cardVisual === "image" && displayProject.thumbnail_url ? (
             <img
               src={displayProject.thumbnail_url}

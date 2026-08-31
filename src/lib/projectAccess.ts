@@ -4,6 +4,7 @@ import { cleanPublicCopy } from "@/lib/publicCopy";
 import { PORTFOLIO_PROJECTS } from "@/data/portfolio";
 import { applyProjectStoryPreview } from "@/data/projectStoryPreview";
 import { applyProjectStoryCorrections } from "@/data/projectStoryCorrections";
+import { applyFirstTimeJourneyCorrection } from "@/data/firstTimeJourneyCorrection";
 
 const TOKEN_KEY = "portfolio_project_access_token";
 const EXP_KEY = "portfolio_project_access_expires";
@@ -88,6 +89,12 @@ export async function verifyPassword(
   }
 }
 
+function applyStoryCorrections(project: ProjectRow): ProjectRow {
+  return applyFirstTimeJourneyCorrection(
+    applyProjectStoryCorrections(applyProjectStoryPreview(project)),
+  );
+}
+
 export async function fetchProtectedProject(
   slug: string,
 ): Promise<
@@ -107,12 +114,10 @@ export async function fetchProtectedProject(
         (project) => project.slug === slug,
       );
       if (!local) return { ok: false, error: "not_found" };
-      const project = applyProjectStoryCorrections(applyProjectStoryPreview(local));
-      return { ok: true, project: cleanPublicCopy(project) };
+      return { ok: true, project: cleanPublicCopy(applyStoryCorrections(local)) };
     }
     if (!result.project) return { ok: false, error: "network" };
-    const project = applyProjectStoryCorrections(applyProjectStoryPreview(result.project));
-    return { ok: true, project: cleanPublicCopy(project) };
+    return { ok: true, project: cleanPublicCopy(applyStoryCorrections(result.project)) };
   } catch {
     return { ok: false, error: "network" };
   }

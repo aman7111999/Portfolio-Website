@@ -1,11 +1,6 @@
 import { supabase } from "@/integrations/supabase/client";
 import type { ProjectRow } from "@/lib/cms";
 import { cleanPublicCopy } from "@/lib/publicCopy";
-import { PORTFOLIO_PROJECTS } from "@/data/portfolio";
-import { applyProjectStoryPreview } from "@/data/projectStoryPreview";
-import { applyProjectStoryCorrections } from "@/data/projectStoryCorrections";
-import { applyFirstTimeJourneyCorrection } from "@/data/firstTimeJourneyCorrection";
-import { applyPortfolioAnalysisVisualCorrection } from "@/data/portfolioAnalysisVisualCorrection";
 
 const TOKEN_KEY = "portfolio_project_access_token";
 const EXP_KEY = "portfolio_project_access_expires";
@@ -90,14 +85,6 @@ export async function verifyPassword(
   }
 }
 
-function applyStoryCorrections(project: ProjectRow): ProjectRow {
-  return applyPortfolioAnalysisVisualCorrection(
-    applyFirstTimeJourneyCorrection(
-      applyProjectStoryCorrections(applyProjectStoryPreview(project)),
-    ),
-  );
-}
-
 export async function fetchProtectedProject(
   slug: string,
 ): Promise<
@@ -112,15 +99,9 @@ export async function fetchProtectedProject(
     if (error || !data) return { ok: false, error: "network" };
     const result = data as { project?: ProjectRow; error?: string };
     if (result.error === "unauthorized") return { ok: false, error: "unauthorized" };
-    if (result.error === "not_found") {
-      const local = (PORTFOLIO_PROJECTS as unknown as ProjectRow[]).find(
-        (project) => project.slug === slug,
-      );
-      if (!local) return { ok: false, error: "not_found" };
-      return { ok: true, project: cleanPublicCopy(applyStoryCorrections(local)) };
-    }
+    if (result.error === "not_found") return { ok: false, error: "not_found" };
     if (!result.project) return { ok: false, error: "network" };
-    return { ok: true, project: cleanPublicCopy(applyStoryCorrections(result.project)) };
+    return { ok: true, project: cleanPublicCopy(result.project) };
   } catch {
     return { ok: false, error: "network" };
   }

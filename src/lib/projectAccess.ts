@@ -3,6 +3,7 @@ import type { ProjectRow } from "@/lib/cms";
 import { cleanPublicCopy } from "@/lib/publicCopy";
 import { PORTFOLIO_PROJECTS } from "@/data/portfolio";
 import { applyProjectStoryPreview } from "@/data/projectStoryPreview";
+import { applyProjectStoryCorrections } from "@/data/projectStoryCorrections";
 
 const TOKEN_KEY = "portfolio_project_access_token";
 const EXP_KEY = "portfolio_project_access_expires";
@@ -106,10 +107,11 @@ export async function fetchProtectedProject(
         (project) => project.slug === slug,
       );
       if (!local) return { ok: false, error: "not_found" };
-      return { ok: true, project: cleanPublicCopy(applyProjectStoryPreview(local)) };
+      const project = applyProjectStoryCorrections(applyProjectStoryPreview(local));
+      return { ok: true, project: cleanPublicCopy(project) };
     }
     if (!result.project) return { ok: false, error: "network" };
-    const project = applyProjectStoryPreview(result.project);
+    const project = applyProjectStoryCorrections(applyProjectStoryPreview(result.project));
     return { ok: true, project: cleanPublicCopy(project) };
   } catch {
     return { ok: false, error: "network" };

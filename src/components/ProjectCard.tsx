@@ -5,6 +5,8 @@ import type { ProjectRow } from "@/lib/cms";
 import { PortfolioAnalysisVisual } from "@/components/case/PortfolioAnalysisStory";
 import { getProjectPresentation, resolveCardVisual } from "@/lib/projectPresentation";
 import { PortfolioRevampVisual } from "@/components/projects/PortfolioRevampVisual";
+import { applyProjectStoryCorrections } from "@/data/projectStoryCorrections";
+import { applyFirstTimeJourneyCorrection } from "@/data/firstTimeJourneyCorrection";
 
 export function ProjectCard({
   project,
@@ -16,12 +18,14 @@ export function ProjectCard({
   size?: "lg" | "md" | "compact";
 }) {
   const reduce = useReducedMotion();
-  const presentation = getProjectPresentation(project);
-  const cardVisual = resolveCardVisual(project);
-  const locked = !!(project as { locked?: boolean }).locked;
+  const displayProject = applyFirstTimeJourneyCorrection(applyProjectStoryCorrections(project));
+  const presentation = getProjectPresentation(displayProject);
+  const cardVisual = resolveCardVisual(displayProject);
+  const locked = !!(displayProject as { locked?: boolean }).locked;
   const number = String(index + 1).padStart(2, "0");
   const compact = size === "compact";
-  const isPortfolioRevamp = project.slug === "riise-portfolio-revamp";
+  const isPortfolioRevamp = displayProject.slug === "riise-portfolio-revamp";
+  const isPortfolioAnalysis = displayProject.slug === "portfolio-analysis";
   const visualIndex = index % 4;
   const signalPaths = [
     "M4 126C52 126 60 54 112 54S174 112 220 112 284 36 354 36",
@@ -68,8 +72,8 @@ export function ProjectCard({
       className="h-full"
     >
       <Link
-        to={`/projects/${project.slug}`}
-        aria-label={`${project.title}, case study`}
+        to={`/projects/${displayProject.slug}`}
+        aria-label={`${displayProject.title}, case study`}
         className="group flex h-full flex-col overflow-hidden rounded-[var(--radius-lg)] border border-[var(--color-hairline-strong)] bg-[var(--color-surface)] transition-[transform,border-color,box-shadow] duration-500 hover:-translate-y-0.5 hover:border-[var(--color-accent)] hover:shadow-[var(--elevation-2)]"
       >
         <div
@@ -79,9 +83,11 @@ export function ProjectCard({
         >
           {isPortfolioRevamp ? (
             <PortfolioRevampVisual variant="card" />
-          ) : cardVisual === "image" && project.thumbnail_url ? (
+          ) : isPortfolioAnalysis ? (
+            <PortfolioAnalysisVisual mode="card" />
+          ) : cardVisual === "image" && displayProject.thumbnail_url ? (
             <img
-              src={project.thumbnail_url}
+              src={displayProject.thumbnail_url}
               alt={presentation.card.image_alt}
               className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.025]"
               loading="lazy"
@@ -99,9 +105,9 @@ export function ProjectCard({
             >
               <div aria-hidden className="tech-grid absolute inset-0 opacity-75" />
               <div className="absolute inset-x-6 top-6 z-[2] flex items-center justify-between text-[var(--color-muted)] md:inset-x-8 md:top-8">
-                <span>{project.company ?? "Product design"}</span>
+                <span>{displayProject.company ?? "Product design"}</span>
                 <span className="system-label flex items-center gap-2">
-                  <span className="system-dot" /> {project.timeline ?? number}
+                  <span className="system-dot" /> {displayProject.timeline ?? number}
                 </span>
               </div>
               <div
@@ -131,7 +137,7 @@ export function ProjectCard({
               </span>
               <div className="absolute bottom-7 left-6 max-w-[14rem] md:bottom-8 md:left-8">
                 <span className="system-label text-[var(--color-accent)]">
-                  {project.category ?? "Case study"}
+                  {displayProject.category ?? "Case study"}
                 </span>
               </div>
             </div>
@@ -151,7 +157,7 @@ export function ProjectCard({
                     : "text-[clamp(1.35rem,6.5vw,1.75rem)] sm:text-[clamp(1.45rem,2.4vw,2rem)]"
                 }`}
               >
-                {project.title}
+                {displayProject.title}
               </h3>
             </div>
             <span
@@ -163,13 +169,13 @@ export function ProjectCard({
             </span>
           </div>
 
-          {project.short_description && (
+          {displayProject.short_description && (
             <p
               className={`mt-4 max-w-[48ch] text-[14px] leading-[1.65] text-[var(--color-muted)] md:text-[15px] ${
                 compact ? "line-clamp-2" : ""
               }`}
             >
-              {project.short_description}
+              {displayProject.short_description}
             </p>
           )}
 
@@ -179,7 +185,7 @@ export function ProjectCard({
             }`}
           >
             <span className="min-w-0 truncate">
-              {project.role?.split("·")[0]?.trim() ?? "Product design"}
+              {displayProject.role?.split("·")[0]?.trim() ?? "Product design"}
             </span>
             {locked && (
               <span className="inline-flex items-center gap-1.5">

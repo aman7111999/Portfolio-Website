@@ -1,6 +1,7 @@
 import { supabase } from "@/integrations/supabase/client";
 import type { ProjectRow } from "@/lib/cms";
 import { cleanPublicCopy } from "@/lib/publicCopy";
+import { PORTFOLIO_PROJECTS } from "@/data/portfolio";
 import { applyProjectStoryPreview } from "@/data/projectStoryPreview";
 
 const TOKEN_KEY = "portfolio_project_access_token";
@@ -100,7 +101,13 @@ export async function fetchProtectedProject(
     if (error || !data) return { ok: false, error: "network" };
     const result = data as { project?: ProjectRow; error?: string };
     if (result.error === "unauthorized") return { ok: false, error: "unauthorized" };
-    if (result.error === "not_found") return { ok: false, error: "not_found" };
+    if (result.error === "not_found") {
+      const local = (PORTFOLIO_PROJECTS as unknown as ProjectRow[]).find(
+        (project) => project.slug === slug,
+      );
+      if (!local) return { ok: false, error: "not_found" };
+      return { ok: true, project: cleanPublicCopy(applyProjectStoryPreview(local)) };
+    }
     if (!result.project) return { ok: false, error: "network" };
     const project = applyProjectStoryPreview(result.project);
     return { ok: true, project: cleanPublicCopy(project) };

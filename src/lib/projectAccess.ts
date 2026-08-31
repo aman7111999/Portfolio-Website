@@ -5,6 +5,7 @@ import { PORTFOLIO_PROJECTS } from "@/data/portfolio";
 import { applyProjectStoryPreview } from "@/data/projectStoryPreview";
 import { applyProjectStoryCorrections } from "@/data/projectStoryCorrections";
 import { applyFirstTimeJourneyCorrection } from "@/data/firstTimeJourneyCorrection";
+import { applyPortfolioAnalysisVisualCorrection } from "@/data/portfolioAnalysisVisualCorrection";
 
 const TOKEN_KEY = "portfolio_project_access_token";
 const EXP_KEY = "portfolio_project_access_expires";
@@ -90,8 +91,10 @@ export async function verifyPassword(
 }
 
 function applyStoryCorrections(project: ProjectRow): ProjectRow {
-  return applyFirstTimeJourneyCorrection(
-    applyProjectStoryCorrections(applyProjectStoryPreview(project)),
+  return applyPortfolioAnalysisVisualCorrection(
+    applyFirstTimeJourneyCorrection(
+      applyProjectStoryCorrections(applyProjectStoryPreview(project)),
+    ),
   );
 }
 

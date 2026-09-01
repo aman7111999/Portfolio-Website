@@ -60,8 +60,8 @@ export function PortfolioAnalysisCardVisual({
       />
 
       <div
-        className={`absolute left-[6%] z-20 ${
-          hero ? "top-[24%] w-[34%]" : "top-[27%] w-[35%]"
+        className={`absolute left-[3.5%] z-20 ${
+          hero ? "top-[24%] w-[35%]" : "top-[27%] w-[36%]"
         }`}
       >
         <p className="font-mono text-[clamp(7px,0.82vw,10px)] font-semibold uppercase tracking-[0.18em] text-[#c9c6ff]/62">
@@ -91,21 +91,21 @@ export function PortfolioAnalysisCardVisual({
       <div
         className={`absolute z-10 hidden sm:block ${
           hero
-            ? "bottom-[1%] left-[42%] right-[1.5%] top-[10%]"
-            : "bottom-[1%] left-[43%] right-[1%] top-[13%]"
+            ? "bottom-[1%] left-[39%] right-0 top-[10%]"
+            : "bottom-[1%] left-[40%] right-0 top-[13%]"
         }`}
       >
         {REAL_SCREENS.map((screen, index) => {
           const position = hero
             ? [
-                "left-[1%] top-[19%] h-[77%] w-[31%] -rotate-[4deg] opacity-72",
-                "left-[25%] top-[1%] h-[96%] w-[40%] -rotate-[0.5deg]",
-                "right-[1%] top-[16%] h-[81%] w-[34%] rotate-[3deg] opacity-90",
+                "left-0 top-[19%] h-[77%] w-[31%] -rotate-[4deg] opacity-72",
+                "left-[24%] top-[1%] h-[96%] w-[40%] -rotate-[0.5deg]",
+                "right-0 top-[16%] h-[81%] w-[34%] rotate-[3deg] opacity-90",
               ][index]
             : [
-                "left-[1%] top-[21%] h-[73%] w-[31%] -rotate-[4deg] opacity-70",
-                "left-[25%] top-[2%] h-[93%] w-[40%] -rotate-[0.5deg]",
-                "right-[1%] top-[18%] h-[78%] w-[34%] rotate-[3deg] opacity-88",
+                "left-0 top-[21%] h-[73%] w-[31%] -rotate-[4deg] opacity-70",
+                "left-[24%] top-[2%] h-[93%] w-[40%] -rotate-[0.5deg]",
+                "right-0 top-[18%] h-[78%] w-[34%] rotate-[3deg] opacity-88",
               ][index];
 
           return (
@@ -126,12 +126,12 @@ export function PortfolioAnalysisCardVisual({
         })}
       </div>
 
-      <div className="absolute bottom-[1%] left-[40%] right-[-8%] top-[18%] z-10 sm:hidden">
+      <div className="absolute bottom-[1%] left-[37%] right-[-10%] top-[18%] z-10 sm:hidden">
         {REAL_SCREENS.map((screen, index) => {
           const position = [
             "left-0 top-[19%] h-[68%] w-[32%] -rotate-[5deg] opacity-64",
             "left-[23%] top-0 h-[90%] w-[44%] -rotate-[1deg]",
-            "right-[1%] top-[16%] h-[73%] w-[35%] rotate-[4deg] opacity-82",
+            "right-0 top-[16%] h-[73%] w-[35%] rotate-[4deg] opacity-82",
           ][index];
           return (
             <figure
@@ -151,11 +151,11 @@ export function PortfolioAnalysisCardVisual({
 
       <span
         aria-hidden
-        className="absolute right-[3%] top-[4%] h-5 w-5 border-r border-t border-white/[0.12] sm:h-7 sm:w-7"
+        className="absolute right-[1.5%] top-[4%] h-5 w-5 border-r border-t border-white/[0.12] sm:h-7 sm:w-7"
       />
       <span
         aria-hidden
-        className="absolute bottom-[4%] left-[3%] h-5 w-5 border-b border-l border-white/[0.10] sm:h-7 sm:w-7"
+        className="absolute bottom-[4%] left-[1.5%] h-5 w-5 border-b border-l border-white/[0.10] sm:h-7 sm:w-7"
       />
     </div>
   );

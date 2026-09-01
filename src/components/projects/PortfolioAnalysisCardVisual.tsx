@@ -98,14 +98,14 @@ export function PortfolioAnalysisCardVisual({
         {REAL_SCREENS.map((screen, index) => {
           const position = hero
             ? [
-                "left-[3%] top-[14%] z-20 h-[82%] -rotate-[2.4deg] opacity-78",
-                "left-[25%] top-[1%] z-30 h-[96%] -rotate-[0.4deg]",
-                "left-[47%] top-[13%] z-10 h-[83%] rotate-[2.2deg] opacity-84",
+                "left-[22%] top-[14%] z-20 h-[82%] -translate-x-1/2 -rotate-[2.3deg] opacity-80",
+                "left-1/2 top-[1%] z-30 h-[96%] -translate-x-1/2",
+                "left-[78%] top-[14%] z-10 h-[82%] -translate-x-1/2 rotate-[2.3deg] opacity-80",
               ][index]
             : [
-                "left-[3%] top-[16%] z-20 h-[79%] -rotate-[2.4deg] opacity-76",
-                "left-[25%] top-[2%] z-30 h-[93%] -rotate-[0.4deg]",
-                "left-[47%] top-[15%] z-10 h-[80%] rotate-[2.2deg] opacity-82",
+                "left-[22%] top-[16%] z-20 h-[79%] -translate-x-1/2 -rotate-[2.3deg] opacity-78",
+                "left-1/2 top-[2%] z-30 h-[93%] -translate-x-1/2",
+                "left-[78%] top-[16%] z-10 h-[79%] -translate-x-1/2 rotate-[2.3deg] opacity-78",
               ][index];
 
           return (
@@ -129,9 +129,9 @@ export function PortfolioAnalysisCardVisual({
       <div className="absolute bottom-[1%] left-[40%] right-[-8%] top-[18%] z-10 sm:hidden">
         {REAL_SCREENS.map((screen, index) => {
           const position = [
-            "left-[2%] top-[14%] z-20 h-[73%] -rotate-[2.8deg] opacity-70",
-            "left-[23%] top-0 z-30 h-[90%] -rotate-[0.6deg]",
-            "left-[44%] top-[13%] z-10 h-[74%] rotate-[2.6deg] opacity-76",
+            "left-[20%] top-[14%] z-20 h-[73%] -translate-x-1/2 -rotate-[2.6deg] opacity-72",
+            "left-1/2 top-0 z-30 h-[90%] -translate-x-1/2",
+            "left-[80%] top-[14%] z-10 h-[73%] -translate-x-1/2 rotate-[2.6deg] opacity-72",
           ][index];
           return (
             <figure

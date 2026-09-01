@@ -6,24 +6,24 @@ const REAL_SCREENS = [
   {
     id: "mo-stocks",
     src: "/projects/portfolio-analysis/hero/mo-stocks.webp",
-    crop: "-5%",
+    surface: "#f7f8fb",
   },
   {
     id: "external-stocks",
     src: "/projects/portfolio-analysis/hero/external-stocks.webp",
-    crop: "-7%",
+    surface: "#f7f8fb",
   },
   {
     id: "mutual-funds",
     src: "/projects/portfolio-analysis/hero/mo-mutual-funds-dark.webp",
-    crop: "-6%",
+    surface: "#0b0d14",
   },
 ] as const;
 
 /**
  * Premium Portfolio Analysis cover built only from the real project screens.
- * The screenshots stay true to the supplied product work and are only cropped
- * for composition. No generated UI or device mockups are used here.
+ * Screens are kept complete inside the composition: no generated UI, device
+ * mockups, zoom-cropping, or translated screenshots.
  */
 export function PortfolioAnalysisCardVisual({
   variant = "card",
@@ -91,66 +91,58 @@ export function PortfolioAnalysisCardVisual({
       <div
         className={`absolute z-10 hidden sm:block ${
           hero
-            ? "bottom-[-9%] left-[42%] right-[1.5%] top-[10%]"
-            : "bottom-[-11%] left-[43%] right-[1%] top-[13%]"
+            ? "bottom-[1%] left-[42%] right-[1.5%] top-[10%]"
+            : "bottom-[1%] left-[43%] right-[1%] top-[13%]"
         }`}
       >
         {REAL_SCREENS.map((screen, index) => {
           const position = hero
             ? [
-                "left-[1%] top-[18%] h-[80%] w-[31%] -rotate-[4deg] opacity-70",
-                "left-[25%] top-[1%] h-[99%] w-[40%] -rotate-[0.5deg]",
-                "right-[1%] top-[15%] h-[85%] w-[34%] rotate-[3deg] opacity-88",
+                "left-[1%] top-[19%] h-[77%] w-[31%] -rotate-[4deg] opacity-72",
+                "left-[25%] top-[1%] h-[96%] w-[40%] -rotate-[0.5deg]",
+                "right-[1%] top-[16%] h-[81%] w-[34%] rotate-[3deg] opacity-90",
               ][index]
             : [
-                "left-[1%] top-[20%] h-[76%] w-[31%] -rotate-[4deg] opacity-68",
-                "left-[25%] top-[2%] h-[96%] w-[40%] -rotate-[0.5deg]",
-                "right-[1%] top-[17%] h-[82%] w-[34%] rotate-[3deg] opacity-86",
+                "left-[1%] top-[21%] h-[73%] w-[31%] -rotate-[4deg] opacity-70",
+                "left-[25%] top-[2%] h-[93%] w-[40%] -rotate-[0.5deg]",
+                "right-[1%] top-[18%] h-[78%] w-[34%] rotate-[3deg] opacity-88",
               ][index];
-
-          const scale = hero ? 1.08 : 1.12;
 
           return (
             <figure
               key={screen.id}
               className={`absolute overflow-hidden rounded-[clamp(7px,0.8vw,12px)] shadow-[0_28px_76px_rgba(0,0,0,.46)] ${position}`}
+              style={{ backgroundColor: screen.surface }}
             >
               <img
                 src={screen.src}
                 alt=""
                 loading={index === 1 ? "eager" : "lazy"}
                 decoding="async"
-                className="absolute inset-0 h-full w-full object-cover object-top"
-                style={{
-                  transform: `scale(${scale}) translateY(${screen.crop})`,
-                  transformOrigin: "top center",
-                }}
+                className="h-full w-full object-contain object-top"
               />
             </figure>
           );
         })}
       </div>
 
-      <div className="absolute bottom-[-12%] left-[40%] right-[-10%] top-[18%] z-10 sm:hidden">
+      <div className="absolute bottom-[1%] left-[40%] right-[-8%] top-[18%] z-10 sm:hidden">
         {REAL_SCREENS.map((screen, index) => {
           const position = [
-            "left-0 top-[18%] h-[72%] w-[32%] -rotate-[5deg] opacity-62",
-            "left-[23%] top-0 h-[94%] w-[44%] -rotate-[1deg]",
-            "right-[1%] top-[15%] h-[78%] w-[35%] rotate-[4deg] opacity-80",
+            "left-0 top-[19%] h-[68%] w-[32%] -rotate-[5deg] opacity-64",
+            "left-[23%] top-0 h-[90%] w-[44%] -rotate-[1deg]",
+            "right-[1%] top-[16%] h-[73%] w-[35%] rotate-[4deg] opacity-82",
           ][index];
           return (
             <figure
               key={screen.id}
               className={`absolute overflow-hidden rounded-[6px] shadow-[0_18px_44px_rgba(0,0,0,.42)] ${position}`}
+              style={{ backgroundColor: screen.surface }}
             >
               <img
                 src={screen.src}
                 alt=""
-                className="absolute inset-0 h-full w-full object-cover object-top"
-                style={{
-                  transform: `scale(1.13) translateY(${screen.crop})`,
-                  transformOrigin: "top center",
-                }}
+                className="h-full w-full object-contain object-top"
               />
             </figure>
           );

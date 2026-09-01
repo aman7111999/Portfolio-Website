@@ -2,6 +2,7 @@ import { motion, useReducedMotion } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useContent, useSite } from "@/lib/cms";
+import { RESUME_HERO_SUBLINE } from "@/data/resumeSource";
 const portraitImg = "/aman-mishra-portfolio-portrait.png";
 
 type HeroData = {
@@ -22,11 +23,10 @@ type HeroData = {
 
 const FALLBACK: HeroData = {
   available_label: "Open to Senior Product Designer opportunities",
-  headline_before: "Making complex",
-  headline_accent: "financial products",
-  headline_after: "clear and trustworthy.",
-  subline:
-    "I lead complex product work from problem framing through launch, with experience across fintech, AI-assisted products, and design systems.",
+  headline_before: "I’ve spent 4.5+ years making",
+  headline_accent: "complicated fintech",
+  headline_after: "easier to use.",
+  subline: RESUME_HERO_SUBLINE,
   cta_label: "View selected work",
   cta_to: "/work",
   secondary_cta_label: "View résumé",
@@ -49,7 +49,14 @@ export function Hero() {
   const reduce = useReducedMotion();
   const { data: site } = useSite();
   const { data: hero } = useContent<HeroData>("hero", FALLBACK);
-  const content = { ...FALLBACK, ...(hero ?? {}) };
+  const content = {
+    ...FALLBACK,
+    ...(hero ?? {}),
+    headline_before: "I’ve spent 4.5+ years making",
+    headline_accent: "complicated fintech",
+    headline_after: "easier to use.",
+    subline: RESUME_HERO_SUBLINE,
+  };
   const name = site?.name ?? "Aman Mishra";
 
   return (

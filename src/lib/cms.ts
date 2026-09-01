@@ -8,6 +8,7 @@ import {
   PORTFOLIO_SITE,
   PORTFOLIO_SKILLS,
 } from "@/data/portfolio";
+import { RESUME_EXPERIENCE, RESUME_PROFILE, RESUME_TAGLINE } from "@/data/resumeSource";
 import type { ProjectPresentation } from "@/lib/projectPresentation";
 import { cleanPublicCopy } from "@/lib/publicCopy";
 
@@ -144,7 +145,15 @@ export function useSite() {
       return data as SiteSettings | null;
     },
   });
-  return { ...q, data: cleanPublicCopy(q.data ?? (PORTFOLIO_SITE as SiteSettings)) };
+  const base = (q.data ?? (PORTFOLIO_SITE as SiteSettings)) as SiteSettings;
+  return {
+    ...q,
+    data: cleanPublicCopy({
+      ...base,
+      tagline: RESUME_TAGLINE,
+      bio: RESUME_PROFILE,
+    }),
+  };
 }
 
 /**
@@ -218,7 +227,10 @@ export function useExperience() {
       return cleanPublicCopy(data ?? []);
     },
   });
-  return { ...q, data: cleanPublicCopy(q.data ?? PORTFOLIO_EXPERIENCE) };
+
+  // Preview branch: keep the public experience in sync with the newly uploaded résumé
+  // without changing the production CMS before approval.
+  return { ...q, data: cleanPublicCopy(RESUME_EXPERIENCE) };
 }
 
 export function useEducation() {

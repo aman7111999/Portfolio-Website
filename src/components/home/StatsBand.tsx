@@ -18,9 +18,9 @@ const FALLBACK: Data = {
   heading_line1: "From first sketch",
   heading_accent: "to shipped product",
   items: [
-    { v: "4.5+", l: "Years in product design" },
-    { v: "9×", l: "Portfolio import growth" },
-    { v: "4", l: "Focused case studies" },
+    { v: "1.6M+", l: "Designed for real scale" },
+    { v: "4.5+", l: "Years simplifying complexity" },
+    { v: "1 obsession", l: "Make hard things obvious" },
   ],
   body: "Most of my work has been in investing products, where a screen can carry a lot of data and still needs to feel calm. I enjoy working through that mess with product and engineering until the next step feels obvious.",
   quote: "I enjoy the moment when a complicated flow finally feels obvious.",

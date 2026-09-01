@@ -60,8 +60,8 @@ export function PortfolioAnalysisCardVisual({
       />
 
       <div
-        className={`absolute left-[6%] z-20 ${
-          hero ? "top-[24%] w-[34%]" : "top-[27%] w-[35%]"
+        className={`absolute left-[6%] top-1/2 z-20 -translate-y-1/2 ${
+          hero ? "w-[34%]" : "w-[35%]"
         }`}
       >
         <p className="font-mono text-[clamp(7px,0.82vw,10px)] font-semibold uppercase tracking-[0.18em] text-[#c9c6ff]/62">

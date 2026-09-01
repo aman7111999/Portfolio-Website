@@ -6,6 +6,7 @@ import { useProjects, useSite, type ProjectRow } from "@/lib/cms";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ReadingProgress } from "@/components/case/ReadingProgress";
 import { ProjectCaseStudyBody, ProjectCaseStudyHero } from "@/components/case/ProjectCaseStudy";
+import { PortfolioAnalysisProjectHero } from "@/components/projects/PortfolioAnalysisProjectHero";
 import { ProjectPasswordGate } from "@/components/projects/ProjectPasswordGate";
 import { fetchProtectedProject, clearAccessToken } from "@/lib/projectAccess";
 import { getProjectPresentation, resolveHeroVisual } from "@/lib/projectPresentation";
@@ -126,13 +127,22 @@ export default function ProjectPage() {
       <ReadingProgress />
 
       <article>
-        <ProjectCaseStudyHero
-          project={project}
-          presentation={presentation}
-          backHref="/work"
-          backLabel={presentation.labels.back_to_work}
-          projectNumber={projectIndex + 1}
-        />
+        {project.slug === "portfolio-analysis" ? (
+          <PortfolioAnalysisProjectHero
+            project={project}
+            presentation={presentation}
+            backHref="/work"
+            backLabel={presentation.labels.back_to_work}
+          />
+        ) : (
+          <ProjectCaseStudyHero
+            project={project}
+            presentation={presentation}
+            backHref="/work"
+            backLabel={presentation.labels.back_to_work}
+            projectNumber={projectIndex + 1}
+          />
+        )}
 
         <ProjectCaseStudyBody project={project} presentation={presentation} />
 

@@ -22,8 +22,8 @@ const REAL_SCREENS = [
 
 /**
  * Premium Portfolio Analysis cover built only from the real project screens.
- * The screenshots are intentionally cropped and framed here instead of being
- * redrawn, so the visual stays true to the shipped product work.
+ * The screenshots stay true to the supplied product work and are only cropped
+ * for composition. No generated UI or device mockups are used here.
  */
 export function PortfolioAnalysisCardVisual({
   variant = "card",
@@ -113,25 +113,19 @@ export function PortfolioAnalysisCardVisual({
           return (
             <figure
               key={screen.id}
-              className={`absolute overflow-hidden rounded-[clamp(12px,1.25vw,20px)] border border-white/[0.18] bg-[#090c14] p-[clamp(2px,0.28vw,4px)] shadow-[0_28px_76px_rgba(0,0,0,.50)] ${position}`}
+              className={`absolute overflow-hidden rounded-[clamp(7px,0.8vw,12px)] shadow-[0_28px_76px_rgba(0,0,0,.46)] ${position}`}
             >
-              <div className="relative h-full w-full overflow-hidden rounded-[clamp(10px,1.05vw,17px)] bg-[#f8f8fb]">
-                <img
-                  src={screen.src}
-                  alt=""
-                  loading={index === 1 ? "eager" : "lazy"}
-                  decoding="async"
-                  className="absolute inset-0 h-full w-full object-cover object-top"
-                  style={{
-                    transform: `scale(${scale}) translateY(${screen.crop})`,
-                    transformOrigin: "top center",
-                  }}
-                />
-                <div
-                  aria-hidden
-                  className="pointer-events-none absolute inset-0 rounded-[inherit] ring-1 ring-inset ring-black/[0.06]"
-                />
-              </div>
+              <img
+                src={screen.src}
+                alt=""
+                loading={index === 1 ? "eager" : "lazy"}
+                decoding="async"
+                className="absolute inset-0 h-full w-full object-cover object-top"
+                style={{
+                  transform: `scale(${scale}) translateY(${screen.crop})`,
+                  transformOrigin: "top center",
+                }}
+              />
             </figure>
           );
         })}
@@ -147,19 +141,17 @@ export function PortfolioAnalysisCardVisual({
           return (
             <figure
               key={screen.id}
-              className={`absolute overflow-hidden rounded-[9px] border border-white/[0.16] bg-[#090c14] p-[2px] shadow-[0_18px_44px_rgba(0,0,0,.44)] ${position}`}
+              className={`absolute overflow-hidden rounded-[6px] shadow-[0_18px_44px_rgba(0,0,0,.42)] ${position}`}
             >
-              <div className="relative h-full w-full overflow-hidden rounded-[7px] bg-white">
-                <img
-                  src={screen.src}
-                  alt=""
-                  className="absolute inset-0 h-full w-full object-cover object-top"
-                  style={{
-                    transform: `scale(1.13) translateY(${screen.crop})`,
-                    transformOrigin: "top center",
-                  }}
-                />
-              </div>
+              <img
+                src={screen.src}
+                alt=""
+                className="absolute inset-0 h-full w-full object-cover object-top"
+                style={{
+                  transform: `scale(1.13) translateY(${screen.crop})`,
+                  transformOrigin: "top center",
+                }}
+              />
             </figure>
           );
         })}

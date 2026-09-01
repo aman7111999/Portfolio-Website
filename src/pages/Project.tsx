@@ -9,6 +9,7 @@ import { ProjectCaseStudyBody, ProjectCaseStudyHero } from "@/components/case/Pr
 import { ProjectPasswordGate } from "@/components/projects/ProjectPasswordGate";
 import { fetchProtectedProject, clearAccessToken } from "@/lib/projectAccess";
 import { getProjectPresentation, resolveHeroVisual } from "@/lib/projectPresentation";
+import { applyPortfolioAnalysisVisualCorrection } from "@/data/portfolioAnalysisVisualCorrection";
 import NotFound from "./NotFound";
 
 export default function ProjectPage() {
@@ -34,7 +35,7 @@ export default function ProjectPage() {
       if (!alive) return;
       setLoading(false);
       if (res.ok) {
-        setProject(res.project);
+        setProject(applyPortfolioAnalysisVisualCorrection(res.project));
       } else if (res.error === "unauthorized") {
         clearAccessToken();
         setAccessRequired(true);

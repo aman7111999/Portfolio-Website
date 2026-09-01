@@ -1,5 +1,11 @@
+export const RESUME_TAGLINE =
+  "Product designer with 4.5+ years building fintech products at Motilal Oswal and Trinkerr.";
+
 export const RESUME_PROFILE =
   "Product designer with 4.5+ years building fintech products at Motilal Oswal and Trinkerr. I enjoy turning complex investment journeys and dense information into experiences people can understand and act on. I work closely with product and engineering, from figuring out the problem to seeing the final experience go live.";
+
+export const RESUME_HERO_SUBLINE =
+  "I enjoy turning complex investment journeys and dense information into experiences people can understand and act on. I work closely with product and engineering, from figuring out the problem to seeing the final experience go live.";
 
 export const RESUME_EXPERIENCE = [
   {

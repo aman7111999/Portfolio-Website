@@ -149,7 +149,7 @@ export function ProjectCard({
           <div className="flex items-start justify-between gap-4 sm:gap-6">
             <div className="min-w-0">
               <p className="eyebrow">
-                {presentation.card.eyebrow} {number}
+                {isPortfolioAnalysis ? "Portfolio analysis" : presentation.card.eyebrow} {number}
               </p>
               <h3
                 className={`mt-3 leading-[1.12] tracking-[-0.03em] ${

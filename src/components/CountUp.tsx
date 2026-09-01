@@ -41,7 +41,7 @@ export function CountUp({
   }, [inView, value, duration, reduce]);
 
   return (
-    <span ref={ref} className={className}>
+    <span ref={ref} className={`whitespace-nowrap ${className ?? ""}`.trim()}>
       {display}
     </span>
   );

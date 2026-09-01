@@ -20,7 +20,7 @@ export function ImpactGrid({
           className="border-b border-[var(--color-hairline)] py-7 last:border-b-0 md:border-b-0 md:border-r md:px-7 md:first:pl-0 md:last:border-r-0 md:last:pr-0"
         >
           <p className="eyebrow">{item.label}</p>
-          <p className="mt-4 text-[clamp(2.5rem,5vw,4.25rem)] font-medium leading-none tracking-[-0.05em] text-[var(--color-accent)]">
+          <p className="mt-4 whitespace-nowrap text-[clamp(2.5rem,5vw,4.25rem)] font-medium leading-none tracking-[-0.05em] text-[var(--color-accent)]">
             {item.value}
           </p>
           {item.hint && (

@@ -100,12 +100,12 @@ export function PortfolioAnalysisCardVisual({
             ? [
                 "left-[1%] top-[19%] h-[77%] -rotate-[4deg] opacity-72",
                 "left-[25%] top-[1%] h-[96%] -rotate-[0.5deg]",
-                "right-[1%] top-[16%] h-[81%] rotate-[3deg] opacity-90",
+                "left-[56%] top-[16%] h-[81%] rotate-[3deg] opacity-90",
               ][index]
             : [
                 "left-[1%] top-[21%] h-[73%] -rotate-[4deg] opacity-70",
                 "left-[25%] top-[2%] h-[93%] -rotate-[0.5deg]",
-                "right-[1%] top-[18%] h-[78%] rotate-[3deg] opacity-88",
+                "left-[56%] top-[18%] h-[78%] rotate-[3deg] opacity-88",
               ][index];
 
           return (
@@ -131,7 +131,7 @@ export function PortfolioAnalysisCardVisual({
           const position = [
             "left-0 top-[19%] h-[68%] -rotate-[5deg] opacity-64",
             "left-[23%] top-0 h-[90%] -rotate-[1deg]",
-            "right-[1%] top-[16%] h-[73%] rotate-[4deg] opacity-82",
+            "left-[54%] top-[16%] h-[73%] rotate-[4deg] opacity-82",
           ][index];
           return (
             <figure

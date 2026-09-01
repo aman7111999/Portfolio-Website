@@ -7,8 +7,8 @@ type Data = { eyebrow: string; heading_line1: string; heading_line2: string };
 
 const FALLBACK: Data = {
   eyebrow: "Experience",
-  heading_line1: "Product ownership across",
-  heading_line2: "complex financial journeys.",
+  heading_line1: "4.5+ years building",
+  heading_line2: "fintech products.",
 };
 
 function formatPeriod(start?: string | null, end?: string | null) {
@@ -18,7 +18,11 @@ function formatPeriod(start?: string | null, end?: string | null) {
 export function Experience() {
   const { data: rows } = useExperience();
   const { data: content } = useContent<Data>("home_experience", FALLBACK);
-  const copy = content ?? FALLBACK;
+  const copy = {
+    ...(content ?? FALLBACK),
+    heading_line1: "4.5+ years building",
+    heading_line2: "fintech products.",
+  };
   const allRoles = rows ?? [];
 
   return (
@@ -35,8 +39,8 @@ export function Experience() {
             </h2>
           </div>
           <p className="max-w-sm text-[14px] leading-[1.65] text-[var(--color-muted)] lg:col-span-4 lg:justify-self-end">
-            I started with core investing flows and now lead product work across portfolios,
-            discovery, personalisation, and AI-assisted experiences.
+            I enjoy turning complex investment journeys and dense information into experiences people
+            can understand and act on.
           </p>
         </div>
       </Reveal>

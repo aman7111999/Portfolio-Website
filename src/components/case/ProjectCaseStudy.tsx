@@ -22,6 +22,7 @@ import {
   GuestJourneyHeroVisual,
 } from "@/components/case/GuestJourneyStory";
 import { PortfolioRevampVisual } from "@/components/projects/PortfolioRevampVisual";
+import { CaseStudyNavigation } from "@/components/case/CaseStudyNavigation";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
@@ -95,6 +96,7 @@ export function ProjectCaseStudyHero({
   return (
     <section
       id="hero"
+      tabIndex={-1}
       className="case-study-hero container-page pb-12 pt-8 sm:pb-14 sm:pt-10 md:pb-20 md:pt-16"
     >
       {backHref && (
@@ -129,6 +131,7 @@ export function ProjectCaseStudyHero({
           <HeroMeta label={presentation.labels.duration} value={project.duration} />
           <HeroMeta label={presentation.labels.timeline} value={project.timeline} />
         </dl>
+        <CaseStudyEntryLinks project={project} presentation={presentation} />
       </motion.header>
 
       <motion.div
@@ -243,7 +246,8 @@ export function ProjectCaseStudyBody({
   const prototypeLink = (project.links ?? []).find((link) => isPrototypeLink(link.url));
   const externalLinks = (project.links ?? []).filter((link) => !isPrototypeLink(link.url));
   const hasExperience = presentation.story.enabled;
-  const isComparison = presentation.type === "revamp_comparison";
+  const isComparison =
+    presentation.type === "revamp_comparison" && presentation.comparison.stages.length >= 2;
   const hasGuestJourney =
     project.slug === "riise-first-time-user-journey" && project.gallery.length >= 5;
   const hasArtifacts =
@@ -253,28 +257,21 @@ export function ProjectCaseStudyBody({
   const approach = groups.find((group) => group.id === "approach");
   const solution = groups.find((group) => group.id === "solution");
   const outcome = groups.find((group) => group.id === "outcome");
-  const customStoryItems = isComparison
-    ? [
-        context && { id: context.id, label: context.label },
-        approach && { id: approach.id, label: approach.label },
-        { id: "evolution", label: presentation.comparison.eyebrow || "Design evolution" },
-        solution && { id: solution.id, label: solution.label },
-        outcome && { id: outcome.id, label: outcome.label },
-      ]
-    : hasGuestJourney
-      ? [
-          context && { id: context.id, label: context.label },
-          approach && { id: approach.id, label: approach.label },
-          { id: "journey", label: "Journey" },
-          solution && { id: solution.id, label: solution.label },
-          outcome && { id: outcome.id, label: outcome.label },
-        ]
-      : null;
-  const storyLinks = customStoryItems
-    ? customStoryItems
-        .filter((item): item is { id: string; label: string } => !!item)
-        .map((item, index) => ({ ...item, number: String(index + 1).padStart(2, "0") }))
-    : groups.map((group) => ({ id: group.id, label: group.label, number: group.number }));
+  const storyLinks = [
+    context && { id: context.id, label: context.label },
+    approach && { id: approach.id, label: approach.label },
+    isComparison && { id: "evolution", label: "Evolution" },
+    hasGuestJourney && { id: "journey", label: "Journey" },
+    solution && { id: solution.id, label: solution.label },
+    hasExperience && { id: "experience", label: "Screens" },
+    hasArtifacts && {
+      id: "artifacts",
+      label: !hasGuestJourney && project.gallery.length ? "Gallery" : "Resources",
+    },
+    outcome && { id: outcome.id, label: outcome.label },
+  ]
+    .filter((item): item is { id: string; label: string } => !!item)
+    .map((item, index) => ({ ...item, number: String(index + 1).padStart(2, "0") }));
   const displayNumberFor = (group: StoryGroup) =>
     storyLinks.find((item) => item.id === group.id)?.number ?? group.number;
 
@@ -282,28 +279,7 @@ export function ProjectCaseStudyBody({
     <>
       {project.metrics.length > 0 && <EvidenceStrip items={project.metrics.slice(0, 3)} />}
 
-      {storyLinks.length > 1 && (
-        <nav aria-label="Case study outline" className="container-page pb-10 md:pb-14">
-          <div className="case-outline mx-auto flex max-w-[1040px] flex-col gap-4 border-y border-[var(--color-hairline)] py-5 md:flex-row md:items-center md:justify-between">
-            <p className="text-[13px] font-medium text-[var(--color-text)]">The story in brief</p>
-            <ol className="flex max-w-full gap-x-5 gap-y-3 overflow-x-auto pb-1">
-              {storyLinks.map((item) => (
-                <li key={item.id} className="shrink-0">
-                  <a
-                    href={`#${item.id}`}
-                    className="inline-flex items-center gap-2 text-[12px] text-[var(--color-muted)] transition-colors hover:text-[var(--color-text)]"
-                  >
-                    <span className="font-mono text-[10px] text-[var(--color-subtle)]">
-                      {item.number}
-                    </span>
-                    {item.label}
-                  </a>
-                </li>
-              ))}
-            </ol>
-          </div>
-        </nav>
-      )}
+      {storyLinks.length > 1 && <CaseStudyNavigation chapters={storyLinks} />}
 
       {context && <NarrativeGroup group={context} displayNumber={displayNumberFor(context)} />}
       {approach && <NarrativeGroup group={approach} displayNumber={displayNumberFor(approach)} />}
@@ -319,7 +295,7 @@ export function ProjectCaseStudyBody({
       {solution && <NarrativeGroup group={solution} displayNumber={displayNumberFor(solution)} />}
 
       {hasExperience && (
-        <div id="experience" className="scroll-mt-28">
+        <div id="experience" tabIndex={-1} className="scroll-mt-40 focus:outline-none">
           <PortfolioAnalysisCaseVisuals story={presentation.story} />
         </div>
       )}
@@ -331,6 +307,7 @@ export function ProjectCaseStudyBody({
           presentation={presentation}
           prototypeLink={prototypeLink}
           externalLinks={externalLinks}
+          showGallery={!hasGuestJourney}
         />
       )}
 
@@ -375,9 +352,10 @@ function NarrativeGroup({
   return (
     <section
       id={group.id}
-      className="case-narrative-section container-page scroll-mt-24 py-14 sm:scroll-mt-28 md:py-24"
+      tabIndex={-1}
+      className="case-narrative-section container-page py-10 focus:outline-none md:py-16"
     >
-      <div className="case-narrative-grid mx-auto grid max-w-[1040px] gap-7 border-t border-[var(--color-hairline)] pt-10 md:grid-cols-[150px_minmax(0,1fr)] md:gap-14 md:pt-16">
+      <div className="case-narrative-grid mx-auto grid max-w-[1040px] gap-7 border-t border-[var(--color-hairline)] pt-8 md:grid-cols-[150px_minmax(0,1fr)] md:gap-14 md:pt-10">
         <aside>
           <p className="font-mono text-[10px] tracking-[0.16em] text-[var(--color-accent)]">
             {displayNumber}
@@ -392,7 +370,7 @@ function NarrativeGroup({
           {group.parts.map((part, index) => (
             <motion.div
               key={part.id}
-              id={part.id}
+              id={part.id === group.id ? undefined : part.id}
               initial={reduce ? false : { opacity: 0, y: 14 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-70px" }}
@@ -409,7 +387,7 @@ function NarrativeGroup({
                   {part.title}
                 </h3>
               )}
-              <ProseHtml html={part.html} className="mt-7" />
+              <ProseHtml html={part.html} className="mt-7 max-w-[68ch]" />
             </motion.div>
           ))}
         </div>
@@ -449,26 +427,30 @@ function ProjectArtifacts({
   presentation,
   prototypeLink,
   externalLinks,
+  showGallery,
 }: {
   id: string;
   project: ProjectRow;
   presentation: ProjectPresentation;
   prototypeLink?: { label: string; url: string };
   externalLinks: Array<{ label: string; url: string }>;
+  showGallery: boolean;
 }) {
-  const title = project.gallery.length
-    ? presentation.gallery.title
-    : prototypeLink
-      ? presentation.prototype.title
-      : presentation.labels.external_links;
-  const description = project.gallery.length
-    ? presentation.gallery.description
-    : prototypeLink
-      ? presentation.prototype.description
-      : null;
+  const title =
+    showGallery && project.gallery.length
+      ? presentation.gallery.title
+      : prototypeLink
+        ? presentation.prototype.title
+        : presentation.labels.external_links;
+  const description =
+    showGallery && project.gallery.length
+      ? presentation.gallery.description
+      : prototypeLink
+        ? presentation.prototype.description
+        : null;
 
   return (
-    <section id={id} className="container-page scroll-mt-24 py-14 sm:scroll-mt-28 md:py-24">
+    <section id={id} tabIndex={-1} className="container-page py-10 focus:outline-none md:py-16">
       <div className="mx-auto max-w-[1040px] border-t border-[var(--color-hairline)] pt-10 md:pt-16">
         <div className="case-artifact-heading grid gap-6 md:grid-cols-[minmax(0,1fr)_auto] md:items-end">
           <div>
@@ -505,7 +487,7 @@ function ProjectArtifacts({
             <PrototypeEmbed url={prototypeLink.url} label={prototypeLink.label} />
           </div>
         )}
-        {project.gallery.length > 0 && (
+        {showGallery && project.gallery.length > 0 && (
           <div className={prototypeLink ? "mt-12" : "mt-10"}>
             <CaseGallery images={project.gallery} />
           </div>
@@ -523,6 +505,41 @@ function HeroMeta({ label, value }: { label: string; value: string | null }) {
         {label}
       </dt>
       <dd className="mt-2 max-w-[32ch] text-[14px] leading-6 text-[var(--color-text)]">{value}</dd>
+    </div>
+  );
+}
+
+export function CaseStudyEntryLinks({
+  project,
+  presentation,
+}: {
+  project: ProjectRow;
+  presentation: ProjectPresentation;
+}) {
+  const firstGroup = buildGroups(project, presentation)[0];
+  const screenId =
+    presentation.type === "revamp_comparison" && presentation.comparison.stages.length >= 2
+      ? "evolution"
+      : project.slug === "riise-first-time-user-journey" && project.gallery.length >= 5
+        ? "journey"
+        : presentation.story.enabled
+          ? "experience"
+          : project.gallery.length > 0
+            ? "artifacts"
+            : null;
+  if (!firstGroup && !screenId) return null;
+  return (
+    <div className="case-entry-links mt-6 flex flex-wrap items-center gap-3">
+      {firstGroup && (
+        <a href={`#${firstGroup.id}`} className="btn-primary">
+          Read the story <ArrowLeft size={15} className="rotate-180" />
+        </a>
+      )}
+      {screenId && (
+        <a href={`#${screenId}`} className="btn-secondary">
+          Explore the designs
+        </a>
+      )}
     </div>
   );
 }

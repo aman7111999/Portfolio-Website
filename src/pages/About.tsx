@@ -4,7 +4,7 @@ import { Seo } from "@/lib/seo";
 import { useEducation, useExperience, useSite, useSkills } from "@/lib/cms";
 import { Reveal } from "@/components/Reveal";
 import { PortraitFrame } from "@/components/about/PortraitFrame";
-import type { PortfolioEducation, PortfolioExperience } from "@/data/portfolio";
+import type { PortfolioEducation } from "@/data/portfolio";
 
 const portraitImg = "/aman-mishra-portfolio-portrait.png";
 
@@ -37,7 +37,7 @@ export default function About() {
   const { data: education } = useEducation();
   const { data: skills } = useSkills();
 
-  const roles = (experience ?? []) as PortfolioExperience[];
+  const roles = experience ?? [];
   const schools = (education ?? []) as PortfolioEducation[];
 
   return (
@@ -117,20 +117,23 @@ export default function About() {
               <p className="eyebrow">Chapter 01 / The messy part</p>
               <h2 className="mt-5 max-w-[11ch] text-[clamp(2.35rem,9vw,3rem)] leading-[1.03] tracking-[-0.045em] sm:text-[clamp(3rem,5vw,4.7rem)] sm:leading-[0.99]">
                 I usually start where things are
-                <span className="font-serif font-normal italic text-[var(--color-accent)]"> unclear.</span>
+                <span className="font-serif font-normal italic text-[var(--color-accent)]">
+                  {" "}
+                  unclear.
+                </span>
               </h2>
             </div>
             <div className="lg:col-span-5 lg:col-start-8 lg:pt-10">
               <p className="text-[15px] leading-[1.8] text-[var(--color-muted)] sm:text-[16px]">
                 A vague requirement. Too much information. Five priorities fighting for the same
-                screen. An old flow everyone has learned to work around. That part does not scare me.
-                It is usually where the interesting work starts.
+                screen. An old flow everyone has learned to work around. That part does not scare
+                me. It is usually where the interesting work starts.
               </p>
               <p className="mt-5 text-[15px] leading-[1.8] text-[var(--color-muted)] sm:text-[16px]">
                 I try to understand why something exists before deciding what it should look like. I
                 talk to product and engineering, map what is actually happening, challenge the parts
-                that do not make sense and keep simplifying until the experience has a clear point of
-                view.
+                that do not make sense and keep simplifying until the experience has a clear point
+                of view.
               </p>
               <p className="mt-7 border-l border-[var(--color-accent)] pl-5 font-serif text-[1.45rem] italic leading-[1.35] text-[var(--color-text)]">
                 Sometimes the answer is a new experience. Sometimes it is removing half of the old
@@ -147,7 +150,10 @@ export default function About() {
             <p className="eyebrow">Chapter 02 / What finance taught me</p>
             <h2 className="mt-5 max-w-[10ch] text-[clamp(2.35rem,9vw,3rem)] leading-[1.03] tracking-[-0.045em] sm:text-[clamp(3rem,4.8vw,4.5rem)] sm:leading-[1]">
               “Simple” is actually
-              <span className="font-serif font-normal italic text-[var(--color-accent)]"> hard.</span>
+              <span className="font-serif font-normal italic text-[var(--color-accent)]">
+                {" "}
+                hard.
+              </span>
             </h2>
           </div>
 
@@ -207,7 +213,10 @@ export default function About() {
           <div className="mt-5 grid gap-8 lg:grid-cols-12 lg:gap-16">
             <h2 className="max-w-[11ch] text-[clamp(2.4rem,9vw,3rem)] leading-[1.03] tracking-[-0.045em] sm:text-[clamp(3rem,5vw,4.7rem)] sm:leading-[1] lg:col-span-5">
               Good work should feel like a
-              <span className="font-serif font-normal italic text-[var(--color-accent)]"> conversation.</span>
+              <span className="font-serif font-normal italic text-[var(--color-accent)]">
+                {" "}
+                conversation.
+              </span>
             </h2>
             <p className="max-w-[48ch] text-[15px] leading-[1.8] text-[var(--color-muted)] sm:text-[16px] lg:col-span-5 lg:col-start-8 lg:pt-5">
               I do my best work with people who are comfortable putting half-formed ideas on the

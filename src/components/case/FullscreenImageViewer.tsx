@@ -1,9 +1,6 @@
-import { useEffect } from "react";
-import { createPortal } from "react-dom";
-import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
-import { X } from "lucide-react";
-
-const EASE = [0.22, 1, 0.36, 1] as const;
+import { useEffect, useRef, useState } from "react";
+import * as Dialog from "@radix-ui/react-dialog";
+import { ChevronLeft, ChevronRight, ImageOff, Minus, Plus, X } from "lucide-react";
 
 export type FullscreenImage = {
   src: string;
@@ -16,89 +13,142 @@ export type FullscreenImage = {
 export function FullscreenImageViewer({
   image,
   onClose,
+  index = 0,
+  total = 1,
+  onMove,
 }: {
   image: FullscreenImage | null;
   onClose: () => void;
+  index?: number;
+  total?: number;
+  onMove?: (direction: -1 | 1) => void;
 }) {
-  const reduce = useReducedMotion();
+  const [zoom, setZoom] = useState(false);
+  const [failed, setFailed] = useState(false);
+  const contentRef = useRef<HTMLDivElement>(null);
+  const closeRef = useRef<HTMLButtonElement>(null);
+  const openerRef = useRef<HTMLElement | null>(null);
+  const src = image?.src;
 
   useEffect(() => {
-    if (!image) return;
+    setZoom(false);
+    setFailed(false);
+    contentRef.current?.scrollTo({ top: 0, left: 0 });
+  }, [src]);
 
-    const previousOverflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-
-    const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") onClose();
-    };
-
-    window.addEventListener("keydown", onKeyDown);
-    return () => {
-      window.removeEventListener("keydown", onKeyDown);
-      document.body.style.overflow = previousOverflow;
-    };
-  }, [image, onClose]);
-
-  if (typeof document === "undefined") return null;
-
-  return createPortal(
-    <AnimatePresence>
-      {image && (
-        <motion.div
+  return (
+    <Dialog.Root
+      open={!!image}
+      onOpenChange={(open) => {
+        if (!open) onClose();
+      }}
+    >
+      <Dialog.Portal>
+        <Dialog.Overlay className="fixed inset-0 z-[100] bg-black/92 backdrop-blur-md" />
+        <Dialog.Content
+          ref={contentRef}
           data-lenis-prevent
-          role="dialog"
-          aria-modal="true"
-          aria-label={`${image.label} at full size`}
-          initial={reduce ? false : { opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.25 }}
-          onClick={onClose}
-          className="fixed inset-0 z-[100] touch-pan-y overflow-y-auto overscroll-contain bg-black/92 backdrop-blur-md [-webkit-overflow-scrolling:touch]"
+          className="case-image-dialog fixed inset-0 z-[101] overflow-auto overscroll-contain text-white focus:outline-none"
+          onClick={(event) => {
+            if (event.target === event.currentTarget) onClose();
+          }}
+          onOpenAutoFocus={(event) => {
+            event.preventDefault();
+            openerRef.current =
+              document.activeElement instanceof HTMLElement ? document.activeElement : null;
+            closeRef.current?.focus();
+          }}
+          onCloseAutoFocus={(event) => {
+            event.preventDefault();
+            openerRef.current?.focus({ preventScroll: true });
+          }}
+          onKeyDown={(event) => {
+            if (total > 1 && onMove && (event.key === "ArrowLeft" || event.key === "ArrowRight")) {
+              event.preventDefault();
+              onMove(event.key === "ArrowLeft" ? -1 : 1);
+            }
+          }}
         >
-          <div
-            onClick={(event) => event.stopPropagation()}
-            className="sticky top-0 z-10 flex min-h-16 items-center justify-between gap-4 border-b border-white/15 bg-black/75 px-4 text-white backdrop-blur-md sm:px-6"
-          >
+          <div className="case-image-toolbar">
             <div className="min-w-0">
-              <p className="truncate text-[12px] font-semibold uppercase tracking-[0.1em]">
-                {image.label}
-              </p>
-              {image.meta && (
-                <p className="mt-0.5 truncate text-[11px] text-white/60">{image.meta}</p>
-              )}
+              <Dialog.Title className="truncate text-[13px] font-semibold">
+                {image?.label}
+              </Dialog.Title>
+              <Dialog.Description className="mt-0.5 truncate text-[11px] text-white/65">
+                {total > 1 ? `${index + 1} of ${total} · ` : ""}
+                {image?.meta ?? "Scroll to explore the complete screen"}
+              </Dialog.Description>
             </div>
-            <button
-              type="button"
-              onClick={onClose}
-              aria-label="Close full-screen image"
-              className="grid h-11 w-11 shrink-0 place-items-center rounded-full border border-white/20 bg-white/10 text-white transition-colors hover:bg-white/20"
-            >
-              <X size={18} />
-            </button>
+            <div className="flex shrink-0 items-center gap-1.5 sm:gap-2">
+              {total > 1 && onMove && (
+                <>
+                  <button
+                    type="button"
+                    onClick={() => onMove(-1)}
+                    aria-label="Previous screen"
+                    className="case-image-control"
+                  >
+                    <ChevronLeft size={18} />
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => onMove(1)}
+                    aria-label="Next screen"
+                    className="case-image-control"
+                  >
+                    <ChevronRight size={18} />
+                  </button>
+                </>
+              )}
+              <button
+                type="button"
+                onClick={() => setZoom((value) => !value)}
+                aria-label={zoom ? "Fit screen to view" : "Zoom in on screen"}
+                aria-pressed={zoom}
+                disabled={failed}
+                className="case-image-control"
+              >
+                {zoom ? <Minus size={18} /> : <Plus size={18} />}
+              </button>
+              <Dialog.Close asChild>
+                <button
+                  ref={closeRef}
+                  type="button"
+                  aria-label="Close full-screen image"
+                  className="case-image-control"
+                >
+                  <X size={18} />
+                </button>
+              </Dialog.Close>
+            </div>
           </div>
-
-          <motion.figure
-            initial={reduce ? false : { opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 8 }}
-            transition={{ duration: 0.35, ease: EASE }}
-            onClick={(event) => event.stopPropagation()}
-            className="mx-auto w-full max-w-[760px] px-3 pb-8 pt-4 sm:px-6 sm:pb-12 sm:pt-6"
-          >
-            <img
-              src={image.src}
-              alt={image.alt}
-              className="block h-auto w-full rounded-[var(--radius-md)] bg-white shadow-2xl"
-            />
-            <figcaption className="px-1 pt-4 text-[13px] leading-6 text-white/70">
-              {image.caption ??
-                `Scroll to explore the complete ${image.label.toLowerCase()} screen. Press Esc or use the close button to return.`}
-            </figcaption>
-          </motion.figure>
-        </motion.div>
-      )}
-    </AnimatePresence>,
-    document.body,
+          {image && (
+            <figure className={`case-image-figure ${zoom ? "case-image-figure--zoom" : ""}`}>
+              {failed ? (
+                <div role="status" className="grid min-h-[50vh] place-items-center text-center">
+                  <div>
+                    <ImageOff size={24} className="mx-auto text-white/60" />
+                    <p className="mt-4 text-sm">
+                      This screen could not load. Close it and try again.
+                    </p>
+                  </div>
+                </div>
+              ) : (
+                <img
+                  key={image.src}
+                  src={image.src}
+                  alt={image.alt}
+                  onError={() => setFailed(true)}
+                  className="block h-auto w-full rounded-xl bg-white shadow-2xl"
+                />
+              )}
+              <figcaption className="pt-4 text-[13px] leading-6 text-white/70">
+                {image.caption ?? "Scroll to explore the complete screen."}
+              </figcaption>
+            </figure>
+          )}
+        </Dialog.Content>
+      </Dialog.Portal>
+    </Dialog.Root>
   );
 }

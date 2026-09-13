@@ -4,7 +4,6 @@ import { ArrowRight, ArrowUpRight } from "lucide-react";
 import { Seo } from "@/lib/seo";
 import { useProjects, useSite, type ProjectRow } from "@/lib/cms";
 import { Skeleton } from "@/components/ui/skeleton";
-import { ReadingProgress } from "@/components/case/ReadingProgress";
 import { ProjectCaseStudyBody, ProjectCaseStudyHero } from "@/components/case/ProjectCaseStudy";
 import { PortfolioAnalysisProjectHero } from "@/components/projects/PortfolioAnalysisProjectHero";
 import { ProjectPasswordGate } from "@/components/projects/ProjectPasswordGate";
@@ -49,6 +48,16 @@ export default function ProjectPage() {
       alive = false;
     };
   }, [slug, reloadKey]);
+
+  useEffect(() => {
+    if (!project || !window.location.hash) return;
+    const frame = requestAnimationFrame(() => {
+      document
+        .getElementById(window.location.hash.slice(1))
+        ?.scrollIntoView({ block: "start", behavior: "instant" });
+    });
+    return () => cancelAnimationFrame(frame);
+  }, [project]);
 
   if (accessRequired) {
     return (
@@ -124,9 +133,7 @@ export default function ProjectPage() {
         image={heroVisual.imageUrl ?? project.thumbnail_url}
       />
 
-      <ReadingProgress />
-
-      <article>
+      <article className="project-case-study" key={project.slug}>
         {project.slug === "portfolio-analysis" ? (
           <PortfolioAnalysisProjectHero
             project={project}

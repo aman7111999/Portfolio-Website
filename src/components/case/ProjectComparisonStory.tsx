@@ -27,10 +27,13 @@ export function ProjectComparisonStory({
 
   const active = stages[Math.min(activeIndex, stages.length - 1)];
   const expandedStage = expandedIndex === null ? null : stages[expandedIndex];
+  const viewableStages = stages.filter((stage) => !!stage.image_url);
+  const viewerIndex = viewableStages.findIndex((stage) => stage.id === expandedStage?.id);
 
   return (
     <section
       id="evolution"
+      tabIndex={-1}
       className="comparison-section container-page scroll-mt-24 py-14 sm:scroll-mt-28 md:py-24"
     >
       <div className="mx-auto max-w-[1120px] border-t border-[var(--color-hairline)] pt-10 md:pt-16">
@@ -125,6 +128,15 @@ export function ProjectComparisonStory({
       </div>
 
       <FullscreenImageViewer
+        index={Math.max(viewerIndex, 0)}
+        total={viewableStages.length}
+        onMove={(direction) => {
+          const next =
+            viewableStages[
+              (viewerIndex + direction + viewableStages.length) % viewableStages.length
+            ];
+          if (next) setExpandedIndex(stages.findIndex((stage) => stage.id === next.id));
+        }}
         image={
           expandedStage?.image_url
             ? {
@@ -245,7 +257,7 @@ function ComparisonStageMedia({
               This screen could not be loaded
             </p>
             <p className="mt-1 text-[12px] leading-5 text-[var(--color-muted)]">
-              Replace the image from the CMS or try opening the original.
+              Try again in a moment.
             </p>
           </div>
         </div>

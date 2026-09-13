@@ -156,12 +156,17 @@ export function GuestJourneyCaseVisuals({
   ];
 
   useEffect(() => {
-    setTheme(themeSwitcher.default_theme);
-  }, [themeSwitcher.default_theme]);
+    setTheme(
+      themeImages(images, themeSwitcher.default_theme).length >= JOURNEY_STAGES.length
+        ? themeSwitcher.default_theme
+        : "light",
+    );
+  }, [images, themeSwitcher.default_theme]);
 
   if (selectedImages.length < JOURNEY_STAGES.length) return null;
 
   const openViewer = (image: GalleryImage, index: number) => {
+    setActiveIndex(index);
     setViewerImage({
       src: image.url,
       alt: image.caption ?? `${JOURNEY_STAGES[index].label} ${theme} screen`,
@@ -176,6 +181,7 @@ export function GuestJourneyCaseVisuals({
   return (
     <section
       id="journey"
+      tabIndex={-1}
       className="guest-journey-section container-page scroll-mt-24 py-14 sm:scroll-mt-28 md:py-24"
     >
       <div className="mx-auto max-w-[1160px] border-t border-[var(--color-hairline)] pt-10 md:pt-16">
@@ -204,8 +210,9 @@ export function GuestJourneyCaseVisuals({
                     key={option.value}
                     type="button"
                     onClick={() => setTheme(option.value)}
+                    disabled={themeImages(images, option.value).length < JOURNEY_STAGES.length}
                     aria-pressed={selected}
-                    className={`inline-flex min-h-9 items-center justify-center gap-2 rounded-[7px] px-4 text-[11px] font-semibold transition-colors ${
+                    className={`inline-flex min-h-11 items-center justify-center gap-2 rounded-[7px] px-4 text-[12px] font-semibold transition-colors disabled:opacity-40 ${
                       selected
                         ? "bg-[var(--color-accent)] text-[var(--color-accent-contrast)]"
                         : "text-[var(--color-muted)]"
@@ -258,7 +265,7 @@ export function GuestJourneyCaseVisuals({
               <button
                 type="button"
                 onClick={() => openViewer(selectedImages[activeIndex], activeIndex)}
-                className="inline-flex min-h-9 items-center gap-1.5 rounded-full border border-[var(--color-hairline-strong)] px-3 text-[10px] font-semibold text-[var(--color-text)]"
+                className="inline-flex min-h-11 items-center gap-1.5 rounded-full border border-[var(--color-hairline-strong)] px-3 text-[12px] font-semibold text-[var(--color-text)]"
               >
                 <Maximize2 size={11} /> View full
               </button>
@@ -350,7 +357,17 @@ export function GuestJourneyCaseVisuals({
         </div>
       </div>
 
-      <FullscreenImageViewer image={viewerImage} onClose={() => setViewerImage(null)} />
+      <FullscreenImageViewer
+        image={viewerImage}
+        index={activeIndex}
+        total={selectedImages.length}
+        onMove={(direction) => {
+          const next = (activeIndex + direction + selectedImages.length) % selectedImages.length;
+          setActiveIndex(next);
+          openViewer(selectedImages[next], next);
+        }}
+        onClose={() => setViewerImage(null)}
+      />
     </section>
   );
 }

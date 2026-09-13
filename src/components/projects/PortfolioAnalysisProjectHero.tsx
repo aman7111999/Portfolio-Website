@@ -1,6 +1,7 @@
 import { motion, useReducedMotion } from "framer-motion";
 import { ArrowLeft } from "lucide-react";
 import { Link } from "react-router-dom";
+import { CaseStudyEntryLinks } from "@/components/case/ProjectCaseStudy";
 import type { ProjectRow } from "@/lib/cms";
 import type { ProjectPresentation } from "@/lib/projectPresentation";
 import { PortfolioAnalysisCardVisual } from "@/components/projects/PortfolioAnalysisCardVisual";
@@ -23,6 +24,7 @@ export function PortfolioAnalysisProjectHero({
   return (
     <section
       id="hero"
+      tabIndex={-1}
       className="case-study-hero container-page pb-12 pt-8 sm:pb-14 sm:pt-10 md:pb-20 md:pt-16"
     >
       {backHref && (
@@ -57,6 +59,7 @@ export function PortfolioAnalysisProjectHero({
           <HeroMeta label={presentation.labels.duration} value={project.duration} />
           <HeroMeta label={presentation.labels.timeline} value={project.timeline} />
         </dl>
+        <CaseStudyEntryLinks project={project} presentation={presentation} />
       </motion.header>
 
       <motion.div

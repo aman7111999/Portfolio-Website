@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from "@/components/ui/dialog";
 import { ProjectCard } from "@/components/ProjectCard";
 import { ProjectCaseStudyBody, ProjectCaseStudyHero } from "@/components/case/ProjectCaseStudy";
+import { PortfolioAnalysisProjectHero } from "@/components/projects/PortfolioAnalysisProjectHero";
 
 type Viewport = "desktop" | "mobile";
 type Surface = "page" | "card";
@@ -83,7 +84,7 @@ export function ProjectPreviewDialog({
         <div className="flex-1 overflow-auto p-4 md:p-7">
           <div
             data-theme="light"
-            className={`mx-auto overflow-hidden bg-[var(--color-bg)] text-[var(--color-text)] shadow-2xl transition-[width] duration-300 ${
+            className={`mx-auto overflow-clip bg-[var(--color-bg)] text-[var(--color-text)] shadow-2xl transition-[width] duration-300 ${
               viewport === "mobile"
                 ? "w-[390px] max-w-full rounded-[28px]"
                 : "w-full max-w-[1280px] rounded-xl"
@@ -96,8 +97,15 @@ export function ProjectPreviewDialog({
                 </div>
               </div>
             ) : (
-              <article className={viewport === "mobile" ? "project-preview-mobile" : undefined}>
-                <ProjectCaseStudyHero project={project} presentation={presentation} />
+              <article
+                data-project-preview
+                className={`project-case-study ${viewport === "mobile" ? "project-preview-mobile" : ""}`}
+              >
+                {project.slug === "portfolio-analysis" ? (
+                  <PortfolioAnalysisProjectHero project={project} presentation={presentation} />
+                ) : (
+                  <ProjectCaseStudyHero project={project} presentation={presentation} />
+                )}
                 <ProjectCaseStudyBody project={project} presentation={presentation} />
                 <section className="container-page py-16">
                   <div className="mx-auto max-w-[1040px] border-t border-[var(--color-hairline)] pt-10">

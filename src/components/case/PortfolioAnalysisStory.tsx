@@ -1,5 +1,5 @@
-import { useEffect, useMemo, useState } from "react";
-import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import { useEffect, useId, useMemo, useState } from "react";
+import { motion, useReducedMotion } from "framer-motion";
 import {
   ChevronLeft,
   ChevronRight,
@@ -8,9 +8,8 @@ import {
   Moon,
   MoveVertical,
   Sun,
-  X,
 } from "lucide-react";
-import { createPortal } from "react-dom";
+import { FullscreenImageViewer } from "@/components/case/FullscreenImageViewer";
 import type { ProjectPresentation } from "@/lib/projectPresentation";
 import {
   PORTFOLIO_ANALYSIS_HERO_SCREENS,
@@ -171,10 +170,10 @@ function ProductScreenFrame({
 export function PortfolioAnalysisCaseVisuals({ story }: { story: ProjectPresentation["story"] }) {
   const reduce = useReducedMotion();
   const scenarios = useMemo(() => buildScenarios(story), [story]);
-  const fallbackStart = scenarios.find((scenario) => scenario.id === "external-stocks")?.id;
-  const [activeScenarioId, setActiveScenarioId] = useState(fallbackStart ?? scenarios[0]?.id ?? "");
+  const [activeScenarioId, setActiveScenarioId] = useState(scenarios[0]?.id ?? "");
   const [activeScreenIndex, setActiveScreenIndex] = useState(0);
   const [expandedIndex, setExpandedIndex] = useState<number | null>(null);
+  const tabPrefix = useId();
 
   useEffect(() => {
     if (!scenarios.some((scenario) => scenario.id === activeScenarioId)) {
@@ -190,6 +189,7 @@ export function PortfolioAnalysisCaseVisuals({ story }: { story: ProjectPresenta
     : 0;
   const activeScreen = activeScenario?.screens[safeScreenIndex];
   const screenCount = scenarios.reduce((total, scenario) => total + scenario.screens.length, 0);
+  const expandedScreen = expandedIndex === null ? null : activeScenario?.screens[expandedIndex];
 
   const selectScenario = (id: string) => {
     setActiveScenarioId(id);
@@ -208,9 +208,9 @@ export function PortfolioAnalysisCaseVisuals({ story }: { story: ProjectPresenta
   if (!activeScenario || !activeScreen) return null;
 
   return (
-    <section className="container-page py-16 md:py-24">
+    <section className="portfolio-story-section container-page py-12 md:py-16">
       <div className="mx-auto max-w-[1120px] border-t border-[var(--color-hairline)] pt-12 md:pt-16">
-        <div className="grid gap-7 md:grid-cols-[minmax(0,1fr)_minmax(260px,0.7fr)] md:items-end">
+        <div className="portfolio-story-header grid gap-7 md:grid-cols-[minmax(0,1fr)_minmax(260px,0.7fr)] md:items-end">
           <div>
             <p className="eyebrow text-[var(--color-accent)]">{story.eyebrow}</p>
             <h2 className="mt-4 max-w-[17ch] text-[clamp(2.25rem,4vw,3.45rem)] leading-[1.06] tracking-[-0.038em]">
@@ -233,7 +233,7 @@ export function PortfolioAnalysisCaseVisuals({ story }: { story: ProjectPresenta
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-70px" }}
           transition={{ duration: 0.75, ease: EASE }}
-          className="mt-10 grid border-y border-[var(--color-hairline-strong)] sm:grid-cols-2 lg:grid-cols-4"
+          className="portfolio-architecture-grid mt-10 grid border-y border-[var(--color-hairline-strong)] sm:grid-cols-2 lg:grid-cols-4"
         >
           {story.architecture_nodes.slice(0, 4).map((node, index) => (
             <li
@@ -257,7 +257,7 @@ export function PortfolioAnalysisCaseVisuals({ story }: { story: ProjectPresenta
         </motion.ol>
 
         <div className="mt-20 border-t border-[var(--color-hairline)] pt-12 md:mt-24 md:pt-16">
-          <div className="grid gap-6 md:grid-cols-[minmax(0,1fr)_minmax(260px,0.7fr)] md:items-end">
+          <div className="portfolio-journey-header grid gap-6 md:grid-cols-[minmax(0,1fr)_minmax(260px,0.7fr)] md:items-end">
             <div>
               <p className="eyebrow text-[var(--color-accent)]">{story.journey_eyebrow}</p>
               <h3 className="mt-4 max-w-[18ch] text-[clamp(2rem,3.6vw,3rem)] leading-[1.08] tracking-[-0.035em]">
@@ -279,16 +279,37 @@ export function PortfolioAnalysisCaseVisuals({ story }: { story: ProjectPresenta
                 aria-label="Portfolio Analysis scenarios"
                 className="flex w-max min-w-full gap-1.5"
               >
-                {scenarios.map((scenario) => {
+                {scenarios.map((scenario, scenarioIndex) => {
                   const selected = scenario.id === activeScenario.id;
                   return (
                     <button
                       key={scenario.id}
                       type="button"
                       role="tab"
+                      id={`${tabPrefix}-tab-${scenario.id}`}
+                      aria-controls={`${tabPrefix}-panel`}
                       aria-selected={selected}
+                      tabIndex={selected ? 0 : -1}
                       onClick={() => selectScenario(scenario.id)}
-                      className={`min-h-10 shrink-0 rounded-[9px] border px-3.5 text-[10px] font-semibold transition-colors sm:text-[11px] ${
+                      onKeyDown={(event) => {
+                        if (!["ArrowLeft", "ArrowRight", "Home", "End"].includes(event.key)) return;
+                        event.preventDefault();
+                        const nextIndex =
+                          event.key === "Home"
+                            ? 0
+                            : event.key === "End"
+                              ? scenarios.length - 1
+                              : (scenarioIndex +
+                                  (event.key === "ArrowRight" ? 1 : -1) +
+                                  scenarios.length) %
+                                scenarios.length;
+                        const next = scenarios[nextIndex];
+                        selectScenario(next.id);
+                        const tab = document.getElementById(`${tabPrefix}-tab-${next.id}`);
+                        tab?.focus();
+                        tab?.scrollIntoView({ block: "nearest", inline: "nearest" });
+                      }}
+                      className={`min-h-11 shrink-0 rounded-[9px] border px-3.5 text-[11px] font-semibold transition-colors sm:text-[12px] ${
                         selected
                           ? "border-[var(--color-accent)] bg-[var(--color-accent)] text-[var(--color-accent-contrast)]"
                           : "border-[var(--color-hairline)] bg-[var(--color-elevated)] text-[var(--color-muted-fg)] hover:border-[var(--color-hairline-strong)] hover:text-[var(--color-text)]"
@@ -302,21 +323,59 @@ export function PortfolioAnalysisCaseVisuals({ story }: { story: ProjectPresenta
             </div>
           </div>
 
-          <div className="mt-4 overflow-hidden rounded-[var(--radius-lg)] border border-[var(--color-hairline-strong)] bg-[var(--color-surface)] shadow-[var(--elevation-1)]">
+          <div
+            role="tabpanel"
+            id={`${tabPrefix}-panel`}
+            aria-labelledby={`${tabPrefix}-tab-${activeScenario.id}`}
+            className="mt-4 overflow-hidden rounded-[var(--radius-lg)] border border-[var(--color-hairline-strong)] bg-[var(--color-surface)] shadow-[var(--elevation-1)]"
+          >
             <div className="flex min-h-14 items-center justify-between gap-4 border-b border-[var(--color-hairline)] px-4 py-3 sm:px-6">
               <div className="min-w-0">
                 <p className="system-label truncate text-[var(--color-accent)]">
                   {activeScenario.eyebrow}
                 </p>
-                <p className="mt-1 truncate text-[11px] text-[var(--color-subtle)]">
+                <p
+                  aria-live="polite"
+                  className="mt-1 truncate text-[11px] text-[var(--color-muted)]"
+                >
                   {String(safeScreenIndex + 1).padStart(2, "0")} /{" "}
                   {String(activeScenario.screens.length).padStart(2, "0")}
+                  {` · ${activeScreen.title}`}
                 </p>
               </div>
-              <ScreenThemeBadge theme={activeScreen.theme} />
+              <div className="flex shrink-0 items-center gap-2">
+                <ScreenThemeBadge theme={activeScreen.theme} />
+                {activeScenario.screens.length > 1 && (
+                  <>
+                    <button
+                      type="button"
+                      aria-label="Previous preview screen"
+                      className="portfolio-preview-control"
+                      onClick={() =>
+                        setActiveScreenIndex(
+                          (safeScreenIndex - 1 + activeScenario.screens.length) %
+                            activeScenario.screens.length,
+                        )
+                      }
+                    >
+                      <ChevronLeft size={16} />
+                    </button>
+                    <button
+                      type="button"
+                      aria-label="Next preview screen"
+                      className="portfolio-preview-control"
+                      onClick={() =>
+                        setActiveScreenIndex((safeScreenIndex + 1) % activeScenario.screens.length)
+                      }
+                    >
+                      <ChevronRight size={16} />
+                    </button>
+                  </>
+                )}
+              </div>
             </div>
 
-            <div className="grid lg:grid-cols-[minmax(285px,360px)_minmax(0,1fr)]">
+            <div className="portfolio-journey-panel grid lg:grid-cols-[minmax(285px,360px)_minmax(0,1fr)]">
               <aside className="flex min-h-0 flex-col border-b border-[var(--color-hairline)] p-5 sm:p-7 lg:h-[720px] lg:border-b-0 lg:border-r xl:h-[760px]">
                 <h4 className="text-[clamp(1.55rem,2.35vw,2rem)] leading-[1.12] tracking-[-0.03em]">
                   {activeScenario.title}
@@ -325,7 +384,27 @@ export function PortfolioAnalysisCaseVisuals({ story }: { story: ProjectPresenta
                   {activeScenario.description}
                 </p>
 
-                <div className="mt-7 flex min-h-0 flex-1 flex-col border-t border-[var(--color-hairline)] pt-5">
+                <div className="portfolio-screen-select mt-5">
+                  <label
+                    htmlFor={`${tabPrefix}-screen`}
+                    className="block text-[12px] font-medium text-[var(--color-muted)]"
+                  >
+                    Choose a screen
+                  </label>
+                  <select
+                    id={`${tabPrefix}-screen`}
+                    value={safeScreenIndex}
+                    onChange={(event) => setActiveScreenIndex(Number(event.target.value))}
+                    className="mt-2 min-h-11 w-full rounded-lg border border-[var(--color-hairline-strong)] bg-[var(--color-surface)] px-3 text-[13px] text-[var(--color-text)]"
+                  >
+                    {activeScenario.screens.map((screen, index) => (
+                      <option key={screen.id} value={index}>
+                        {index + 1} · {screen.title}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div className="portfolio-screen-list mt-7 flex min-h-0 flex-1 flex-col border-t border-[var(--color-hairline)] pt-5">
                   <p className="font-mono text-[9px] uppercase tracking-[0.14em] text-[var(--color-subtle)]">
                     Choose a screen
                   </p>
@@ -366,6 +445,7 @@ export function PortfolioAnalysisCaseVisuals({ story }: { story: ProjectPresenta
               </aside>
 
               <ScreenViewer
+                key={activeScreen.id}
                 screen={activeScreen}
                 reduce={!!reduce}
                 onExpand={() => setExpandedIndex(safeScreenIndex)}
@@ -375,23 +455,23 @@ export function PortfolioAnalysisCaseVisuals({ story }: { story: ProjectPresenta
         </div>
       </div>
 
-      {typeof document !== "undefined" &&
-        createPortal(
-          <AnimatePresence>
-            {expandedIndex !== null && activeScenario.screens[expandedIndex] && (
-              <ScreenLightbox
-                key={activeScenario.screens[expandedIndex].id}
-                screen={activeScenario.screens[expandedIndex]}
-                index={expandedIndex}
-                total={activeScenario.screens.length}
-                reduce={!!reduce}
-                onMove={moveExpanded}
-                onClose={() => setExpandedIndex(null)}
-              />
-            )}
-          </AnimatePresence>,
-          document.body,
-        )}
+      <FullscreenImageViewer
+        image={
+          expandedScreen
+            ? {
+                src: expandedScreen.url,
+                alt: expandedScreen.alt,
+                label: expandedScreen.title,
+                meta: activeScenario.tabLabel,
+                caption: expandedScreen.description,
+              }
+            : null
+        }
+        index={expandedIndex ?? 0}
+        total={activeScenario.screens.length}
+        onMove={moveExpanded}
+        onClose={() => setExpandedIndex(null)}
+      />
     </section>
   );
 }
@@ -504,9 +584,7 @@ function ScreenViewer({
             <div>
               <ImageOff className="mx-auto text-white/40" size={25} />
               <p className="mt-3 text-[13px] font-semibold">This screen could not be loaded</p>
-              <p className="mt-1 text-[11px] text-white/50">
-                Replace it from the CMS and try again.
-              </p>
+              <p className="mt-1 text-[11px] text-white/50">Try again in a moment.</p>
             </div>
           </div>
         ) : (
@@ -539,126 +617,11 @@ function ScreenViewer({
           type="button"
           onClick={onExpand}
           disabled={failed}
-          className="pointer-events-auto ml-auto inline-flex min-h-10 items-center gap-2 rounded-full border border-white/20 bg-black/70 px-3.5 text-[10px] font-semibold text-white backdrop-blur-sm transition-colors hover:bg-black/90 disabled:cursor-not-allowed disabled:opacity-40"
+          className="pointer-events-auto ml-auto inline-flex min-h-11 items-center gap-2 rounded-full border border-white/20 bg-black/70 px-3.5 text-[12px] font-semibold text-white backdrop-blur-sm transition-colors hover:bg-black/90 disabled:cursor-not-allowed disabled:opacity-40"
         >
           <Maximize2 size={12} /> View full
         </button>
       </div>
     </div>
-  );
-}
-
-function ScreenLightbox({
-  screen,
-  index,
-  total,
-  reduce,
-  onMove,
-  onClose,
-}: {
-  screen: PortfolioAnalysisScreen;
-  index: number;
-  total: number;
-  reduce: boolean;
-  onMove: (direction: -1 | 1) => void;
-  onClose: () => void;
-}) {
-  useEffect(() => {
-    const previousOverflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-
-    const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") onClose();
-      if (event.key === "ArrowLeft" && total > 1) onMove(-1);
-      if (event.key === "ArrowRight" && total > 1) onMove(1);
-    };
-
-    window.addEventListener("keydown", onKeyDown);
-    return () => {
-      window.removeEventListener("keydown", onKeyDown);
-      document.body.style.overflow = previousOverflow;
-    };
-  }, [onClose, onMove, total]);
-
-  return (
-    <motion.div
-      data-lenis-prevent
-      role="dialog"
-      aria-modal="true"
-      aria-label={`${screen.title} at full size`}
-      initial={reduce ? false : { opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      transition={{ duration: 0.22 }}
-      onClick={onClose}
-      className="fixed inset-0 z-[100] touch-pan-y overflow-y-auto overscroll-contain bg-black/94 backdrop-blur-md [-webkit-overflow-scrolling:touch]"
-    >
-      <div className="sticky top-0 z-10 flex min-h-16 items-center justify-between gap-3 border-b border-white/15 bg-black/78 px-3 text-white backdrop-blur-md sm:px-6">
-        <div className="min-w-0">
-          <p className="truncate text-[11px] font-semibold uppercase tracking-[0.1em] sm:text-[12px]">
-            {screen.title}
-          </p>
-          <p className="mt-0.5 truncate text-[10px] text-white/55 sm:text-[11px]">
-            {String(index + 1).padStart(2, "0")} / {String(total).padStart(2, "0")} · Scroll for the
-            complete flow
-          </p>
-        </div>
-
-        <div className="flex shrink-0 items-center gap-2">
-          {total > 1 && (
-            <>
-              <button
-                type="button"
-                onClick={(event) => {
-                  event.stopPropagation();
-                  onMove(-1);
-                }}
-                aria-label="Previous screen"
-                className="grid h-10 w-10 place-items-center rounded-full border border-white/20 bg-white/8 text-white transition-colors hover:bg-white/18"
-              >
-                <ChevronLeft size={17} />
-              </button>
-              <button
-                type="button"
-                onClick={(event) => {
-                  event.stopPropagation();
-                  onMove(1);
-                }}
-                aria-label="Next screen"
-                className="grid h-10 w-10 place-items-center rounded-full border border-white/20 bg-white/8 text-white transition-colors hover:bg-white/18"
-              >
-                <ChevronRight size={17} />
-              </button>
-            </>
-          )}
-          <button
-            type="button"
-            onClick={onClose}
-            aria-label="Close full-screen image"
-            className="grid h-10 w-10 place-items-center rounded-full border border-white/20 bg-white/10 text-white transition-colors hover:bg-white/20"
-          >
-            <X size={17} />
-          </button>
-        </div>
-      </div>
-
-      <motion.figure
-        initial={reduce ? false : { opacity: 0, y: 14 }}
-        animate={{ opacity: 1, y: 0 }}
-        exit={{ opacity: 0, y: 8 }}
-        transition={{ duration: 0.35, ease: EASE }}
-        onClick={(event) => event.stopPropagation()}
-        className="mx-auto w-full max-w-[760px] px-3 pb-10 pt-4 sm:px-6 sm:pb-14 sm:pt-6"
-      >
-        <img
-          src={screen.url}
-          alt={screen.alt}
-          className="block h-auto w-full rounded-[var(--radius-md)] bg-white shadow-2xl"
-        />
-        <figcaption className="px-1 pt-4 text-[12px] leading-6 text-white/66 sm:text-[13px]">
-          {screen.description} Press Esc or use the close button to return to the case study.
-        </figcaption>
-      </motion.figure>
-    </motion.div>
   );
 }

@@ -445,7 +445,6 @@ export function PortfolioAnalysisCaseVisuals({ story }: { story: ProjectPresenta
               </aside>
 
               <ScreenViewer
-                key={activeScreen.id}
                 screen={activeScreen}
                 reduce={!!reduce}
                 onExpand={() => setExpandedIndex(safeScreenIndex)}

@@ -246,13 +246,7 @@ export function GuestJourneyCaseVisuals({
             ))}
           </div>
 
-          <motion.article
-            key={`${theme}-${activeIndex}`}
-            initial={reduce ? false : { opacity: 0, x: 10 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.35, ease: EASE }}
-            className="mt-4 overflow-hidden rounded-[var(--radius-lg)] border border-[var(--color-hairline-strong)] bg-[var(--color-surface)]"
-          >
+          <article className="mt-4 overflow-hidden rounded-[var(--radius-lg)] border border-[var(--color-hairline-strong)] bg-[var(--color-surface)]">
             <div className="flex min-h-14 items-center justify-between gap-4 border-b border-[var(--color-hairline)] px-4 py-3">
               <div>
                 <p className="system-label text-[var(--color-accent)]">
@@ -270,7 +264,11 @@ export function GuestJourneyCaseVisuals({
                 <Maximize2 size={11} /> View full
               </button>
             </div>
-            <div
+            <motion.div
+              key={`${theme}-${activeIndex}`}
+              initial={reduce ? false : { opacity: 0, x: 10 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.35, ease: EASE }}
               data-lenis-prevent
               role="region"
               tabIndex={0}
@@ -282,11 +280,11 @@ export function GuestJourneyCaseVisuals({
                 alt={selectedImages[activeIndex].caption ?? ""}
                 className="block h-auto w-full"
               />
-            </div>
+            </motion.div>
             <p className="border-t border-[var(--color-hairline)] p-4 text-[13px] leading-6 text-[var(--color-muted)]">
               {JOURNEY_STAGES[activeIndex].description}
             </p>
-          </motion.article>
+          </article>
         </div>
 
         <ol className="guest-journey-desktop mt-12 hidden grid-cols-5 gap-3 lg:grid xl:gap-4">

@@ -196,7 +196,7 @@
   html {
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
-    overflow-x: hidden;
+    overflow-x: clip;
   }
   body {
     background-color: var(--color-bg);
@@ -205,7 +205,7 @@
     font-feature-settings: "ss01", "cv11", "cv05";
     font-size: 16px;
     line-height: 1.65;
-    overflow-x: hidden;
+    overflow-x: clip;
     transition:
       background-color var(--dur-slow) var(--ease-out-quart),
       color var(--dur-slow) var(--ease-out-quart);

@@ -3,8 +3,8 @@ const stamp = "2026-07-31T00:00:00.000Z";
 export const PORTFOLIO_SITE = {
   name: "Aman Mishra",
   tagline:
-    "Senior Product Designer with 4.5+ years designing investment products, AI-assisted tools, and design systems at Motilal Oswal and Trinkerr.",
-  bio: "I’m a product designer with 4.5+ years of experience designing fintech and investment products across Motilal Oswal and Trinkerr.\n\nAt Motilal Oswal, I work across Riise’s hyper-personalised homepage, 0-to-1 stock discovery, and AI-assisted investing experiences. Previously at Trinkerr, I designed portfolio and advisory products and contributed to the TIQS design system across iOS and Android.\n\nI’m usually working on problems with a lot of information, an unclear starting point, and constraints that cannot be designed away. I like finding the structure that helps the user decide what to do next.\n\nI stay close to product, engineering, research, and compliance from the first sketch through the shipped build. I’m currently looking for a Senior Product Designer role in fintech, AI, or another product with genuinely complicated workflows.",
+    "Senior Product Designer with 5 years of experience designing investment products, AI-assisted tools, and design systems at Motilal Oswal and Trinkerr.",
+  bio: "I’m a product designer with 5 years of experience designing fintech and investment products across Motilal Oswal and Trinkerr.\n\nAt Motilal Oswal, I work across Riise’s hyper-personalised homepage, 0-to-1 stock discovery, and AI-assisted investing experiences. Previously at Trinkerr, I designed portfolio and advisory products and contributed to the TIQS design system across iOS and Android.\n\nI’m usually working on problems with a lot of information, an unclear starting point, and constraints that cannot be designed away. I like finding the structure that helps the user decide what to do next.\n\nI stay close to product, engineering, research, and compliance from the first sketch through the shipped build. I’m currently looking for a Senior Product Designer role in fintech, AI, or another product with genuinely complicated workflows.",
   email: "aman755559@gmail.com",
   location: "Mumbai, India",
   profile_image_url: null,
@@ -169,7 +169,7 @@ export const PORTFOLIO_CONTENT = {
     headline_accent: "financial products",
     headline_after: "clear and trustworthy.",
     subline:
-      "I’m Aman, a product designer with 4.5+ years across Motilal Oswal and Trinkerr. I lead 0-to-1 products, platform revamps, AI experiences, and design systems from problem framing through launch.",
+      "I’m Aman, a product designer with 5 years of experience across Motilal Oswal and Trinkerr. I lead 0-to-1 products, platform revamps, AI experiences, and design systems from problem framing through launch.",
     cta_label: "View selected work",
     cta_to: "/work",
     secondary_cta_label: "View résumé",
@@ -204,7 +204,7 @@ export const PORTFOLIO_CONTENT = {
   },
   home_experience: {
     eyebrow: "Experience",
-    heading_line1: "4.5+ years designing",
+    heading_line1: "5 years of experience designing",
     heading_line2: "investment products.",
   },
   home_stats: {
@@ -212,7 +212,7 @@ export const PORTFOLIO_CONTENT = {
     heading_line1: "From first sketch",
     heading_accent: "to shipped product",
     items: [
-      { v: "4.5+", l: "Years in product design" },
+      { v: "5", l: "Years in product design" },
       { v: "9×", l: "Portfolio import growth" },
       { v: "5", l: "Focused case studies" },
     ],
@@ -259,7 +259,7 @@ export const PORTFOLIO_CONTENT = {
     heading_after: "easier to act on.",
     meta: [
       { k: "Based in", v: "Mumbai, India" },
-      { k: "Experience", v: "4.5+ years" },
+      { k: "Experience", v: "5 years" },
       { k: "Focus", v: "Fintech · AI · Systems" },
       { k: "Currently", v: "Open to senior roles" },
     ],
@@ -360,7 +360,7 @@ export const PORTFOLIO_CONTENT = {
   },
   resume_page: {
     eyebrow: "Résumé",
-    heading: "4.5+ years across fintech products, AI, and design systems.",
+    heading: "5 years of experience across fintech products, AI, and design systems.",
     subline:
       "The short version of my experience, projects, and skills. The PDF is ready for applications and recruiter conversations.",
     download_label: "Download résumé",

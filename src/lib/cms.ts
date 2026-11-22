@@ -150,8 +150,8 @@ export function useSite() {
     ...q,
     data: cleanPublicCopy({
       ...base,
-      tagline: RESUME_TAGLINE,
-      bio: RESUME_PROFILE,
+      tagline: q.data?.tagline ?? base.tagline ?? RESUME_TAGLINE,
+      bio: q.data?.bio ?? base.bio ?? RESUME_PROFILE,
     }),
   };
 }
@@ -228,9 +228,9 @@ export function useExperience() {
     },
   });
 
-  // Preview branch: keep the public experience in sync with the newly uploaded résumé
-  // without changing the production CMS before approval.
-  return { ...q, data: cleanPublicCopy(RESUME_EXPERIENCE) };
+  // Use the published CMS entries; the résumé data remains a fallback during loading
+  // or when the CMS has no published experience records.
+  return { ...q, data: cleanPublicCopy(q.data ?? RESUME_EXPERIENCE) };
 }
 
 export function useEducation() {

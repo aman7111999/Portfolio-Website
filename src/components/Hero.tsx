@@ -23,7 +23,7 @@ type HeroData = {
 
 const FALLBACK: HeroData = {
   available_label: "Open to Senior Product Designer opportunities",
-  headline_before: "I’ve spent 4.5+ years making",
+  headline_before: "I’ve spent 5 years making",
   headline_accent: "complicated fintech",
   headline_after: "easier to use.",
   subline: RESUME_HERO_SUBLINE,
@@ -52,10 +52,6 @@ export function Hero() {
   const content = {
     ...FALLBACK,
     ...(hero ?? {}),
-    headline_before: "I’ve spent 4.5+ years making",
-    headline_accent: "complicated fintech",
-    headline_after: "easier to use.",
-    subline: RESUME_HERO_SUBLINE,
   };
   const name = site?.name ?? "Aman Mishra";
 
@@ -153,7 +149,7 @@ export function Hero() {
               />
               <div className="absolute inset-x-5 top-5 z-10 flex items-center justify-between text-[var(--color-inverse)] mix-blend-difference">
                 <span className="system-label">AM / 2026</span>
-                <span className="system-label">04.5+ YRS</span>
+                <span className="system-label">05 YRS</span>
               </div>
               <div className="absolute bottom-4 left-4 right-4 z-10 flex items-center justify-between gap-3 rounded-[10px] border border-white/20 bg-black/35 px-3 py-3 text-white backdrop-blur-md sm:bottom-5 sm:left-5 sm:right-5 sm:gap-4 sm:px-4">
                 <div className="flex items-center gap-2">

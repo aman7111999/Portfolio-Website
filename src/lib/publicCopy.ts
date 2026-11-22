@@ -14,14 +14,14 @@ const EXACT_COPY_REWRITES = new Map<string, string>([
     "Thanks. Your message was delivered to Aman.",
   ],
   [
-    "Senior Product Designer with 4.5+ years of experience across fintech, AI-assisted products, 0-to-1 launches, and design systems.",
-    "Senior Product Designer with 4.5+ years designing investment products, AI-assisted tools, and design systems at Motilal Oswal and Trinkerr.",
+    "Senior Product Designer with 5 years of experience across fintech, AI-assisted products, 0-to-1 launches, and design systems.",
+    "Senior Product Designer with 5 years designing investment products, AI-assisted tools, and design systems at Motilal Oswal and Trinkerr.",
   ],
   ["FINTECH • AI • PRODUCT SYSTEMS •", "FINTECH • RESEARCH • INTERACTION •"],
 
   ["Complex problems. Clear decisions.", "A few problems I’ve"],
   ["Evidence over decoration.", "enjoyed untangling."],
-  ["4.5+ years simplifying", "4.5+ years designing"],
+  ["5 years simplifying", "5 years designing"],
   ["complex financial products.", "investment products."],
   ["From 0-to-1 launches", "From first sketch"],
   ["to systems at scale", "to shipped product"],

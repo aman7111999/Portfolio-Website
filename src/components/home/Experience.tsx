@@ -7,7 +7,7 @@ type Data = { eyebrow: string; heading_line1: string; heading_line2: string };
 
 const FALLBACK: Data = {
   eyebrow: "Experience",
-  heading_line1: "4.5+ years building",
+  heading_line1: "5 years building",
   heading_line2: "fintech products.",
 };
 
@@ -20,8 +20,6 @@ export function Experience() {
   const { data: content } = useContent<Data>("home_experience", FALLBACK);
   const copy = {
     ...(content ?? FALLBACK),
-    heading_line1: "4.5+ years building",
-    heading_line2: "fintech products.",
   };
   const allRoles = rows ?? [];
 

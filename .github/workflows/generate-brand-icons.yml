@@ -1,0 +1,47 @@
+name: Generate portfolio app icons
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "public/favicon.svg"
+      - "public/logo-mark.svg"
+      - "public/site.webmanifest"
+      - "scripts/generate-brand-icons.mjs"
+      - ".github/workflows/generate-brand-icons.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: generate-brand-icons
+  cancel-in-progress: false
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Install icon renderer
+        run: npm install --prefix "$RUNNER_TEMP/brand-icon-deps" sharp
+      - name: Generate branded icons
+        env:
+          ICON_NODE_MODULES: ${{ runner.temp }}/brand-icon-deps/node_modules
+        run: node scripts/generate-brand-icons.mjs
+      - name: Commit branded app and browser icons
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add public/icon-192.png public/icon-512.png public/apple-touch-icon.png public/favicon.ico
+          if git diff --cached --quiet; then
+            echo "All app and browser icons already match the portfolio brand."
+          else
+            git commit -m "Replace generic app icons with Aman Mishra branding"
+            git push origin main
+          fi

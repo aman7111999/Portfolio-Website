@@ -1,5 +1,6 @@
 import { createRequire } from "node:module";
 import path from "node:path";
+import { readFileSync, writeFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 
 const require = createRequire(path.join(process.env.OG_NODE_MODULES, "capture.cjs"));
@@ -8,6 +9,47 @@ const sharp = require("sharp");
 
 const siteUrl = process.env.SITE_URL || "https://amanux.vercel.app";
 const outputPath = path.resolve("public/og-preview.png");
+
+const publicDir = path.resolve("public");
+const brandSvg = readFileSync(path.join(publicDir, "favicon.svg"));
+
+async function renderBrandIcon(size) {
+  return sharp(brandSvg, { density: 768 })
+    .resize(size, size, { fit: "contain" })
+    .png({ compressionLevel: 9 })
+    .toBuffer();
+}
+
+// Regenerate every installable and browser icon from the portfolio's own AM mark.
+// This prevents an old builder-provided favicon or PWA icon from surviving in caches.
+const icon192 = await renderBrandIcon(192);
+const icon512 = await renderBrandIcon(512);
+const appleIcon = await renderBrandIcon(180);
+const faviconPng = await renderBrandIcon(48);
+
+writeFileSync(path.join(publicDir, "icon-192.png"), icon192);
+writeFileSync(path.join(publicDir, "icon-512.png"), icon512);
+writeFileSync(path.join(publicDir, "apple-touch-icon.png"), appleIcon);
+
+// ICO container with an embedded 48px PNG image for legacy browser support.
+const icoHeader = Buffer.alloc(6);
+icoHeader.writeUInt16LE(0, 0); // reserved
+icoHeader.writeUInt16LE(1, 2); // icon resource
+icoHeader.writeUInt16LE(1, 4); // image count
+
+const icoEntry = Buffer.alloc(16);
+icoEntry.writeUInt8(48, 0); // width
+icoEntry.writeUInt8(48, 1); // height
+icoEntry.writeUInt8(0, 2); // palette size
+icoEntry.writeUInt8(0, 3); // reserved
+icoEntry.writeUInt16LE(1, 4); // color planes
+icoEntry.writeUInt16LE(32, 6); // bits per pixel
+icoEntry.writeUInt32LE(faviconPng.length, 8); // image byte length
+icoEntry.writeUInt32LE(22, 12); // image offset after header + entry
+writeFileSync(path.join(publicDir, "favicon.ico"), Buffer.concat([icoHeader, icoEntry, faviconPng]));
+
+console.log("Regenerated browser, Android, and iOS icons from the Aman Mishra AM brand mark.");
+
 const browser = await chromium.launch({ headless: true });
 
 try {

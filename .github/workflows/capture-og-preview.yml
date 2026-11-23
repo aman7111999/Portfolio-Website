@@ -1,0 +1,52 @@
+name: Capture portfolio social preview
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "index.html"
+      - "src/components/Hero.tsx"
+      - "public/aman-mishra-portfolio-portrait.png"
+      - "public/aman-mishra-portfolio-portrait.webp"
+      - "scripts/capture-og-preview.mjs"
+      - ".github/workflows/capture-og-preview.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: capture-og-preview
+  cancel-in-progress: false
+
+jobs:
+  capture:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Install screenshot tools
+        run: |
+          npm install --prefix "$RUNNER_TEMP/og-preview-deps" playwright sharp
+          "$RUNNER_TEMP/og-preview-deps/node_modules/.bin/playwright" install --with-deps chromium
+      - name: Capture the deployed homepage hero
+        env:
+          OG_NODE_MODULES: ${{ runner.temp }}/og-preview-deps/node_modules
+          SITE_URL: https://amanux.vercel.app
+        run: node scripts/capture-og-preview.mjs
+      - name: Commit the updated social preview image
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add public/og-preview.png
+          if git diff --cached --quiet; then
+            echo "The social preview is already up to date."
+          else
+            git commit -m "Refresh portfolio social preview from homepage hero"
+            git push origin main
+          fi

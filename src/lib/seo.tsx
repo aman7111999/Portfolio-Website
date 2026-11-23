@@ -25,7 +25,7 @@ export function Seo({
   const desc = description ?? "";
   const siteUrl = (import.meta.env.VITE_SITE_URL || "https://amanux.vercel.app").replace(/\/$/, "");
   const absoluteUrl = new URL(path, `${siteUrl}/`).toString();
-  const ogImage = image ? new URL(image, `${siteUrl}/`).toString() : `${siteUrl}/og-preview.png`;
+  const ogImage = image ? new URL(image, `${siteUrl}/`).toString() : `${siteUrl}/og-preview.png?v=20261124`;
   return (
     <Helmet>
       <title>{fullTitle}</title>
@@ -37,11 +37,14 @@ export function Seo({
       <meta property="og:type" content={ogType} />
       <meta property="og:url" content={absoluteUrl} />
       <meta property="og:image" content={ogImage} />
+      <meta property="og:image:type" content="image/png" />
+      <meta property="og:image:alt" content="Aman Mishra, Senior Product Designer — portfolio homepage hero with his profile photo and introduction." />
       <meta property="og:image:width" content="1200" />
       <meta property="og:image:height" content="630" />
       <meta name="twitter:title" content={fullTitle} />
       {desc && <meta name="twitter:description" content={desc} />}
       <meta name="twitter:card" content="summary_large_image" />
+      <meta name="twitter:image:alt" content="Aman Mishra, Senior Product Designer — portfolio homepage hero with his profile photo and introduction." />
       <meta name="twitter:image" content={ogImage} />
       {jsonLd && !noindex ? (
         <script type="application/ld+json">{JSON.stringify(jsonLd)}</script>
